@@ -6,6 +6,8 @@ Despite numerous articles and the favourable experiences of enterprise applicati
 
 I believe that two things are needed in order to demonstrate the architecture and increase its adoption: (1) examples to demonstrate the advantages of scalability, simplicity, testing and read/write independence and (2) tooling to allow developers rapidly to assemble the CQRS application in a graphical model.
 
+![Designer](https://github.com/MerrionComputing/CQRSAzure/blob/master/CQRSAzure/Images/Aggregate_Projection_Events_QueryDefinition_CommandDefinition.PNG)
+
 **Project Description**
 A project to create an IDE template, plug ins, documentation and related material to facilitate the rapid creation of CQRS based solutions on Azure
 
