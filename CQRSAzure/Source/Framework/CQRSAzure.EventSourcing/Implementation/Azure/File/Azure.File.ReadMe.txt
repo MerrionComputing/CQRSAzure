@@ -1,0 +1,16 @@
+﻿Azure Files
+===========
+Storage of an event stream in Azure files where :-
+
+1) The aggregate type is turned into the file container identifier (effectively the file path)
+2) Each event stream is a single file
+3) The aggregate unique identifier is turned into the unique filename
+4) The domain model is also used to get the azure storage account to use 
+
+The file is initially created with a maximum size of 1Gb.
+
+The event stream writer will take out an exclusive write lease on the file - this means that if the lease fails we know that someone else is
+appending to the event stream and we must pass on our message to them or throw an error
+
+Note that in most cases using Azure Blobs will be faster, and using SQL or Azure tables will be easier to code against 
+so this is really only added for completeness.

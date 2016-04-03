@@ -1,0 +1,230 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{551FBD94-8CE5-4E33-818A-9C3FC171F1CE}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>CQRSAzure.EventSourcing</RootNamespace>
+    <AssemblyName>CQRSAzure.EventSourcing</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>Windows</MyType>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>CQRSAzure.EventSourcing.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>CQRSAzure.EventSourcing.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Binary</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionStrict>Off</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Azure.KeyVault.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Azure.KeyVault.Core.1.0.0\lib\net40\Microsoft.Azure.KeyVault.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Data.Edm, Version=5.6.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Data.Edm.5.6.4\lib\net40\Microsoft.Data.Edm.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Data.OData, Version=5.6.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Data.OData.5.6.4\lib\net40\Microsoft.Data.OData.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Data.Services.Client, Version=5.6.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Data.Services.Client.5.6.4\lib\net40\Microsoft.Data.Services.Client.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ServiceBus, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\WindowsAzure.ServiceBus.3.0.9\lib\net45-full\Microsoft.ServiceBus.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Configuration, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.WindowsAzure.ConfigurationManager.3.1.0\lib\net40\Microsoft.WindowsAzure.Configuration.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Storage, Version=6.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\WindowsAzure.Storage.6.2.0\lib\net40\Microsoft.WindowsAzure.Storage.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Spatial, Version=5.6.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Spatial.5.6.4\lib\net40\System.Spatial.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+    <Import Include="System.Threading.Tasks" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AggregateEventStreamImplementationMap.vb" />
+    <Compile Include="AggregateIdentifierAttribute.vb" />
+    <Compile Include="CategoryAttribute.vb" />
+    <Compile Include="Configuration\CQRSAzureEventSourcingAggregateMapElement.vb" />
+    <Compile Include="Configuration\CQRSAzureEventSourcingAggregateMapElementCollection.vb" />
+    <Compile Include="Configuration\CQRSAzureEventSourcingAzureStorageSettingsBase.vb" />
+    <Compile Include="Configuration\CQRSAzureEventSourcingBlobSettingsElement.vb" />
+    <Compile Include="Configuration\CQRSAzureEventSourcingConfigurationSection.vb" />
+    <Compile Include="Configuration\CQRSAzureEventSourcingFileSettingsElement.vb" />
+    <Compile Include="Configuration\CQRSAzureEventSourcingImplementationSettingsElement.vb" />
+    <Compile Include="Configuration\CQRSAzureEventSourcingImplementationSettingsElementCollection.vb" />
+    <Compile Include="Configuration\CQRSAzureEventSourcingInMemorySettingsElement.vb" />
+    <Compile Include="Configuration\CQRSAzureEventSourcingSQLSettingsElement.vb" />
+    <Compile Include="Configuration\CQRSAzureEventSourcingTableSettingsElement.vb" />
+    <Compile Include="DomainNameAttribute.vb" />
+    <Compile Include="EventNameAttribute.vb" />
+    <Compile Include="Exceptions\AggregateKeyChangedException.vb" />
+    <Compile Include="Exceptions\EventStreamExceptionBase.vb" />
+    <Compile Include="Exceptions\EventStreamReadException.vb" />
+    <Compile Include="Exceptions\EventStreamWriteConflictException.vb" />
+    <Compile Include="Exceptions\EventStreamWriteException.vb" />
+    <Compile Include="Exceptions\UnmappedAggregateException.vb" />
+    <Compile Include="IAggregationIdentifier.vb" />
+    <Compile Include="IEvent.vb" />
+    <Compile Include="IEventContext.vb" />
+    <Compile Include="IEventIdentity.vb" />
+    <Compile Include="IEventStream.vb" />
+    <Compile Include="IEventStreamReader.vb" />
+    <Compile Include="IEventStreamWriter.vb" />
+    <Compile Include="IHandleEvent.vb" />
+    <Compile Include="IIdentifierGroup.vb" />
+    <Compile Include="ImplementationMap.vb" />
+    <Compile Include="Implementation\Azure\Blob\BlobBlockWrappedEvent.vb" />
+    <Compile Include="Implementation\Azure\Blob\BlobEventStreamBase.vb" />
+    <Compile Include="Implementation\Azure\Blob\BlobEventStreamReader.vb" />
+    <Compile Include="Implementation\Azure\Blob\BlobEventStreamWriter.vb" />
+    <Compile Include="Implementation\Azure\Blob\IBlobStreamSettings.vb" />
+    <Compile Include="Implementation\Azure\File\FileBlockWrappedEvent.vb" />
+    <Compile Include="Implementation\Azure\File\FileEventStreamBase.vb" />
+    <Compile Include="Implementation\Azure\File\FileEventStreamReader.vb" />
+    <Compile Include="Implementation\Azure\File\FileEventStreamWriter.vb" />
+    <Compile Include="Implementation\Azure\File\IFileStreamSettings.vb" />
+    <Compile Include="Implementation\Azure\IAzureStorageSettings.vb" />
+    <Compile Include="Implementation\Azure\SQL\ISQLSettings.vb" />
+    <Compile Include="Implementation\Azure\SQL\SQLEventStreamBase.vb" />
+    <Compile Include="Implementation\Azure\SQL\SQLEventStreamReader.vb" />
+    <Compile Include="Implementation\Azure\SQL\SQLEventStreamWriter.vb" />
+    <Compile Include="Implementation\Azure\Table\ITableSettings.vb" />
+    <Compile Include="Implementation\Azure\Table\TableEventStreamBase.vb" />
+    <Compile Include="Implementation\Azure\Table\TableEventStreamReader.vb" />
+    <Compile Include="Implementation\Azure\Table\TableEventStreamWriter.vb" />
+    <Compile Include="Implementation\ContextWrappedEvent.vb" />
+    <Compile Include="Implementation\IEventInstance.vb" />
+    <Compile Include="Implementation\InMemory\IInMemorySettings.vb" />
+    <Compile Include="Implementation\InMemory\InMemoryEventStreamBase.vb" />
+    <Compile Include="Implementation\InMemory\InMemoryEventStreamReader.vb" />
+    <Compile Include="Implementation\InMemory\InMemoryEventStreamWriter.vb" />
+    <Compile Include="Implementation\InstanceWrappedEvent.vb" />
+    <Compile Include="IProjection.vb" />
+    <Compile Include="IProjectionSnapshot.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="ProjectionProcessor.vb" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Configuration\Configuration.ReadMe.txt" />
+    <Content Include="CQRSAzure.EventSourcing.Overview.txt" />
+    <Content Include="Implementation\Azure\Azure.ReadeMe.txt" />
+    <Content Include="Implementation\Azure\Blob\Azure.Blob.ReadMe.txt" />
+    <Content Include="Implementation\Azure\File\Azure.File.ReadMe.txt" />
+    <Content Include="Implementation\Azure\SQL\Azure.SQL.ReadMe.txt" />
+    <Content Include="Implementation\Azure\Table\Azure.Table.ReadMe.txt" />
+    <Content Include="Implementation\Implementation.ReadMe.txt" />
+    <Content Include="Implementation\InMemory\InMemory.ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

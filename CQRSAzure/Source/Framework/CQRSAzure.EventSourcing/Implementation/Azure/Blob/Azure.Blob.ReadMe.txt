@@ -1,0 +1,21 @@
+﻿Azure Blobs
+===========
+
+Storage of the event stream in Azure Blobs where:-
+
+1) The aggregate type is turned into the blob container identifier
+2) Each event stream is a single blob
+3) The aggregate unique identifier is turned into the blob filename
+4) The domain model is also used to get the azure storage account to use 
+
+Since we do not need to update or delete records we will use Append Blobs ( See https://msdn.microsoft.com/library/azure/ee691964.aspx )
+
+The event stream writer will take out an exclusive write lease on the blob - this means that if the lease fails we know that someone else is
+appending to the event stream and we must pass on our message to them or throw an error
+
+The blob type used is an append-only blob ( see https://azure.microsoft.com/en-us/documentation/articles/storage-dotnet-how-to-use-blobs/ )
+which fits well with the append-only nature of an event stream
+
+
+URI - http://<storage-account-name>.blob.core.windows.net/<container-name>/<blob-name>  
+where <container-name> = /[domain]/eventstreams/[aggregate-class-name]/

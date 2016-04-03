@@ -1,0 +1,10 @@
+﻿Overview
+========
+
+A command definition is a type-safe class that defines what parameter(s) can be passed into the command handler 
+to get it to perform a command.
+
+Each distinct definition will have one matching handler that will perform the actual action of the command.
+
+A command definition can be wrapped in an envelope to add entitlement information (who is asking for the action to happen) and 
+any context used to modify what action takes place.

@@ -1,0 +1,17 @@
+﻿<!--DSL Tools Language Template-->
+<VSTemplate Version="3.0.0" Type="Item" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<TemplateData>
+		<TemplateID>{4f99a5ec-00a5-4068-bd1d-10e22cb4680d}</TemplateID>
+		<Name Package="{5f54fc45-4897-47e5-b71f-8ff66160144e}" ID="103"/>
+		<Description Package="{5f54fc45-4897-47e5-b71f-8ff66160144e}" ID="102"/>
+		<Icon Package="{5f54fc45-4897-47e5-b71f-8ff66160144e}" ID="201" />
+		<ProjectType>VisualBasic</ProjectType>
+		<SortOrder>360</SortOrder>
+		<DefaultName>CQRSdsl.cqrsx</DefaultName>
+	</TemplateData>
+	<TemplateContent>
+		<ProjectItem TargetFileName="$fileinputname$.cqrsx">cqrsx.cqrsx</ProjectItem>
+		<ProjectItem TargetFileName="$fileinputname$.cqrsx.diagram">cqrsx.diagram</ProjectItem>
+	</TemplateContent>
+</VSTemplate>
+

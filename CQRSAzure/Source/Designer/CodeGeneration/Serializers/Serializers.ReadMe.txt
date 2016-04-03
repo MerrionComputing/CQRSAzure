@@ -1,0 +1,13 @@
+﻿Serializers
+===========
+
+The code will generate serializers for each of the event classes in separate classes so that 
+they can easily be swapped out if, for instance, you want to apply encryption while writing
+some event data.
+
+The event version number is also part of the serialiser class name as different versions may
+have different properties.
+
+This uses the serialisation/deserialisation attributes to control the serialisation process:
+https://msdn.microsoft.com/en-us/library/system.runtime.serialization.onserializingattribute(v=vs.110).aspx
+https://msdn.microsoft.com/en-us/library/system.runtime.serialization.ondeserializedattribute(v=vs.110).aspx

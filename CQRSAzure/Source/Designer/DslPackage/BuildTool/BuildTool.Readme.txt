@@ -1,0 +1,7 @@
+﻿Built tool
+==========
+
+The build tool is responsible for taking an XML model (extension .cqrsx) and turning it into the approriate language
+source code (partial classes) required to implement that model.
+
+GUID used:- {1DCD6BC2-ABB5-42B9-A839-7764CCA11D2B}

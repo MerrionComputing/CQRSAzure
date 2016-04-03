@@ -1,0 +1,3 @@
+﻿Extensions
+==========
+Extension classes are Linq classes intended to make the intent of operations more obvious.

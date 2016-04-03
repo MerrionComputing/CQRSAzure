@@ -1,0 +1,2629 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema id="CQRSdslSchema" targetNamespace="http://schemas.microsoft.com/dsltools/CQRSdsl" elementFormDefault="qualified" xmlns="http://schemas.microsoft.com/dsltools/CQRSdsl" xmlns:core="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:import id="CoreSchema" namespace="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" />
+  <!-- CQRSModel -->
+  <xsd:element name="cQRSModel" type="CQRSModel" substitutionGroup="core:modelElement" />
+  <xsd:complexType name="CQRSModel">
+    <xsd:annotation>
+      <xsd:documentation>The root in which all other elements are embedded. Appears as a diagram.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElement">
+        <xsd:sequence minOccurs="0" maxOccurs="1">
+          <!-- Relationship: CQRSModelHasAggregateIdentifiers -->
+          <xsd:element name="aggregateIdentifiers" minOccurs="0" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>Instances of CQRSModelHasAggregateIdentifiers</xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element ref="cQRSModelHasAggregateIdentifiers" minOccurs="0" maxOccurs="unbounded">
+                  <xsd:annotation>
+                    <xsd:documentation>[Instance of CQRSModelHasAggregateIdentifiers needs to be serialized in full-form]</xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+          <!-- Relationship: CQRSModelHasModelSet -->
+          <xsd:element name="modelSet" minOccurs="0" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>Instances of CQRSModelHasModelSet</xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element ref="cQRSModelHasModelSet" minOccurs="0" maxOccurs="unbounded">
+                  <xsd:annotation>
+                    <xsd:documentation>[Instance of CQRSModelHasModelSet needs to be serialized in full-form]</xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:sequence>
+        <!-- Id -->
+        <xsd:attribute name="Id" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>Instance Guid of this element, needed because SerializeId is set to true.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- dslVersion -->
+        <xsd:attribute name="dslVersion" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>Version of the model serialized in this file.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Name -->
+        <xsd:attribute name="name" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Name of the overall CQRS model</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Notes -->
+        <xsd:attribute name="notes" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Informal notes for documenting the entire CQRS domain</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Description -->
+        <xsd:attribute name="description" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Description for this model</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- CQRSModel Moniker -->
+  <xsd:element name="cQRSModelMoniker" type="CQRSModelMoniker" substitutionGroup="core:modelElementMoniker" />
+  <xsd:complexType name="CQRSModelMoniker">
+    <xsd:annotation>
+      <xsd:documentation>Moniker for CQRSModel instance.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElementMoniker">
+        <xsd:attribute name="Id" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Attribute to store the moniker string.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- AggregateIdentifier -->
+  <xsd:element name="aggregateIdentifier" type="AggregateIdentifier" substitutionGroup="core:modelElement" />
+  <xsd:complexType name="AggregateIdentifier">
+    <xsd:annotation>
+      <xsd:documentation>Class to uniquely identiy a particular aggregate type</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElement">
+        <xsd:sequence minOccurs="0" maxOccurs="1">
+          <!-- Relationship: AggregateIdentifierHasEventDefinitions -->
+          <xsd:element name="eventDefinitions" minOccurs="0" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>Instances of AggregateIdentifierHasEventDefinitions</xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element ref="aggregateIdentifierHasEventDefinitions" minOccurs="0" maxOccurs="unbounded">
+                  <xsd:annotation>
+                    <xsd:documentation>[Instance of AggregateIdentifierHasEventDefinitions needs to be serialized in full-form]</xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+          <!-- Relationship: AggregateIdentifierHasProjectionDefinitions -->
+          <xsd:element name="projectionDefinitions" minOccurs="0" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>Instances of AggregateIdentifierHasProjectionDefinitions</xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element ref="aggregateIdentifierHasProjectionDefinitions" minOccurs="0" maxOccurs="unbounded">
+                  <xsd:annotation>
+                    <xsd:documentation>[Instance of AggregateIdentifierHasProjectionDefinitions needs to be serialized in full-form]</xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+          <!-- Relationship: AggregateIdentifierIsChildOfTargetAggregateIdentifiers -->
+          <xsd:element name="targetAggregateIdentifiers" minOccurs="0" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>Instances of AggregateIdentifierIsChildOfTargetAggregateIdentifiers</xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element ref="aggregateIdentifierIsChildOfTargetAggregateIdentifiers" minOccurs="0" maxOccurs="unbounded">
+                  <xsd:annotation>
+                    <xsd:documentation>[Instance of AggregateIdentifierIsChildOfTargetAggregateIdentifiers needs to be serialized in full-form]</xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+          <!-- Relationship: AggregateIdentifierHasCommandDefinitions -->
+          <xsd:element name="commandDefinitions" minOccurs="0" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>Instances of AggregateIdentifierHasCommandDefinitions</xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element ref="aggregateIdentifierHasCommandDefinitions" minOccurs="0" maxOccurs="unbounded">
+                  <xsd:annotation>
+                    <xsd:documentation>[Instance of AggregateIdentifierHasCommandDefinitions needs to be serialized in full-form]</xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+          <!-- Relationship: AggregateIdentifierHasQueryDefinitions -->
+          <xsd:element name="queryDefinitions" minOccurs="0" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>Instances of AggregateIdentifierHasQueryDefinitions</xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element ref="aggregateIdentifierHasQueryDefinitions" minOccurs="0" maxOccurs="unbounded">
+                  <xsd:annotation>
+                    <xsd:documentation>[Instance of AggregateIdentifierHasQueryDefinitions needs to be serialized in full-form]</xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+          <!-- Relationship: AggregateIdentifierHasIdentityGrouped -->
+          <xsd:element name="identityGrouped" minOccurs="0" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>Instances of AggregateIdentifierHasIdentityGrouped</xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element ref="aggregateIdentifierHasIdentityGrouped" minOccurs="0" maxOccurs="unbounded">
+                  <xsd:annotation>
+                    <xsd:documentation>[Instance of AggregateIdentifierHasIdentityGrouped needs to be serialized in full-form]</xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+          <!-- Relationship: AggregateIdentifierHasClassifiers -->
+          <xsd:element name="classifiers" minOccurs="0" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>Instances of AggregateIdentifierHasClassifiers</xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element ref="aggregateIdentifierHasClassifiers" minOccurs="0" maxOccurs="unbounded">
+                  <xsd:annotation>
+                    <xsd:documentation>[Instance of AggregateIdentifierHasClassifiers needs to be serialized in full-form]</xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:sequence>
+        <!-- Id -->
+        <xsd:attribute name="Id" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>Instance Guid of this element, needed because SerializeId is set to true.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Name -->
+        <xsd:attribute name="name" type="xsd:string" use="required" >
+          <xsd:annotation>
+            <xsd:documentation>Unique name of the aggregate entity</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Description -->
+        <xsd:attribute name="description" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Description of this aggregate</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: KeyName -->
+        <xsd:attribute name="keyName" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>The name of the property that uniquely identifies this aggregate</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: KeyDataType -->
+        <xsd:attribute name="keyDataType" type="KeyDataType" >
+          <xsd:annotation>
+            <xsd:documentation>The data type used for the field that uniquely </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Notes -->
+        <xsd:attribute name="notes" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Additional notes for this aggregate identifier type</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Category -->
+        <xsd:attribute name="category" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>A tag /category that can be applied to an entity</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- AggregateIdentifier Moniker -->
+  <xsd:element name="aggregateIdentifierMoniker" type="AggregateIdentifierMoniker" substitutionGroup="core:modelElementMoniker" />
+  <xsd:complexType name="AggregateIdentifierMoniker">
+    <xsd:annotation>
+      <xsd:documentation>Moniker for AggregateIdentifier instance.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElementMoniker">
+        <xsd:attribute name="name" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Attribute to store the moniker string.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- EventDefinition -->
+  <xsd:element name="eventDefinition" type="EventDefinition" substitutionGroup="core:modelElement" />
+  <xsd:complexType name="EventDefinition">
+    <xsd:annotation>
+      <xsd:documentation>Definition of an event that can occur to the aggregate</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElement">
+        <xsd:sequence minOccurs="0" maxOccurs="1">
+          <!-- Relationship: EventDefinitionHasEventProperties -->
+          <xsd:element name="eventProperties" minOccurs="0" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>Instances of EventDefinitionHasEventProperties</xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element ref="eventDefinitionHasEventProperties" minOccurs="0" maxOccurs="unbounded">
+                  <xsd:annotation>
+                    <xsd:documentation>[Instance of EventDefinitionHasEventProperties needs to be serialized in full-form]</xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:sequence>
+        <!-- Id -->
+        <xsd:attribute name="Id" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>Instance Guid of this element, needed because SerializeId is set to true.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Name -->
+        <xsd:attribute name="name" type="xsd:string" use="required" >
+          <xsd:annotation>
+            <xsd:documentation>Unique name of the event</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Description -->
+        <xsd:attribute name="description" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Business definition of what this event is that has occured for the aggregate</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Notes -->
+        <xsd:attribute name="notes" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Additional notes for this event type</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Version -->
+        <xsd:attribute name="version" type="xsd:integer" >
+          <xsd:annotation>
+            <xsd:documentation>The current version of this event definition</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Category -->
+        <xsd:attribute name="category" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>A tag /category that can be applied to an entity</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- EventDefinition Moniker -->
+  <xsd:element name="eventDefinitionMoniker" type="EventDefinitionMoniker" substitutionGroup="core:modelElementMoniker" />
+  <xsd:complexType name="EventDefinitionMoniker">
+    <xsd:annotation>
+      <xsd:documentation>Moniker for EventDefinition instance.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElementMoniker">
+        <xsd:attribute name="name" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Attribute to store the moniker string.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- ProjectionDefinition -->
+  <xsd:element name="projectionDefinition" type="ProjectionDefinition" substitutionGroup="core:modelElement" />
+  <xsd:complexType name="ProjectionDefinition">
+    <xsd:annotation>
+      <xsd:documentation>Definition of a projection that can be run for this aggregate</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElement">
+        <xsd:sequence minOccurs="0" maxOccurs="1">
+          <!-- Relationship: ProjectionDefinitionHasProjectionProperties -->
+          <xsd:element name="projectionProperties" minOccurs="0" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>Instances of ProjectionDefinitionHasProjectionProperties</xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element ref="projectionDefinitionHasProjectionProperties" minOccurs="0" maxOccurs="unbounded">
+                  <xsd:annotation>
+                    <xsd:documentation>[Instance of ProjectionDefinitionHasProjectionProperties needs to be serialized in full-form]</xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+          <!-- Relationship: ProjectionDefinitionHandlesEventDefinitions -->
+          <xsd:element name="eventDefinitions" minOccurs="0" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>Instances of ProjectionDefinitionHandlesEventDefinitions</xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element ref="projectionDefinitionHandlesEventDefinitions" minOccurs="0" maxOccurs="unbounded">
+                  <xsd:annotation>
+                    <xsd:documentation>[Instance of ProjectionDefinitionHandlesEventDefinitions needs to be serialized in full-form]</xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+          <!-- Relationship: ProjectionDefinitionHasEventPropertyOperations -->
+          <xsd:element name="projectionEventPropertyOperations" minOccurs="0" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>Instances of ProjectionDefinitionHasEventPropertyOperations</xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element ref="projectionDefinitionHasEventPropertyOperations" minOccurs="0" maxOccurs="unbounded">
+                  <xsd:annotation>
+                    <xsd:documentation>[Instance of ProjectionDefinitionHasEventPropertyOperations needs to be serialized in full-form]</xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:sequence>
+        <!-- Id -->
+        <xsd:attribute name="Id" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>Instance Guid of this element, needed because SerializeId is set to true.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Name -->
+        <xsd:attribute name="name" type="xsd:string" use="required" />
+        <!-- Property: Description -->
+        <xsd:attribute name="description" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Business definition of what this projection shows about the aggregate</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Notes -->
+        <xsd:attribute name="notes" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Additional notes for this projection view</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Category -->
+        <xsd:attribute name="category" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>A tag /category that can be applied to an entity</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- ProjectionDefinition Moniker -->
+  <xsd:element name="projectionDefinitionMoniker" type="ProjectionDefinitionMoniker" substitutionGroup="core:modelElementMoniker" />
+  <xsd:complexType name="ProjectionDefinitionMoniker">
+    <xsd:annotation>
+      <xsd:documentation>Moniker for ProjectionDefinition instance.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElementMoniker">
+        <xsd:attribute name="name" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Attribute to store the moniker string.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- CommandDefinition -->
+  <xsd:element name="commandDefinition" type="CommandDefinition" substitutionGroup="core:modelElement" />
+  <xsd:complexType name="CommandDefinition">
+    <xsd:annotation>
+      <xsd:documentation>Definition of a command that can raise one or more events for an aggregate root</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElement">
+        <xsd:sequence minOccurs="0" maxOccurs="1">
+          <!-- Relationship: CommandDefinitionHasParameters -->
+          <xsd:element name="commandParameters" minOccurs="0" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>Instances of CommandDefinitionHasParameters</xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element ref="commandDefinitionHasParameters" minOccurs="0" maxOccurs="unbounded">
+                  <xsd:annotation>
+                    <xsd:documentation>[Instance of CommandDefinitionHasParameters needs to be serialized in full-form]</xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+          <!-- Relationship: CommandDefinitionReferencesIdentityGroup -->
+          <xsd:element name="identityGroup" minOccurs="0" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>Instance of CommandDefinitionReferencesIdentityGroup</xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element ref="commandDefinitionReferencesIdentityGroup" minOccurs="0" maxOccurs="1">
+                  <xsd:annotation>
+                    <xsd:documentation>[Instance of CommandDefinitionReferencesIdentityGroup needs to be serialized in full-form]</xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:sequence>
+        <!-- Id -->
+        <xsd:attribute name="Id" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>Instance Guid of this element, needed because SerializeId is set to true.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Name -->
+        <xsd:attribute name="name" type="xsd:string" use="required" >
+          <xsd:annotation>
+            <xsd:documentation>Definition of a command that can be issued to the system</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Description -->
+        <xsd:attribute name="description" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Business description of the command</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Notes -->
+        <xsd:attribute name="notes" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Additional notes for the command</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Category -->
+        <xsd:attribute name="category" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>A tag /category that can be applied to an entity</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- CommandDefinition Moniker -->
+  <xsd:element name="commandDefinitionMoniker" type="CommandDefinitionMoniker" substitutionGroup="core:modelElementMoniker" />
+  <xsd:complexType name="CommandDefinitionMoniker">
+    <xsd:annotation>
+      <xsd:documentation>Moniker for CommandDefinition instance.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElementMoniker">
+        <xsd:attribute name="name" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Attribute to store the moniker string.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- EventProperty -->
+  <xsd:element name="eventProperty" type="EventProperty" substitutionGroup="core:modelElement" />
+  <xsd:complexType name="EventProperty">
+    <xsd:annotation>
+      <xsd:documentation>A property providing extra information about an event that has occured</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElement">
+        <!-- Id -->
+        <xsd:attribute name="Id" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>Instance Guid of this element, needed because SerializeId is set to true.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Name -->
+        <xsd:attribute name="name" type="xsd:string" use="required" >
+          <xsd:annotation>
+            <xsd:documentation>The unique name of the property</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Description -->
+        <xsd:attribute name="description" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>The business description of the event property</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: DataType -->
+        <xsd:attribute name="dataType" type="PropertyDataType" >
+          <xsd:annotation>
+            <xsd:documentation>The backing data type of this event property</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Notes -->
+        <xsd:attribute name="notes" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Additional notes for this event property</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- EventProperty Moniker -->
+  <xsd:element name="eventPropertyMoniker" type="EventPropertyMoniker" substitutionGroup="core:modelElementMoniker" />
+  <xsd:complexType name="EventPropertyMoniker">
+    <xsd:annotation>
+      <xsd:documentation>Moniker for EventProperty instance.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElementMoniker">
+        <xsd:attribute name="name" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Attribute to store the moniker string.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- ProjectionProperty -->
+  <xsd:element name="projectionProperty" type="ProjectionProperty" substitutionGroup="core:modelElement" />
+  <xsd:complexType name="ProjectionProperty">
+    <xsd:annotation>
+      <xsd:documentation>A property providing the data component of a projection</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElement">
+        <!-- Id -->
+        <xsd:attribute name="Id" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>Instance Guid of this element, needed because SerializeId is set to true.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Name -->
+        <xsd:attribute name="name" type="xsd:string" use="required" />
+        <!-- Property: Description -->
+        <xsd:attribute name="description" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>The business description of this property of the projection</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: DataType -->
+        <xsd:attribute name="dataType" type="PropertyDataType" >
+          <xsd:annotation>
+            <xsd:documentation>The data type backing this projection property definition</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Notes -->
+        <xsd:attribute name="notes" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Additional notes for this projection property</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- ProjectionProperty Moniker -->
+  <xsd:element name="projectionPropertyMoniker" type="ProjectionPropertyMoniker" substitutionGroup="core:modelElementMoniker" />
+  <xsd:complexType name="ProjectionPropertyMoniker">
+    <xsd:annotation>
+      <xsd:documentation>Moniker for ProjectionProperty instance.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElementMoniker">
+        <xsd:attribute name="name" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Attribute to store the moniker string.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- CommandParameter -->
+  <xsd:element name="commandParameter" type="CommandParameter" substitutionGroup="core:modelElement" />
+  <xsd:complexType name="CommandParameter">
+    <xsd:annotation>
+      <xsd:documentation>A parameter passed along with a command definition</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElement">
+        <!-- Id -->
+        <xsd:attribute name="Id" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>Instance Guid of this element, needed because SerializeId is set to true.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Name -->
+        <xsd:attribute name="name" type="xsd:string" use="required" />
+        <!-- Property: Description -->
+        <xsd:attribute name="description" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>The business description of the command parameter</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: ParameterType -->
+        <xsd:attribute name="parameterType" type="PropertyDataType" >
+          <xsd:annotation>
+            <xsd:documentation>The backing data type for this parameter</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Notes -->
+        <xsd:attribute name="notes" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Additional notes for the command input parameter</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: IsAggregateKey -->
+        <xsd:attribute name="isAggregateKey" type="xsd:boolean" >
+          <xsd:annotation>
+            <xsd:documentation>Does this command parameter identify the aggregate that the command should apply to?</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- CommandParameter Moniker -->
+  <xsd:element name="commandParameterMoniker" type="CommandParameterMoniker" substitutionGroup="core:modelElementMoniker" />
+  <xsd:complexType name="CommandParameterMoniker">
+    <xsd:annotation>
+      <xsd:documentation>Moniker for CommandParameter instance.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElementMoniker">
+        <xsd:attribute name="name" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Attribute to store the moniker string.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- QueryDefinition -->
+  <xsd:element name="queryDefinition" type="QueryDefinition" substitutionGroup="core:modelElement" />
+  <xsd:complexType name="QueryDefinition">
+    <xsd:annotation>
+      <xsd:documentation>Definition of a query that can be executed against an aggregate identifier in this domain</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElement">
+        <xsd:sequence minOccurs="0" maxOccurs="1">
+          <!-- Relationship: QueryDefinitionHasQueryInputParameters -->
+          <xsd:element name="queryInputParameters" minOccurs="0" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>Instances of QueryDefinitionHasQueryInputParameters</xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element ref="queryDefinitionHasQueryInputParameters" minOccurs="0" maxOccurs="unbounded">
+                  <xsd:annotation>
+                    <xsd:documentation>[Instance of QueryDefinitionHasQueryInputParameters needs to be serialized in full-form]</xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+          <!-- Relationship: QueryDefinitionHasQueryReturnParameters -->
+          <xsd:element name="queryReturnParameters" minOccurs="0" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>Instances of QueryDefinitionHasQueryReturnParameters</xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element ref="queryDefinitionHasQueryReturnParameters" minOccurs="0" maxOccurs="unbounded">
+                  <xsd:annotation>
+                    <xsd:documentation>[Instance of QueryDefinitionHasQueryReturnParameters needs to be serialized in full-form]</xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+          <!-- Relationship: QueryDefinitionReferencesIdentityGroup -->
+          <xsd:element name="identityGroup" minOccurs="0" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>Instance of QueryDefinitionReferencesIdentityGroup</xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element ref="queryDefinitionReferencesIdentityGroup" minOccurs="0" maxOccurs="1">
+                  <xsd:annotation>
+                    <xsd:documentation>[Instance of QueryDefinitionReferencesIdentityGroup needs to be serialized in full-form]</xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+          <!-- Relationship: QueryDefinitionReferencesProjectionDefinition -->
+          <xsd:element name="projectionDefinition" minOccurs="0" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>Instance of QueryDefinitionReferencesProjectionDefinition</xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element ref="queryDefinitionReferencesProjectionDefinition" minOccurs="0" maxOccurs="1">
+                  <xsd:annotation>
+                    <xsd:documentation>[Instance of QueryDefinitionReferencesProjectionDefinition needs to be serialized in full-form]</xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:sequence>
+        <!-- Id -->
+        <xsd:attribute name="Id" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>Instance Guid of this element, needed because SerializeId is set to true.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Name -->
+        <xsd:attribute name="name" type="xsd:string" use="required" />
+        <!-- Property: Description -->
+        <xsd:attribute name="description" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Business description of this query definition</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: MultiRowResults -->
+        <xsd:attribute name="multiRowResults" type="xsd:boolean" >
+          <xsd:annotation>
+            <xsd:documentation>Does the query return an array of results</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Notes -->
+        <xsd:attribute name="notes" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Additional documentation for this query definition</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Category -->
+        <xsd:attribute name="category" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>A tag /category that can be applied to an entity</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- QueryDefinition Moniker -->
+  <xsd:element name="queryDefinitionMoniker" type="QueryDefinitionMoniker" substitutionGroup="core:modelElementMoniker" />
+  <xsd:complexType name="QueryDefinitionMoniker">
+    <xsd:annotation>
+      <xsd:documentation>Moniker for QueryDefinition instance.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElementMoniker">
+        <xsd:attribute name="name" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Attribute to store the moniker string.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- QueryInputParameter -->
+  <xsd:element name="queryInputParameter" type="QueryInputParameter" substitutionGroup="core:modelElement" />
+  <xsd:complexType name="QueryInputParameter">
+    <xsd:annotation>
+      <xsd:documentation>A parameter to pass to a query</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElement">
+        <!-- Id -->
+        <xsd:attribute name="Id" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>Instance Guid of this element, needed because SerializeId is set to true.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Name -->
+        <xsd:attribute name="name" type="xsd:string" use="required" />
+        <!-- Property: Description -->
+        <xsd:attribute name="description" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Business description of this query input parameter</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: DataType -->
+        <xsd:attribute name="dataType" type="PropertyDataType" >
+          <xsd:annotation>
+            <xsd:documentation>Backing data type of the input parameter</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: IsAggregateKey -->
+        <xsd:attribute name="isAggregateKey" type="xsd:boolean" >
+          <xsd:annotation>
+            <xsd:documentation>Is this query parameter the unique key of the aggregate the query is to run against?</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Notes -->
+        <xsd:attribute name="notes" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Additional notes for the query input parameter</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: IsEffectiveDate -->
+        <xsd:attribute name="isEffectiveDate" type="xsd:boolean" >
+          <xsd:annotation>
+            <xsd:documentation>Is this parameter an &quot;as-of&quot; indicator to tell the query when to stop reading the underlying event stream?</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- QueryInputParameter Moniker -->
+  <xsd:element name="queryInputParameterMoniker" type="QueryInputParameterMoniker" substitutionGroup="core:modelElementMoniker" />
+  <xsd:complexType name="QueryInputParameterMoniker">
+    <xsd:annotation>
+      <xsd:documentation>Moniker for QueryInputParameter instance.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElementMoniker">
+        <xsd:attribute name="name" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Attribute to store the moniker string.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- ProjectionEventPropertyOperation -->
+  <xsd:element name="projectionEventPropertyOperation" type="ProjectionEventPropertyOperation" substitutionGroup="core:modelElement" />
+  <xsd:complexType name="ProjectionEventPropertyOperation">
+    <xsd:annotation>
+      <xsd:documentation>An operation to perform on a projection property when an event is handled by the projection</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElement">
+        <!-- Id -->
+        <xsd:attribute name="Id" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>Instance Guid of this element, needed because SerializeId is set to true.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: EventName -->
+        <xsd:attribute name="eventName" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>The name of the event that this property operation occurs in handling</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: SourceEventPropertyName -->
+        <xsd:attribute name="sourceEventPropertyName" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>The name of the property of the event (if any) used in the operation</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: TargetPropertyName -->
+        <xsd:attribute name="targetPropertyName" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>The name of the projection property </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: PropertyOperationToPerform -->
+        <xsd:attribute name="propertyOperationToPerform" type="PropertyOperation" >
+          <xsd:annotation>
+            <xsd:documentation>What operation to perform to the target property of the projection</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Description -->
+        <xsd:attribute name="description" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Optional comment to document the property operation</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Notes -->
+        <xsd:attribute name="notes" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Additional notes for this event property operation</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- ProjectionEventPropertyOperation Moniker -->
+  <xsd:element name="projectionEventPropertyOperationMoniker" type="ProjectionEventPropertyOperationMoniker" substitutionGroup="core:modelElementMoniker" />
+  <xsd:complexType name="ProjectionEventPropertyOperationMoniker">
+    <xsd:annotation>
+      <xsd:documentation>Moniker for ProjectionEventPropertyOperation instance.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElementMoniker">
+        <xsd:attribute name="Id" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Attribute to store the moniker string.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- QueryReturnParameter -->
+  <xsd:element name="queryReturnParameter" type="QueryReturnParameter" substitutionGroup="core:modelElement" />
+  <xsd:complexType name="QueryReturnParameter">
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElement">
+        <!-- Id -->
+        <xsd:attribute name="Id" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>Instance Guid of this element, needed because SerializeId is set to true.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Name -->
+        <xsd:attribute name="name" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>The name of the returned parameter</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Description -->
+        <xsd:attribute name="description" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>The business description of the returned parameter</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: DataType -->
+        <xsd:attribute name="dataType" type="PropertyDataType" >
+          <xsd:annotation>
+            <xsd:documentation>The base data type returned by the query</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Notes -->
+        <xsd:attribute name="notes" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Additional notes for the query return parameter</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- QueryReturnParameter Moniker -->
+  <xsd:element name="queryReturnParameterMoniker" type="QueryReturnParameterMoniker" substitutionGroup="core:modelElementMoniker" />
+  <xsd:complexType name="QueryReturnParameterMoniker">
+    <xsd:annotation>
+      <xsd:documentation>Moniker for QueryReturnParameter instance.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElementMoniker">
+        <xsd:attribute name="Id" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Attribute to store the moniker string.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- ModelSetting -->
+  <xsd:element name="modelSetting" type="ModelSetting" substitutionGroup="core:modelElement" />
+  <xsd:complexType name="ModelSetting">
+    <xsd:annotation>
+      <xsd:documentation>A setting that controls how the model is turned into code or documentation</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElement">
+        <!-- Id -->
+        <xsd:attribute name="Id" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>Instance Guid of this element, needed because SerializeId is set to true.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Name -->
+        <xsd:attribute name="name" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>The unique name of this model setting</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Value -->
+        <xsd:attribute name="value" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>The value of this model setting</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- ModelSetting Moniker -->
+  <xsd:element name="modelSettingMoniker" type="ModelSettingMoniker" substitutionGroup="core:modelElementMoniker" />
+  <xsd:complexType name="ModelSettingMoniker">
+    <xsd:annotation>
+      <xsd:documentation>Moniker for ModelSetting instance.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElementMoniker">
+        <xsd:attribute name="Id" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Attribute to store the moniker string.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- IdentityGroup -->
+  <xsd:element name="identityGroup" type="IdentityGroup" substitutionGroup="core:modelElement" />
+  <xsd:complexType name="IdentityGroup">
+    <xsd:annotation>
+      <xsd:documentation>A collection of 0 or more aggregate identifiers that share a common attribute that denotes identity</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElement">
+        <xsd:sequence minOccurs="0" maxOccurs="1">
+          <!-- Relationship: IdentityGroupReferencesClassifier -->
+          <xsd:element name="classifier" minOccurs="0" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>Instance of IdentityGroupReferencesClassifier</xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element ref="identityGroupReferencesClassifier" minOccurs="0" maxOccurs="1">
+                  <xsd:annotation>
+                    <xsd:documentation>[Instance of IdentityGroupReferencesClassifier needs to be serialized in full-form]</xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:sequence>
+        <!-- Id -->
+        <xsd:attribute name="Id" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>Instance Guid of this element, needed because SerializeId is set to true.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: IsInstance -->
+        <xsd:attribute name="isInstance" type="xsd:boolean" >
+          <xsd:annotation>
+            <xsd:documentation>Does this identity group identify one and only one aggregate identifier</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: IsGlobal -->
+        <xsd:attribute name="isGlobal" type="xsd:boolean" >
+          <xsd:annotation>
+            <xsd:documentation>Does this identity group include ALL known aggregate identifiers</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Name -->
+        <xsd:attribute name="name" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Unique name of the identity group</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Description -->
+        <xsd:attribute name="description" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>The description of this identity group for documentation</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Notes -->
+        <xsd:attribute name="notes" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Additional documentation for the identity group</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Category -->
+        <xsd:attribute name="category" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>A tag /category that can be applied to an entity</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- IdentityGroup Moniker -->
+  <xsd:element name="identityGroupMoniker" type="IdentityGroupMoniker" substitutionGroup="core:modelElementMoniker" />
+  <xsd:complexType name="IdentityGroupMoniker">
+    <xsd:annotation>
+      <xsd:documentation>Moniker for IdentityGroup instance.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElementMoniker">
+        <xsd:attribute name="Id" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Attribute to store the moniker string.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- Classifier -->
+  <xsd:element name="classifier" type="Classifier" substitutionGroup="core:modelElement" />
+  <xsd:complexType name="Classifier">
+    <xsd:annotation>
+      <xsd:documentation>A specialised projection which classifies entities as being either in or out of a particular identity group</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElement">
+        <xsd:sequence minOccurs="0" maxOccurs="1">
+          <!-- Relationship: ClassifierHandlesEvents -->
+          <xsd:element name="eventDefinitions" minOccurs="0" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>Instances of ClassifierHandlesEvents</xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element ref="classifierHandlesEvents" minOccurs="0" maxOccurs="unbounded">
+                  <xsd:annotation>
+                    <xsd:documentation>[Instance of ClassifierHandlesEvents needs to be serialized in full-form]</xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+          <!-- Relationship: ClassifierHasEventEvaluations -->
+          <xsd:element name="classifierEventEvaluations" minOccurs="0" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>Instances of ClassifierHasEventEvaluations</xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element ref="classifierHasEventEvaluations" minOccurs="0" maxOccurs="unbounded">
+                  <xsd:annotation>
+                    <xsd:documentation>[Instance of ClassifierHasEventEvaluations needs to be serialized in full-form]</xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:sequence>
+        <!-- Id -->
+        <xsd:attribute name="Id" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>Instance Guid of this element, needed because SerializeId is set to true.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Name -->
+        <xsd:attribute name="name" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>The unique name of the classifier</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Description -->
+        <xsd:attribute name="description" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>The description of the aggregate identity classifier</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Notes -->
+        <xsd:attribute name="notes" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Additional notes for the aggregate identity classifier</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Category -->
+        <xsd:attribute name="category" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>A tag /category that can be applied to an entity</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- Classifier Moniker -->
+  <xsd:element name="classifierMoniker" type="ClassifierMoniker" substitutionGroup="core:modelElementMoniker" />
+  <xsd:complexType name="ClassifierMoniker">
+    <xsd:annotation>
+      <xsd:documentation>Moniker for Classifier instance.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElementMoniker">
+        <xsd:attribute name="Id" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Attribute to store the moniker string.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- ClassifierEventEvaluation -->
+  <xsd:element name="classifierEventEvaluation" type="ClassifierEventEvaluation" substitutionGroup="core:modelElement" />
+  <xsd:complexType name="ClassifierEventEvaluation">
+    <xsd:annotation>
+      <xsd:documentation>An evaluation to perform when an event is encountered to decide if an identity is or is not a member of an identity group</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElement">
+        <!-- Id -->
+        <xsd:attribute name="Id" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>Instance Guid of this element, needed because SerializeId is set to true.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: EventName -->
+        <xsd:attribute name="eventName" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>The name of the event the classifier is handling</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: SourceEventPropertyName -->
+        <xsd:attribute name="sourceEventPropertyName" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>The property of the event that is to be evaluated</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Notes -->
+        <xsd:attribute name="notes" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Additional notes pertaining to this classifier event evaluation</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Description -->
+        <xsd:attribute name="description" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Description of this classifier event evaluation</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: PropertyEvaluationToPerform -->
+        <xsd:attribute name="propertyEvaluationToPerform" type="PropertyEvaluation" >
+          <xsd:annotation>
+            <xsd:documentation>The evaluation to perform on the event property when the event is handled</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: OnTrue -->
+        <xsd:attribute name="onTrue" type="IdentityGroupClassification" >
+          <xsd:annotation>
+            <xsd:documentation>What the property evaluating to true means to the identity group</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: OnFalse -->
+        <xsd:attribute name="onFalse" type="IdentityGroupClassification" >
+          <xsd:annotation>
+            <xsd:documentation>What happens to group membership if this property evaluates to false</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Target -->
+        <xsd:attribute name="target" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>What the property value is being evaluated against</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: TargetType -->
+        <xsd:attribute name="targetType" type="EvaluationTargetType" >
+          <xsd:annotation>
+            <xsd:documentation>What is represented by the evaluation target</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- ClassifierEventEvaluation Moniker -->
+  <xsd:element name="classifierEventEvaluationMoniker" type="ClassifierEventEvaluationMoniker" substitutionGroup="core:modelElementMoniker" />
+  <xsd:complexType name="ClassifierEventEvaluationMoniker">
+    <xsd:annotation>
+      <xsd:documentation>Moniker for ClassifierEventEvaluation instance.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElementMoniker">
+        <xsd:attribute name="Id" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Attribute to store the moniker string.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- CQRSModelHasAggregateIdentifiers -->
+  <xsd:element name="cQRSModelHasAggregateIdentifiers" type="CQRSModelHasAggregateIdentifiers" substitutionGroup="core:modelElement" />
+  <xsd:complexType name="CQRSModelHasAggregateIdentifiers">
+    <xsd:annotation>
+      <xsd:documentation>Aggregate identifiers (types) in this domain</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElement">
+        <xsd:sequence minOccurs="0" maxOccurs="1">
+          <!-- Target end AggregateIdentifier -->
+          <xsd:element ref="aggregateIdentifier" minOccurs="1" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>[Target role-player]</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+        <!-- Id -->
+        <xsd:attribute name="Id" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>Instance Guid of this element, needed because SerializeId is set to true.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- CQRSModelHasAggregateIdentifiers Moniker -->
+  <xsd:element name="cQRSModelHasAggregateIdentifiersMoniker" type="CQRSModelHasAggregateIdentifiersMoniker" substitutionGroup="core:modelElementMoniker" />
+  <xsd:complexType name="CQRSModelHasAggregateIdentifiersMoniker">
+    <xsd:annotation>
+      <xsd:documentation>Moniker for CQRSModelHasAggregateIdentifiers instance.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElementMoniker">
+        <xsd:attribute name="Id" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Attribute to store the moniker string.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- AggregateIdentifierHasEventDefinitions -->
+  <xsd:element name="aggregateIdentifierHasEventDefinitions" type="AggregateIdentifierHasEventDefinitions" substitutionGroup="core:modelElement" />
+  <xsd:complexType name="AggregateIdentifierHasEventDefinitions">
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElement">
+        <xsd:sequence minOccurs="0" maxOccurs="1">
+          <!-- Target end EventDefinition -->
+          <xsd:element ref="eventDefinition" minOccurs="1" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>[Target role-player]</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+        <!-- Id -->
+        <xsd:attribute name="Id" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>Instance Guid of this element, needed because SerializeId is set to true.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Name -->
+        <xsd:attribute name="name" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>The name of the link between the aggregate and its events</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- AggregateIdentifierHasEventDefinitions Moniker -->
+  <xsd:element name="aggregateIdentifierHasEventDefinitionsMoniker" type="AggregateIdentifierHasEventDefinitionsMoniker" substitutionGroup="core:modelElementMoniker" />
+  <xsd:complexType name="AggregateIdentifierHasEventDefinitionsMoniker">
+    <xsd:annotation>
+      <xsd:documentation>Moniker for AggregateIdentifierHasEventDefinitions instance.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElementMoniker">
+        <xsd:attribute name="Id" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Attribute to store the moniker string.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- AggregateIdentifierHasProjectionDefinitions -->
+  <xsd:element name="aggregateIdentifierHasProjectionDefinitions" type="AggregateIdentifierHasProjectionDefinitions" substitutionGroup="core:modelElement" />
+  <xsd:complexType name="AggregateIdentifierHasProjectionDefinitions">
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElement">
+        <xsd:sequence minOccurs="0" maxOccurs="1">
+          <!-- Target end ProjectionDefinition -->
+          <xsd:element ref="projectionDefinition" minOccurs="1" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>[Target role-player]</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+        <!-- Id -->
+        <xsd:attribute name="Id" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>Instance Guid of this element, needed because SerializeId is set to true.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Name -->
+        <xsd:attribute name="name" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>The name of the link between the aggregate and its projections</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- AggregateIdentifierHasProjectionDefinitions Moniker -->
+  <xsd:element name="aggregateIdentifierHasProjectionDefinitionsMoniker" type="AggregateIdentifierHasProjectionDefinitionsMoniker" substitutionGroup="core:modelElementMoniker" />
+  <xsd:complexType name="AggregateIdentifierHasProjectionDefinitionsMoniker">
+    <xsd:annotation>
+      <xsd:documentation>Moniker for AggregateIdentifierHasProjectionDefinitions instance.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElementMoniker">
+        <xsd:attribute name="Id" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Attribute to store the moniker string.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- AggregateIdentifierIsChildOfTargetAggregateIdentifiers -->
+  <xsd:element name="aggregateIdentifierIsChildOfTargetAggregateIdentifiers" type="AggregateIdentifierIsChildOfTargetAggregateIdentifiers" substitutionGroup="core:modelElement" />
+  <xsd:complexType name="AggregateIdentifierIsChildOfTargetAggregateIdentifiers">
+    <xsd:annotation>
+      <xsd:documentation>Relationship between an aggregate identifier and its parent identifier (if such exists)</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElement">
+        <xsd:sequence minOccurs="0" maxOccurs="1">
+          <!-- Target end AggregateIdentifier -->
+          <xsd:element ref="aggregateIdentifierMoniker" minOccurs="1" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>[Target role-player]</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+        <!-- Id -->
+        <xsd:attribute name="Id" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>Instance Guid of this element, needed because SerializeId is set to true.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Name -->
+        <xsd:attribute name="name" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>The name of the parent-child relationship between aggregations</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- AggregateIdentifierIsChildOfTargetAggregateIdentifiers Moniker -->
+  <xsd:element name="aggregateIdentifierIsChildOfTargetAggregateIdentifiersMoniker" type="AggregateIdentifierIsChildOfTargetAggregateIdentifiersMoniker" substitutionGroup="core:modelElementMoniker" />
+  <xsd:complexType name="AggregateIdentifierIsChildOfTargetAggregateIdentifiersMoniker">
+    <xsd:annotation>
+      <xsd:documentation>Moniker for AggregateIdentifierIsChildOfTargetAggregateIdentifiers instance.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElementMoniker">
+        <xsd:attribute name="Id" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Attribute to store the moniker string.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- AggregateIdentifierHasCommandDefinitions -->
+  <xsd:element name="aggregateIdentifierHasCommandDefinitions" type="AggregateIdentifierHasCommandDefinitions" substitutionGroup="core:modelElement" />
+  <xsd:complexType name="AggregateIdentifierHasCommandDefinitions">
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElement">
+        <xsd:sequence minOccurs="0" maxOccurs="1">
+          <!-- Target end CommandDefinition -->
+          <xsd:element ref="commandDefinition" minOccurs="1" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>[Target role-player]</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+        <!-- Id -->
+        <xsd:attribute name="Id" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>Instance Guid of this element, needed because SerializeId is set to true.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Name -->
+        <xsd:attribute name="name" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>The name of the connection between an aggregate and its command definitions</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- AggregateIdentifierHasCommandDefinitions Moniker -->
+  <xsd:element name="aggregateIdentifierHasCommandDefinitionsMoniker" type="AggregateIdentifierHasCommandDefinitionsMoniker" substitutionGroup="core:modelElementMoniker" />
+  <xsd:complexType name="AggregateIdentifierHasCommandDefinitionsMoniker">
+    <xsd:annotation>
+      <xsd:documentation>Moniker for AggregateIdentifierHasCommandDefinitions instance.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElementMoniker">
+        <xsd:attribute name="Id" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Attribute to store the moniker string.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- EventDefinitionHasEventProperties -->
+  <xsd:element name="eventDefinitionHasEventProperties" type="EventDefinitionHasEventProperties" substitutionGroup="core:modelElement" />
+  <xsd:complexType name="EventDefinitionHasEventProperties">
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElement">
+        <xsd:sequence minOccurs="0" maxOccurs="1">
+          <!-- Target end EventProperty -->
+          <xsd:element ref="eventProperty" minOccurs="1" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>[Target role-player]</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+        <!-- Id -->
+        <xsd:attribute name="Id" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>Instance Guid of this element, needed because SerializeId is set to true.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: CreatedVersion -->
+        <xsd:attribute name="createdVersion" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>The version of the event definition for which this property was first added</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: DepreciatedVersion -->
+        <xsd:attribute name="depreciatedVersion" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>The version number after which this property is no longer implemented</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Name -->
+        <xsd:attribute name="name" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>The name of the link between the event and its properties</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- EventDefinitionHasEventProperties Moniker -->
+  <xsd:element name="eventDefinitionHasEventPropertiesMoniker" type="EventDefinitionHasEventPropertiesMoniker" substitutionGroup="core:modelElementMoniker" />
+  <xsd:complexType name="EventDefinitionHasEventPropertiesMoniker">
+    <xsd:annotation>
+      <xsd:documentation>Moniker for EventDefinitionHasEventProperties instance.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElementMoniker">
+        <xsd:attribute name="Id" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Attribute to store the moniker string.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- ProjectionDefinitionHasProjectionProperties -->
+  <xsd:element name="projectionDefinitionHasProjectionProperties" type="ProjectionDefinitionHasProjectionProperties" substitutionGroup="core:modelElement" />
+  <xsd:complexType name="ProjectionDefinitionHasProjectionProperties">
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElement">
+        <xsd:sequence minOccurs="0" maxOccurs="1">
+          <!-- Target end ProjectionProperty -->
+          <xsd:element ref="projectionProperty" minOccurs="1" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>[Target role-player]</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+        <!-- Id -->
+        <xsd:attribute name="Id" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>Instance Guid of this element, needed because SerializeId is set to true.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Name -->
+        <xsd:attribute name="name" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>The name of the connection between the projection and its properties</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- ProjectionDefinitionHasProjectionProperties Moniker -->
+  <xsd:element name="projectionDefinitionHasProjectionPropertiesMoniker" type="ProjectionDefinitionHasProjectionPropertiesMoniker" substitutionGroup="core:modelElementMoniker" />
+  <xsd:complexType name="ProjectionDefinitionHasProjectionPropertiesMoniker">
+    <xsd:annotation>
+      <xsd:documentation>Moniker for ProjectionDefinitionHasProjectionProperties instance.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElementMoniker">
+        <xsd:attribute name="Id" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Attribute to store the moniker string.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- CommandDefinitionHasParameters -->
+  <xsd:element name="commandDefinitionHasParameters" type="CommandDefinitionHasParameters" substitutionGroup="core:modelElement" />
+  <xsd:complexType name="CommandDefinitionHasParameters">
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElement">
+        <xsd:sequence minOccurs="0" maxOccurs="1">
+          <!-- Target end CommandParameter -->
+          <xsd:element ref="commandParameter" minOccurs="1" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>[Target role-player]</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+        <!-- Id -->
+        <xsd:attribute name="Id" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>Instance Guid of this element, needed because SerializeId is set to true.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Name -->
+        <xsd:attribute name="name" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>The name of the connection between the command definition and its parameters</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- CommandDefinitionHasParameters Moniker -->
+  <xsd:element name="commandDefinitionHasParametersMoniker" type="CommandDefinitionHasParametersMoniker" substitutionGroup="core:modelElementMoniker" />
+  <xsd:complexType name="CommandDefinitionHasParametersMoniker">
+    <xsd:annotation>
+      <xsd:documentation>Moniker for CommandDefinitionHasParameters instance.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElementMoniker">
+        <xsd:attribute name="Id" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Attribute to store the moniker string.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- AggregateIdentifierHasQueryDefinitions -->
+  <xsd:element name="aggregateIdentifierHasQueryDefinitions" type="AggregateIdentifierHasQueryDefinitions" substitutionGroup="core:modelElement" />
+  <xsd:complexType name="AggregateIdentifierHasQueryDefinitions">
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElement">
+        <xsd:sequence minOccurs="0" maxOccurs="1">
+          <!-- Target end QueryDefinition -->
+          <xsd:element ref="queryDefinition" minOccurs="1" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>[Target role-player]</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+        <!-- Id -->
+        <xsd:attribute name="Id" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>Instance Guid of this element, needed because SerializeId is set to true.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Name -->
+        <xsd:attribute name="name" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>The name of the connection between an aggregate and its query definitions</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- AggregateIdentifierHasQueryDefinitions Moniker -->
+  <xsd:element name="aggregateIdentifierHasQueryDefinitionsMoniker" type="AggregateIdentifierHasQueryDefinitionsMoniker" substitutionGroup="core:modelElementMoniker" />
+  <xsd:complexType name="AggregateIdentifierHasQueryDefinitionsMoniker">
+    <xsd:annotation>
+      <xsd:documentation>Moniker for AggregateIdentifierHasQueryDefinitions instance.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElementMoniker">
+        <xsd:attribute name="Id" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Attribute to store the moniker string.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- QueryDefinitionHasQueryInputParameters -->
+  <xsd:element name="queryDefinitionHasQueryInputParameters" type="QueryDefinitionHasQueryInputParameters" substitutionGroup="core:modelElement" />
+  <xsd:complexType name="QueryDefinitionHasQueryInputParameters">
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElement">
+        <xsd:sequence minOccurs="0" maxOccurs="1">
+          <!-- Target end QueryInputParameter -->
+          <xsd:element ref="queryInputParameter" minOccurs="1" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>[Target role-player]</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+        <!-- Id -->
+        <xsd:attribute name="Id" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>Instance Guid of this element, needed because SerializeId is set to true.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Name -->
+        <xsd:attribute name="name" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>The name of the link between a query definition and its parameters</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- QueryDefinitionHasQueryInputParameters Moniker -->
+  <xsd:element name="queryDefinitionHasQueryInputParametersMoniker" type="QueryDefinitionHasQueryInputParametersMoniker" substitutionGroup="core:modelElementMoniker" />
+  <xsd:complexType name="QueryDefinitionHasQueryInputParametersMoniker">
+    <xsd:annotation>
+      <xsd:documentation>Moniker for QueryDefinitionHasQueryInputParameters instance.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElementMoniker">
+        <xsd:attribute name="Id" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Attribute to store the moniker string.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- ProjectionDefinitionHandlesEventDefinitions -->
+  <xsd:element name="projectionDefinitionHandlesEventDefinitions" type="ProjectionDefinitionHandlesEventDefinitions" substitutionGroup="core:modelElement" />
+  <xsd:complexType name="ProjectionDefinitionHandlesEventDefinitions">
+    <xsd:annotation>
+      <xsd:documentation>Link to show that a projection handles the given named event</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElement">
+        <xsd:sequence minOccurs="0" maxOccurs="1">
+          <!-- Target end EventDefinition -->
+          <xsd:element ref="eventDefinitionMoniker" minOccurs="1" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>[Target role-player]</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+        <!-- Id -->
+        <xsd:attribute name="Id" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>Instance Guid of this element, needed because SerializeId is set to true.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Name -->
+        <xsd:attribute name="name" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>The name of the link between the projection and the events it handles</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- ProjectionDefinitionHandlesEventDefinitions Moniker -->
+  <xsd:element name="projectionDefinitionHandlesEventDefinitionsMoniker" type="ProjectionDefinitionHandlesEventDefinitionsMoniker" substitutionGroup="core:modelElementMoniker" />
+  <xsd:complexType name="ProjectionDefinitionHandlesEventDefinitionsMoniker">
+    <xsd:annotation>
+      <xsd:documentation>Moniker for ProjectionDefinitionHandlesEventDefinitions instance.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElementMoniker">
+        <xsd:attribute name="Id" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Attribute to store the moniker string.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- ProjectionDefinitionHasEventPropertyOperations -->
+  <xsd:element name="projectionDefinitionHasEventPropertyOperations" type="ProjectionDefinitionHasEventPropertyOperations" substitutionGroup="core:modelElement" />
+  <xsd:complexType name="ProjectionDefinitionHasEventPropertyOperations">
+    <xsd:annotation>
+      <xsd:documentation>The operations performed on the projection&apos;s properties when an event is handled</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElement">
+        <xsd:sequence minOccurs="0" maxOccurs="1">
+          <!-- Target end ProjectionEventPropertyOperation -->
+          <xsd:element ref="projectionEventPropertyOperation" minOccurs="1" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>[Target role-player]</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+        <!-- Id -->
+        <xsd:attribute name="Id" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>Instance Guid of this element, needed because SerializeId is set to true.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Name -->
+        <xsd:attribute name="name" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>The name of the connection between the projection and its event property operations</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- ProjectionDefinitionHasEventPropertyOperations Moniker -->
+  <xsd:element name="projectionDefinitionHasEventPropertyOperationsMoniker" type="ProjectionDefinitionHasEventPropertyOperationsMoniker" substitutionGroup="core:modelElementMoniker" />
+  <xsd:complexType name="ProjectionDefinitionHasEventPropertyOperationsMoniker">
+    <xsd:annotation>
+      <xsd:documentation>Moniker for ProjectionDefinitionHasEventPropertyOperations instance.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElementMoniker">
+        <xsd:attribute name="Id" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Attribute to store the moniker string.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- QueryDefinitionHasQueryReturnParameters -->
+  <xsd:element name="queryDefinitionHasQueryReturnParameters" type="QueryDefinitionHasQueryReturnParameters" substitutionGroup="core:modelElement" />
+  <xsd:complexType name="QueryDefinitionHasQueryReturnParameters">
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElement">
+        <xsd:sequence minOccurs="0" maxOccurs="1">
+          <!-- Target end QueryReturnParameter -->
+          <xsd:element ref="queryReturnParameter" minOccurs="1" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>[Target role-player]</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+        <!-- Id -->
+        <xsd:attribute name="Id" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>Instance Guid of this element, needed because SerializeId is set to true.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Name -->
+        <xsd:attribute name="name" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>The name of the link between a query definition and its return parameters</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- QueryDefinitionHasQueryReturnParameters Moniker -->
+  <xsd:element name="queryDefinitionHasQueryReturnParametersMoniker" type="QueryDefinitionHasQueryReturnParametersMoniker" substitutionGroup="core:modelElementMoniker" />
+  <xsd:complexType name="QueryDefinitionHasQueryReturnParametersMoniker">
+    <xsd:annotation>
+      <xsd:documentation>Moniker for QueryDefinitionHasQueryReturnParameters instance.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElementMoniker">
+        <xsd:attribute name="Id" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Attribute to store the moniker string.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- CQRSModelHasModelSet -->
+  <xsd:element name="cQRSModelHasModelSet" type="CQRSModelHasModelSet" substitutionGroup="core:modelElement" />
+  <xsd:complexType name="CQRSModelHasModelSet">
+    <xsd:annotation>
+      <xsd:documentation>Additional setting that controsl how the model is truend into code or documentation</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElement">
+        <xsd:sequence minOccurs="0" maxOccurs="1">
+          <!-- Target end ModelSetting -->
+          <xsd:element ref="modelSetting" minOccurs="1" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>[Target role-player]</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+        <!-- Id -->
+        <xsd:attribute name="Id" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>Instance Guid of this element, needed because SerializeId is set to true.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- CQRSModelHasModelSet Moniker -->
+  <xsd:element name="cQRSModelHasModelSetMoniker" type="CQRSModelHasModelSetMoniker" substitutionGroup="core:modelElementMoniker" />
+  <xsd:complexType name="CQRSModelHasModelSetMoniker">
+    <xsd:annotation>
+      <xsd:documentation>Moniker for CQRSModelHasModelSet instance.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElementMoniker">
+        <xsd:attribute name="Id" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Attribute to store the moniker string.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- QueryDefinitionReferencesIdentityGroup -->
+  <xsd:element name="queryDefinitionReferencesIdentityGroup" type="QueryDefinitionReferencesIdentityGroup" substitutionGroup="core:modelElement" />
+  <xsd:complexType name="QueryDefinitionReferencesIdentityGroup">
+    <xsd:annotation>
+      <xsd:documentation>The identity reference group to use to run this query against a set of aggregate identifiers</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElement">
+        <xsd:sequence minOccurs="0" maxOccurs="1">
+          <!-- Target end IdentityGroup -->
+          <xsd:element ref="identityGroupMoniker" minOccurs="1" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>[Target role-player]</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+        <!-- Id -->
+        <xsd:attribute name="Id" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>Instance Guid of this element, needed because SerializeId is set to true.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- QueryDefinitionReferencesIdentityGroup Moniker -->
+  <xsd:element name="queryDefinitionReferencesIdentityGroupMoniker" type="QueryDefinitionReferencesIdentityGroupMoniker" substitutionGroup="core:modelElementMoniker" />
+  <xsd:complexType name="QueryDefinitionReferencesIdentityGroupMoniker">
+    <xsd:annotation>
+      <xsd:documentation>Moniker for QueryDefinitionReferencesIdentityGroup instance.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElementMoniker">
+        <xsd:attribute name="Id" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Attribute to store the moniker string.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- AggregateIdentifierHasIdentityGrouped -->
+  <xsd:element name="aggregateIdentifierHasIdentityGrouped" type="AggregateIdentifierHasIdentityGrouped" substitutionGroup="core:modelElement" />
+  <xsd:complexType name="AggregateIdentifierHasIdentityGrouped">
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElement">
+        <xsd:sequence minOccurs="0" maxOccurs="1">
+          <!-- Target end IdentityGroup -->
+          <xsd:element ref="identityGroup" minOccurs="1" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>[Target role-player]</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+        <!-- Id -->
+        <xsd:attribute name="Id" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>Instance Guid of this element, needed because SerializeId is set to true.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Name -->
+        <xsd:attribute name="name" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>The name of the conenction between an aggregate and identity group</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- AggregateIdentifierHasIdentityGrouped Moniker -->
+  <xsd:element name="aggregateIdentifierHasIdentityGroupedMoniker" type="AggregateIdentifierHasIdentityGroupedMoniker" substitutionGroup="core:modelElementMoniker" />
+  <xsd:complexType name="AggregateIdentifierHasIdentityGroupedMoniker">
+    <xsd:annotation>
+      <xsd:documentation>Moniker for AggregateIdentifierHasIdentityGrouped instance.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElementMoniker">
+        <xsd:attribute name="Id" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Attribute to store the moniker string.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- AggregateIdentifierHasClassifiers -->
+  <xsd:element name="aggregateIdentifierHasClassifiers" type="AggregateIdentifierHasClassifiers" substitutionGroup="core:modelElement" />
+  <xsd:complexType name="AggregateIdentifierHasClassifiers">
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElement">
+        <xsd:sequence minOccurs="0" maxOccurs="1">
+          <!-- Target end Classifier -->
+          <xsd:element ref="classifier" minOccurs="1" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>[Target role-player]</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+        <!-- Id -->
+        <xsd:attribute name="Id" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>Instance Guid of this element, needed because SerializeId is set to true.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Name -->
+        <xsd:attribute name="name" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>The name of the connection between an aggregate and its classifiers</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- AggregateIdentifierHasClassifiers Moniker -->
+  <xsd:element name="aggregateIdentifierHasClassifiersMoniker" type="AggregateIdentifierHasClassifiersMoniker" substitutionGroup="core:modelElementMoniker" />
+  <xsd:complexType name="AggregateIdentifierHasClassifiersMoniker">
+    <xsd:annotation>
+      <xsd:documentation>Moniker for AggregateIdentifierHasClassifiers instance.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElementMoniker">
+        <xsd:attribute name="Id" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Attribute to store the moniker string.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- IdentityGroupReferencesClassifier -->
+  <xsd:element name="identityGroupReferencesClassifier" type="IdentityGroupReferencesClassifier" substitutionGroup="core:modelElement" />
+  <xsd:complexType name="IdentityGroupReferencesClassifier">
+    <xsd:annotation>
+      <xsd:documentation>The classifier class that creates the membership of an identity group</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElement">
+        <xsd:sequence minOccurs="0" maxOccurs="1">
+          <!-- Target end Classifier -->
+          <xsd:element ref="classifierMoniker" minOccurs="1" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>[Target role-player]</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+        <!-- Id -->
+        <xsd:attribute name="Id" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>Instance Guid of this element, needed because SerializeId is set to true.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: Name -->
+        <xsd:attribute name="name" type="xsd:string" />
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- IdentityGroupReferencesClassifier Moniker -->
+  <xsd:element name="identityGroupReferencesClassifierMoniker" type="IdentityGroupReferencesClassifierMoniker" substitutionGroup="core:modelElementMoniker" />
+  <xsd:complexType name="IdentityGroupReferencesClassifierMoniker">
+    <xsd:annotation>
+      <xsd:documentation>Moniker for IdentityGroupReferencesClassifier instance.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElementMoniker">
+        <xsd:attribute name="Id" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Attribute to store the moniker string.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- ClassifierHandlesEvents -->
+  <xsd:element name="classifierHandlesEvents" type="ClassifierHandlesEvents" substitutionGroup="core:modelElement" />
+  <xsd:complexType name="ClassifierHandlesEvents">
+    <xsd:annotation>
+      <xsd:documentation>The events that are processed by the classifier when deciding if an identifier is in our out of the group</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElement">
+        <xsd:sequence minOccurs="0" maxOccurs="1">
+          <!-- Target end EventDefinition -->
+          <xsd:element ref="eventDefinitionMoniker" minOccurs="1" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>[Target role-player]</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+        <!-- Id -->
+        <xsd:attribute name="Id" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>Instance Guid of this element, needed because SerializeId is set to true.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- ClassifierHandlesEvents Moniker -->
+  <xsd:element name="classifierHandlesEventsMoniker" type="ClassifierHandlesEventsMoniker" substitutionGroup="core:modelElementMoniker" />
+  <xsd:complexType name="ClassifierHandlesEventsMoniker">
+    <xsd:annotation>
+      <xsd:documentation>Moniker for ClassifierHandlesEvents instance.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElementMoniker">
+        <xsd:attribute name="Id" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Attribute to store the moniker string.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- ClassifierHasEventEvaluations -->
+  <xsd:element name="classifierHasEventEvaluations" type="ClassifierHasEventEvaluations" substitutionGroup="core:modelElement" />
+  <xsd:complexType name="ClassifierHasEventEvaluations">
+    <xsd:annotation>
+      <xsd:documentation>The evaluations to be performed by the classifier</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElement">
+        <xsd:sequence minOccurs="0" maxOccurs="1">
+          <!-- Target end ClassifierEventEvaluation -->
+          <xsd:element ref="classifierEventEvaluation" minOccurs="1" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>[Target role-player]</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+        <!-- Id -->
+        <xsd:attribute name="Id" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>Instance Guid of this element, needed because SerializeId is set to true.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- ClassifierHasEventEvaluations Moniker -->
+  <xsd:element name="classifierHasEventEvaluationsMoniker" type="ClassifierHasEventEvaluationsMoniker" substitutionGroup="core:modelElementMoniker" />
+  <xsd:complexType name="ClassifierHasEventEvaluationsMoniker">
+    <xsd:annotation>
+      <xsd:documentation>Moniker for ClassifierHasEventEvaluations instance.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElementMoniker">
+        <xsd:attribute name="Id" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Attribute to store the moniker string.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- CommandDefinitionReferencesIdentityGroup -->
+  <xsd:element name="commandDefinitionReferencesIdentityGroup" type="CommandDefinitionReferencesIdentityGroup" substitutionGroup="core:modelElement" />
+  <xsd:complexType name="CommandDefinitionReferencesIdentityGroup">
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElement">
+        <xsd:sequence minOccurs="0" maxOccurs="1">
+          <!-- Target end IdentityGroup -->
+          <xsd:element ref="identityGroupMoniker" minOccurs="1" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>[Target role-player]</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+        <!-- Id -->
+        <xsd:attribute name="Id" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>Instance Guid of this element, needed because SerializeId is set to true.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- CommandDefinitionReferencesIdentityGroup Moniker -->
+  <xsd:element name="commandDefinitionReferencesIdentityGroupMoniker" type="CommandDefinitionReferencesIdentityGroupMoniker" substitutionGroup="core:modelElementMoniker" />
+  <xsd:complexType name="CommandDefinitionReferencesIdentityGroupMoniker">
+    <xsd:annotation>
+      <xsd:documentation>Moniker for CommandDefinitionReferencesIdentityGroup instance.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElementMoniker">
+        <xsd:attribute name="Id" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Attribute to store the moniker string.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- QueryDefinitionReferencesProjectionDefinition -->
+  <xsd:element name="queryDefinitionReferencesProjectionDefinition" type="QueryDefinitionReferencesProjectionDefinition" substitutionGroup="core:modelElement" />
+  <xsd:complexType name="QueryDefinitionReferencesProjectionDefinition">
+    <xsd:annotation>
+      <xsd:documentation>Conenction from a query to the projection underlying the query results</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElement">
+        <xsd:sequence minOccurs="0" maxOccurs="1">
+          <!-- Target end ProjectionDefinition -->
+          <xsd:element ref="projectionDefinitionMoniker" minOccurs="1" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>[Target role-player]</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+        <!-- Id -->
+        <xsd:attribute name="Id" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>Instance Guid of this element, needed because SerializeId is set to true.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- QueryDefinitionReferencesProjectionDefinition Moniker -->
+  <xsd:element name="queryDefinitionReferencesProjectionDefinitionMoniker" type="QueryDefinitionReferencesProjectionDefinitionMoniker" substitutionGroup="core:modelElementMoniker" />
+  <xsd:complexType name="QueryDefinitionReferencesProjectionDefinitionMoniker">
+    <xsd:annotation>
+      <xsd:documentation>Moniker for QueryDefinitionReferencesProjectionDefinition instance.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="core:ModelElementMoniker">
+        <xsd:attribute name="Id" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Attribute to store the moniker string.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <!-- Enum KeyDataType -->
+  <xsd:simpleType name="KeyDataType">
+    <xsd:annotation>
+      <xsd:documentation>The distinct data types that can be used to provide the key for any given aggregate</xsd:documentation>
+      <xsd:documentation>This allows an aggregate to be uniquely identified by some business relevant unique number or name if appropriate</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="SystemGUID">
+        <xsd:annotation>
+          <xsd:documentation>A system provided globally unique identifier</xsd:documentation>
+          <xsd:documentation>This is the default</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="IncrementalNumber">
+        <xsd:annotation>
+          <xsd:documentation>A system provided incremental record number</xsd:documentation>
+          <xsd:documentation>This is used where the records only need to be uniquely identified within this domain</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="DomainUniqueString">
+        <xsd:annotation>
+          <xsd:documentation>A unique string provided by the domain</xsd:documentation>
+          <xsd:documentation>This could be some meaningful unique identifier like ISBN, CUSIP, Vehicle registration etc. </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  
+  <!-- Enum PropertyDataType -->
+  <xsd:simpleType name="PropertyDataType">
+    <xsd:annotation>
+      <xsd:documentation>The subset of data types used for properties in this system</xsd:documentation>
+      <xsd:documentation>Properties of events and projections are of one of these simple data types to make the domain as transparent as possible</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="Integer">
+        <xsd:annotation>
+          <xsd:documentation>A whole number</xsd:documentation>
+          <xsd:documentation>A whole number that can be zero or negative</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="Decimal">
+        <xsd:annotation>
+          <xsd:documentation>A decimal number for currency / amounts</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="FloatingPointNumber">
+        <xsd:annotation>
+          <xsd:documentation>A floating point number </xsd:documentation>
+          <xsd:documentation>This is stored to the maximum precision available on the target system</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="Date">
+        <xsd:annotation>
+          <xsd:documentation>A date and time</xsd:documentation>
+          <xsd:documentation>This is stored as a UTC date/time and converted to local time by any clients</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="String">
+        <xsd:annotation>
+          <xsd:documentation>A string of text</xsd:documentation>
+          <xsd:documentation>No maximum length defined here but implementations may impose their own maximum lengths</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="Image">
+        <xsd:annotation>
+          <xsd:documentation>A picture or image</xsd:documentation>
+          <xsd:documentation>This will be stored in whatever format (jpeg, bmp, etc. is chosen by the implementation layer</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="Boolean">
+        <xsd:annotation>
+          <xsd:documentation>A true or false value</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="GUID">
+        <xsd:annotation>
+          <xsd:documentation>Globally unique identifier</xsd:documentation>
+          <xsd:documentation>A globally unique identifier</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  
+  <!-- Enum PropertyOperation -->
+  <xsd:simpleType name="PropertyOperation">
+    <xsd:annotation>
+      <xsd:documentation>What is done to a property when the event is handled</xsd:documentation>
+      <xsd:documentation>This allows us to specify basic operations to perform when handling an event.  Most projections will be based off these but more advanced functionality can be built in code.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="SetToValue">
+        <xsd:annotation>
+          <xsd:documentation>Set the projection property value to the event named property</xsd:documentation>
+          <xsd:documentation>Set the projection property value to the event named property.  Data type conversion can be performed.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="IncrementCount">
+        <xsd:annotation>
+          <xsd:documentation>Increment the property as a counter</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="DecrementCount">
+        <xsd:annotation>
+          <xsd:documentation>Decrement the property as a counter</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="IncrementByValue">
+        <xsd:annotation>
+          <xsd:documentation>Increment the property by the value of an event&apos;s named property</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="DecrementByValue">
+        <xsd:annotation>
+          <xsd:documentation>Decrement the property by the value of an event&apos;s named property</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="SetFlag">
+        <xsd:annotation>
+          <xsd:documentation>Set a flag status property</xsd:documentation>
+          <xsd:documentation>This sets a boolean value to true or a string to a defined value</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="UnsetFlag">
+        <xsd:annotation>
+          <xsd:documentation>Unset a flag status property</xsd:documentation>
+          <xsd:documentation>Sets a boolean to false or unsets a text flag</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  
+  <!-- Enum TargetLanguage -->
+  <xsd:simpleType name="TargetLanguage">
+    <xsd:annotation>
+      <xsd:documentation>The language to generate the code in</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="CSharp">
+        <xsd:annotation>
+          <xsd:documentation>C Sharp code output</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="VBNet">
+        <xsd:annotation>
+          <xsd:documentation>Output code in VB.Net</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  
+  <!-- Enum IdentityGroupClassification -->
+  <xsd:simpleType name="IdentityGroupClassification">
+    <xsd:annotation>
+      <xsd:documentation>Does this include or exclude the entity from the identity group</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="Exclude">
+        <xsd:annotation>
+          <xsd:documentation>Exclude the identity from the group (default)</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="Include">
+        <xsd:annotation>
+          <xsd:documentation>Include the identity in the group</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="Unchanged">
+        <xsd:annotation>
+          <xsd:documentation>The membership (or not) is as it was before the event was handled</xsd:documentation>
+          <xsd:documentation>This allows an event handler to only change the membership state if a particular property evaluation occurs</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  
+  <!-- Enum PropertyEvaluation -->
+  <xsd:simpleType name="PropertyEvaluation">
+    <xsd:annotation>
+      <xsd:documentation>An evaluation to perform on a source property of an event</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="IsEmpty">
+        <xsd:annotation>
+          <xsd:documentation>The source property is empty/null</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="Equals">
+        <xsd:annotation>
+          <xsd:documentation>The property equals the test value</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="IsLessThan">
+        <xsd:annotation>
+          <xsd:documentation>Property is less than the value it is being compared to</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="IsLessThanOrEqualTo">
+        <xsd:annotation>
+          <xsd:documentation>Property value is less than or equal to the comparison value</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="IsGreaterThan">
+        <xsd:annotation>
+          <xsd:documentation>Property value is greater than the value it is being compared against</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="IsGreaterThanOrEqualTo">
+        <xsd:annotation>
+          <xsd:documentation>The property value is greater than or equal to the value it is being compared against</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="Contains">
+        <xsd:annotation>
+          <xsd:documentation>The property value contains the test value</xsd:documentation>
+          <xsd:documentation>This is only meaningful for string based properties</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="StartsWith">
+        <xsd:annotation>
+          <xsd:documentation>The property value starts with the test value</xsd:documentation>
+          <xsd:documentation>This is only meaningful for string based properties</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="EndsWith">
+        <xsd:annotation>
+          <xsd:documentation>The property value ends with the test value</xsd:documentation>
+          <xsd:documentation>This is only meaningful for string based properties</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="Always">
+        <xsd:annotation>
+          <xsd:documentation>Always evaluates to TRUE</xsd:documentation>
+          <xsd:documentation>This is used when just the fact of the event is enough to trigger membership or otherwise of an identity group</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="Custom">
+        <xsd:annotation>
+          <xsd:documentation>A custom event evaluator</xsd:documentation>
+          <xsd:documentation>A complex evaluator that will need customised coding</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  
+  <!-- Enum EvaluationTargetType -->
+  <xsd:simpleType name="EvaluationTargetType">
+    <xsd:annotation>
+      <xsd:documentation>What type of thing is the target of the property evaluation</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="Constant">
+        <xsd:annotation>
+          <xsd:documentation>The target is a hard-coded constant</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="Variable">
+        <xsd:annotation>
+          <xsd:documentation>The target is a named variable in the classifier class</xsd:documentation>
+          <xsd:documentation>How the variable gets set and potentially changed is up to the implementer</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  
+</xsd:schema>
+

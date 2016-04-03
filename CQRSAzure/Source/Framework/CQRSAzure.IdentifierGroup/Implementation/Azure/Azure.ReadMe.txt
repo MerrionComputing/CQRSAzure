@@ -1,0 +1,4 @@
+﻿Azure
+=====
+
+Implementations of the identifier group logic, based on the event stream readers that operate against the Microsoft Azure cloud platform

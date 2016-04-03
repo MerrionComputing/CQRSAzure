@@ -1,0 +1,31 @@
+Overview
+========
+
+A project to create an IDE template, plug ins, documentation and related material to facilitate the rapid creation 
+of CQRS based solutions on Azure
+
+This project is intended to provide a quick start IDE template and plug in and various documentation, techniques and 
+so on to allow the rapid creation of CQRS based projects sitting on Windows Azure.
+
+A solution created from this template will have the following projects created:-
+
+QueryDefinition - Definition of the queries that can be performed in the system
+QueryHandler - Handlers to perform the queries defined above
+QueryUnitTest - Unit tests for the query side of the solution
+CommandDefinition - Definitions of the command that can be performed in the system
+CommandHandler - Handlers to perform the command actions
+CommandUnitTest - Unit tests for the command side of the solution
+Aggregation - Identification of the aggregations in use in the solution
+
+When you create a new solution, the wizard will ask for the overall solution name and replace 'CQRSAzure' in the
+project names and namespace names with this root
+
+Template parameters
+===================
+The following template-wide parameters are used to affect how a new solution is created from this template:-
+$rootname$ - the root name of the solution projects - default is CQRSAzure
+
+
+Creating the template
+=====================
+In order to create a new template from this project, select the menu item File -> Export Template... in Visual Studio

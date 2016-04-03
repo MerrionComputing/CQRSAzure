@@ -1,0 +1,44 @@
+﻿Configuration
+=============
+
+The event sourcing implementation can be selected by a configuration section in the Web.config or App.config as appropriate.
+The classes in this folder implement the System.Configuration classes required to do that
+
+CQRSAzureEventSourcingConfigurationSection - Wrapper class for the possible configuration elements and element collections that affect how the 
+event sourcing library operates.
+
+CQRSAzureEventSourcingAggregateMapElementCollection - The set of mapped aggregate to implementations in the application
+
+CQRSAzureEventSourcingAggregateMapElement - Maps an aggregation class to the event stream implementation 
+
+CQRSAzureEventSourcingImplementationSettingsElementCollection - The set of implementation settings properties
+
+CQRSAzureEventSourcingBlobSettingsElement - Settings for an azure blob based event stream
+
+CQRSAzureEventSourcingFileSettingsElement - Settings for an azure file based event stream
+
+CQRSAzureEventSourcingSQLSettingsElement - Settings for an azure SQL database backed event stream
+
+CQRSAzureEventSourcingTableSettingsElement - Settings for an azure table backed event stream
+
+CQRSAzureEventSourcingInMemorySettingsElement - Settings for an in local memory backed event stream (typically used for testing)
+
+
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  
+  <configSections>
+    <section name="CQRSAzureEventSourcingConfiguration"
+             type="CQRSAzure.EventSourcing.CQRSAzureEventSourcingConfigurationSection,CQRSAzure.EventSourcing" />
+  </configSections>
+
+  <CQRSAzureEventSourcingConfiguration>
+    <ImplementationMaps>
+	   <Add AggregateDomainQualifiedName="HospitalWard.Nurse" ImplementationName="Test123" />
+	</ImplementationMaps>
+	<Implementations>
+	  <Add Name="Test123" ImplementationType="InMemory" />
+
+	</Implementations>
+  </CQRSAzureEventSourcingConfiguration>
+</configuration>

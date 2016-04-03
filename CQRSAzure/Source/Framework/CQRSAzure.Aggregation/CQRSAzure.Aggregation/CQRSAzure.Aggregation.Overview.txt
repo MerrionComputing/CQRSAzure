@@ -1,0 +1,17 @@
+﻿Overview
+========
+(see http://www.martinfowler.com/eaaDev/EventSourcing.html )
+Aggregates are a way of uniquely identifying something about which you wish to keep information.
+
+They can be an intrinsic property of the thing (for example a serial number for a computer, a three letter ISO code for a currency, 
+or a user id for a person) or an identifier created for the thing - either as a globally unique identifier (GUID) or as an incremental number.
+
+In the latter case some way to find the aggregate pertaining to the thing you want to check is needed.
+
+Aggregates can be arranged in a hierarchy if the business domain is so arranged.  For example a hierarchy in financial 
+services might be Client\Fund\Account.  
+
+Because aggregates are used throughout the system it is recomended that each type of thing you are aggregating has its 
+own interface defined - this allows the compiler to perform checks ratehr than you having to keep the rules for creating
+an aggregate identifier in mind.
+

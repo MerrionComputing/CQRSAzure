@@ -1,0 +1,436 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="14.0">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\DSLTools\Microsoft.DslTools.settings.targets" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.10318</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{5E4BF33A-9965-4FB7-89E0-4D1EFC8F676E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CQRSAzure.CQRSdsl.Dsl</RootNamespace>
+    <AssemblyName>CQRSAzure.CQRSdsl.Dsl</AssemblyName>
+    <AssemblyOriginatorKeyFile>..\Key.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyMode>File</AssemblyOriginatorKeyMode>
+    <SignAssembly>true</SignAssembly>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <GacTargetOutput>false</GacTargetOutput>
+    <StartupObject>
+    </StartupObject>
+    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Binaries\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <!-- Project specific properties to control T4/DSL targets -->
+  <PropertyGroup>
+    <TransformOnBuild>True</TransformOnBuild>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(DslTargetsPath)\Microsoft.DSLTools.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk$(DslToolsVersionSuffix)" />
+    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.Diagrams$(DslToolsVersionSuffix)" />
+    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.DslDefinition.14.0, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualStudio.TextTemplating$(T4VersionSuffix)" />
+    <Reference Include="Microsoft.VisualStudio.TextTemplating.Interfaces.10.0" />
+    <Reference Include="Microsoft.VisualStudio.TextTemplating.Interfaces.11.0" />
+    <Reference Include="System" />
+    <Reference Include="System.Collections.Immutable, Version=1.1.37.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Collections.Immutable.1.1.37\lib\dotnet\System.Collections.Immutable.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Composition.AttributedModel, Version=1.0.30.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Composition.1.0.30\lib\portable-net45+win8+wp8+wpa81\System.Composition.AttributedModel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Composition.Convention, Version=1.0.30.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Composition.1.0.30\lib\portable-net45+win8+wp8+wpa81\System.Composition.Convention.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Composition.Hosting, Version=1.0.30.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Composition.1.0.30\lib\portable-net45+win8+wp8+wpa81\System.Composition.Hosting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Composition.Runtime, Version=1.0.30.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Composition.1.0.30\lib\portable-net45+win8+wp8+wpa81\System.Composition.Runtime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Composition.TypedParts, Version=1.0.30.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Composition.1.0.30\lib\portable-net45+win8+wp8+wpa81\System.Composition.TypedParts.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Design" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.XML" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="WindowsBase">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CustomCode\Extensions\ClassifierEventEvaluationExtension.cs" />
+    <Compile Include="CustomCode\Function\ClassifierCompartmentShape.Function.cs" />
+    <Compile Include="CustomCode\Function\CommandDefinitionCompartmentShapeBase.Function.cs" />
+    <Compile Include="CustomCode\Function\CQRSdslDiagram.Function.cs" />
+    <Compile Include="CustomCode\Function\CQRSModel.Function.cs" />
+    <Compile Include="CustomCode\Function\IdentityGroupGeometryShape.Function.cs" />
+    <Compile Include="CustomCode\Function\ModelCodeGenerationOptions.cs" />
+    <Compile Include="CustomCode\Function\ProjectionDefinitionCompartmentShapeBase.Function.cs" />
+    <Compile Include="CustomCode\Function\QueryDefinitionShapeBase.Function.cs" />
+    <None Include="app.config" />
+    <None Include="GeneratedCode\SerializationHelper.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>SerializationHelper.cs</LastGenOutput>
+    </None>
+    <Compile Include="CustomCode\Function\AggregateGeometryShapeBase.Function.cs" />
+    <Compile Include="CustomCode\Function\EventDefinitionCompartmentShapeBase.Function.cs" />
+    <Compile Include="CustomCode\Interfaces\ICategorisedEntity.cs" />
+    <Compile Include="CustomCode\Interfaces\IClassifierEntity.cs" />
+    <Compile Include="CustomCode\Interfaces\ICommandParameterEntity.cs" />
+    <Compile Include="CustomCode\Interfaces\IEventPropertyEntity.cs" />
+    <Compile Include="CustomCode\Interfaces\IAggregateIdentifierEntity.cs" />
+    <Compile Include="CustomCode\Interfaces\ICommandDefinitionEntity.cs" />
+    <Compile Include="CustomCode\Interfaces\IDocumentedEntity.cs" />
+    <Compile Include="CustomCode\Interfaces\IEventDefinitionEntity.cs" />
+    <Compile Include="CustomCode\Interfaces\IIdentityGroupEntity.cs" />
+    <Compile Include="CustomCode\Interfaces\IModelCodeGenerationOptions.cs" />
+    <Compile Include="CustomCode\Interfaces\INamedEntity.cs" />
+    <Compile Include="CustomCode\Interfaces\IProjectionDefinitionEntity.cs" />
+    <Compile Include="CustomCode\Interfaces\IProjectionPropertyEntity.cs" />
+    <Compile Include="CustomCode\Interfaces\IPropertyEntity.cs" />
+    <Compile Include="CustomCode\Interfaces\IQueryDefinitionEntity.cs" />
+    <Compile Include="CustomCode\Interfaces\IQueryInputParameterEntity.cs" />
+    <Compile Include="CustomCode\Interfaces\IQueryReturnParameter.cs" />
+    <Compile Include="CustomCode\ToolTips\AggregateGeometryShape.ToolTip.cs" />
+    <Compile Include="CustomCode\ToolTips\AggregateParenthoodConnector.ToolTip.cs" />
+    <Compile Include="CustomCode\ToolTips\ClassifierCompartmentShape.ToolTip.cs" />
+    <Compile Include="CustomCode\ToolTips\CommandDefinitionCompartmentShapeBase.Tooltip.cs" />
+    <Compile Include="CustomCode\ToolTips\EventDefinitionCompartmentShape.ToolTip.cs" />
+    <Compile Include="CustomCode\ToolTips\IdentityGroupGeometryShape.ToolTip.cs" />
+    <Compile Include="CustomCode\ToolTips\ProjectionDefinitionCompartmentShape.ToolTip.cs" />
+    <Compile Include="CustomCode\ToolTips\ProjectionEventConnector.ToolTip.cs" />
+    <Compile Include="CustomCode\ToolTips\QueryDefinitionShape.ToolTip.cs" />
+    <Compile Include="CustomCode\UI\AggregateGeometryShape.UI.cs" />
+    <Compile Include="CustomCode\UI\AggregateIdentifier.UI.cs" />
+    <Compile Include="CustomCode\UI\ClassifierCompartmentShape.cs" />
+    <Compile Include="CustomCode\UI\ClassifierEventEvaluation.UI.cs" />
+    <Compile Include="CustomCode\UI\CodeGenerationSettingsTypeEditor.cs" />
+    <Compile Include="CustomCode\UI\CQRSdslDiagram.UI.cs" />
+    <Compile Include="CustomCode\UI\Decorators\WrappedTextField.cs" />
+    <Compile Include="CustomCode\UI\ProjectionDefinitionCompartmentedShape.UI.cs" />
+    <Compile Include="CustomCode\UI\ProjectionEventPropertyOperation.UI.cs" />
+    <Compile Include="CustomCode\UI\UITypeEditor\ClassifierEventEvaluationEventNameUITypeEditor.cs" />
+    <Compile Include="CustomCode\UI\UITypeEditor\ClassifierEventSourceEventPropertyNameUITypeEditor.cs" />
+    <Compile Include="CustomCode\UI\UITypeEditor\ProjectionPropertyOperationEventNameUITypeEditor.cs" />
+    <Compile Include="CustomCode\UI\UITypeEditor\ProjectionPropertyOperationSourceFieldUITypeEditor.cs" />
+    <Compile Include="CustomCode\UI\UITypeEditor\ProjectionPropertyOperationTargetFieldUITypeEditor.cs" />
+    <Compile Include="CustomCode\UI\UserInterfaceMessages.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UserInterfaceMessages.resx</DependentUpon>
+    </Compile>
+    <Compile Include="CustomCode\Validation\AggregateIdentifier.cs" />
+    <Compile Include="CustomCode\Validation\Classifier.cs" />
+    <Compile Include="CustomCode\Validation\ClassifierEventEvaluation.cs" />
+    <Compile Include="CustomCode\Validation\CommandDefinition.cs" />
+    <Compile Include="CustomCode\Validation\CommandParameter.cs" />
+    <Compile Include="CustomCode\Validation\CQRSModel.cs" />
+    <Compile Include="CustomCode\Validation\EventDefinition.cs" />
+    <Compile Include="CustomCode\Validation\EventProperty.cs" />
+    <Compile Include="CustomCode\Validation\IdentityGroup.cs" />
+    <Compile Include="CustomCode\Validation\ProjectionDefinition.cs" />
+    <Compile Include="CustomCode\Validation\ProjectionEventPropertyOperation .cs" />
+    <Compile Include="CustomCode\Validation\ProjectionProperty.cs" />
+    <Compile Include="CustomCode\Validation\QueryDefinition.cs" />
+    <Compile Include="CustomCode\Validation\QueryInputParameter.cs" />
+    <Compile Include="CustomCode\Validation\QueryReturnParameter.cs" />
+    <Compile Include="CustomCode\Validation\ValidationMessages.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ValidationMessages.resx</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\ConnectionBuilders.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ConnectionBuilders.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\Connectors.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Connectors.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\Diagram.cs">
+      <DependentUpon>Diagram.tt</DependentUpon>
+      <SubType>Code</SubType>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="GeneratedCode\DirectiveProcessor.cs">
+      <DependentUpon>DirectiveProcessor.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="GeneratedCode\DomainClasses.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DomainClasses.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\DomainRelationships.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DomainRelationships.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\HelpKeywordHelper.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HelpKeywordHelper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\MultiplicityValidation.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MultiplicityValidation.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\PropertiesGrid.cs">
+      <DependentUpon>PropertiesGrid.tt</DependentUpon>
+      <SubType>Code</SubType>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="GeneratedCode\SerializationHelper.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SerializationHelper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\Shapes.cs">
+      <DependentUpon>Shapes.tt</DependentUpon>
+      <SubType>Code</SubType>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="GeneratedCode\ToolboxHelper.cs">
+      <DependentUpon>ToolboxHelper.tt</DependentUpon>
+      <SubType>Code</SubType>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="MefExtension\DesignerExtensionMetaDataAttribute.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DesignerExtensionMetaDataAttribute.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MefExtension\GestureExtensionController.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GestureExtensionController.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MefExtension\GestureExtensionEnablement.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GestureExtensionEnablement.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="GeneratedCode\DomainModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DomainModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GeneratedCode\Serializer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Serializer.tt</DependentUpon>
+    </Compile>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DslDefinition.dsl.diagram">
+      <DependentUpon>DslDefinition.dsl</DependentUpon>
+    </None>
+    <None Include="GeneratedCode\ConnectionBuilders.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ConnectionBuilders.cs</LastGenOutput>
+    </None>
+    <None Include="GeneratedCode\Diagram.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Diagram.cs</LastGenOutput>
+    </None>
+    <None Include="GeneratedCode\DirectiveProcessor.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DirectiveProcessor.cs</LastGenOutput>
+    </None>
+    <None Include="GeneratedCode\DomainRelationships.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DomainRelationships.cs</LastGenOutput>
+    </None>
+    <None Include="DslDefinition.dsl">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="GeneratedCode\Connectors.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Connectors.cs</LastGenOutput>
+    </None>
+    <None Include="GeneratedCode\DomainClasses.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DomainClasses.cs</LastGenOutput>
+    </None>
+    <None Include="GeneratedCode\DomainModelResx.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DomainModelResx.resx</LastGenOutput>
+    </None>
+    <None Include="GeneratedCode\HelpKeywordHelper.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>HelpKeywordHelper.cs</LastGenOutput>
+    </None>
+    <None Include="GeneratedCode\MultiplicityValidation.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MultiplicityValidation.cs</LastGenOutput>
+    </None>
+    <None Include="GeneratedCode\PropertiesGrid.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>PropertiesGrid.cs</LastGenOutput>
+    </None>
+    <None Include="GeneratedCode\CQRSdslSchema.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>CQRSdslSchema.xsd</LastGenOutput>
+    </None>
+    <None Include="GeneratedCode\DomainModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DomainModel.cs</LastGenOutput>
+    </None>
+    <Content Include="CustomCode\Coherence\ReadMe.txt" />
+    <Content Include="CustomCode\Extensions\Extensions.Readme.txt" />
+    <Content Include="CustomCode\Function\ReadMe.txt" />
+    <Content Include="CustomCode\Validation\ReadMe.txt" />
+    <Content Include="GeneratedCode\CQRSdslSchema.xsd">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CQRSdslSchema.tt</DependentUpon>
+      <SubType>
+      </SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="GeneratedCode\Serializer.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Serializer.cs</LastGenOutput>
+    </None>
+    <None Include="GeneratedCode\Shapes.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Shapes.cs</LastGenOutput>
+    </None>
+    <None Include="GeneratedCode\ToolboxHelper.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ToolboxHelper.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4df5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="CustomCode\UI\UserInterfaceMessages.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>UserInterfaceMessages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CustomCode\Validation\ValidationMessages.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ValidationMessages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GeneratedCode\DomainModelResx.resx">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DomainModelResx.tt</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <PropertyGroup>
+  </PropertyGroup>
+  <ItemGroup>
+    <CodeAnalysisDictionary Include="..\CodeAnalysisDictionary.xml">
+      <Link>CodeAnalysisDictionary.xml</Link>
+    </CodeAnalysisDictionary>
+    <Content Include="MefExtension\DesignerExtensionMetaDataAttribute.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DesignerExtensionMetaDataAttribute.cs</LastGenOutput>
+    </Content>
+    <Content Include="MefExtension\GestureExtensionController.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>GestureExtensionController.cs</LastGenOutput>
+    </Content>
+    <Content Include="MefExtension\GestureExtensionEnablement.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>GestureExtensionEnablement.cs</LastGenOutput>
+    </Content>
+    <Content Include="Resources\AggregateParentConnectorToolBitmap.bmp" />
+    <Content Include="Resources\CodeGeneration.png" />
+    <Content Include="Resources\Command.png" />
+    <Content Include="Resources\Design.png" />
+    <Content Include="Resources\Documentation.png" />
+    <Content Include="Resources\DocumentationSettings.bmp" />
+    <Content Include="Resources\Event.png" />
+    <Content Include="Resources\EventShapeExpand.bmp" />
+    <Content Include="Resources\EventShapeCollapse.bmp" />
+    <Content Include="Resources\IdentityGroup.png" />
+    <Content Include="Resources\IdentityGroupToolBitmap.bmp" />
+    <Content Include="Resources\Information.png" />
+    <Content Include="Resources\Notes.png" />
+    <Content Include="Resources\Projection.png" />
+    <Content Include="Resources\ProjectionEventConnectorToolBitmap.bmp" />
+    <Content Include="Resources\ExampleConnectorToolBitmap.bmp" />
+    <Content Include="Resources\AggregateShapeToolBitmap.bmp" />
+    <Content Include="Resources\EventShapeToolBitmap.bmp" />
+    <Content Include="Resources\CommandShapeToolBitmap.bmp" />
+    <Content Include="Resources\Properties.png" />
+    <Content Include="Resources\Query.png" />
+    <Content Include="Resources\QueryShapeToolBitmap.bmp" />
+    <Content Include="Resources\Relationships.png" />
+    <Content Include="Resources\UniquenessDecoratorBitmap.bmp" />
+    <Content Include="Resources\ProjectionShapeToolBitmap.bmp" />
+    <Content Include="Resources\ExampleShapeToolBitmap.bmp" />
+    <EmbeddedResource Include="Resources\ConnectorSourceSearch.cur" />
+    <EmbeddedResource Include="Resources\ConnectorTargetSearch.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="CustomCode\UI\Commands\" />
+  </ItemGroup>
+</Project>

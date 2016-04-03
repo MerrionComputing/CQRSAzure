@@ -1,0 +1,8 @@
+﻿Azure SQL
+=========
+
+Storage of the event stream data in an Azure based SQL database
+
+(Note that using a database will significantly reduce the scalability and parallelism so I would only recommend it for smaller or learning about CQRS scenarios)
+
+The event stream itself is stored in one parent table for the common data and each event type has an additional table for its extra data.

@@ -1,0 +1,14 @@
+﻿Overview
+========
+
+An identifier group is an uniquely named collection of zero or more aggregate identifiers that 
+share a common property or state.
+
+These groups can be passed through a query definition (explicitly or implicitly) to predefine which
+aggregate identifiers the underlying projection of the query definition will be run.  This is useful in
+order to define queries in a business-meaningful manner rather than having explicitly to specify the 
+attribute-rule filters.
+
+Note that this library is kept separate from the core "Event Sourcing" library as identifier groups
+are not a core idea in every event sourcing implementation.  This library is, however, totally dependent 
+on the underlying interfaces provided by the event sourcing library.

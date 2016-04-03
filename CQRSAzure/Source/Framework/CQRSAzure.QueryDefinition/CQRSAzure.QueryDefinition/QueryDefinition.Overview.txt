@@ -1,0 +1,11 @@
+﻿Overview
+========
+
+A query definition is a type-safe class that defines what parameter(s) can be passed into the query handler 
+and what the expected return type consists of.
+
+Each distinct definition will have one matching handler that will perform the actual querying and return of
+data.
+
+A query definition can be wrapped in an envelope to add entitlement information (who is asking the query) and 
+any context used to handle the results.

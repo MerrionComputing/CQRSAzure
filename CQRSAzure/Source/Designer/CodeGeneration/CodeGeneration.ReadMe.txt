@@ -1,0 +1,7 @@
+﻿Code generation
+===============
+
+1) Each entity for which code is generates (Aggregate Identifier, Event, Query definition, Projection , Command definition) will
+have both an interface and a macthing partial class generated for it.
+
+2) For the Command and Query a definition class and a separate handler class is created - this allows them to be on different ends of a queue.
