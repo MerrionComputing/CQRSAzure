@@ -17,8 +17,8 @@ It will facilitate the code generation of  Aggregates (aggregate roots) ,  Event
 
 ## Prerequisites
 
-In order to compile the source code for this plug in you will need to have Visual Studio 2015 and to have installed the Visual Studio SDK.
+In order to compile the source code for this plug in you will need to have Visual Studio 2017 and to have installed the Visual Studio SDK.
 
 ## Beginners guide
 
-I recommend reading the WIKI pages for this project - and there is a "Recommended Reading" page there too to help you get started with the concepts of CQRS and of event sourcing.
+I recommend reading the WIKI pages for this project - and there is a "Recommended Reading" page there too to help you get started with the concepts of CQRS and of event sourcing, or if you have 50 minutes to spare take a look at this YouTube presentation: [https://youtu.be/kpM5gCLF1Zc]
