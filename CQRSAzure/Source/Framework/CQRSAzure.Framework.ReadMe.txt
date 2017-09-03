@@ -1,0 +1,19 @@
+CQRS Framework
+==============
+
+Although event sourcing is not a mandatory part of CQRS, and indeed event sourcing is used outside of CQRS the two are often used together.  
+In this project I am providing at an implementation that uses Windows Azure Storage (either Tables, Blobs or Files) as the persistence mechanism.
+
+Resources
+---------
+
+For an introduction to event sourcing and the structure of this project please see the CodeProject article at:-
+https://www.codeproject.com/Articles/714742/CQRS-on-Windows-Azure-Event-Sourcing
+
+
+Related projects
+----------------
+
+There is also a related project, CQRSAzure.Designer, which is a Visual Studio plug in designer (conceptually similar to the entity framework designer) 
+which allows developers graphically to design the domain models of their CQRS system.  The code generated from these models can then be integrated
+with this framework to host their data and process on an Azure storage back end.
