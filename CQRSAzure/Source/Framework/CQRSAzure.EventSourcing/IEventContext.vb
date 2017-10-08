@@ -42,9 +42,32 @@ Public Interface IEventContext
 
 End Interface
 
-Public Interface IEventContext(Of TAggregationKey)
+Public Interface IWriteContext
+
+    ''' <summary>
+    ''' Which user caused the event to occur
+    ''' </summary>
+    ''' <remarks>
+    ''' This can be empty in the case of timer or state triggered events
+    ''' </remarks>
+    ReadOnly Property Who As String
+
+    ''' <summary>
+    ''' The source from whence this event originated
+    ''' </summary>
+    ReadOnly Property Source As String
+
+
+    ''' <summary>
+    ''' Any additional comments attached to the event for audit purposes for example
+    ''' </summary>
+    ReadOnly Property Commentary As String
+
+End Interface
+
+Public Interface IEventContext(Of TAggregateKey)
     Inherits IEventContext
-    Inherits IEventInstance(Of TAggregationKey)
+    Inherits IEventInstance(Of TAggregateKey)
 
 
 End Interface

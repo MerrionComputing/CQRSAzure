@@ -1,0 +1,25 @@
+﻿Configuration
+=============
+
+The settings for each host can be controlled via the application configuration file 
+
+The classes in this folder implement these configuration settings
+
+CQRSAzureHostConfigurationSection - Wrapper class for the possible configuration elements and element collections that affect how the 
+host operates.
+
+
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  
+  <configSections>
+    <section name="CQRSAzureHostConfigurationSection" 
+             type="CQRSAzure.Hosting.CQRSAzureHostConfigurationSection,CQRSAzure.Hosting" />
+  </configSections>
+
+  <CQRSAzureHostConfigurationSection Name="Grettel" LoadDomainsOnStartup="True">
+     <HostedDomains>
+	 </HostedDomains>
+  </CQRSAzureHostConfigurationSection>
+
+</configuration>

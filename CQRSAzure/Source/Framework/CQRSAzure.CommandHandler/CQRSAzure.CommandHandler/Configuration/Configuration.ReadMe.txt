@@ -1,0 +1,12 @@
+﻿Command Handler Configuration
+=============================
+
+In order to allow horizontal scaling the command handlers can be connected by registering them via a configuration setting to allow
+commands received by one instance to be load balanced across all the available command handlers.
+
+Note that although a CQRS command is one way from the input program's point of view, a command handler needs to know if the command has 
+succeeded or not and, if not, to forward on the command to another handler to try
+
+There are two sections pertaining to command handlers - the <CommandHandlerMapping> collection and the <CommandHandler> collection.
+Each <CommandHandlerMapping> describes the relationship between a command definition and the handler class that is specified to deal with it
+Each <CommandHandler> describes the additional configuration settings for that command handler

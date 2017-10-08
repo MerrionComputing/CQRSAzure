@@ -1,0 +1,24 @@
+﻿Query Event Stream
+==================
+
+The query event stream is a special event stream for each query which allows the life cycle of that query to 
+be modellled as a stream of events.  The status of the query (and indeed the result set) can be read by running 
+a projection over that event stream.
+
+These are held in a namespace "Queries" to keep the logically distinct from the rest of the event sourcing framework
+and not all systems will necessarily use an event stream backing for the commands 
+
+The events that can occur to a query are:-
+  QueryCreated - A new query was created 
+  QueryStarted - A processor started work on the query
+  QueryIdentityGroupRequested - A query asked for the membership of an identity group
+  QueryIdentityGroupReturned - The members of the identity group were returned to a query
+  QueryProjectionRequested - The query requested a projection to be run
+  QueryProjectionReturned - A projection result was returned to the query
+  QueryCompleted - Processing of the event completed successfully and normally
+
+There are exception cases:-
+  QueryTransientFaultOccured - A fault that may go away (such as available resources) occured
+  FatalErrorOccured - An unrecoverable fault (such as an illogical query state) occured
+
+If a query has a transient fault it may be requeued for processing in which case a QueryRequeued event is posted.

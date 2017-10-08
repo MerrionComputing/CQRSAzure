@@ -2,3 +2,6 @@
 =====
 
 Implementations of the identifier group logic, based on the event stream readers that operate against the Microsoft Azure cloud platform
+
+Note that because the aggregates that are either in or out of a particular identifier group have their own event streams with independent
+sequence numbers it is not meaningful to use "sequence number" in an identifier group snapshot (unlike how this works for projections).

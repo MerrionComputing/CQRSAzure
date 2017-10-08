@@ -1,0 +1,55 @@
+﻿Identifier Group Configuration
+==============================
+
+This allows the operation of identity groups to be controlled via an application configuration file.
+
+This configuration setting is kept separate to the core "CQRSAzureIdentifierGroupConfigurationSection" as the 
+identifier group functionality in this project is kept separate to allow a developer to choose whether they 
+use that functionality or not.
+
+The settings can be used to persist different identifier groups in different ways - for example some might only be persisted in memory or locally 
+whereas for others 
+
+CQRSAzureIdentifierGroupImplementationSettingsElementCollection - The set of implementation settings properties
+
+CQRSAzureIdentifierGroupBlobSettingsElement - Settings for an azure blob based identifier group persistence
+
+CQRSAzureIdentifierGroupFileSettingsElement - Settings for an azure file based identifier group persistence
+
+CQRSAzureIdentifierGroupTableSettingsElement - Settings for an azure table backed identifier group persistence
+
+CQRSAzureIdentifierGroupInMemorySettingsElement - Settings for an in local memory backed  identifier group persistence (typically used for testing)
+
+CQRSAzureIdentifierGroupLocalFileSettingsElement - Settings for an local file based identifier group persistence
+
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  
+  <configSections>
+    <section name="CQRSAzureIdentifierGroupConfiguration" 
+             type="CQRSAzure.IdentifierGroup.CQRSAzureIdentifierGroupConfigurationSection,CQRSAzure.IdentifierGroup" />
+  </configSections>
+
+   <CQRSAzureIdentifierGroupConfiguration>
+    <ImplementationMaps>
+	  <!-- Mapping between aggregate types and their underlying identifier group persistence -->
+      <Map AggregateDomainQualifiedName="HospitalWard.Nurse" ImplementationName="Test123" />
+    </ImplementationMaps>
+	
+	<!-- Settings for the classifier state snapshots -->
+	<ClassifierSnapshotSettings>
+	  <Implementation Name="Test123" ImplementationType="AzureBlob">
+        <BlobSettings ConnectionStringName="UnitTestStorageConnectionString" DomainName="Test" />
+      </Implementation>
+    </ClassifierSnapshotSettings>
+
+	<!-- Settings for the group membership snapshots -->
+	<SnapshotSettings>
+	  <Implementation Name="Test123" ImplementationType="AzureBlob">
+        <BlobSettings ConnectionStringName="UnitTestStorageConnectionString" DomainName="Test" />
+      </Implementation>
+	</SnapshotSettings>
+
+   </CQRSAzureIdentifierGroupConfiguration>
+
+</configuration>

@@ -21,11 +21,20 @@ Public MustInherit Class ClassifierBase(Of TAggregate As IAggregationIdentifier,
     Private ReadOnly m_eventStream As IEventStreamReader(Of TAggregate, TAggregateKey)
 #End Region
 
-    Public MustOverride Function Evaluate(Of TEvent As IEvent(Of TAggregate))(eventToHandle As TEvent) As IClassifierEventHandler.EvaluationResult Implements IClassifier(Of TAggregate, TAggregateKey).Evaluate
+    Public MustOverride Function EvaluateEvent(Of TEvent As IEvent(Of TAggregate))(eventToHandle As TEvent) As IClassifierDataSourceHandler.EvaluationResult Implements IClassifier(Of TAggregate, TAggregateKey).EvaluateEvent
+
+    Public MustOverride Function EvaluateProjection(Of TProjection As IProjection(Of TAggregate, TAggregateKey))(projection As TProjection) As IClassifierDataSourceHandler.EvaluationResult Implements IClassifier(Of TAggregate, TAggregateKey).EvaluateProjection
 
     Public MustOverride ReadOnly Property SupportsSnapshots As Boolean Implements IClassifier.SupportsSnapshots
 
-    Public MustOverride Sub LoadSnapshot(snapshotToLoad As IClassifierSnapshot(Of TAggregate, TAggregateKey)) Implements IClassifier(Of TAggregate, TAggregateKey).LoadSnapshot
+    ''' <summary>
+    ''' How does the classifier get the data it uses to perform a classification
+    ''' </summary>
+    Public MustOverride ReadOnly Property ClassifierDataSource As IClassifier.ClassifierDataSourceType Implements IClassifier.ClassifierDataSource
+
+    Public MustOverride Sub LoadFromSnapshot(Of TClassifier As IClassifier)(latestSnapshot As IClassifierSnapshot(Of TAggregate, TAggregateKey, TClassifier)) Implements IClassifier(Of TAggregate, TAggregateKey).LoadFromSnapshot
+
+    Public MustOverride Function ToSnapshot(Of TClassifier As IClassifier)() As IClassifierSnapshot(Of TAggregate, TAggregateKey, TClassifier) Implements IClassifier(Of TAggregate, TAggregateKey).ToSnapshot
 
     Public MustOverride Function HandlesEventType(eventType As Type) As Boolean Implements IClassifier.HandlesEventType
 

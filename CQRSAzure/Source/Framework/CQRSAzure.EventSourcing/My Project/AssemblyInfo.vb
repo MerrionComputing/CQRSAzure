@@ -12,7 +12,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("")> 
 <Assembly: AssemblyCompany("")> 
 <Assembly: AssemblyProduct("CQRSAzure.EventSourcing")>
-<Assembly: AssemblyCopyright("Copyright - Duncan Jones ©  2014-2015")>
+<Assembly: AssemblyCopyright("Copyright - Duncan Jones ©  2014-2016")>
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>

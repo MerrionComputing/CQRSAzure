@@ -1,6 +1,6 @@
 ﻿Configuration
 =============
-
+ 
 The event sourcing implementation can be selected by a configuration section in the Web.config or App.config as appropriate.
 The classes in this folder implement the System.Configuration classes required to do that
 
@@ -23,22 +23,44 @@ CQRSAzureEventSourcingTableSettingsElement - Settings for an azure table backed 
 
 CQRSAzureEventSourcingInMemorySettingsElement - Settings for an in local memory backed event stream (typically used for testing)
 
+CQRSAzureEventSourcingLocalFileSettingsElement - Settings for an local file based event stream
 
 <?xml version="1.0" encoding="utf-8" ?>
 <configuration>
   
   <configSections>
-    <section name="CQRSAzureEventSourcingConfiguration"
+    <section name="CQRSAzureEventSourcingConfiguration" 
              type="CQRSAzure.EventSourcing.CQRSAzureEventSourcingConfigurationSection,CQRSAzure.EventSourcing" />
   </configSections>
 
   <CQRSAzureEventSourcingConfiguration>
     <ImplementationMaps>
-	   <Add AggregateDomainQualifiedName="HospitalWard.Nurse" ImplementationName="Test123" />
-	</ImplementationMaps>
-	<Implementations>
-	  <Add Name="Test123" ImplementationType="InMemory" />
+      <Map AggregateDomainQualifiedName="HospitalWard.Nurse" ImplementationName="Test123" />
+    </ImplementationMaps>
+    <Implementations>
+	  <Implementation Name="Test123" ImplementationType="AzureBlob">
+        <BlobSettings ConnectionStringName="UnitTestStorageConnectionString" DomainName="Test" />
+      </Implementation>
 
-	</Implementations>
+      <Implementation Name="InMemoryImplementationExample" ImplementationType="InMemory">
+       <InMemorySettings /> 
+      </Implementation>
+
+      <Implementation Name="AzureBlobImplementationExample" ImplementationType="AzureBlob">
+        <BlobSettings ConnectionStringName="UnitTestStorageConnectionString" />
+      </Implementation>
+
+      <Implementation Name="AzureBlobImplementationDomainExample" ImplementationType="AzureBlob">
+        <BlobSettings ConnectionStringName="UnitTestStorageConnectionString" DomainName="Test" />
+      </Implementation>
+
+      <Implementation Name="AzureFileImplementationExample" ImplementationType="AzureFile" >
+        <FileSettings ConnectionStringName="UnitTestStorageConnectionString" InitialSize="20000"  />
+      </Implementation> 
+
+    </Implementations>
+	<SnapshotSettings>
+	</SnapshotSettings>
   </CQRSAzureEventSourcingConfiguration>
+
 </configuration>

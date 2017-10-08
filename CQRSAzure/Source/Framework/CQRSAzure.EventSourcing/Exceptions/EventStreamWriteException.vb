@@ -25,4 +25,19 @@ Public Class EventStreamWriteException
 
     End Sub
 
+
+    <SecurityPermissionAttribute(SecurityAction.LinkDemand, Flags:=SecurityPermissionFlag.SerializationFormatter)>
+    Public Overrides Sub GetObjectData(ByVal info As SerializationInfo, ByVal context As StreamingContext)
+
+        If (info Is Nothing) Then Throw New ArgumentNullException("info")
+
+        MyBase.GetObjectData(info, context)
+    End Sub
+
+    Protected Sub New(ByVal info As SerializationInfo, ByVal context As StreamingContext)
+        MyBase.New(info, context)
+        If (info Is Nothing) Then Throw New ArgumentNullException("info")
+
+    End Sub
+
 End Class

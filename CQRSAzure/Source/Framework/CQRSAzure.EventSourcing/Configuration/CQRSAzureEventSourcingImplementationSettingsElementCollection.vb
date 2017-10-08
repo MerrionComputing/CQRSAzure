@@ -3,6 +3,7 @@
 ''' <summary>
 ''' The set of implementation settings properties in the &lt;Implementations&gt; section
 ''' </summary>
+<ConfigurationCollection(GetType(CQRSAzureEventSourcingImplementationSettingsElement), AddItemName:="Implementation")>
 Public Class CQRSAzureEventSourcingImplementationSettingsElementCollection
     Inherits ConfigurationElementCollection
 
@@ -20,7 +21,6 @@ Public Class CQRSAzureEventSourcingImplementationSettingsElementCollection
             Throw New Exception()
         End If
     End Function
-
 
 
     Default Public Shadows Property Item(ByVal index As Integer) As CQRSAzureEventSourcingImplementationSettingsElement

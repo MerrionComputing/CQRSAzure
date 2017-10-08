@@ -1,0 +1,20 @@
+﻿Command Event Stream
+====================
+
+The command event stream is a special set of event stream pertaining to the commands issued into a domain,
+which are used to track the command life cycle (and status).
+
+These are held in a namespace "Commands" to keep the logically distinct from the rest of the event sourcing framework
+and not all systems will necessarily use an event stream backing for the commands
+
+The events that can occur to a command are:-
+  CommandCreated - A new command was created (from the point of view of the domain..it may in fact be an existing command passed in)
+  CommandStarted - A processor started work on the command
+  CommandStepCompleted - An atomic step in the command completed
+  CommandCompleted - Processing of the event completed successfully and normally
+
+There are exception cases:-
+  CommandTransientFaultOccured - A fault that may go away (such as available resources) occured
+  FatalErrorOccured - An unrecoverable fault (such as an illogical command) occured
+
+If a command has a transient fault it may be requeued for processing in which case a CommandRequeued event is posted.

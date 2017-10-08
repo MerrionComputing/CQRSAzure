@@ -52,16 +52,24 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.ApplicationInsights, Version=2.4.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.ApplicationInsights.2.4.0\lib\net46\Microsoft.ApplicationInsights.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.ServiceBus, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\WindowsAzure.ServiceBus.3.0.9\lib\net45-full\Microsoft.ServiceBus.dll</HintPath>
+      <HintPath>..\..\packages\WindowsAzure.ServiceBus.4.1.3\lib\net45\Microsoft.ServiceBus.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.WindowsAzure.Configuration, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.WindowsAzure.ConfigurationManager.3.1.0\lib\net40\Microsoft.WindowsAzure.Configuration.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.WindowsAzure.ConfigurationManager.3.2.3\lib\net40\Microsoft.WindowsAzure.Configuration.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.2.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Diagnostics.DiagnosticSource.4.4.1\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml" />
@@ -81,7 +89,16 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\CQRSQueryHandlerConfigurationSection.vb" />
+    <Compile Include="Configuration\CQRSQueryHandlerMappingElement.vb" />
+    <Compile Include="Configuration\CQRSQueryHandlerMappingElementCollection.vb" />
+    <Compile Include="Configuration\CQRSQueryHandlerSettingsElement.vb" />
+    <Compile Include="Configuration\CQRSQueryHandlerSettingsElementCollection.vb" />
+    <Compile Include="Configuration\Interfaces\IHostQueryhandlerSettings.vb" />
+    <Compile Include="Configuration\Interfaces\IQueryHandlerMapping.vb" />
+    <Compile Include="Handlers\GetCommandStatusQueryHandler.vb" />
     <Compile Include="Handlers\QueryHandlerBase.vb" />
+    <Compile Include="Handlers\QueryHandlerFactory.vb" />
     <Compile Include="Interfaces\IQueryHandler.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
@@ -108,6 +125,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
@@ -120,9 +138,17 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\CQRSAzure.Aggregation\CQRSAzure.Aggregation\CQRSAzure.Aggregation.vbproj">
-      <Project>{55dc5457-47f2-4992-968d-3658624acf37}</Project>
-      <Name>CQRSAzure.Aggregation</Name>
+    <ProjectReference Include="..\..\CQRSAzure.EventSourcing\CQRSAzure.EventSourcing.vbproj">
+      <Project>{551fbd94-8ce5-4e33-818a-9c3fc171f1ce}</Project>
+      <Name>CQRSAzure.EventSourcing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\CQRSAzure.Hosting\CQRSAzure.Hosting.vbproj">
+      <Project>{695969ad-b64a-4001-8138-2b760a28446e}</Project>
+      <Name>CQRSAzure.Hosting</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\CQRSAzure.IdentifierGroup\CQRSAzure.IdentifierGroup.vbproj">
+      <Project>{6659932d-cf44-4d06-8830-f4ff6191cd43}</Project>
+      <Name>CQRSAzure.IdentifierGroup</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\CQRSAzure.QueryDefinition\CQRSAzure.QueryDefinition\CQRSAzure.QueryDefinition.vbproj">
       <Project>{78f21665-1710-41ce-bd84-a85059a9839d}</Project>
@@ -130,6 +156,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <Content Include="Configuration\Configuration.ReadMe.txt" />
+    <Content Include="QueryHandler.ReadMe.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

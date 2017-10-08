@@ -34,7 +34,7 @@ Public NotInheritable Class UnmappedAggregateException
 
 
     Public Sub New(ByVal AggregateTypeIn As Object, ByVal AggregateKeyIn As Object)
-        MyBase.New("Attempt to change an aggregate key")
+        MyBase.New("Aggregate type has no backing storage configuration map")
 
         m_AggregateTypeName = AggregateTypeIn
         m_aggregateKey = AggregateKeyIn

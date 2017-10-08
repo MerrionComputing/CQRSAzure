@@ -15,15 +15,31 @@ Public Interface IProjection(Of TAggregate As IAggregationIdentifier, TAggregate
     ''' <param name="eventToHandle">
     ''' The specific event to handle and perform whatever processing is required
     ''' </param>
-    Sub HandleEvent(Of TEvent As IEvent(Of TAggregate))(ByVal eventToHandle As TEvent)
+    Sub HandleEvent(Of TEvent As IEvent)(ByVal eventToHandle As TEvent)
 
     ''' <summary>
-    ''' Load the snapshot of this projection as the starting point for populating this projection
+    ''' An event was read by the underlying event reader (whether it is handled or not)
+    ''' </summary>
+    ''' <param name="sequenceNumber">
+    ''' The sequence number of the event read
+    ''' </param>
+    ''' <param name="asOfDate">
+    ''' If the event has an "effective date" this is 
+    ''' </param>
+    Sub OnEventRead(ByVal sequenceNumber As UInteger, Optional ByVal asOfDate As Nullable(Of Date) = Nothing)
+
+    ''' <summary>
+    ''' Load the state of this projection from a saved snapshot
     ''' </summary>
     ''' <param name="snapshotToLoad">
-    ''' The stored snapshot for the given projection
+    ''' The snapshot to load the projection state from
     ''' </param>
-    Sub LoadSnapshot(ByVal snapshotToLoad As IProjectionSnapshot(Of TAggregate, TAggregateKey))
+    Sub LoadFromSnapshot(ByVal snapshotToLoad As IProjectionSnapshot(Of TAggregate, TAggregateKey))
+
+    ''' <summary>
+    ''' Turn the current state of this projection to a snapshot
+    ''' </summary>
+    Function ToSnapshot() As IProjectionSnapshot(Of TAggregate, TAggregateKey)
 
 End Interface
 
@@ -53,5 +69,34 @@ Public Interface IProjection
     ''' </returns>
     Function HandlesEventType(ByVal eventType As Type) As Boolean
 
+    ''' <summary>
+    ''' The current sequence number of the projection class
+    ''' </summary>
+    ReadOnly Property CurrentSequenceNumber As UInteger
+
+    ''' <summary>
+    ''' Called when a projection has handled an event 
+    ''' </summary>
+    ''' <param name="handledEventSequenceNumber">
+    ''' The sequence number of the event that has been competed - this allows the projection to keep track of where
+    ''' in the event stream it has got to
+    ''' </param>
+    Sub MarkEventHandled(ByVal handledEventSequenceNumber As UInteger)
+
+    ''' <summary>
+    ''' The current as-of date for this projection
+    ''' </summary>
+    ''' <remarks>
+    ''' This is only updated where an event is processed that has an as-of date field as part of its data properties
+    ''' </remarks>
+    ReadOnly Property CurrentAsOfDate As DateTime
+
+    ''' <summary>
+    ''' The current set of values the projection has as at the current point in time
+    ''' </summary>
+    ''' <remarks>
+    ''' These are the business-meaningful properties of the projection
+    ''' </remarks>
+    ReadOnly Property CurrentValues As IEnumerable(Of IProjectionSnapshotProperty)
 
 End Interface

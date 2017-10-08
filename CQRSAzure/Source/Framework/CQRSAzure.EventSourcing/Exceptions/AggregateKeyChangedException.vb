@@ -30,8 +30,8 @@ Public NotInheritable Class AggregateKeyChangedException
     End Property
 
 
-    Public Sub New(ByVal OldKeyIn As Object, ByVal NewKeyIn As Object)
-        MyBase.New("Attempt to change an aggregate key")
+    Public Sub New(ByVal OldKeyIn As Object, ByVal NewKeyIn As Object, Optional ByVal innerException As Exception = Nothing)
+        MyBase.New("Attempt to change an aggregate key", innerException)
 
         m_oldKey = OldKeyIn
         m_newKey = NewKeyIn

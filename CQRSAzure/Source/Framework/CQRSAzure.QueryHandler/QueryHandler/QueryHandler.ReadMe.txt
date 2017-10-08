@@ -1,0 +1,15 @@
+﻿Query Handlers
+==============
+
+The query handler is responsible for taking the query definition and parameters or settings contained therein,
+and returning the result set as requested by that query.
+
+In an event stream based system, this required the following steps:-
+1) Get the aggregate identity group members the query pertains to
+2) Run the query underlying projection over these members
+3) Perform any collation part of the query
+4) Return the resulting data
+
+As the collation part is different for those quewries that want a data set (collection) to those that want a single
+record there are two different base classes for each case.  The query definition has a property that is used to 
+route between these alternatives.

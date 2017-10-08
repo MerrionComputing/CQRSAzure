@@ -27,6 +27,7 @@ Public Class InstanceIdentityGroup(Of TAggregateIdentifier As IAggregationIdenti
         End Get
     End Property
 
+
     ''' <summary>
     ''' Returns the one instance this group contains
     ''' </summary>
@@ -41,6 +42,7 @@ Public Class InstanceIdentityGroup(Of TAggregateIdentifier As IAggregationIdenti
     End Function
 
     Public Sub New(ByVal instance As TAggregateIdentifier)
+        MyBase.New(Nothing, Nothing)
         m_instance = instance
     End Sub
 

@@ -1,0 +1,6 @@
+﻿In Memory
+=========
+
+In memory implementations allow you quickly to spin up event streams etc for unit testing.
+They do not have any physical persistence so are probably not of much use in a real business environment  
+(Unless you are only using ES in an interim part of the process that does not need to be persisted)

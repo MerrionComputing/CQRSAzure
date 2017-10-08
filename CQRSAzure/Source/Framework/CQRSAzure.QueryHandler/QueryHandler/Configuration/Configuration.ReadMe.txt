@@ -1,0 +1,7 @@
+﻿Query Handler Configuration
+===========================
+
+In order to allow horizontal scaling the query handlers can be connected by registering them via a configuration setting to allow
+query received by one instance to be load balanced across all the available command handlers.
+
+Query handlers are responsible for marshalling the projections and identity groups used to return the data required for a query.  

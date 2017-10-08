@@ -1,0 +1,5 @@
+﻿Local File
+==========
+
+Implementations of the identifier group and classifier logic that are based off event streams that use the local file
+system to store the events, and which use the local file store for any snapshots.

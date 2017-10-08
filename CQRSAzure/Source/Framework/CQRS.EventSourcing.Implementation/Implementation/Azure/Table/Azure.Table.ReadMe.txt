@@ -1,0 +1,18 @@
+﻿Azure Tables
+============
+
+Storage of the event stream in Azure tables where:
+
+1) The domain name and aggregate class are used to create the unique table name
+2) The aggregate identifier is converted to a string and used as the table partition key
+3) The event sequence number is converted to a string and used as the table row key
+4) In order to prevent table scans a separate table is used to record the creation of new entities of any given class
+being named [domain name] + Aggregates.
+
+(See http://www.codeproject.com/Articles/714742/CQRS-on-Windows-Azure-Event-sourcing )
+
+The following settings can be specified in the configuration file to modify how an event is persisted
+to a row in the table:
+
+
+

@@ -1,0 +1,13 @@
+﻿Azure Blob Identifier Groups
+============================
+
+The Azure blob classifier uses an event stream data read by the standard Azure.Blob.EventStreamReader()
+
+For the snapshots we have one blob per identity group with snapshots appended to the end when the snapshot is taken.  
+
+The as-of date of the snapshot is held in the wrapper and the payload contains an enumerable list (potentially empty) of all the
+aggregate keys that are considered "in" the group as at a given point in time.
+
+Since we do not need to update or delete records we will use Append Blobs ( See https://msdn.microsoft.com/library/azure/ee691964.aspx )
+
+

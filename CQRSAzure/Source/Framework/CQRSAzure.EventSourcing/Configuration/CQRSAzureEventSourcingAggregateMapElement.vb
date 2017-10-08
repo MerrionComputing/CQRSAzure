@@ -6,6 +6,8 @@
 Public Class CQRSAzureEventSourcingAggregateMapElement
     Inherits ConfigurationElement
 
+    Public Const DEFAULT_MAPPING_NAME As String = "Default"
+
     ''' <summary>
     ''' The domain-qualified name of the aggregate class that uses the given implementation 
     ''' for it's event stream backing store
@@ -39,6 +41,20 @@ Public Class CQRSAzureEventSourcingAggregateMapElement
         End Set
     End Property
 
-
+    ''' <summary>
+    ''' The name of the snapshot settings to use - this allows different configuration properties per event stream
+    ''' </summary>
+    ''' <remarks>
+    ''' The name relates to the XXXXSnapshotSettingElement identified by the name
+    ''' </remarks>
+    <ConfigurationProperty(NameOf(SnapshotSettingsName), DefaultValue:="Default")>
+    Public Property SnapshotSettingsName As String
+        Get
+            Return Me(NameOf(SnapshotSettingsName))
+        End Get
+        Set(value As String)
+            Me(NameOf(SnapshotSettingsName)) = value
+        End Set
+    End Property
 
 End Class
