@@ -66,7 +66,7 @@ Public Class ProjectionDocumentationGenerator
     End Sub
 
     Public Sub New(ByVal prjDef As ProjectionDefinition,
-                   Optional ByVal options As ModelDocumentationGeneratorOptions = Nothing,
+                   Optional ByVal options As IDocumentationGenerationOptions = Nothing,
                    Optional ByVal documentWriter As IDocumentationWriter = Nothing)
         MyBase.New(options, documentWriter)
         m_prjDef = prjDef

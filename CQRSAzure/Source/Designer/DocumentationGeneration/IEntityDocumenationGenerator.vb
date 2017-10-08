@@ -1,4 +1,5 @@
-﻿''' <summary>
+﻿Imports CQRSAzure.CQRSdsl.CustomCode.Interfaces
+''' <summary>
 ''' Interface for the common functionality provided by each specific documentation
 ''' generation class
 ''' </summary>
@@ -18,7 +19,7 @@ Public Interface IEntityDocumentationGenerator
     ''' <param name="options">
     ''' The specific options to use
     ''' </param>
-    Sub SetCodeDocumentationOptions(ByVal options As ModelDocumentationGeneratorOptions)
+    Sub SetCodeDocumentationOptions(ByVal options As IDocumentationGenerationOptions)
 
     ''' <summary>
     ''' Generate the documentation for this entity to the given document writer

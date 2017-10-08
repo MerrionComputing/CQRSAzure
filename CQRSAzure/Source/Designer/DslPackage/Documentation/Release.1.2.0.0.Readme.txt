@@ -1,0 +1,4 @@
+﻿Release 1.2.0.0
+===============
+
+This is the first release to integrate with the visual studio extensions marketplace on NuGet.

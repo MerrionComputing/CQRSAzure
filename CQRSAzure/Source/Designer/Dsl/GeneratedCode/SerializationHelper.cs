@@ -385,12 +385,45 @@ namespace CQRSAzure.CQRSdsl.Dsl
 		public virtual CQRSModel LoadModel(DslModeling::SerializationResult serializationResult, DslModeling::Partition partition, string fileName, DslModeling::ISchemaResolver schemaResolver, DslValidation::ValidationController validationController, DslModeling::ISerializerLocator serializerLocator)
 		{
 			#region Check Parameters
-			if (serializationResult == null)
-				throw new global::System.ArgumentNullException("serializationResult");
-			if (partition == null)
-				throw new global::System.ArgumentNullException("partition");
 			if (string.IsNullOrEmpty(fileName))
-				throw new global::System.ArgumentNullException("fileName");
+				throw new global::System.ArgumentNullException(nameof(fileName));
+			#endregion
+		
+			using (global::System.IO.FileStream fileStream = global::System.IO.File.OpenRead(fileName))
+			{
+				return this.LoadModel(serializationResult, partition, fileName, schemaResolver, validationController, serializerLocator, fileStream);
+			}
+		}
+	
+		/// <summary>
+		/// Loads a CQRSModel instance from a stream.
+		/// </summary>
+		/// <param name="serializationResult">Stores serialization result from the load operation.</param>
+		/// <param name="partition">Partition in which the new CQRSModel instance will be created.</param>
+		/// <param name="location">Source location associated with stream from which the CQRSModel instance is to be loaded. Usually a file path, but can be any string, including null.</param>
+		/// <param name="schemaResolver">
+		/// An ISchemaResolver that allows the serializer to do schema validation on the root element (and everything inside it).
+		/// If null is passed, schema validation will not be performed.
+		/// </param>
+		/// <param name="validationController">
+		/// A ValidationController that will be used to do load-time validation (validations with validation category "Load"). If null
+		/// is passed, load-time validation will not be performed.
+		/// </param>
+		/// <param name="serializerLocator">
+		/// An ISerializerLocator that will be used to locate any additional domain model types required to load the model. Can be null.
+		/// </param>
+		/// <param name="stream">The Stream from which the CQRSModel will be deserialized.</param>
+		/// <returns>The loaded CQRSModel instance.</returns>
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability","CA1506:AvoidExcessiveClassCoupling", Justification="Generated code")]
+		public virtual CQRSModel LoadModel(DslModeling::SerializationResult serializationResult, DslModeling::Partition partition, string location, DslModeling::ISchemaResolver schemaResolver, DslValidation::ValidationController validationController, DslModeling::ISerializerLocator serializerLocator, global::System.IO.Stream stream)
+		{
+			#region Check Parameters
+			if (serializationResult == null)
+				throw new global::System.ArgumentNullException(nameof(serializationResult));
+			if (partition == null)
+				throw new global::System.ArgumentNullException(nameof(partition));
+			if (stream == null)
+				throw new global::System.ArgumentNullException(nameof(stream));
 			#endregion
 		
 			// Ensure there is a transaction for this model to Load in.
@@ -405,74 +438,70 @@ namespace CQRSAzure.CQRSdsl.Dsl
 			global::System.Diagnostics.Debug.Assert(modelRootSerializer != null, "Cannot find serializer for CQRSModel!");
 			if (modelRootSerializer != null)
 			{
-				using (global::System.IO.FileStream fileStream = global::System.IO.File.OpenRead(fileName))
+				DslModeling::SerializationContext serializationContext = new DslModeling::SerializationContext(directory, location, serializationResult);
+				this.InitializeSerializationContext(partition, serializationContext, true);
+				DslModeling::TransactionContext transactionContext = new DslModeling::TransactionContext();
+				transactionContext.Add(DslModeling::SerializationContext.TransactionContextKey, serializationContext);
+				using (DslModeling::Transaction t = partition.Store.TransactionManager.BeginTransaction("Load Model from " + location??"stream", true, transactionContext))
 				{
-					DslModeling::SerializationContext serializationContext = new DslModeling::SerializationContext(directory, fileStream.Name, serializationResult);
-					this.InitializeSerializationContext(partition, serializationContext, true);
-					DslModeling::TransactionContext transactionContext = new DslModeling::TransactionContext();
-					transactionContext.Add(DslModeling::SerializationContext.TransactionContextKey, serializationContext);
-					using (DslModeling::Transaction t = partition.Store.TransactionManager.BeginTransaction("Load Model from " + fileName, true, transactionContext))
+					// Ensure there is some content in the file.  Blank (or almost blank, to account for encoding header bytes, etc.)
+					// files will cause a new root element to be created and returned. 
+					if (stream.Length > 5)
 					{
-						// Ensure there is some content in the file.  Blank (or almost blank, to account for encoding header bytes, etc.)
-						// files will cause a new root element to be created and returned. 
-						if (fileStream.Length > 5)
+						try
 						{
-							try
+							global::System.Xml.XmlReaderSettings settings = CQRSdslSerializationHelper.Instance.CreateXmlReaderSettings(serializationContext, false);
+							using (global::System.Xml.XmlReader reader = global::System.Xml.XmlReader.Create(stream, settings))
 							{
-								global::System.Xml.XmlReaderSettings settings = CQRSdslSerializationHelper.Instance.CreateXmlReaderSettings(serializationContext, false);
-								using (global::System.Xml.XmlReader reader = global::System.Xml.XmlReader.Create(fileStream, settings))
+								// Attempt to read the encoding.
+								reader.Read(); // Move to the first node - will be the XmlDeclaration if there is one.
+								global::System.Text.Encoding encoding;
+								if (this.TryGetEncoding(reader, out encoding))
 								{
-									// Attempt to read the encoding.
-									reader.Read(); // Move to the first node - will be the XmlDeclaration if there is one.
-									global::System.Text.Encoding encoding;
-									if (this.TryGetEncoding(reader, out encoding))
-									{
-										serializationResult.Encoding = encoding;
-									}
-	
-									// Load any additional domain models that are required
-									DslModeling::SerializationUtilities.ResolveDomainModels(reader, serializerLocator, partition.Store);
-								
-									reader.MoveToContent();
-	
-									
-									modelRoot = modelRootSerializer.TryCreateInstance(serializationContext, reader, partition) as CQRSModel;
-									if (modelRoot != null && !serializationResult.Failed)
-									{
-										this.ReadRootElement(serializationContext, modelRoot, reader, schemaResolver);
-									}
+									serializationResult.Encoding = encoding;
 								}
 	
+								// Load any additional domain models that are required
+								DslModeling::SerializationUtilities.ResolveDomainModels(reader, serializerLocator, partition.Store);
+								
+								reader.MoveToContent();
+									
+								modelRoot = modelRootSerializer.TryCreateInstance(serializationContext, reader, partition) as CQRSModel;
+								if (modelRoot != null && !serializationResult.Failed)
+								{
+									this.ReadRootElement(serializationContext, modelRoot, reader, schemaResolver);
+								}
 							}
-							catch (global::System.Xml.XmlException xEx)
-							{
-								DslModeling::SerializationUtilities.AddMessage(
-									serializationContext,
-									DslModeling::SerializationMessageKind.Error,
-									xEx
-								);
-							}
-						}
-				
-						if(modelRoot == null && !serializationResult.Failed)
-						{
-							// create model root if it doesn't exist.
-							modelRoot = this.CreateModelHelper(partition);
-						}
-						if (t.IsActive)
-							t.Commit();
-					} // End Inner Tx
 	
-					// Do load-time validation if a ValidationController is provided.
-					if (!serializationResult.Failed && validationController != null)
-					{
-						using (new SerializationValidationObserver(serializationResult, validationController))
+						}
+						catch (global::System.Xml.XmlException xEx)
 						{
-							validationController.Validate(partition, DslValidation::ValidationCategories.Load);
+							DslModeling::SerializationUtilities.AddMessage(
+								serializationContext,
+								DslModeling::SerializationMessageKind.Error,
+								xEx
+							);
 						}
 					}
+				
+					if(modelRoot == null && !serializationResult.Failed)
+					{
+						// create model root if it doesn't exist.
+						modelRoot = this.CreateModelHelper(partition);
+					}
+					if (t.IsActive)
+						t.Commit();
+				} // End Inner Tx
 	
+				// Do load-time validation if a ValidationController is provided.
+				if (!serializationResult.Failed && validationController != null)
+				{
+					using (new SerializationValidationObserver(serializationResult, validationController))
+					{
+						validationController.Validate(partition, DslValidation::ValidationCategories.Load);
+					}
 				}
+	
 			}
 			return modelRoot;
 		}
@@ -1085,7 +1114,7 @@ namespace CQRSAzure.CQRSdsl.Dsl
 				// Only model has schema, diagram has no schema.
 				rootElementSettings.SchemaTargetNamespace = "http://schemas.microsoft.com/dsltools/CQRSdsl";
 			}
-			rootElementSettings.Version = new global::System.Version("1.1.0.0");
+			rootElementSettings.Version = new global::System.Version("1.2.0.0");
 	
 			// Carry out the normal serialization.
 			rootSerializer.Write(serializationContext, rootElement, writer, rootElementSettings);
@@ -1107,7 +1136,7 @@ namespace CQRSAzure.CQRSdsl.Dsl
 				throw new global::System.ArgumentNullException("reader");
 			#endregion
 	
-			global::System.Version expectedVersion = new global::System.Version("1.1.0.0");
+			global::System.Version expectedVersion = new global::System.Version("1.2.0.0");
 			string dslVersionStr = reader.GetAttribute("dslVersion");
 			if (dslVersionStr != null)
 			{

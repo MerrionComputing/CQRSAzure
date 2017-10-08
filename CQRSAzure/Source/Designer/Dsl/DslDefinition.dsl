@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Dsl xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="2bad020f-9a7d-4ffa-8cc1-6050f57b0191" Description="Domain Specific Language for creating CQRS/ES domains" Name="CQRSdsl" DisplayName="CQRSdsl" Namespace="CQRSAzure.CQRSdsl.Dsl" MinorVersion="1" ProductName="CQRSdsl" CompanyName="CQRSAzure" PackageGuid="5f54fc45-4897-47e5-b71f-8ff66160144e" PackageNamespace="CQRSAzure.CQRSdsl.Dsl" xmlns="http://schemas.microsoft.com/VisualStudio/2005/DslTools/DslDefinitionModel">
+<Dsl xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="2bad020f-9a7d-4ffa-8cc1-6050f57b0191" Description="Domain Specific Language for creating CQRS/ES domains" Name="CQRSdsl" DisplayName="CQRSdsl" Namespace="CQRSAzure.CQRSdsl.Dsl" MinorVersion="2" ProductName="CQRSdsl" CompanyName="CQRSAzure" PackageGuid="5f54fc45-4897-47e5-b71f-8ff66160144e" PackageNamespace="CQRSAzure.CQRSdsl.Dsl" xmlns="http://schemas.microsoft.com/VisualStudio/2005/DslTools/DslDefinitionModel">
+  <Notes>This designer goes along with the CQRS on Azure framework to create event sourcing based CQRS architectures</Notes>
   <Classes>
     <DomainClass Id="b927fa6e-0562-44cc-9be0-71281aa07d25" Description="The root in which all other elements are embedded. Appears as a diagram." Name="CQRSModel" DisplayName="CQRSModel" Namespace="CQRSAzure.CQRSdsl.Dsl" HasCustomConstructor="true">
       <Notes>The CQRS model describes a domain expressed using the Command Query responsability separation pattern</Notes>
@@ -19,6 +20,55 @@
             <ExternalTypeMoniker Name="/System/String" />
           </Type>
         </DomainProperty>
+        <DomainProperty Id="f925da5a-07b7-420a-8520-246724dfecd6" Description="The default language to use when doing code generation for this model" Name="DefaultCodeGenerationLanguage" DisplayName="Default Code Generation Language" DefaultValue="VBNet" Category="Code Generation">
+          <Notes>This may be overriden on a per project or per user basis</Notes>
+          <Type>
+            <DomainEnumerationMoniker Name="TargetLanguage" />
+          </Type>
+        </DomainProperty>
+        <DomainProperty Id="e5e83a90-1b39-4900-b125-fe74ca3fc3b0" Description="Should each domain code be put in its own subfolder?" Name="SubfolderPerDomain" DisplayName="Subfolder Per Domain" Category="Code Generation">
+          <Type>
+            <ExternalTypeMoniker Name="/System/Boolean" />
+          </Type>
+        </DomainProperty>
+        <DomainProperty Id="491d1a27-0b88-41a1-bea5-09451d04422d" Description="Should each aggregate generate code into its own sub folder" Name="SubfolderPerAggregate" DisplayName="Subfolder Per Aggregate" Category="Code Generation">
+          <Type>
+            <ExternalTypeMoniker Name="/System/Boolean" />
+          </Type>
+        </DomainProperty>
+        <DomainProperty Id="274c78c7-111d-4364-9bd7-e17d09afd0da" Description="Major version number for the CQRS domain model" Name="MajorVersion" DisplayName="Major Version" DefaultValue="1" Category="Documentation">
+          <Type>
+            <ExternalTypeMoniker Name="/System/Int32" />
+          </Type>
+        </DomainProperty>
+        <DomainProperty Id="a78f82c4-2b9a-4fb4-a3b7-6fe6207ba6ac" Description="Minor version number of the CQRS domain" Name="MinorVersion" DisplayName="Minor Version" DefaultValue="1" Category="Documentation">
+          <Type>
+            <ExternalTypeMoniker Name="/System/Int32" />
+          </Type>
+        </DomainProperty>
+        <DomainProperty Id="389465bf-3e2b-4734-87d7-4437773b79fe" Description="The root folder to generate source code into for this domain" Name="CodeRootFolder" DisplayName="Code Root Folder" Category="Code Generation">
+          <Notes>If this starts with a dot and slash it is considered to be a relative folder</Notes>
+          <Type>
+            <ExternalTypeMoniker Name="/System/String" />
+          </Type>
+        </DomainProperty>
+        <DomainProperty Id="b5402dbc-d23c-492e-8e9a-b4d76f48dfda" Description="The root folder to store the documentation generated for this domain in" Name="DocumentationRootFolder" DisplayName="Documentation Root Folder" Category="Documentation">
+          <Type>
+            <ExternalTypeMoniker Name="/System/String" />
+          </Type>
+        </DomainProperty>
+        <DomainProperty Id="70abc4bb-a679-46ba-adf1-c34e8a412b78" Description="Should the model build the Entity Framework classes for storing the model in an SQL database" Name="GenerateEntityFrameworkClasses" DisplayName="Generate Entity Framework Classes" DefaultValue="False" Category="Code Generation">
+          <Notes>Not implemented yet</Notes>
+          <Type>
+            <ExternalTypeMoniker Name="/System/Boolean" />
+          </Type>
+        </DomainProperty>
+        <DomainProperty Id="8a186666-f7d7-4e8f-88fb-cd91f7aedc84" Description="The framework to use for the generated code" Name="Framework" DisplayName="Framework" DefaultValue="CQRSonAzure">
+          <Notes>This affects how the code generation is performed</Notes>
+          <Type>
+            <DomainEnumerationMoniker Name="SupportingFramework" />
+          </Type>
+        </DomainProperty>
       </Properties>
       <ElementMergeDirectives>
         <ElementMergeDirective>
@@ -27,14 +77,6 @@
           </Index>
           <LinkCreationPaths>
             <DomainPath>CQRSModelHasAggregateIdentifiers.AggregateIdentifiers</DomainPath>
-          </LinkCreationPaths>
-        </ElementMergeDirective>
-        <ElementMergeDirective>
-          <Index>
-            <DomainClassMoniker Name="ModelSetting" />
-          </Index>
-          <LinkCreationPaths>
-            <DomainPath>CQRSModelHasModelSet.ModelSet</DomainPath>
           </LinkCreationPaths>
         </ElementMergeDirective>
       </ElementMergeDirectives>
@@ -190,6 +232,11 @@
             <ExternalTypeMoniker Name="/System/String" />
           </Type>
         </DomainProperty>
+        <DomainProperty Id="d775bcc3-7673-4bcc-837f-c36fe50cefe9" Description="Can a snapshot be taken of this projection" Name="CanSnapshot" DisplayName="Can Snapshot" DefaultValue="true">
+          <Type>
+            <ExternalTypeMoniker Name="/System/Boolean" />
+          </Type>
+        </DomainProperty>
       </Properties>
       <ElementMergeDirectives>
         <ElementMergeDirective>
@@ -267,6 +314,12 @@
             <ExternalTypeMoniker Name="/System/String" />
           </Type>
         </DomainProperty>
+        <DomainProperty Id="e8d0a4bf-6b07-4c21-85ef-e5b17e505ca3" Description="Does this property provide the &quot;effective date&quot; the event occured on?" Name="IsEffectiveDate" DisplayName="Is Effective Date" DefaultValue="False">
+          <Notes>This is only applicable for one date property per event class</Notes>
+          <Type>
+            <ExternalTypeMoniker Name="/System/Boolean" />
+          </Type>
+        </DomainProperty>
       </Properties>
     </DomainClass>
     <DomainClass Id="1b5f2aa3-d343-46a4-8dc0-7af37530b0db" Description="A property providing the data component of a projection" Name="ProjectionProperty" DisplayName="Projection Property" Namespace="CQRSAzure.CQRSdsl.Dsl">
@@ -316,7 +369,12 @@
             <ExternalTypeMoniker Name="/System/String" />
           </Type>
         </DomainProperty>
-        <DomainProperty Id="d1b40286-c05e-47e5-ba4b-067c3e9bcd47" Description="Does this command parameter identify the aggregate that the command should apply to?" Name="IsAggregateKey" DisplayName="Is Aggregate Key" DefaultValue="False">
+        <DomainProperty Id="d1b40286-c05e-47e5-ba4b-067c3e9bcd47" Description="Does this command parameter identify the aggregate that the command should apply to?" Name="IsAggregateKey" DisplayName="Is Aggregate Key" DefaultValue="False" Category="Target">
+          <Type>
+            <ExternalTypeMoniker Name="/System/Boolean" />
+          </Type>
+        </DomainProperty>
+        <DomainProperty Id="c93c0d4e-66a1-4bd9-b008-6c46d136e4d4" Description="Does this command parameter identify the identity group that the command should apply to?" Name="IsIdentityGroupName" DisplayName="Is Identity Group Name" Category="Target">
           <Type>
             <ExternalTypeMoniker Name="/System/Boolean" />
           </Type>
@@ -389,7 +447,7 @@
             <DomainEnumerationMoniker Name="PropertyDataType" />
           </Type>
         </DomainProperty>
-        <DomainProperty Id="371838f0-7d84-44f0-a1b3-cb8f2d2a497a" Description="Is this query parameter the unique key of the aggregate the query is to run against?" Name="IsAggregateKey" DisplayName="Is Aggregate Key" DefaultValue="False">
+        <DomainProperty Id="371838f0-7d84-44f0-a1b3-cb8f2d2a497a" Description="Is this query parameter the unique key of the aggregate the query is to run against?" Name="IsAggregateKey" DisplayName="Is Aggregate Key" DefaultValue="False" Category="Target">
           <Type>
             <ExternalTypeMoniker Name="/System/Boolean" />
           </Type>
@@ -401,6 +459,11 @@
         </DomainProperty>
         <DomainProperty Id="fc68874a-f57b-40b7-92f7-3259fa342797" Description="Is this parameter an &quot;as-of&quot; indicator to tell the query when to stop reading the underlying event stream?" Name="IsEffectiveDate" DisplayName="Is Effective Date" DefaultValue="False">
           <Notes>If no "as-of" parameter is specified then up to the current end of stream is assumed</Notes>
+          <Type>
+            <ExternalTypeMoniker Name="/System/Boolean" />
+          </Type>
+        </DomainProperty>
+        <DomainProperty Id="83753b78-6642-4e06-8f77-1cb19d536a85" Description="Is this query parameter the unique key of the identity group the query is to run against?" Name="IsIdentityGroupName" DisplayName="Is Identity Group Name" DefaultValue="False" Category="Target">
           <Type>
             <ExternalTypeMoniker Name="/System/Boolean" />
           </Type>
@@ -491,20 +554,6 @@
         </DomainProperty>
       </Properties>
     </DomainClass>
-    <DomainClass Id="1dc6d5ad-aa3c-45e5-a876-a69d6e916ac5" Description="A setting that controls how the model is turned into code or documentation" Name="ModelSetting" DisplayName="Model Setting" Namespace="CQRSAzure.CQRSdsl.Dsl">
-      <Properties>
-        <DomainProperty Id="9542884f-3021-4604-9e52-b035f914f700" Description="The unique name of this model setting" Name="Name" DisplayName="Name" IsElementName="true">
-          <Type>
-            <ExternalTypeMoniker Name="/System/String" />
-          </Type>
-        </DomainProperty>
-        <DomainProperty Id="170d46e0-646c-4e90-b915-5665f9198024" Description="The value of this model setting" Name="Value" DisplayName="Value">
-          <Type>
-            <ExternalTypeMoniker Name="/System/String" />
-          </Type>
-        </DomainProperty>
-      </Properties>
-    </DomainClass>
     <DomainClass Id="9fa1697d-48e7-4b70-afc0-8eb600d6fb6e" Description="A collection of 0 or more aggregate identifiers that share a common attribute that denotes identity" Name="IdentityGroup" DisplayName="Identity Group" Namespace="CQRSAzure.CQRSdsl.Dsl">
       <Notes>Identity is an attribute that x is a y</Notes>
       <Properties>
@@ -541,6 +590,16 @@
             <ExternalTypeMoniker Name="/System/String" />
           </Type>
         </DomainProperty>
+        <DomainProperty Id="552c895d-1074-48f8-98ab-1c6e0dd21247" Description="The name of the group of which this group is a wholy contained subset" Name="ParentName" DisplayName="Parent Name" DefaultValue="All">
+          <Type>
+            <ExternalTypeMoniker Name="/System/String" />
+          </Type>
+        </DomainProperty>
+        <DomainProperty Id="4e2a2722-aac3-4773-acde-41e05f7e1052" Description="Can a snapshot be taken of the members of this identity group?" Name="CanSnapshot" DisplayName="Can Snapshot" DefaultValue="true">
+          <Type>
+            <ExternalTypeMoniker Name="/System/Boolean" />
+          </Type>
+        </DomainProperty>
       </Properties>
     </DomainClass>
     <DomainClass Id="d7d66aea-3f0b-451f-9730-da862a4d5368" Description="A specialised projection which classifies entities as being either in or out of a particular identity group" Name="Classifier" DisplayName="Classifier" Namespace="CQRSAzure.CQRSdsl.Dsl">
@@ -567,6 +626,17 @@
             <ExternalTypeMoniker Name="/System/String" />
           </Type>
         </DomainProperty>
+        <DomainProperty Id="312a49fa-83c8-4b98-a840-7d8bd18354ea" Description="Can a point-in-time snapshot be taken by this classifier?" Name="CanSnapshot" DisplayName="Can Snapshot" DefaultValue="true">
+          <Type>
+            <ExternalTypeMoniker Name="/System/Boolean" />
+          </Type>
+        </DomainProperty>
+        <DomainProperty Id="bf2ce696-5457-43db-a794-9af0fe069c4e" Description="Does the data for the classifier come directly from an event stream or from a projection?" Name="DataSourceType" DisplayName="Data Source Type">
+          <Notes>This determines if an events collection or a single projection supplied the input</Notes>
+          <Type>
+            <DomainEnumerationMoniker Name="ClassifierDataSourceType" />
+          </Type>
+        </DomainProperty>
       </Properties>
       <ElementMergeDirectives>
         <ElementMergeDirective>
@@ -575,6 +645,14 @@
           </Index>
           <LinkCreationPaths>
             <DomainPath>ClassifierHasEventEvaluations.ClassifierEventEvaluations</DomainPath>
+          </LinkCreationPaths>
+        </ElementMergeDirective>
+        <ElementMergeDirective>
+          <Index>
+            <DomainClassMoniker Name="ClassifierProjectionPropertyEvaluation" />
+          </Index>
+          <LinkCreationPaths>
+            <DomainPath>ClassifierHasClassifierProjectionPropertyEvaluations.ClassifierProjectionPropertyEvaluations</DomainPath>
           </LinkCreationPaths>
         </ElementMergeDirective>
       </ElementMergeDirectives>
@@ -640,6 +718,52 @@
           </Type>
         </DomainProperty>
         <DomainProperty Id="580bb78e-2259-430c-bcf8-692ab24d16d1" Description="What is represented by the evaluation target" Name="TargetType" DisplayName="Target Type" DefaultValue="Constant">
+          <Type>
+            <DomainEnumerationMoniker Name="EvaluationTargetType" />
+          </Type>
+        </DomainProperty>
+      </Properties>
+    </DomainClass>
+    <DomainClass Id="d26c9d9c-8a3d-4425-a7ca-7acebf4cd59b" Description="Evaluation to perform on a property of a projection" Name="ClassifierProjectionPropertyEvaluation" DisplayName="Classifier Projection Property Evaluation" Namespace="CQRSAzure.CQRSdsl.Dsl">
+      <Properties>
+        <DomainProperty Id="88b64e0b-dfc3-4c8a-b9e2-209039e1361f" Description="The name of the projection property to test" Name="PropertyName" DisplayName="Property Name">
+          <Notes>Any property evaluations where this is not set will be ignored</Notes>
+          <Type>
+            <ExternalTypeMoniker Name="/System/String" />
+          </Type>
+        </DomainProperty>
+        <DomainProperty Id="a699b460-4bba-4483-aa45-649a4f2e3f5e" Description="Additional notes pertaining to this classifier projection property evaluation" Name="Notes" DisplayName="Notes">
+          <Type>
+            <ExternalTypeMoniker Name="/System/String" />
+          </Type>
+        </DomainProperty>
+        <DomainProperty Id="87508252-bdb3-4349-836e-db5a4aaad91f" Description="Description of this classifier projection property evaluation" Name="Description" DisplayName="Description">
+          <Type>
+            <ExternalTypeMoniker Name="/System/String" />
+          </Type>
+        </DomainProperty>
+        <DomainProperty Id="efce8e43-3c74-4e24-aedd-0b0e8f9ce139" Description="The evaluation to perform on the projection property" Name="PropertyEvaluationToPerform" DisplayName="Property Evaluation To Perform" DefaultValue="Always">
+          <Type>
+            <DomainEnumerationMoniker Name="PropertyEvaluation" />
+          </Type>
+        </DomainProperty>
+        <DomainProperty Id="448ad410-dbaf-4523-a04f-8c0046e958c1" Description="What the property evaluating to true means to the identity group" Name="OnTrue" DisplayName="On True" DefaultValue="Include">
+          <Type>
+            <DomainEnumerationMoniker Name="IdentityGroupClassification" />
+          </Type>
+        </DomainProperty>
+        <DomainProperty Id="cbf5d77e-d5f1-4ede-9f4e-213ca986c07c" Description="What happens to group membership if this property evaluates to false" Name="OnFalse" DisplayName="On False" DefaultValue="Exclude">
+          <Type>
+            <DomainEnumerationMoniker Name="IdentityGroupClassification" />
+          </Type>
+        </DomainProperty>
+        <DomainProperty Id="11e7c87b-d615-4f67-bd2f-d65329c3dfa3" Description="What the property value is being evaluated against" Name="Target" DisplayName="Target">
+          <Notes>If the target type is a constant then this is the constant's value, otherwise the variable name</Notes>
+          <Type>
+            <ExternalTypeMoniker Name="/System/String" />
+          </Type>
+        </DomainProperty>
+        <DomainProperty Id="89b5c07f-fdd1-49c9-a44f-b5039cabda21" Description="What is represented by the evaluation target" Name="TargetType" DisplayName="Target Type" DefaultValue="Constant">
           <Type>
             <DomainEnumerationMoniker Name="EvaluationTargetType" />
           </Type>
@@ -959,22 +1083,6 @@
         </DomainRole>
       </Target>
     </DomainRelationship>
-    <DomainRelationship Id="2a88a228-fa99-41c6-8bb8-fb443b96ce5e" Description="Additional setting that controsl how the model is truend into code or documentation" Name="CQRSModelHasModelSet" DisplayName="CQRSModel Has Model Set" Namespace="CQRSAzure.CQRSdsl.Dsl" IsEmbedding="true">
-      <Source>
-        <DomainRole Id="b7cc451c-4223-43ac-8ffd-684cd0571bb2" Description="Description for CQRSAzure.CQRSdsl.Dsl.CQRSModelHasModelSet.CQRSModel" Name="CQRSModel" DisplayName="CQRSModel" PropertyName="ModelSet" PropagatesCopy="PropagatesCopyToLinkAndOppositeRolePlayer" PropertyDisplayName="Model Set">
-          <RolePlayer>
-            <DomainClassMoniker Name="CQRSModel" />
-          </RolePlayer>
-        </DomainRole>
-      </Source>
-      <Target>
-        <DomainRole Id="685143c1-54fd-4a30-88dc-d825c4e53533" Description="Description for CQRSAzure.CQRSdsl.Dsl.CQRSModelHasModelSet.ModelSetting" Name="ModelSetting" DisplayName="Model Setting" PropertyName="CQRSModel" Multiplicity="One" PropagatesDelete="true" PropertyDisplayName="CQRSModel">
-          <RolePlayer>
-            <DomainClassMoniker Name="ModelSetting" />
-          </RolePlayer>
-        </DomainRole>
-      </Target>
-    </DomainRelationship>
     <DomainRelationship Id="c43057ea-90f5-4c21-a802-5d9bf98cedff" Description="The identity reference group to use to run this query against a set of aggregate identifiers" Name="QueryDefinitionReferencesIdentityGroup" DisplayName="Query Definition References Identity Group" Namespace="CQRSAzure.CQRSdsl.Dsl">
       <Source>
         <DomainRole Id="551bda20-afe0-4f4e-9200-a2bed0dd0cac" Description="Description for CQRSAzure.CQRSdsl.Dsl.QueryDefinitionReferencesIdentityGroup.QueryDefinition" Name="QueryDefinition" DisplayName="Query Definition" PropertyName="IdentityGroup" Multiplicity="ZeroOne" PropertyDisplayName="Identity Group">
@@ -1126,6 +1234,39 @@
         </DomainRole>
       </Target>
     </DomainRelationship>
+    <DomainRelationship Id="05477329-76e7-4b3a-b817-03642eaecf6b" Description="For a classifier that relies on a projection, this is the projection concerned" Name="ClassifierReferencesProjectionDefinition" DisplayName="Classifier References Projection Definition" Namespace="CQRSAzure.CQRSdsl.Dsl">
+      <Notes>A classifier should either handle events directly or derive from a projection that handles the events of the aggregate being classified</Notes>
+      <Source>
+        <DomainRole Id="13ee9f93-66bb-4917-85e2-e482c9c661aa" Description="Description for CQRSAzure.CQRSdsl.Dsl.ClassifierReferencesProjectionDefinition.Classifier" Name="Classifier" DisplayName="Classifier" PropertyName="ProjectionDefinition" Multiplicity="ZeroOne" PropertyDisplayName="Projection Definition">
+          <RolePlayer>
+            <DomainClassMoniker Name="Classifier" />
+          </RolePlayer>
+        </DomainRole>
+      </Source>
+      <Target>
+        <DomainRole Id="b5f11c71-dbde-4508-b100-91d44c9dd6e6" Description="Description for CQRSAzure.CQRSdsl.Dsl.ClassifierReferencesProjectionDefinition.ProjectionDefinition" Name="ProjectionDefinition" DisplayName="Projection Definition" PropertyName="Classifier" Multiplicity="ZeroOne" PropertyDisplayName="Classifier">
+          <RolePlayer>
+            <DomainClassMoniker Name="ProjectionDefinition" />
+          </RolePlayer>
+        </DomainRole>
+      </Target>
+    </DomainRelationship>
+    <DomainRelationship Id="52db539a-cddf-48d5-8379-ed7c7db835c9" Description="Description for CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations" Name="ClassifierHasClassifierProjectionPropertyEvaluations" DisplayName="Classifier Has Classifier Projection Property Evaluations" Namespace="CQRSAzure.CQRSdsl.Dsl" IsEmbedding="true">
+      <Source>
+        <DomainRole Id="160c519a-48cb-40c4-b726-5e2b86fe0b69" Description="Description for CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations.Classifier" Name="Classifier" DisplayName="Classifier" PropertyName="ClassifierProjectionPropertyEvaluations" PropagatesCopy="PropagatesCopyToLinkAndOppositeRolePlayer" PropertyDisplayName="Classifier Projection Property Evaluations">
+          <RolePlayer>
+            <DomainClassMoniker Name="Classifier" />
+          </RolePlayer>
+        </DomainRole>
+      </Source>
+      <Target>
+        <DomainRole Id="2ace4ffb-8d4d-4d08-8615-71afa07c67c6" Description="Description for CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations.ClassifierProjectionPropertyEvaluation" Name="ClassifierProjectionPropertyEvaluation" DisplayName="Classifier Projection Property Evaluation" PropertyName="Classifier" Multiplicity="One" PropagatesDelete="true" PropertyDisplayName="Classifier">
+          <RolePlayer>
+            <DomainClassMoniker Name="ClassifierProjectionPropertyEvaluation" />
+          </RolePlayer>
+        </DomainRole>
+      </Target>
+    </DomainRelationship>
   </Relationships>
   <Types>
     <ExternalType Name="DateTime" Namespace="System" />
@@ -1179,6 +1320,9 @@
         <EnumerationLiteral Description="A true or false value" Name="Boolean" Value="6" />
         <EnumerationLiteral Description="Globally unique identifier" Name="GUID" Value="7">
           <Notes>A globally unique identifier</Notes>
+        </EnumerationLiteral>
+        <EnumerationLiteral Description="A whole number that is greater than zero" Name="PositiveInteger" Value="9">
+          <Notes>This is typically used for counters where &lt;0 is not sensible</Notes>
         </EnumerationLiteral>
       </Literals>
     </DomainEnumeration>
@@ -1247,6 +1391,28 @@
         <EnumerationLiteral Description="The target is a named variable in the classifier class" Name="Variable" Value="1">
           <Notes>How the variable gets set and potentially changed is up to the implementer</Notes>
         </EnumerationLiteral>
+      </Literals>
+    </DomainEnumeration>
+    <DomainEnumeration Name="ClassifierDataSourceType" Namespace="CQRSAzure.CQRSdsl.Dsl" Description="Description for CQRSAzure.CQRSdsl.Dsl.ClassifierDataSourceType">
+      <Notes>How does this classifier decide its data</Notes>
+      <Literals>
+        <EnumerationLiteral Description="The classifier operates directly on the event stream by handling events" Name="EventHandler" Value="0">
+          <Notes>This is typical for most simple classifications</Notes>
+        </EnumerationLiteral>
+        <EnumerationLiteral Description="The classifier takes its data from a linked projection" Name="Projection" Value="1">
+          <Notes>A classifier must get its data from a projection or from event handlers</Notes>
+        </EnumerationLiteral>
+      </Literals>
+    </DomainEnumeration>
+    <DomainEnumeration Name="SupportingFramework" Namespace="CQRSAzure.CQRSdsl.Dsl" Description="What framework the generated code should target">
+      <Literals>
+        <EnumerationLiteral Description="Use CQRS on Azure Framework" Name="CQRSonAzure" Value="0">
+          <Notes>This is the default</Notes>
+        </EnumerationLiteral>
+        <EnumerationLiteral Description="Use Microsoft Orleans based framework" Name="Orleans" Value="1">
+          <Notes>Implement the projections as beans etc.</Notes>
+        </EnumerationLiteral>
+        <EnumerationLiteral Description="Generate EventStore code" Name="EventStore" Value="" />
       </Literals>
     </DomainEnumeration>
   </Types>
@@ -1387,6 +1553,7 @@
         <IconDecorator Name="ClassifierIconDecorator" DisplayName="Classifier Icon Decorator" DefaultIcon="Resources\IdentityGroupToolBitmap.bmp" />
       </ShapeHasDecorators>
       <Compartment TitleFillColor="Orange" Name="EventEvaluationsCompartment" Title="Event Evaluations" />
+      <Compartment TitleFillColor="Moccasin" Name="ProjectionEvaluationsCompartment" Title="Projection Property Evaluations" />
     </CompartmentShape>
   </Shapes>
   <Connectors>
@@ -1399,6 +1566,7 @@
     <Connector Id="a9d56ec1-c552-40e5-9608-eee4cfd9f0e6" Description="Connection between an aggregate identifier definition and the identity groups that may contain it" Name="AggregateIdentityGroupConnector" DisplayName="Aggregate Identity Group Connector" Namespace="CQRSAzure.CQRSdsl.Dsl" FixedTooltipText="Aggregate Identity Group Connector" Color="LightGreen" Thickness="0.01" />
     <Connector Id="fc29b546-efd7-4f5b-a7be-121a06430c74" Description="Link between an identity group and the classifier that generates its membership" Name="IdentityGroupClassifierConnector" DisplayName="Identity Group Classifier Connector" Namespace="CQRSAzure.CQRSdsl.Dsl" FixedTooltipText="Identity Group Classifier" DashStyle="Dash" Thickness="0.01" />
     <Connector Id="521969b1-9129-4bf3-91ba-e1508111fa56" Description="Connection between a classifier and an event it handles" Name="ClassifierEventConnector" DisplayName="Classifier Event Connector" Namespace="CQRSAzure.CQRSdsl.Dsl" FixedTooltipText="Classifier Event Connector" Color="BlanchedAlmond" DashStyle="Dot" Thickness="0.01" RoutingStyle="Straight" />
+    <Connector Id="52816add-61a2-44ba-919d-cd93c68bfa98" Description="Description for CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionConnector" Name="ClassifierProjectionConnector" DisplayName="Classifier Projection Connector" Namespace="CQRSAzure.CQRSdsl.Dsl" FixedTooltipText="Classifier Projection Connector" Color="Linen" DashStyle="Dot" RoutingStyle="Straight" />
   </Connectors>
   <XmlSerializationBehavior Name="CQRSdslSerializationBehavior" Namespace="CQRSAzure.CQRSdsl.Dsl">
     <ClassData>
@@ -1414,31 +1582,46 @@
           <XmlPropertyData XmlName="notes">
             <DomainPropertyMoniker Name="CQRSModel/Notes" />
           </XmlPropertyData>
-          <XmlRelationshipData UseFullForm="true" RoleElementName="modelSet">
-            <DomainRelationshipMoniker Name="CQRSModelHasModelSet" />
-          </XmlRelationshipData>
           <XmlPropertyData XmlName="description">
             <DomainPropertyMoniker Name="CQRSModel/Description" />
+          </XmlPropertyData>
+          <XmlPropertyData XmlName="defaultCodeGenerationLanguage">
+            <DomainPropertyMoniker Name="CQRSModel/DefaultCodeGenerationLanguage" />
+          </XmlPropertyData>
+          <XmlPropertyData XmlName="subfolderPerDomain">
+            <DomainPropertyMoniker Name="CQRSModel/SubfolderPerDomain" />
+          </XmlPropertyData>
+          <XmlPropertyData XmlName="subfolderPerAggregate">
+            <DomainPropertyMoniker Name="CQRSModel/SubfolderPerAggregate" />
+          </XmlPropertyData>
+          <XmlPropertyData XmlName="majorVersion">
+            <DomainPropertyMoniker Name="CQRSModel/MajorVersion" />
+          </XmlPropertyData>
+          <XmlPropertyData XmlName="minorVersion">
+            <DomainPropertyMoniker Name="CQRSModel/MinorVersion" />
+          </XmlPropertyData>
+          <XmlPropertyData XmlName="codeRootFolder">
+            <DomainPropertyMoniker Name="CQRSModel/CodeRootFolder" />
+          </XmlPropertyData>
+          <XmlPropertyData XmlName="documentationRootFolder">
+            <DomainPropertyMoniker Name="CQRSModel/DocumentationRootFolder" />
+          </XmlPropertyData>
+          <XmlPropertyData XmlName="generateEntityFrameworkClasses">
+            <DomainPropertyMoniker Name="CQRSModel/GenerateEntityFrameworkClasses" />
+          </XmlPropertyData>
+          <XmlPropertyData XmlName="framework">
+            <DomainPropertyMoniker Name="CQRSModel/Framework" />
           </XmlPropertyData>
         </ElementData>
       </XmlClassData>
       <XmlClassData TypeName="CQRSdslDiagram" MonikerAttributeName="" SerializeId="true" MonikerElementName="cQRSdslDiagramMoniker" ElementName="cQRSdslDiagram" MonikerTypeName="CQRSdslDiagramMoniker">
         <DiagramMoniker Name="CQRSdslDiagram" />
         <ElementData>
-          <XmlPropertyData XmlName="outputCodeLanguage">
-            <DomainPropertyMoniker Name="CQRSdslDiagram/OutputCodeLanguage" />
-          </XmlPropertyData>
           <XmlPropertyData XmlName="copyrightNotice">
             <DomainPropertyMoniker Name="CQRSdslDiagram/CopyrightNotice" />
           </XmlPropertyData>
           <XmlPropertyData XmlName="companyName">
             <DomainPropertyMoniker Name="CQRSdslDiagram/CompanyName" />
-          </XmlPropertyData>
-          <XmlPropertyData XmlName="subfolderPerModel">
-            <DomainPropertyMoniker Name="CQRSdslDiagram/SubfolderPerModel" />
-          </XmlPropertyData>
-          <XmlPropertyData XmlName="subfolderPerAggregate">
-            <DomainPropertyMoniker Name="CQRSdslDiagram/SubfolderPerAggregate" />
           </XmlPropertyData>
         </ElementData>
       </XmlClassData>
@@ -1564,6 +1747,9 @@
           <XmlPropertyData XmlName="category">
             <DomainPropertyMoniker Name="ProjectionDefinition/Category" />
           </XmlPropertyData>
+          <XmlPropertyData XmlName="canSnapshot">
+            <DomainPropertyMoniker Name="ProjectionDefinition/CanSnapshot" />
+          </XmlPropertyData>
         </ElementData>
       </XmlClassData>
       <XmlClassData TypeName="AggregateIdentifierHasProjectionDefinitions" MonikerAttributeName="" SerializeId="true" MonikerElementName="aggregateIdentifierHasProjectionDefinitionsMoniker" ElementName="aggregateIdentifierHasProjectionDefinitions" MonikerTypeName="AggregateIdentifierHasProjectionDefinitionsMoniker">
@@ -1637,6 +1823,9 @@
           <XmlPropertyData XmlName="notes">
             <DomainPropertyMoniker Name="EventProperty/Notes" />
           </XmlPropertyData>
+          <XmlPropertyData XmlName="isEffectiveDate">
+            <DomainPropertyMoniker Name="EventProperty/IsEffectiveDate" />
+          </XmlPropertyData>
         </ElementData>
       </XmlClassData>
       <XmlClassData TypeName="EventDefinitionHasEventProperties" MonikerAttributeName="" SerializeId="true" MonikerElementName="eventDefinitionHasEventPropertiesMoniker" ElementName="eventDefinitionHasEventProperties" MonikerTypeName="EventDefinitionHasEventPropertiesMoniker">
@@ -1695,6 +1884,9 @@
           </XmlPropertyData>
           <XmlPropertyData XmlName="isAggregateKey">
             <DomainPropertyMoniker Name="CommandParameter/IsAggregateKey" />
+          </XmlPropertyData>
+          <XmlPropertyData XmlName="isIdentityGroupName">
+            <DomainPropertyMoniker Name="CommandParameter/IsIdentityGroupName" />
           </XmlPropertyData>
         </ElementData>
       </XmlClassData>
@@ -1766,6 +1958,9 @@
           </XmlPropertyData>
           <XmlPropertyData XmlName="isEffectiveDate">
             <DomainPropertyMoniker Name="QueryInputParameter/IsEffectiveDate" />
+          </XmlPropertyData>
+          <XmlPropertyData XmlName="isIdentityGroupName">
+            <DomainPropertyMoniker Name="QueryInputParameter/IsIdentityGroupName" />
           </XmlPropertyData>
         </ElementData>
       </XmlClassData>
@@ -1862,20 +2057,6 @@
           </XmlPropertyData>
         </ElementData>
       </XmlClassData>
-      <XmlClassData TypeName="ModelSetting" MonikerAttributeName="" SerializeId="true" MonikerElementName="modelSettingMoniker" ElementName="modelSetting" MonikerTypeName="ModelSettingMoniker">
-        <DomainClassMoniker Name="ModelSetting" />
-        <ElementData>
-          <XmlPropertyData XmlName="name">
-            <DomainPropertyMoniker Name="ModelSetting/Name" />
-          </XmlPropertyData>
-          <XmlPropertyData XmlName="value">
-            <DomainPropertyMoniker Name="ModelSetting/Value" />
-          </XmlPropertyData>
-        </ElementData>
-      </XmlClassData>
-      <XmlClassData TypeName="CQRSModelHasModelSet" MonikerAttributeName="" SerializeId="true" MonikerElementName="cQRSModelHasModelSetMoniker" ElementName="cQRSModelHasModelSet" MonikerTypeName="CQRSModelHasModelSetMoniker">
-        <DomainRelationshipMoniker Name="CQRSModelHasModelSet" />
-      </XmlClassData>
       <XmlClassData TypeName="IdentityGroup" MonikerAttributeName="" SerializeId="true" MonikerElementName="identityGroupMoniker" ElementName="identityGroup" MonikerTypeName="IdentityGroupMoniker">
         <DomainClassMoniker Name="IdentityGroup" />
         <ElementData>
@@ -1899,6 +2080,12 @@
           </XmlRelationshipData>
           <XmlPropertyData XmlName="category">
             <DomainPropertyMoniker Name="IdentityGroup/Category" />
+          </XmlPropertyData>
+          <XmlPropertyData XmlName="parentName">
+            <DomainPropertyMoniker Name="IdentityGroup/ParentName" />
+          </XmlPropertyData>
+          <XmlPropertyData XmlName="canSnapshot">
+            <DomainPropertyMoniker Name="IdentityGroup/CanSnapshot" />
           </XmlPropertyData>
         </ElementData>
       </XmlClassData>
@@ -1940,6 +2127,18 @@
           <XmlPropertyData XmlName="category">
             <DomainPropertyMoniker Name="Classifier/Category" />
           </XmlPropertyData>
+          <XmlPropertyData XmlName="canSnapshot">
+            <DomainPropertyMoniker Name="Classifier/CanSnapshot" />
+          </XmlPropertyData>
+          <XmlRelationshipData UseFullForm="true" RoleElementName="projectionDefinition">
+            <DomainRelationshipMoniker Name="ClassifierReferencesProjectionDefinition" />
+          </XmlRelationshipData>
+          <XmlPropertyData XmlName="dataSourceType">
+            <DomainPropertyMoniker Name="Classifier/DataSourceType" />
+          </XmlPropertyData>
+          <XmlRelationshipData UseFullForm="true" RoleElementName="classifierProjectionPropertyEvaluations">
+            <DomainRelationshipMoniker Name="ClassifierHasClassifierProjectionPropertyEvaluations" />
+          </XmlRelationshipData>
         </ElementData>
       </XmlClassData>
       <XmlClassData TypeName="AggregateIdentifierHasClassifiers" MonikerAttributeName="" SerializeId="true" MonikerElementName="aggregateIdentifierHasClassifiersMoniker" ElementName="aggregateIdentifierHasClassifiers" MonikerTypeName="AggregateIdentifierHasClassifiersMoniker">
@@ -2010,6 +2209,44 @@
       </XmlClassData>
       <XmlClassData TypeName="QueryDefinitionReferencesProjectionDefinition" MonikerAttributeName="" SerializeId="true" MonikerElementName="queryDefinitionReferencesProjectionDefinitionMoniker" ElementName="queryDefinitionReferencesProjectionDefinition" MonikerTypeName="QueryDefinitionReferencesProjectionDefinitionMoniker">
         <DomainRelationshipMoniker Name="QueryDefinitionReferencesProjectionDefinition" />
+      </XmlClassData>
+      <XmlClassData TypeName="ClassifierReferencesProjectionDefinition" MonikerAttributeName="" SerializeId="true" MonikerElementName="classifierReferencesProjectionDefinitionMoniker" ElementName="classifierReferencesProjectionDefinition" MonikerTypeName="ClassifierReferencesProjectionDefinitionMoniker">
+        <DomainRelationshipMoniker Name="ClassifierReferencesProjectionDefinition" />
+      </XmlClassData>
+      <XmlClassData TypeName="ClassifierProjectionPropertyEvaluation" MonikerAttributeName="" SerializeId="true" MonikerElementName="classifierProjectionPropertyEvaluationMoniker" ElementName="classifierProjectionPropertyEvaluation" MonikerTypeName="ClassifierProjectionPropertyEvaluationMoniker">
+        <DomainClassMoniker Name="ClassifierProjectionPropertyEvaluation" />
+        <ElementData>
+          <XmlPropertyData XmlName="propertyName">
+            <DomainPropertyMoniker Name="ClassifierProjectionPropertyEvaluation/PropertyName" />
+          </XmlPropertyData>
+          <XmlPropertyData XmlName="notes">
+            <DomainPropertyMoniker Name="ClassifierProjectionPropertyEvaluation/Notes" />
+          </XmlPropertyData>
+          <XmlPropertyData XmlName="description">
+            <DomainPropertyMoniker Name="ClassifierProjectionPropertyEvaluation/Description" />
+          </XmlPropertyData>
+          <XmlPropertyData XmlName="propertyEvaluationToPerform">
+            <DomainPropertyMoniker Name="ClassifierProjectionPropertyEvaluation/PropertyEvaluationToPerform" />
+          </XmlPropertyData>
+          <XmlPropertyData XmlName="onTrue">
+            <DomainPropertyMoniker Name="ClassifierProjectionPropertyEvaluation/OnTrue" />
+          </XmlPropertyData>
+          <XmlPropertyData XmlName="onFalse">
+            <DomainPropertyMoniker Name="ClassifierProjectionPropertyEvaluation/OnFalse" />
+          </XmlPropertyData>
+          <XmlPropertyData XmlName="target">
+            <DomainPropertyMoniker Name="ClassifierProjectionPropertyEvaluation/Target" />
+          </XmlPropertyData>
+          <XmlPropertyData XmlName="targetType">
+            <DomainPropertyMoniker Name="ClassifierProjectionPropertyEvaluation/TargetType" />
+          </XmlPropertyData>
+        </ElementData>
+      </XmlClassData>
+      <XmlClassData TypeName="ClassifierProjectionConnector" MonikerAttributeName="" SerializeId="true" MonikerElementName="classifierProjectionConnectorMoniker" ElementName="classifierProjectionConnector" MonikerTypeName="ClassifierProjectionConnectorMoniker">
+        <ConnectorMoniker Name="ClassifierProjectionConnector" />
+      </XmlClassData>
+      <XmlClassData TypeName="ClassifierHasClassifierProjectionPropertyEvaluations" MonikerAttributeName="" SerializeId="true" MonikerElementName="classifierHasClassifierProjectionPropertyEvaluationsMoniker" ElementName="classifierHasClassifierProjectionPropertyEvaluations" MonikerTypeName="ClassifierHasClassifierProjectionPropertyEvaluationsMoniker">
+        <DomainRelationshipMoniker Name="ClassifierHasClassifierProjectionPropertyEvaluations" />
       </XmlClassData>
     </ClassData>
   </XmlSerializationBehavior>
@@ -2217,15 +2454,28 @@
         </TargetDirectives>
       </LinkConnectDirective>
     </ConnectionBuilder>
+    <ConnectionBuilder Name="ClassifierReferencesProjectionDefinitionBuilder">
+      <LinkConnectDirective>
+        <DomainRelationshipMoniker Name="ClassifierReferencesProjectionDefinition" />
+        <SourceDirectives>
+          <RolePlayerConnectDirective>
+            <AcceptingClass>
+              <DomainClassMoniker Name="Classifier" />
+            </AcceptingClass>
+          </RolePlayerConnectDirective>
+        </SourceDirectives>
+        <TargetDirectives>
+          <RolePlayerConnectDirective>
+            <AcceptingClass>
+              <DomainClassMoniker Name="ProjectionDefinition" />
+            </AcceptingClass>
+          </RolePlayerConnectDirective>
+        </TargetDirectives>
+      </LinkConnectDirective>
+    </ConnectionBuilder>
   </ConnectionBuilders>
   <Diagram Id="07a5d33a-93dd-4c5d-bb00-dff3a44ecf56" Description="Architecture layout for a model based on the CQRS event sourcing architecture" Name="CQRSdslDiagram" DisplayName="CQRS Architecture diagram" Namespace="CQRSAzure.CQRSdsl.Dsl">
     <Properties>
-      <DomainProperty Id="0755a035-f72c-43e2-87e3-875dca7e5f5f" Description="The language to use to generate code from this model" Name="OutputCodeLanguage" DisplayName="Output Code Language" DefaultValue="VBNet" Category="Code Generation">
-        <Notes>This should be initialised from the language the project is hosted in but can be overriden if the code is going to be created in separate projects</Notes>
-        <Type>
-          <DomainEnumerationMoniker Name="TargetLanguage" />
-        </Type>
-      </DomainProperty>
       <DomainProperty Id="675490b0-d5e5-4d9e-8b3e-f8ed308e13ff" Description="Copyright notice to include in generated code and documentation" Name="CopyrightNotice" DisplayName="Copyright Notice" Category="Documentation">
         <Type>
           <ExternalTypeMoniker Name="/System/String" />
@@ -2234,18 +2484,6 @@
       <DomainProperty Id="cdc33a6f-e12f-4cc6-a5c3-7e2fde88d3cd" Description="Company name to embed in documentation and generated code" Name="CompanyName" DisplayName="Company Name" Category="Documentation">
         <Type>
           <ExternalTypeMoniker Name="/System/String" />
-        </Type>
-      </DomainProperty>
-      <DomainProperty Id="1fca977f-2697-42e0-af61-fe29633c2081" Description="Description for CQRSAzure.CQRSdsl.Dsl.CQRSdslDiagram.Subfolder Per Model" Name="SubfolderPerModel" DisplayName="Subfolder Per Model" DefaultValue="true" Category="Code Generation">
-        <Notes>Should each domain model go into its own subfolder?</Notes>
-        <Type>
-          <ExternalTypeMoniker Name="/System/Boolean" />
-        </Type>
-      </DomainProperty>
-      <DomainProperty Id="ab1493fe-58ae-4ece-90c2-756ffbaeb661" Description="Description for CQRSAzure.CQRSdsl.Dsl.CQRSdslDiagram.Subfolder Per Aggregate" Name="SubfolderPerAggregate" DisplayName="Subfolder Per Aggregate" DefaultValue="true" Category="Code Generation">
-        <Notes>Should each aggregate in the model be generated into its own subfolder</Notes>
-        <Type>
-          <ExternalTypeMoniker Name="/System/Boolean" />
         </Type>
       </DomainProperty>
     </Properties>
@@ -2499,6 +2737,17 @@
             </PropertyPath>
           </PropertyDisplayed>
         </CompartmentMap>
+        <CompartmentMap>
+          <CompartmentMoniker Name="ClassifierCompartmentShape/ProjectionEvaluationsCompartment" />
+          <ElementsDisplayed>
+            <DomainPath>ClassifierHasClassifierProjectionPropertyEvaluations.ClassifierProjectionPropertyEvaluations/!ClassifierProjectionPropertyEvaluation</DomainPath>
+          </ElementsDisplayed>
+          <PropertyDisplayed>
+            <PropertyPath>
+              <DomainPropertyMoniker Name="ClassifierProjectionPropertyEvaluation/Description" />
+            </PropertyPath>
+          </PropertyDisplayed>
+        </CompartmentMap>
       </CompartmentShapeMap>
     </ShapeMaps>
     <ConnectorMaps>
@@ -2538,6 +2787,10 @@
         <Notes>Connection between a classifier and the events it handles</Notes>
         <ConnectorMoniker Name="ClassifierEventConnector" />
         <DomainRelationshipMoniker Name="ClassifierHandlesEvents" />
+      </ConnectorMap>
+      <ConnectorMap>
+        <ConnectorMoniker Name="ClassifierProjectionConnector" />
+        <DomainRelationshipMoniker Name="ClassifierReferencesProjectionDefinition" />
       </ConnectorMap>
     </ConnectorMaps>
   </Diagram>
@@ -2585,6 +2838,10 @@
       <ConnectionTool Name="ClassifierEventConnectionTool" ToolboxIcon="Resources\ProjectionEventConnectorToolBitmap.bmp" Caption="Classifier Event Connection" Tooltip="Classifier Event Connection Tool" HelpKeyword="ClassifierEventConnection">
         <Notes>The events that are processed by the classifier to evaluate group membership</Notes>
         <ConnectionBuilderMoniker Name="CQRSdsl/ClassifierHandlesEventsBuilder" />
+      </ConnectionTool>
+      <ConnectionTool Name="ClassifierProjectionConnectionTool" ToolboxIcon="Resources\ProjectionEventConnectorToolBitmap.bmp" Caption="Classifier Projection Connection" Tooltip="Classifier Projection Connection" HelpKeyword="ClassifierProjectionConnectionTool">
+        <Notes>The projection supplying data to this classifier</Notes>
+        <ConnectionBuilderMoniker Name="CQRSdsl/ClassifierReferencesProjectionDefinitionBuilder" />
       </ConnectionTool>
     </ToolboxTab>
     <Validation UsesMenu="true" UsesOpen="false" UsesSave="true" UsesLoad="true" />

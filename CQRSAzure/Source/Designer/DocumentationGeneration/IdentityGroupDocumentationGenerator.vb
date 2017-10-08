@@ -35,6 +35,7 @@ Public Class IdentityGroupDocumentationGenerator
             'And use it to write this event details
             writerToUse.CreatePage(Me.FilenameBase)
             writerToUse.WriteElement(Me.FilenameBase, IDocumentationWriter.DocumentationLevel.Heading, "IdentityGroup")
+            writerToUse.WriteElement("(" & m_identityGroup.ParentName & ")", IDocumentationWriter.DocumentationLevel.Normal)
             WriteDescription(m_identityGroup, writerToUse)
             WriteNotes(m_identityGroup, writerToUse)
             If (m_identityGroup.QueryDefinitions.Count > 0) Then
@@ -50,7 +51,7 @@ Public Class IdentityGroupDocumentationGenerator
     End Sub
 
     Public Sub New(ByVal identityGroupIn As IdentityGroup,
-               Optional ByVal options As ModelDocumentationGeneratorOptions = Nothing,
+               Optional ByVal options As IDocumentationGenerationOptions = Nothing,
                Optional ByVal documentWriter As IDocumentationWriter = Nothing)
         MyBase.New(options, documentWriter)
         m_identityGroup = identityGroupIn

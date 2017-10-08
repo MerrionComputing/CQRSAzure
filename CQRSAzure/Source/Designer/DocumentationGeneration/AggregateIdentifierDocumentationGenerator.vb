@@ -105,7 +105,7 @@ Public Class AggregateIdentifierDocumentationGenerator
     End Sub
 
     Public Sub New(ByVal aggregate As AggregateIdentifier,
-                   Optional ByVal options As ModelDocumentationGeneratorOptions = Nothing,
+                   Optional ByVal options As IDocumentationGenerationOptions = Nothing,
                    Optional ByVal documentWriter As IDocumentationWriter = Nothing)
         MyBase.New(options, documentWriter)
         m_aggregate = aggregate

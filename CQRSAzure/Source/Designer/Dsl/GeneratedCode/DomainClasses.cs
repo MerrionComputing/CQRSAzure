@@ -315,6 +315,802 @@ namespace CQRSAzure.CQRSdsl.Dsl
 		}
 		
 		#endregion
+		#region DefaultCodeGenerationLanguage domain property code
+		
+		/// <summary>
+		/// DefaultCodeGenerationLanguage domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid DefaultCodeGenerationLanguageDomainPropertyId = new global::System.Guid(0xf925da5a, 0x07b7, 0x420a, 0x85, 0x20, 0x24, 0x67, 0x24, 0xdf, 0xec, 0xd6);
+		
+		/// <summary>
+		/// Storage for DefaultCodeGenerationLanguage
+		/// </summary>
+		private TargetLanguage defaultCodeGenerationLanguagePropertyStorage = TargetLanguage.VBNet;
+		
+		/// <summary>
+		/// Gets or sets the value of DefaultCodeGenerationLanguage domain property.
+		/// The default language to use when doing code generation for this model
+		/// </summary>
+		[DslDesign::DisplayNameResource("CQRSAzure.CQRSdsl.Dsl.CQRSModel/DefaultCodeGenerationLanguage.DisplayName", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslDesign::CategoryResource("CQRSAzure.CQRSdsl.Dsl.CQRSModel/DefaultCodeGenerationLanguage.Category", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("CQRSAzure.CQRSdsl.Dsl.CQRSModel/DefaultCodeGenerationLanguage.Description", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(TargetLanguage.VBNet)]
+		[DslModeling::DomainObjectId("f925da5a-07b7-420a-8520-246724dfecd6")]
+		public TargetLanguage DefaultCodeGenerationLanguage
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return defaultCodeGenerationLanguagePropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DefaultCodeGenerationLanguagePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the CQRSModel.DefaultCodeGenerationLanguage domain property.
+		/// </summary>
+		internal sealed partial class DefaultCodeGenerationLanguagePropertyHandler : DslModeling::DomainPropertyValueHandler<CQRSModel, TargetLanguage>
+		{
+			private DefaultCodeGenerationLanguagePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the CQRSModel.DefaultCodeGenerationLanguage domain property value handler.
+			/// </summary>
+			public static readonly DefaultCodeGenerationLanguagePropertyHandler Instance = new DefaultCodeGenerationLanguagePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the CQRSModel.DefaultCodeGenerationLanguage domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return DefaultCodeGenerationLanguageDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed TargetLanguage GetValue(CQRSModel element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.defaultCodeGenerationLanguagePropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(CQRSModel element, TargetLanguage newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				TargetLanguage oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.defaultCodeGenerationLanguagePropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region SubfolderPerDomain domain property code
+		
+		/// <summary>
+		/// SubfolderPerDomain domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid SubfolderPerDomainDomainPropertyId = new global::System.Guid(0xe5e83a90, 0x1b39, 0x4900, 0xb1, 0x25, 0xfe, 0x74, 0xca, 0x3f, 0xc3, 0xb0);
+		
+		/// <summary>
+		/// Storage for SubfolderPerDomain
+		/// </summary>
+		private global::System.Boolean subfolderPerDomainPropertyStorage;
+		
+		/// <summary>
+		/// Gets or sets the value of SubfolderPerDomain domain property.
+		/// Should each domain code be put in its own subfolder?
+		/// </summary>
+		[DslDesign::DisplayNameResource("CQRSAzure.CQRSdsl.Dsl.CQRSModel/SubfolderPerDomain.DisplayName", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslDesign::CategoryResource("CQRSAzure.CQRSdsl.Dsl.CQRSModel/SubfolderPerDomain.Category", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("CQRSAzure.CQRSdsl.Dsl.CQRSModel/SubfolderPerDomain.Description", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainObjectId("e5e83a90-1b39-4900-b125-fe74ca3fc3b0")]
+		public global::System.Boolean SubfolderPerDomain
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return subfolderPerDomainPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				SubfolderPerDomainPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the CQRSModel.SubfolderPerDomain domain property.
+		/// </summary>
+		internal sealed partial class SubfolderPerDomainPropertyHandler : DslModeling::DomainPropertyValueHandler<CQRSModel, global::System.Boolean>
+		{
+			private SubfolderPerDomainPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the CQRSModel.SubfolderPerDomain domain property value handler.
+			/// </summary>
+			public static readonly SubfolderPerDomainPropertyHandler Instance = new SubfolderPerDomainPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the CQRSModel.SubfolderPerDomain domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return SubfolderPerDomainDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Boolean GetValue(CQRSModel element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.subfolderPerDomainPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(CQRSModel element, global::System.Boolean newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Boolean oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.subfolderPerDomainPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region SubfolderPerAggregate domain property code
+		
+		/// <summary>
+		/// SubfolderPerAggregate domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid SubfolderPerAggregateDomainPropertyId = new global::System.Guid(0x491d1a27, 0x0b88, 0x41a1, 0xbe, 0xa5, 0x09, 0x45, 0x1d, 0x04, 0x42, 0x2d);
+		
+		/// <summary>
+		/// Storage for SubfolderPerAggregate
+		/// </summary>
+		private global::System.Boolean subfolderPerAggregatePropertyStorage;
+		
+		/// <summary>
+		/// Gets or sets the value of SubfolderPerAggregate domain property.
+		/// Should each aggregate generate code into its own sub folder
+		/// </summary>
+		[DslDesign::DisplayNameResource("CQRSAzure.CQRSdsl.Dsl.CQRSModel/SubfolderPerAggregate.DisplayName", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslDesign::CategoryResource("CQRSAzure.CQRSdsl.Dsl.CQRSModel/SubfolderPerAggregate.Category", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("CQRSAzure.CQRSdsl.Dsl.CQRSModel/SubfolderPerAggregate.Description", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainObjectId("491d1a27-0b88-41a1-bea5-09451d04422d")]
+		public global::System.Boolean SubfolderPerAggregate
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return subfolderPerAggregatePropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				SubfolderPerAggregatePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the CQRSModel.SubfolderPerAggregate domain property.
+		/// </summary>
+		internal sealed partial class SubfolderPerAggregatePropertyHandler : DslModeling::DomainPropertyValueHandler<CQRSModel, global::System.Boolean>
+		{
+			private SubfolderPerAggregatePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the CQRSModel.SubfolderPerAggregate domain property value handler.
+			/// </summary>
+			public static readonly SubfolderPerAggregatePropertyHandler Instance = new SubfolderPerAggregatePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the CQRSModel.SubfolderPerAggregate domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return SubfolderPerAggregateDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Boolean GetValue(CQRSModel element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.subfolderPerAggregatePropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(CQRSModel element, global::System.Boolean newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Boolean oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.subfolderPerAggregatePropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region MajorVersion domain property code
+		
+		/// <summary>
+		/// MajorVersion domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid MajorVersionDomainPropertyId = new global::System.Guid(0x274c78c7, 0x111d, 0x4364, 0x9b, 0xd7, 0xe1, 0x7d, 0x09, 0xaf, 0xd0, 0xda);
+		
+		/// <summary>
+		/// Storage for MajorVersion
+		/// </summary>
+		private global::System.Int32 majorVersionPropertyStorage = 1;
+		
+		/// <summary>
+		/// Gets or sets the value of MajorVersion domain property.
+		/// Major version number for the CQRS domain model
+		/// </summary>
+		[DslDesign::DisplayNameResource("CQRSAzure.CQRSdsl.Dsl.CQRSModel/MajorVersion.DisplayName", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslDesign::CategoryResource("CQRSAzure.CQRSdsl.Dsl.CQRSModel/MajorVersion.Category", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("CQRSAzure.CQRSdsl.Dsl.CQRSModel/MajorVersion.Description", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(1)]
+		[DslModeling::DomainObjectId("274c78c7-111d-4364-9bd7-e17d09afd0da")]
+		public global::System.Int32 MajorVersion
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return majorVersionPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				MajorVersionPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the CQRSModel.MajorVersion domain property.
+		/// </summary>
+		internal sealed partial class MajorVersionPropertyHandler : DslModeling::DomainPropertyValueHandler<CQRSModel, global::System.Int32>
+		{
+			private MajorVersionPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the CQRSModel.MajorVersion domain property value handler.
+			/// </summary>
+			public static readonly MajorVersionPropertyHandler Instance = new MajorVersionPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the CQRSModel.MajorVersion domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return MajorVersionDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Int32 GetValue(CQRSModel element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.majorVersionPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(CQRSModel element, global::System.Int32 newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Int32 oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.majorVersionPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region MinorVersion domain property code
+		
+		/// <summary>
+		/// MinorVersion domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid MinorVersionDomainPropertyId = new global::System.Guid(0xa78f82c4, 0x2b9a, 0x4fb4, 0xa3, 0xb7, 0x6f, 0xe6, 0x20, 0x7b, 0xa6, 0xac);
+		
+		/// <summary>
+		/// Storage for MinorVersion
+		/// </summary>
+		private global::System.Int32 minorVersionPropertyStorage = 1;
+		
+		/// <summary>
+		/// Gets or sets the value of MinorVersion domain property.
+		/// Minor version number of the CQRS domain
+		/// </summary>
+		[DslDesign::DisplayNameResource("CQRSAzure.CQRSdsl.Dsl.CQRSModel/MinorVersion.DisplayName", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslDesign::CategoryResource("CQRSAzure.CQRSdsl.Dsl.CQRSModel/MinorVersion.Category", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("CQRSAzure.CQRSdsl.Dsl.CQRSModel/MinorVersion.Description", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(1)]
+		[DslModeling::DomainObjectId("a78f82c4-2b9a-4fb4-a3b7-6fe6207ba6ac")]
+		public global::System.Int32 MinorVersion
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return minorVersionPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				MinorVersionPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the CQRSModel.MinorVersion domain property.
+		/// </summary>
+		internal sealed partial class MinorVersionPropertyHandler : DslModeling::DomainPropertyValueHandler<CQRSModel, global::System.Int32>
+		{
+			private MinorVersionPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the CQRSModel.MinorVersion domain property value handler.
+			/// </summary>
+			public static readonly MinorVersionPropertyHandler Instance = new MinorVersionPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the CQRSModel.MinorVersion domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return MinorVersionDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Int32 GetValue(CQRSModel element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.minorVersionPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(CQRSModel element, global::System.Int32 newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Int32 oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.minorVersionPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region CodeRootFolder domain property code
+		
+		/// <summary>
+		/// CodeRootFolder domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid CodeRootFolderDomainPropertyId = new global::System.Guid(0x389465bf, 0x3e2b, 0x4734, 0x87, 0xd7, 0x44, 0x37, 0x77, 0x3b, 0x79, 0xfe);
+		
+		/// <summary>
+		/// Storage for CodeRootFolder
+		/// </summary>
+		private global::System.String codeRootFolderPropertyStorage = string.Empty;
+		
+		/// <summary>
+		/// Gets or sets the value of CodeRootFolder domain property.
+		/// The root folder to generate source code into for this domain
+		/// </summary>
+		[DslDesign::DisplayNameResource("CQRSAzure.CQRSdsl.Dsl.CQRSModel/CodeRootFolder.DisplayName", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslDesign::CategoryResource("CQRSAzure.CQRSdsl.Dsl.CQRSModel/CodeRootFolder.Category", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("CQRSAzure.CQRSdsl.Dsl.CQRSModel/CodeRootFolder.Description", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainObjectId("389465bf-3e2b-4734-87d7-4437773b79fe")]
+		public global::System.String CodeRootFolder
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return codeRootFolderPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				CodeRootFolderPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the CQRSModel.CodeRootFolder domain property.
+		/// </summary>
+		internal sealed partial class CodeRootFolderPropertyHandler : DslModeling::DomainPropertyValueHandler<CQRSModel, global::System.String>
+		{
+			private CodeRootFolderPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the CQRSModel.CodeRootFolder domain property value handler.
+			/// </summary>
+			public static readonly CodeRootFolderPropertyHandler Instance = new CodeRootFolderPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the CQRSModel.CodeRootFolder domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return CodeRootFolderDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(CQRSModel element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.codeRootFolderPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(CQRSModel element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.codeRootFolderPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region DocumentationRootFolder domain property code
+		
+		/// <summary>
+		/// DocumentationRootFolder domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid DocumentationRootFolderDomainPropertyId = new global::System.Guid(0xb5402dbc, 0xd23c, 0x492e, 0x8e, 0x9a, 0xb4, 0xd7, 0x6f, 0x48, 0xdf, 0xda);
+		
+		/// <summary>
+		/// Storage for DocumentationRootFolder
+		/// </summary>
+		private global::System.String documentationRootFolderPropertyStorage = string.Empty;
+		
+		/// <summary>
+		/// Gets or sets the value of DocumentationRootFolder domain property.
+		/// The root folder to store the documentation generated for this domain in
+		/// </summary>
+		[DslDesign::DisplayNameResource("CQRSAzure.CQRSdsl.Dsl.CQRSModel/DocumentationRootFolder.DisplayName", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslDesign::CategoryResource("CQRSAzure.CQRSdsl.Dsl.CQRSModel/DocumentationRootFolder.Category", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("CQRSAzure.CQRSdsl.Dsl.CQRSModel/DocumentationRootFolder.Description", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainObjectId("b5402dbc-d23c-492e-8e9a-b4d76f48dfda")]
+		public global::System.String DocumentationRootFolder
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return documentationRootFolderPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DocumentationRootFolderPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the CQRSModel.DocumentationRootFolder domain property.
+		/// </summary>
+		internal sealed partial class DocumentationRootFolderPropertyHandler : DslModeling::DomainPropertyValueHandler<CQRSModel, global::System.String>
+		{
+			private DocumentationRootFolderPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the CQRSModel.DocumentationRootFolder domain property value handler.
+			/// </summary>
+			public static readonly DocumentationRootFolderPropertyHandler Instance = new DocumentationRootFolderPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the CQRSModel.DocumentationRootFolder domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return DocumentationRootFolderDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(CQRSModel element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.documentationRootFolderPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(CQRSModel element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.documentationRootFolderPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region GenerateEntityFrameworkClasses domain property code
+		
+		/// <summary>
+		/// GenerateEntityFrameworkClasses domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid GenerateEntityFrameworkClassesDomainPropertyId = new global::System.Guid(0x70abc4bb, 0xa679, 0x46ba, 0xad, 0xf1, 0xc3, 0x4e, 0x8a, 0x41, 0x2b, 0x78);
+		
+		/// <summary>
+		/// Storage for GenerateEntityFrameworkClasses
+		/// </summary>
+		private global::System.Boolean generateEntityFrameworkClassesPropertyStorage;
+		
+		/// <summary>
+		/// Gets or sets the value of GenerateEntityFrameworkClasses domain property.
+		/// Should the model build the Entity Framework classes for storing the model in an
+		/// SQL database
+		/// </summary>
+		[DslDesign::DisplayNameResource("CQRSAzure.CQRSdsl.Dsl.CQRSModel/GenerateEntityFrameworkClasses.DisplayName", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslDesign::CategoryResource("CQRSAzure.CQRSdsl.Dsl.CQRSModel/GenerateEntityFrameworkClasses.Category", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("CQRSAzure.CQRSdsl.Dsl.CQRSModel/GenerateEntityFrameworkClasses.Description", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainObjectId("70abc4bb-a679-46ba-adf1-c34e8a412b78")]
+		public global::System.Boolean GenerateEntityFrameworkClasses
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return generateEntityFrameworkClassesPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				GenerateEntityFrameworkClassesPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the CQRSModel.GenerateEntityFrameworkClasses domain property.
+		/// </summary>
+		internal sealed partial class GenerateEntityFrameworkClassesPropertyHandler : DslModeling::DomainPropertyValueHandler<CQRSModel, global::System.Boolean>
+		{
+			private GenerateEntityFrameworkClassesPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the CQRSModel.GenerateEntityFrameworkClasses domain property value handler.
+			/// </summary>
+			public static readonly GenerateEntityFrameworkClassesPropertyHandler Instance = new GenerateEntityFrameworkClassesPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the CQRSModel.GenerateEntityFrameworkClasses domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return GenerateEntityFrameworkClassesDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Boolean GetValue(CQRSModel element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.generateEntityFrameworkClassesPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(CQRSModel element, global::System.Boolean newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Boolean oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.generateEntityFrameworkClassesPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region Framework domain property code
+		
+		/// <summary>
+		/// Framework domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid FrameworkDomainPropertyId = new global::System.Guid(0x8a186666, 0xf7d7, 0x4e8f, 0x88, 0xfb, 0xcd, 0x91, 0xf7, 0xae, 0xdc, 0x84);
+		
+		/// <summary>
+		/// Storage for Framework
+		/// </summary>
+		private SupportingFramework frameworkPropertyStorage = SupportingFramework.CQRSonAzure;
+		
+		/// <summary>
+		/// Gets or sets the value of Framework domain property.
+		/// The framework to use for the generated code
+		/// </summary>
+		[DslDesign::DisplayNameResource("CQRSAzure.CQRSdsl.Dsl.CQRSModel/Framework.DisplayName", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("CQRSAzure.CQRSdsl.Dsl.CQRSModel/Framework.Description", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(SupportingFramework.CQRSonAzure)]
+		[DslModeling::DomainObjectId("8a186666-f7d7-4e8f-88fb-cd91f7aedc84")]
+		public SupportingFramework Framework
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return frameworkPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				FrameworkPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the CQRSModel.Framework domain property.
+		/// </summary>
+		internal sealed partial class FrameworkPropertyHandler : DslModeling::DomainPropertyValueHandler<CQRSModel, SupportingFramework>
+		{
+			private FrameworkPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the CQRSModel.Framework domain property value handler.
+			/// </summary>
+			public static readonly FrameworkPropertyHandler Instance = new FrameworkPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the CQRSModel.Framework domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return FrameworkDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed SupportingFramework GetValue(CQRSModel element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.frameworkPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(CQRSModel element, SupportingFramework newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				SupportingFramework oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.frameworkPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
 		#region AggregateIdentifiers opposite domain role accessor
 		
 		/// <summary>
@@ -327,21 +1123,6 @@ namespace CQRSAzure.CQRSdsl.Dsl
 			get
 			{
 				return GetRoleCollection<DslModeling::LinkedElementCollection<AggregateIdentifier>, AggregateIdentifier>(global::CQRSAzure.CQRSdsl.Dsl.CQRSModelHasAggregateIdentifiers.CQRSModelDomainRoleId);
-			}
-		}
-		#endregion
-		#region ModelSet opposite domain role accessor
-		
-		/// <summary>
-		/// Gets a list of ModelSet.
-		/// Description for CQRSAzure.CQRSdsl.Dsl.CQRSModelHasModelSet.CQRSModel
-		/// </summary>
-		public virtual DslModeling::LinkedElementCollection<ModelSetting> ModelSet
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return GetRoleCollection<DslModeling::LinkedElementCollection<ModelSetting>, ModelSetting>(global::CQRSAzure.CQRSdsl.Dsl.CQRSModelHasModelSet.CQRSModelDomainRoleId);
 			}
 		}
 		#endregion
@@ -366,11 +1147,6 @@ namespace CQRSAzure.CQRSdsl.Dsl
 				DslModeling::DomainClassInfo rootElementDomainInfo = this.Partition.DomainDataDirectory.GetDomainClass(rootElement.DomainClassId);
 				
 				if (rootElementDomainInfo.IsDerivedFrom(global::CQRSAzure.CQRSdsl.Dsl.AggregateIdentifier.DomainClassId)) 
-				{
-					return true;
-				}
-				
-				if (rootElementDomainInfo.IsDerivedFrom(global::CQRSAzure.CQRSdsl.Dsl.ModelSetting.DomainClassId)) 
 				{
 					return true;
 				}
@@ -407,15 +1183,6 @@ namespace CQRSAzure.CQRSdsl.Dsl
 
 				return;
 			}
-				
-			global::CQRSAzure.CQRSdsl.Dsl.ModelSetting sourceModelSetting2 = sourceElement as global::CQRSAzure.CQRSdsl.Dsl.ModelSetting;
-			if (sourceModelSetting2 != null)
-			{
-				// Create link for path CQRSModelHasModelSet.ModelSet
-				this.ModelSet.Add(sourceModelSetting2);
-
-				return;
-			}
 		
 			// Sdk workaround to runtime bug #879350 (DSL: can't copy and paste a MEL that has a MEX). Avoid MergeRelate on ModelElementExtension
 			// during a "Paste".
@@ -448,20 +1215,6 @@ namespace CQRSAzure.CQRSdsl.Dsl
 				{
 					// Delete the link, but without possible delete propagation to the element since it's moving to a new location.
 					link.Delete(global::CQRSAzure.CQRSdsl.Dsl.CQRSModelHasAggregateIdentifiers.CQRSModelDomainRoleId, global::CQRSAzure.CQRSdsl.Dsl.CQRSModelHasAggregateIdentifiers.AggregateIdentifierDomainRoleId);
-				}
-
-				return;
-			}
-				
-			global::CQRSAzure.CQRSdsl.Dsl.ModelSetting sourceModelSetting2 = sourceElement as global::CQRSAzure.CQRSdsl.Dsl.ModelSetting;
-			if (sourceModelSetting2 != null)
-			{
-				// Delete link for path CQRSModelHasModelSet.ModelSet
-				
-				foreach (DslModeling::ElementLink link in global::CQRSAzure.CQRSdsl.Dsl.CQRSModelHasModelSet.GetLinks((global::CQRSAzure.CQRSdsl.Dsl.CQRSModel)this, sourceModelSetting2))
-				{
-					// Delete the link, but without possible delete propagation to the element since it's moving to a new location.
-					link.Delete(global::CQRSAzure.CQRSdsl.Dsl.CQRSModelHasModelSet.CQRSModelDomainRoleId, global::CQRSAzure.CQRSdsl.Dsl.CQRSModelHasModelSet.ModelSettingDomainRoleId);
 				}
 
 				return;
@@ -2460,6 +3213,94 @@ namespace CQRSAzure.CQRSdsl.Dsl
 		}
 		
 		#endregion
+		#region CanSnapshot domain property code
+		
+		/// <summary>
+		/// CanSnapshot domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid CanSnapshotDomainPropertyId = new global::System.Guid(0xd775bcc3, 0x7673, 0x4bcc, 0x83, 0x7f, 0xc3, 0x6f, 0xe5, 0x0c, 0xef, 0xe9);
+		
+		/// <summary>
+		/// Storage for CanSnapshot
+		/// </summary>
+		private global::System.Boolean canSnapshotPropertyStorage = true;
+		
+		/// <summary>
+		/// Gets or sets the value of CanSnapshot domain property.
+		/// Can a snapshot be taken of this projection
+		/// </summary>
+		[DslDesign::DisplayNameResource("CQRSAzure.CQRSdsl.Dsl.ProjectionDefinition/CanSnapshot.DisplayName", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("CQRSAzure.CQRSdsl.Dsl.ProjectionDefinition/CanSnapshot.Description", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(true)]
+		[DslModeling::DomainObjectId("d775bcc3-7673-4bcc-837f-c36fe50cefe9")]
+		public global::System.Boolean CanSnapshot
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return canSnapshotPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				CanSnapshotPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ProjectionDefinition.CanSnapshot domain property.
+		/// </summary>
+		internal sealed partial class CanSnapshotPropertyHandler : DslModeling::DomainPropertyValueHandler<ProjectionDefinition, global::System.Boolean>
+		{
+			private CanSnapshotPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ProjectionDefinition.CanSnapshot domain property value handler.
+			/// </summary>
+			public static readonly CanSnapshotPropertyHandler Instance = new CanSnapshotPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ProjectionDefinition.CanSnapshot domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return CanSnapshotDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Boolean GetValue(ProjectionDefinition element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.canSnapshotPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ProjectionDefinition element, global::System.Boolean newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Boolean oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.canSnapshotPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
 		#region AggregateIdentifier opposite domain role accessor
 		/// <summary>
 		/// Gets or sets AggregateIdentifier.
@@ -2541,6 +3382,26 @@ namespace CQRSAzure.CQRSdsl.Dsl
 			get
 			{
 				return GetRoleCollection<DslModeling::LinkedElementCollection<QueryDefinition>, QueryDefinition>(global::CQRSAzure.CQRSdsl.Dsl.QueryDefinitionReferencesProjectionDefinition.ProjectionDefinitionDomainRoleId);
+			}
+		}
+		#endregion
+		#region Classifier opposite domain role accessor
+		/// <summary>
+		/// Gets or sets Classifier.
+		/// Description for
+		/// CQRSAzure.CQRSdsl.Dsl.ClassifierReferencesProjectionDefinition.ProjectionDefinition
+		/// </summary>
+		public virtual Classifier Classifier
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::CQRSAzure.CQRSdsl.Dsl.ClassifierReferencesProjectionDefinition.ProjectionDefinitionDomainRoleId) as Classifier;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::CQRSAzure.CQRSdsl.Dsl.ClassifierReferencesProjectionDefinition.ProjectionDefinitionDomainRoleId, value);
 			}
 		}
 		#endregion
@@ -3609,6 +4470,93 @@ namespace CQRSAzure.CQRSdsl.Dsl
 		}
 		
 		#endregion
+		#region IsEffectiveDate domain property code
+		
+		/// <summary>
+		/// IsEffectiveDate domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid IsEffectiveDateDomainPropertyId = new global::System.Guid(0xe8d0a4bf, 0x6b07, 0x4c21, 0x85, 0xef, 0xe5, 0xb1, 0x7e, 0x50, 0x5c, 0xa3);
+		
+		/// <summary>
+		/// Storage for IsEffectiveDate
+		/// </summary>
+		private global::System.Boolean isEffectiveDatePropertyStorage;
+		
+		/// <summary>
+		/// Gets or sets the value of IsEffectiveDate domain property.
+		/// Does this property provide the "effective date" the event occured on?
+		/// </summary>
+		[DslDesign::DisplayNameResource("CQRSAzure.CQRSdsl.Dsl.EventProperty/IsEffectiveDate.DisplayName", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("CQRSAzure.CQRSdsl.Dsl.EventProperty/IsEffectiveDate.Description", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainObjectId("e8d0a4bf-6b07-4c21-85ef-e5b17e505ca3")]
+		public global::System.Boolean IsEffectiveDate
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return isEffectiveDatePropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				IsEffectiveDatePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the EventProperty.IsEffectiveDate domain property.
+		/// </summary>
+		internal sealed partial class IsEffectiveDatePropertyHandler : DslModeling::DomainPropertyValueHandler<EventProperty, global::System.Boolean>
+		{
+			private IsEffectiveDatePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the EventProperty.IsEffectiveDate domain property value handler.
+			/// </summary>
+			public static readonly IsEffectiveDatePropertyHandler Instance = new IsEffectiveDatePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the EventProperty.IsEffectiveDate domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return IsEffectiveDateDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Boolean GetValue(EventProperty element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.isEffectiveDatePropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(EventProperty element, global::System.Boolean newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Boolean oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.isEffectiveDatePropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
 		#region EventDefinition opposite domain role accessor
 		/// <summary>
 		/// Gets or sets EventDefinition.
@@ -4454,6 +5402,7 @@ namespace CQRSAzure.CQRSdsl.Dsl
 		/// to?
 		/// </summary>
 		[DslDesign::DisplayNameResource("CQRSAzure.CQRSdsl.Dsl.CommandParameter/IsAggregateKey.DisplayName", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslDesign::CategoryResource("CQRSAzure.CQRSdsl.Dsl.CommandParameter/IsAggregateKey.Category", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("CQRSAzure.CQRSdsl.Dsl.CommandParameter/IsAggregateKey.Description", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
 		[DslModeling::DomainObjectId("d1b40286-c05e-47e5-ba4b-067c3e9bcd47")]
 		public global::System.Boolean IsAggregateKey
@@ -4518,6 +5467,95 @@ namespace CQRSAzure.CQRSdsl.Dsl
 				{
 					ValueChanging(element, oldValue, newValue);
 					element.isAggregateKeyPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region IsIdentityGroupName domain property code
+		
+		/// <summary>
+		/// IsIdentityGroupName domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid IsIdentityGroupNameDomainPropertyId = new global::System.Guid(0xc93c0d4e, 0x66a1, 0x4bd9, 0xb0, 0x08, 0x6c, 0x46, 0xd1, 0x36, 0xe4, 0xd4);
+		
+		/// <summary>
+		/// Storage for IsIdentityGroupName
+		/// </summary>
+		private global::System.Boolean isIdentityGroupNamePropertyStorage;
+		
+		/// <summary>
+		/// Gets or sets the value of IsIdentityGroupName domain property.
+		/// Does this command parameter identify the identity group that the command should
+		/// apply to?
+		/// </summary>
+		[DslDesign::DisplayNameResource("CQRSAzure.CQRSdsl.Dsl.CommandParameter/IsIdentityGroupName.DisplayName", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslDesign::CategoryResource("CQRSAzure.CQRSdsl.Dsl.CommandParameter/IsIdentityGroupName.Category", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("CQRSAzure.CQRSdsl.Dsl.CommandParameter/IsIdentityGroupName.Description", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainObjectId("c93c0d4e-66a1-4bd9-b008-6c46d136e4d4")]
+		public global::System.Boolean IsIdentityGroupName
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return isIdentityGroupNamePropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				IsIdentityGroupNamePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the CommandParameter.IsIdentityGroupName domain property.
+		/// </summary>
+		internal sealed partial class IsIdentityGroupNamePropertyHandler : DslModeling::DomainPropertyValueHandler<CommandParameter, global::System.Boolean>
+		{
+			private IsIdentityGroupNamePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the CommandParameter.IsIdentityGroupName domain property value handler.
+			/// </summary>
+			public static readonly IsIdentityGroupNamePropertyHandler Instance = new IsIdentityGroupNamePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the CommandParameter.IsIdentityGroupName domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return IsIdentityGroupNameDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Boolean GetValue(CommandParameter element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.isIdentityGroupNamePropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(CommandParameter element, global::System.Boolean newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Boolean oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.isIdentityGroupNamePropertyStorage = newValue;
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
@@ -5565,6 +6603,7 @@ namespace CQRSAzure.CQRSdsl.Dsl
 		/// against?
 		/// </summary>
 		[DslDesign::DisplayNameResource("CQRSAzure.CQRSdsl.Dsl.QueryInputParameter/IsAggregateKey.DisplayName", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslDesign::CategoryResource("CQRSAzure.CQRSdsl.Dsl.QueryInputParameter/IsAggregateKey.Category", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("CQRSAzure.CQRSdsl.Dsl.QueryInputParameter/IsAggregateKey.Description", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
 		[DslModeling::DomainObjectId("371838f0-7d84-44f0-a1b3-cb8f2d2a497a")]
 		public global::System.Boolean IsAggregateKey
@@ -5805,6 +6844,95 @@ namespace CQRSAzure.CQRSdsl.Dsl
 				{
 					ValueChanging(element, oldValue, newValue);
 					element.isEffectiveDatePropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region IsIdentityGroupName domain property code
+		
+		/// <summary>
+		/// IsIdentityGroupName domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid IsIdentityGroupNameDomainPropertyId = new global::System.Guid(0x83753b78, 0x6642, 0x4e06, 0x8f, 0x77, 0x1c, 0xb1, 0x9d, 0x53, 0x6a, 0x85);
+		
+		/// <summary>
+		/// Storage for IsIdentityGroupName
+		/// </summary>
+		private global::System.Boolean isIdentityGroupNamePropertyStorage;
+		
+		/// <summary>
+		/// Gets or sets the value of IsIdentityGroupName domain property.
+		/// Is this query parameter the unique key of the identity group the query is to run
+		/// against?
+		/// </summary>
+		[DslDesign::DisplayNameResource("CQRSAzure.CQRSdsl.Dsl.QueryInputParameter/IsIdentityGroupName.DisplayName", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslDesign::CategoryResource("CQRSAzure.CQRSdsl.Dsl.QueryInputParameter/IsIdentityGroupName.Category", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("CQRSAzure.CQRSdsl.Dsl.QueryInputParameter/IsIdentityGroupName.Description", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainObjectId("83753b78-6642-4e06-8f77-1cb19d536a85")]
+		public global::System.Boolean IsIdentityGroupName
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return isIdentityGroupNamePropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				IsIdentityGroupNamePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the QueryInputParameter.IsIdentityGroupName domain property.
+		/// </summary>
+		internal sealed partial class IsIdentityGroupNamePropertyHandler : DslModeling::DomainPropertyValueHandler<QueryInputParameter, global::System.Boolean>
+		{
+			private IsIdentityGroupNamePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the QueryInputParameter.IsIdentityGroupName domain property value handler.
+			/// </summary>
+			public static readonly IsIdentityGroupNamePropertyHandler Instance = new IsIdentityGroupNamePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the QueryInputParameter.IsIdentityGroupName domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return IsIdentityGroupNameDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Boolean GetValue(QueryInputParameter element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.isIdentityGroupNamePropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(QueryInputParameter element, global::System.Boolean newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Boolean oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.isIdentityGroupNamePropertyStorage = newValue;
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
@@ -6839,242 +7967,6 @@ namespace CQRSAzure.CQRSdsl.Dsl
 namespace CQRSAzure.CQRSdsl.Dsl
 {
 	/// <summary>
-	/// DomainClass ModelSetting
-	/// A setting that controls how the model is turned into code or documentation
-	/// </summary>
-	[DslDesign::DisplayNameResource("CQRSAzure.CQRSdsl.Dsl.ModelSetting.DisplayName", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("CQRSAzure.CQRSdsl.Dsl.ModelSetting.Description", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
-	[DslModeling::DomainModelOwner(typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel))]
-	[global::System.CLSCompliant(true)]
-	[global::System.Diagnostics.DebuggerDisplay("{GetType().Name,nq} (Name = {namePropertyStorage})")]
-	[DslModeling::DomainObjectId("1dc6d5ad-aa3c-45e5-a876-a69d6e916ac5")]
-	public partial class ModelSetting : DslModeling::ModelElement
-	{
-		#region Constructors, domain class Id
-	
-		/// <summary>
-		/// ModelSetting domain class Id.
-		/// </summary>
-		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x1dc6d5ad, 0xaa3c, 0x45e5, 0xa8, 0x76, 0xa6, 0x9d, 0x6e, 0x91, 0x6a, 0xc5);
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new element is to be created.</param>
-		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		public ModelSetting(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
-			: this(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, propertyAssignments)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new element is to be created.</param>
-		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		public ModelSetting(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
-			: base(partition, propertyAssignments)
-		{
-		}
-		#endregion
-		#region Name domain property code
-		
-		/// <summary>
-		/// Name domain property Id.
-		/// </summary>
-		public static readonly global::System.Guid NameDomainPropertyId = new global::System.Guid(0x9542884f, 0x3021, 0x4604, 0x9e, 0x52, 0xb0, 0x35, 0xf9, 0x14, 0xf7, 0x00);
-		
-		/// <summary>
-		/// Storage for Name
-		/// </summary>
-		private global::System.String namePropertyStorage = string.Empty;
-		
-		/// <summary>
-		/// Gets or sets the value of Name domain property.
-		/// The unique name of this model setting
-		/// </summary>
-		[DslDesign::DisplayNameResource("CQRSAzure.CQRSdsl.Dsl.ModelSetting/Name.DisplayName", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("CQRSAzure.CQRSdsl.Dsl.ModelSetting/Name.Description", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
-		[DslModeling::ElementName]
-		[DslModeling::DomainObjectId("9542884f-3021-4604-9e52-b035f914f700")]
-		public global::System.String Name
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return namePropertyStorage;
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				NamePropertyHandler.Instance.SetValue(this, value);
-			}
-		}
-		/// <summary>
-		/// Value handler for the ModelSetting.Name domain property.
-		/// </summary>
-		internal sealed partial class NamePropertyHandler : DslModeling::DomainPropertyValueHandler<ModelSetting, global::System.String>
-		{
-			private NamePropertyHandler() { }
-		
-			/// <summary>
-			/// Gets the singleton instance of the ModelSetting.Name domain property value handler.
-			/// </summary>
-			public static readonly NamePropertyHandler Instance = new NamePropertyHandler();
-		
-			/// <summary>
-			/// Gets the Id of the ModelSetting.Name domain property.
-			/// </summary>
-			public sealed override global::System.Guid DomainPropertyId
-			{
-				[global::System.Diagnostics.DebuggerStepThrough]
-				get
-				{
-					return NameDomainPropertyId;
-				}
-			}
-			
-			/// <summary>
-			/// Gets a strongly-typed value of the property on specified element.
-			/// </summary>
-			/// <param name="element">Element which owns the property.</param>
-			/// <returns>Property value.</returns>
-			public override sealed global::System.String GetValue(ModelSetting element)
-			{
-				if (element == null) throw new global::System.ArgumentNullException("element");
-				return element.namePropertyStorage;
-			}
-		
-			/// <summary>
-			/// Sets property value on an element.
-			/// </summary>
-			/// <param name="element">Element which owns the property.</param>
-			/// <param name="newValue">New property value.</param>
-			public override sealed void SetValue(ModelSetting element, global::System.String newValue)
-			{
-				if (element == null) throw new global::System.ArgumentNullException("element");
-		
-				global::System.String oldValue = GetValue(element);
-				if (newValue != oldValue)
-				{
-					ValueChanging(element, oldValue, newValue);
-					element.namePropertyStorage = newValue;
-					ValueChanged(element, oldValue, newValue);
-				}
-			}
-		}
-		
-		#endregion
-		#region Value domain property code
-		
-		/// <summary>
-		/// Value domain property Id.
-		/// </summary>
-		public static readonly global::System.Guid ValueDomainPropertyId = new global::System.Guid(0x170d46e0, 0x646c, 0x4e90, 0xb9, 0x15, 0x56, 0x65, 0xf9, 0x19, 0x80, 0x24);
-		
-		/// <summary>
-		/// Storage for Value
-		/// </summary>
-		private global::System.String valuePropertyStorage = string.Empty;
-		
-		/// <summary>
-		/// Gets or sets the value of Value domain property.
-		/// The value of this model setting
-		/// </summary>
-		[DslDesign::DisplayNameResource("CQRSAzure.CQRSdsl.Dsl.ModelSetting/Value.DisplayName", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("CQRSAzure.CQRSdsl.Dsl.ModelSetting/Value.Description", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainObjectId("170d46e0-646c-4e90-b915-5665f9198024")]
-		public global::System.String Value
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return valuePropertyStorage;
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				ValuePropertyHandler.Instance.SetValue(this, value);
-			}
-		}
-		/// <summary>
-		/// Value handler for the ModelSetting.Value domain property.
-		/// </summary>
-		internal sealed partial class ValuePropertyHandler : DslModeling::DomainPropertyValueHandler<ModelSetting, global::System.String>
-		{
-			private ValuePropertyHandler() { }
-		
-			/// <summary>
-			/// Gets the singleton instance of the ModelSetting.Value domain property value handler.
-			/// </summary>
-			public static readonly ValuePropertyHandler Instance = new ValuePropertyHandler();
-		
-			/// <summary>
-			/// Gets the Id of the ModelSetting.Value domain property.
-			/// </summary>
-			public sealed override global::System.Guid DomainPropertyId
-			{
-				[global::System.Diagnostics.DebuggerStepThrough]
-				get
-				{
-					return ValueDomainPropertyId;
-				}
-			}
-			
-			/// <summary>
-			/// Gets a strongly-typed value of the property on specified element.
-			/// </summary>
-			/// <param name="element">Element which owns the property.</param>
-			/// <returns>Property value.</returns>
-			public override sealed global::System.String GetValue(ModelSetting element)
-			{
-				if (element == null) throw new global::System.ArgumentNullException("element");
-				return element.valuePropertyStorage;
-			}
-		
-			/// <summary>
-			/// Sets property value on an element.
-			/// </summary>
-			/// <param name="element">Element which owns the property.</param>
-			/// <param name="newValue">New property value.</param>
-			public override sealed void SetValue(ModelSetting element, global::System.String newValue)
-			{
-				if (element == null) throw new global::System.ArgumentNullException("element");
-		
-				global::System.String oldValue = GetValue(element);
-				if (newValue != oldValue)
-				{
-					ValueChanging(element, oldValue, newValue);
-					element.valuePropertyStorage = newValue;
-					ValueChanged(element, oldValue, newValue);
-				}
-			}
-		}
-		
-		#endregion
-		#region CQRSModel opposite domain role accessor
-		/// <summary>
-		/// Gets or sets CQRSModel.
-		/// Description for CQRSAzure.CQRSdsl.Dsl.CQRSModelHasModelSet.ModelSetting
-		/// </summary>
-		public virtual CQRSModel CQRSModel
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::CQRSAzure.CQRSdsl.Dsl.CQRSModelHasModelSet.ModelSettingDomainRoleId) as CQRSModel;
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::CQRSAzure.CQRSdsl.Dsl.CQRSModelHasModelSet.ModelSettingDomainRoleId, value);
-			}
-		}
-		#endregion
-	}
-}
-namespace CQRSAzure.CQRSdsl.Dsl
-{
-	/// <summary>
 	/// DomainClass IdentityGroup
 	/// A collection of 0 or more aggregate identifiers that share a common attribute
 	/// that denotes identity
@@ -7640,6 +8532,182 @@ namespace CQRSAzure.CQRSdsl.Dsl
 		}
 		
 		#endregion
+		#region ParentName domain property code
+		
+		/// <summary>
+		/// ParentName domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid ParentNameDomainPropertyId = new global::System.Guid(0x552c895d, 0x1074, 0x48f8, 0x98, 0xab, 0x1c, 0x6e, 0x0d, 0xd2, 0x12, 0x47);
+		
+		/// <summary>
+		/// Storage for ParentName
+		/// </summary>
+		private global::System.String parentNamePropertyStorage = "All";
+		
+		/// <summary>
+		/// Gets or sets the value of ParentName domain property.
+		/// The name of the group of which this group is a wholy contained subset
+		/// </summary>
+		[DslDesign::DisplayNameResource("CQRSAzure.CQRSdsl.Dsl.IdentityGroup/ParentName.DisplayName", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("CQRSAzure.CQRSdsl.Dsl.IdentityGroup/ParentName.Description", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[global::System.ComponentModel.DefaultValue("All")]
+		[DslModeling::DomainObjectId("552c895d-1074-48f8-98ab-1c6e0dd21247")]
+		public global::System.String ParentName
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return parentNamePropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				ParentNamePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the IdentityGroup.ParentName domain property.
+		/// </summary>
+		internal sealed partial class ParentNamePropertyHandler : DslModeling::DomainPropertyValueHandler<IdentityGroup, global::System.String>
+		{
+			private ParentNamePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the IdentityGroup.ParentName domain property value handler.
+			/// </summary>
+			public static readonly ParentNamePropertyHandler Instance = new ParentNamePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the IdentityGroup.ParentName domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return ParentNameDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(IdentityGroup element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.parentNamePropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(IdentityGroup element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.parentNamePropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region CanSnapshot domain property code
+		
+		/// <summary>
+		/// CanSnapshot domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid CanSnapshotDomainPropertyId = new global::System.Guid(0x4e2a2722, 0xaac3, 0x4773, 0xac, 0xde, 0x41, 0xe0, 0x5f, 0x7e, 0x10, 0x52);
+		
+		/// <summary>
+		/// Storage for CanSnapshot
+		/// </summary>
+		private global::System.Boolean canSnapshotPropertyStorage = true;
+		
+		/// <summary>
+		/// Gets or sets the value of CanSnapshot domain property.
+		/// Can a snapshot be taken of the members of this identity group?
+		/// </summary>
+		[DslDesign::DisplayNameResource("CQRSAzure.CQRSdsl.Dsl.IdentityGroup/CanSnapshot.DisplayName", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("CQRSAzure.CQRSdsl.Dsl.IdentityGroup/CanSnapshot.Description", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(true)]
+		[DslModeling::DomainObjectId("4e2a2722-aac3-4773-acde-41e05f7e1052")]
+		public global::System.Boolean CanSnapshot
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return canSnapshotPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				CanSnapshotPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the IdentityGroup.CanSnapshot domain property.
+		/// </summary>
+		internal sealed partial class CanSnapshotPropertyHandler : DslModeling::DomainPropertyValueHandler<IdentityGroup, global::System.Boolean>
+		{
+			private CanSnapshotPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the IdentityGroup.CanSnapshot domain property value handler.
+			/// </summary>
+			public static readonly CanSnapshotPropertyHandler Instance = new CanSnapshotPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the IdentityGroup.CanSnapshot domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return CanSnapshotDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Boolean GetValue(IdentityGroup element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.canSnapshotPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(IdentityGroup element, global::System.Boolean newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Boolean oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.canSnapshotPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
 		#region QueryDefinitions opposite domain role accessor
 		
 		/// <summary>
@@ -8105,6 +9173,182 @@ namespace CQRSAzure.CQRSdsl.Dsl
 		}
 		
 		#endregion
+		#region CanSnapshot domain property code
+		
+		/// <summary>
+		/// CanSnapshot domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid CanSnapshotDomainPropertyId = new global::System.Guid(0x312a49fa, 0x83c8, 0x4b98, 0xa8, 0x40, 0x7d, 0x8b, 0xd1, 0x83, 0x54, 0xea);
+		
+		/// <summary>
+		/// Storage for CanSnapshot
+		/// </summary>
+		private global::System.Boolean canSnapshotPropertyStorage = true;
+		
+		/// <summary>
+		/// Gets or sets the value of CanSnapshot domain property.
+		/// Can a point-in-time snapshot be taken by this classifier?
+		/// </summary>
+		[DslDesign::DisplayNameResource("CQRSAzure.CQRSdsl.Dsl.Classifier/CanSnapshot.DisplayName", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("CQRSAzure.CQRSdsl.Dsl.Classifier/CanSnapshot.Description", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(true)]
+		[DslModeling::DomainObjectId("312a49fa-83c8-4b98-a840-7d8bd18354ea")]
+		public global::System.Boolean CanSnapshot
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return canSnapshotPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				CanSnapshotPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the Classifier.CanSnapshot domain property.
+		/// </summary>
+		internal sealed partial class CanSnapshotPropertyHandler : DslModeling::DomainPropertyValueHandler<Classifier, global::System.Boolean>
+		{
+			private CanSnapshotPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the Classifier.CanSnapshot domain property value handler.
+			/// </summary>
+			public static readonly CanSnapshotPropertyHandler Instance = new CanSnapshotPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the Classifier.CanSnapshot domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return CanSnapshotDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Boolean GetValue(Classifier element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.canSnapshotPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(Classifier element, global::System.Boolean newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Boolean oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.canSnapshotPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region DataSourceType domain property code
+		
+		/// <summary>
+		/// DataSourceType domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid DataSourceTypeDomainPropertyId = new global::System.Guid(0xbf2ce696, 0x5457, 0x43db, 0xa7, 0x94, 0x9a, 0xf0, 0xfe, 0x06, 0x9c, 0x4e);
+		
+		/// <summary>
+		/// Storage for DataSourceType
+		/// </summary>
+		private ClassifierDataSourceType dataSourceTypePropertyStorage;
+		
+		/// <summary>
+		/// Gets or sets the value of DataSourceType domain property.
+		/// Does the data for the classifier come directly from an event stream or from a
+		/// projection?
+		/// </summary>
+		[DslDesign::DisplayNameResource("CQRSAzure.CQRSdsl.Dsl.Classifier/DataSourceType.DisplayName", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("CQRSAzure.CQRSdsl.Dsl.Classifier/DataSourceType.Description", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainObjectId("bf2ce696-5457-43db-a794-9af0fe069c4e")]
+		public ClassifierDataSourceType DataSourceType
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return dataSourceTypePropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DataSourceTypePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the Classifier.DataSourceType domain property.
+		/// </summary>
+		internal sealed partial class DataSourceTypePropertyHandler : DslModeling::DomainPropertyValueHandler<Classifier, ClassifierDataSourceType>
+		{
+			private DataSourceTypePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the Classifier.DataSourceType domain property value handler.
+			/// </summary>
+			public static readonly DataSourceTypePropertyHandler Instance = new DataSourceTypePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the Classifier.DataSourceType domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return DataSourceTypeDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed ClassifierDataSourceType GetValue(Classifier element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.dataSourceTypePropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(Classifier element, ClassifierDataSourceType newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				ClassifierDataSourceType oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.dataSourceTypePropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
 		#region AggregateIdentifier opposite domain role accessor
 		/// <summary>
 		/// Gets or sets AggregateIdentifier.
@@ -8175,6 +9419,42 @@ namespace CQRSAzure.CQRSdsl.Dsl
 			}
 		}
 		#endregion
+		#region ProjectionDefinition opposite domain role accessor
+		/// <summary>
+		/// Gets or sets ProjectionDefinition.
+		/// Description for
+		/// CQRSAzure.CQRSdsl.Dsl.ClassifierReferencesProjectionDefinition.Classifier
+		/// </summary>
+		public virtual ProjectionDefinition ProjectionDefinition
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::CQRSAzure.CQRSdsl.Dsl.ClassifierReferencesProjectionDefinition.ClassifierDomainRoleId) as ProjectionDefinition;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::CQRSAzure.CQRSdsl.Dsl.ClassifierReferencesProjectionDefinition.ClassifierDomainRoleId, value);
+			}
+		}
+		#endregion
+		#region ClassifierProjectionPropertyEvaluations opposite domain role accessor
+		
+		/// <summary>
+		/// Gets a list of ClassifierProjectionPropertyEvaluations.
+		/// Description for
+		/// CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations.Classifier
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<ClassifierProjectionPropertyEvaluation> ClassifierProjectionPropertyEvaluations
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return GetRoleCollection<DslModeling::LinkedElementCollection<ClassifierProjectionPropertyEvaluation>, ClassifierProjectionPropertyEvaluation>(global::CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations.ClassifierDomainRoleId);
+			}
+		}
+		#endregion
 		#region ElementGroupPrototype Merge methods
 		/// <summary>
 		/// Returns a value indicating whether the source element represented by the
@@ -8196,6 +9476,11 @@ namespace CQRSAzure.CQRSdsl.Dsl
 				DslModeling::DomainClassInfo rootElementDomainInfo = this.Partition.DomainDataDirectory.GetDomainClass(rootElement.DomainClassId);
 				
 				if (rootElementDomainInfo.IsDerivedFrom(global::CQRSAzure.CQRSdsl.Dsl.ClassifierEventEvaluation.DomainClassId)) 
+				{
+					return true;
+				}
+				
+				if (rootElementDomainInfo.IsDerivedFrom(global::CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation.DomainClassId)) 
 				{
 					return true;
 				}
@@ -8232,6 +9517,15 @@ namespace CQRSAzure.CQRSdsl.Dsl
 
 				return;
 			}
+				
+			global::CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation sourceClassifierProjectionPropertyEvaluation2 = sourceElement as global::CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation;
+			if (sourceClassifierProjectionPropertyEvaluation2 != null)
+			{
+				// Create link for path ClassifierHasClassifierProjectionPropertyEvaluations.ClassifierProjectionPropertyEvaluations
+				this.ClassifierProjectionPropertyEvaluations.Add(sourceClassifierProjectionPropertyEvaluation2);
+
+				return;
+			}
 		
 			// Sdk workaround to runtime bug #879350 (DSL: can't copy and paste a MEL that has a MEX). Avoid MergeRelate on ModelElementExtension
 			// during a "Paste".
@@ -8264,6 +9558,20 @@ namespace CQRSAzure.CQRSdsl.Dsl
 				{
 					// Delete the link, but without possible delete propagation to the element since it's moving to a new location.
 					link.Delete(global::CQRSAzure.CQRSdsl.Dsl.ClassifierHasEventEvaluations.ClassifierDomainRoleId, global::CQRSAzure.CQRSdsl.Dsl.ClassifierHasEventEvaluations.ClassifierEventEvaluationDomainRoleId);
+				}
+
+				return;
+			}
+				
+			global::CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation sourceClassifierProjectionPropertyEvaluation2 = sourceElement as global::CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation;
+			if (sourceClassifierProjectionPropertyEvaluation2 != null)
+			{
+				// Delete link for path ClassifierHasClassifierProjectionPropertyEvaluations.ClassifierProjectionPropertyEvaluations
+				
+				foreach (DslModeling::ElementLink link in global::CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations.GetLinks((global::CQRSAzure.CQRSdsl.Dsl.Classifier)this, sourceClassifierProjectionPropertyEvaluation2))
+				{
+					// Delete the link, but without possible delete propagation to the element since it's moving to a new location.
+					link.Delete(global::CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations.ClassifierDomainRoleId, global::CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations.ClassifierProjectionPropertyEvaluationDomainRoleId);
 				}
 
 				return;
@@ -9121,6 +10429,767 @@ namespace CQRSAzure.CQRSdsl.Dsl
 			set
 			{
 				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::CQRSAzure.CQRSdsl.Dsl.ClassifierHasEventEvaluations.ClassifierEventEvaluationDomainRoleId, value);
+			}
+		}
+		#endregion
+	}
+}
+namespace CQRSAzure.CQRSdsl.Dsl
+{
+	/// <summary>
+	/// DomainClass ClassifierProjectionPropertyEvaluation
+	/// Evaluation to perform on a property of a projection
+	/// </summary>
+	[DslDesign::DisplayNameResource("CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation.DisplayName", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation.Description", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+	[DslModeling::DomainModelOwner(typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel))]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("d26c9d9c-8a3d-4425-a7ca-7acebf4cd59b")]
+	public partial class ClassifierProjectionPropertyEvaluation : DslModeling::ModelElement
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// ClassifierProjectionPropertyEvaluation domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xd26c9d9c, 0x8a3d, 0x4425, 0xa7, 0xca, 0x7a, 0xce, 0xbf, 0x4c, 0xd5, 0x9b);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public ClassifierProjectionPropertyEvaluation(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public ClassifierProjectionPropertyEvaluation(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region PropertyName domain property code
+		
+		/// <summary>
+		/// PropertyName domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid PropertyNameDomainPropertyId = new global::System.Guid(0x88b64e0b, 0xdfc3, 0x4c8a, 0xb9, 0xe2, 0x20, 0x90, 0x39, 0xe1, 0x36, 0x1f);
+		
+		/// <summary>
+		/// Storage for PropertyName
+		/// </summary>
+		private global::System.String propertyNamePropertyStorage = string.Empty;
+		
+		/// <summary>
+		/// Gets or sets the value of PropertyName domain property.
+		/// The name of the projection property to test
+		/// </summary>
+		[DslDesign::DisplayNameResource("CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation/PropertyName.DisplayName", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation/PropertyName.Description", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainObjectId("88b64e0b-dfc3-4c8a-b9e2-209039e1361f")]
+		public global::System.String PropertyName
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return propertyNamePropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				PropertyNamePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ClassifierProjectionPropertyEvaluation.PropertyName domain property.
+		/// </summary>
+		internal sealed partial class PropertyNamePropertyHandler : DslModeling::DomainPropertyValueHandler<ClassifierProjectionPropertyEvaluation, global::System.String>
+		{
+			private PropertyNamePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ClassifierProjectionPropertyEvaluation.PropertyName domain property value handler.
+			/// </summary>
+			public static readonly PropertyNamePropertyHandler Instance = new PropertyNamePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ClassifierProjectionPropertyEvaluation.PropertyName domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return PropertyNameDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(ClassifierProjectionPropertyEvaluation element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.propertyNamePropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ClassifierProjectionPropertyEvaluation element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.propertyNamePropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region Notes domain property code
+		
+		/// <summary>
+		/// Notes domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid NotesDomainPropertyId = new global::System.Guid(0xa699b460, 0x4bba, 0x4483, 0xaa, 0x45, 0x64, 0x9a, 0x4f, 0x2e, 0x3f, 0x5e);
+		
+		/// <summary>
+		/// Storage for Notes
+		/// </summary>
+		private global::System.String notesPropertyStorage = string.Empty;
+		
+		/// <summary>
+		/// Gets or sets the value of Notes domain property.
+		/// Additional notes pertaining to this classifier projection property evaluation
+		/// </summary>
+		[DslDesign::DisplayNameResource("CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation/Notes.DisplayName", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation/Notes.Description", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainObjectId("a699b460-4bba-4483-aa45-649a4f2e3f5e")]
+		public global::System.String Notes
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return notesPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				NotesPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ClassifierProjectionPropertyEvaluation.Notes domain property.
+		/// </summary>
+		internal sealed partial class NotesPropertyHandler : DslModeling::DomainPropertyValueHandler<ClassifierProjectionPropertyEvaluation, global::System.String>
+		{
+			private NotesPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ClassifierProjectionPropertyEvaluation.Notes domain property value handler.
+			/// </summary>
+			public static readonly NotesPropertyHandler Instance = new NotesPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ClassifierProjectionPropertyEvaluation.Notes domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return NotesDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(ClassifierProjectionPropertyEvaluation element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.notesPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ClassifierProjectionPropertyEvaluation element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.notesPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region Description domain property code
+		
+		/// <summary>
+		/// Description domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid DescriptionDomainPropertyId = new global::System.Guid(0x87508252, 0xbdb3, 0x4349, 0x83, 0x6e, 0xdb, 0x5a, 0x4a, 0xaa, 0xd9, 0x1f);
+		
+		/// <summary>
+		/// Storage for Description
+		/// </summary>
+		private global::System.String descriptionPropertyStorage = string.Empty;
+		
+		/// <summary>
+		/// Gets or sets the value of Description domain property.
+		/// Description of this classifier projection property evaluation
+		/// </summary>
+		[DslDesign::DisplayNameResource("CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation/Description.DisplayName", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation/Description.Description", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainObjectId("87508252-bdb3-4349-836e-db5a4aaad91f")]
+		public global::System.String Description
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return descriptionPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DescriptionPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ClassifierProjectionPropertyEvaluation.Description domain property.
+		/// </summary>
+		internal sealed partial class DescriptionPropertyHandler : DslModeling::DomainPropertyValueHandler<ClassifierProjectionPropertyEvaluation, global::System.String>
+		{
+			private DescriptionPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ClassifierProjectionPropertyEvaluation.Description domain property value handler.
+			/// </summary>
+			public static readonly DescriptionPropertyHandler Instance = new DescriptionPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ClassifierProjectionPropertyEvaluation.Description domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return DescriptionDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(ClassifierProjectionPropertyEvaluation element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.descriptionPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ClassifierProjectionPropertyEvaluation element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.descriptionPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region PropertyEvaluationToPerform domain property code
+		
+		/// <summary>
+		/// PropertyEvaluationToPerform domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid PropertyEvaluationToPerformDomainPropertyId = new global::System.Guid(0xefce8e43, 0x3c74, 0x4e24, 0xae, 0xdd, 0x0b, 0x0e, 0x8f, 0x9c, 0xe1, 0x39);
+		
+		/// <summary>
+		/// Storage for PropertyEvaluationToPerform
+		/// </summary>
+		private PropertyEvaluation propertyEvaluationToPerformPropertyStorage = PropertyEvaluation.Always;
+		
+		/// <summary>
+		/// Gets or sets the value of PropertyEvaluationToPerform domain property.
+		/// The evaluation to perform on the projection property
+		/// </summary>
+		[DslDesign::DisplayNameResource("CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation/PropertyEvaluationToPerform.DisplayName", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation/PropertyEvaluationToPerform.Description", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(PropertyEvaluation.Always)]
+		[DslModeling::DomainObjectId("efce8e43-3c74-4e24-aedd-0b0e8f9ce139")]
+		public PropertyEvaluation PropertyEvaluationToPerform
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return propertyEvaluationToPerformPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				PropertyEvaluationToPerformPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ClassifierProjectionPropertyEvaluation.PropertyEvaluationToPerform domain property.
+		/// </summary>
+		internal sealed partial class PropertyEvaluationToPerformPropertyHandler : DslModeling::DomainPropertyValueHandler<ClassifierProjectionPropertyEvaluation, PropertyEvaluation>
+		{
+			private PropertyEvaluationToPerformPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ClassifierProjectionPropertyEvaluation.PropertyEvaluationToPerform domain property value handler.
+			/// </summary>
+			public static readonly PropertyEvaluationToPerformPropertyHandler Instance = new PropertyEvaluationToPerformPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ClassifierProjectionPropertyEvaluation.PropertyEvaluationToPerform domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return PropertyEvaluationToPerformDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed PropertyEvaluation GetValue(ClassifierProjectionPropertyEvaluation element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.propertyEvaluationToPerformPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ClassifierProjectionPropertyEvaluation element, PropertyEvaluation newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				PropertyEvaluation oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.propertyEvaluationToPerformPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region OnTrue domain property code
+		
+		/// <summary>
+		/// OnTrue domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid OnTrueDomainPropertyId = new global::System.Guid(0x448ad410, 0xdbaf, 0x4523, 0xa0, 0x4f, 0x8c, 0x00, 0x46, 0xe9, 0x58, 0xc1);
+		
+		/// <summary>
+		/// Storage for OnTrue
+		/// </summary>
+		private IdentityGroupClassification onTruePropertyStorage = IdentityGroupClassification.Include;
+		
+		/// <summary>
+		/// Gets or sets the value of OnTrue domain property.
+		/// What the property evaluating to true means to the identity group
+		/// </summary>
+		[DslDesign::DisplayNameResource("CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation/OnTrue.DisplayName", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation/OnTrue.Description", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(IdentityGroupClassification.Include)]
+		[DslModeling::DomainObjectId("448ad410-dbaf-4523-a04f-8c0046e958c1")]
+		public IdentityGroupClassification OnTrue
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return onTruePropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				OnTruePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ClassifierProjectionPropertyEvaluation.OnTrue domain property.
+		/// </summary>
+		internal sealed partial class OnTruePropertyHandler : DslModeling::DomainPropertyValueHandler<ClassifierProjectionPropertyEvaluation, IdentityGroupClassification>
+		{
+			private OnTruePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ClassifierProjectionPropertyEvaluation.OnTrue domain property value handler.
+			/// </summary>
+			public static readonly OnTruePropertyHandler Instance = new OnTruePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ClassifierProjectionPropertyEvaluation.OnTrue domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return OnTrueDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed IdentityGroupClassification GetValue(ClassifierProjectionPropertyEvaluation element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.onTruePropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ClassifierProjectionPropertyEvaluation element, IdentityGroupClassification newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				IdentityGroupClassification oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.onTruePropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region OnFalse domain property code
+		
+		/// <summary>
+		/// OnFalse domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid OnFalseDomainPropertyId = new global::System.Guid(0xcbf5d77e, 0xd5f1, 0x4ede, 0x9f, 0x4e, 0x21, 0x3c, 0xa9, 0x86, 0xc0, 0x7c);
+		
+		/// <summary>
+		/// Storage for OnFalse
+		/// </summary>
+		private IdentityGroupClassification onFalsePropertyStorage = IdentityGroupClassification.Exclude;
+		
+		/// <summary>
+		/// Gets or sets the value of OnFalse domain property.
+		/// What happens to group membership if this property evaluates to false
+		/// </summary>
+		[DslDesign::DisplayNameResource("CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation/OnFalse.DisplayName", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation/OnFalse.Description", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(IdentityGroupClassification.Exclude)]
+		[DslModeling::DomainObjectId("cbf5d77e-d5f1-4ede-9f4e-213ca986c07c")]
+		public IdentityGroupClassification OnFalse
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return onFalsePropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				OnFalsePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ClassifierProjectionPropertyEvaluation.OnFalse domain property.
+		/// </summary>
+		internal sealed partial class OnFalsePropertyHandler : DslModeling::DomainPropertyValueHandler<ClassifierProjectionPropertyEvaluation, IdentityGroupClassification>
+		{
+			private OnFalsePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ClassifierProjectionPropertyEvaluation.OnFalse domain property value handler.
+			/// </summary>
+			public static readonly OnFalsePropertyHandler Instance = new OnFalsePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ClassifierProjectionPropertyEvaluation.OnFalse domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return OnFalseDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed IdentityGroupClassification GetValue(ClassifierProjectionPropertyEvaluation element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.onFalsePropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ClassifierProjectionPropertyEvaluation element, IdentityGroupClassification newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				IdentityGroupClassification oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.onFalsePropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region Target domain property code
+		
+		/// <summary>
+		/// Target domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid TargetDomainPropertyId = new global::System.Guid(0x11e7c87b, 0xd615, 0x4f67, 0xbd, 0x2f, 0xd6, 0x53, 0x29, 0xc3, 0xdf, 0xa3);
+		
+		/// <summary>
+		/// Storage for Target
+		/// </summary>
+		private global::System.String targetPropertyStorage = string.Empty;
+		
+		/// <summary>
+		/// Gets or sets the value of Target domain property.
+		/// What the property value is being evaluated against
+		/// </summary>
+		[DslDesign::DisplayNameResource("CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation/Target.DisplayName", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation/Target.Description", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainObjectId("11e7c87b-d615-4f67-bd2f-d65329c3dfa3")]
+		public global::System.String Target
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return targetPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				TargetPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ClassifierProjectionPropertyEvaluation.Target domain property.
+		/// </summary>
+		internal sealed partial class TargetPropertyHandler : DslModeling::DomainPropertyValueHandler<ClassifierProjectionPropertyEvaluation, global::System.String>
+		{
+			private TargetPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ClassifierProjectionPropertyEvaluation.Target domain property value handler.
+			/// </summary>
+			public static readonly TargetPropertyHandler Instance = new TargetPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ClassifierProjectionPropertyEvaluation.Target domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return TargetDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(ClassifierProjectionPropertyEvaluation element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.targetPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ClassifierProjectionPropertyEvaluation element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.targetPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region TargetType domain property code
+		
+		/// <summary>
+		/// TargetType domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid TargetTypeDomainPropertyId = new global::System.Guid(0x89b5c07f, 0xfdd1, 0x49c9, 0xa4, 0x4f, 0xb5, 0x03, 0x9c, 0xab, 0xda, 0x21);
+		
+		/// <summary>
+		/// Storage for TargetType
+		/// </summary>
+		private EvaluationTargetType targetTypePropertyStorage = EvaluationTargetType.Constant;
+		
+		/// <summary>
+		/// Gets or sets the value of TargetType domain property.
+		/// What is represented by the evaluation target
+		/// </summary>
+		[DslDesign::DisplayNameResource("CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation/TargetType.DisplayName", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation/TargetType.Description", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(EvaluationTargetType.Constant)]
+		[DslModeling::DomainObjectId("89b5c07f-fdd1-49c9-a44f-b5039cabda21")]
+		public EvaluationTargetType TargetType
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return targetTypePropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				TargetTypePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ClassifierProjectionPropertyEvaluation.TargetType domain property.
+		/// </summary>
+		internal sealed partial class TargetTypePropertyHandler : DslModeling::DomainPropertyValueHandler<ClassifierProjectionPropertyEvaluation, EvaluationTargetType>
+		{
+			private TargetTypePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ClassifierProjectionPropertyEvaluation.TargetType domain property value handler.
+			/// </summary>
+			public static readonly TargetTypePropertyHandler Instance = new TargetTypePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ClassifierProjectionPropertyEvaluation.TargetType domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return TargetTypeDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed EvaluationTargetType GetValue(ClassifierProjectionPropertyEvaluation element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.targetTypePropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ClassifierProjectionPropertyEvaluation element, EvaluationTargetType newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				EvaluationTargetType oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.targetTypePropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region Classifier opposite domain role accessor
+		/// <summary>
+		/// Gets or sets Classifier.
+		/// Description for
+		/// CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations.ClassifierProjectionPropertyEvaluation
+		/// </summary>
+		public virtual Classifier Classifier
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations.ClassifierProjectionPropertyEvaluationDomainRoleId) as Classifier;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations.ClassifierProjectionPropertyEvaluationDomainRoleId, value);
 			}
 		}
 		#endregion

@@ -1,4 +1,5 @@
 ﻿Imports System.CodeDom
+Imports CQRSAzure.CQRSdsl.CustomCode.Interfaces
 Imports Microsoft.CodeDom.Providers.DotNetCompilerPlatform
 
 ''' <summary>
@@ -66,7 +67,7 @@ Public Interface IEntityCodeGeneratorBase
     ''' <remarks>
     ''' Each entity code genrator will need to decide which options do or do not apply to it
     ''' </remarks>
-    Sub SetCodeGenerationOptions(ByVal options As ModelCodeGenerationOptions)
+    Sub SetCodeGenerationOptions(ByVal options As IModelCodeGenerationOptions)
 
 
     ''' <summary>

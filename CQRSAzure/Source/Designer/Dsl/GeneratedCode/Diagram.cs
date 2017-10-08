@@ -360,6 +360,11 @@ namespace CQRSAzure.CQRSdsl.Dsl
 				global::CQRSAzure.CQRSdsl.Dsl.ClassifierEventConnector newShape = new global::CQRSAzure.CQRSdsl.Dsl.ClassifierEventConnector(this.Partition);
 				return newShape;
 			}
+			if(element is global::CQRSAzure.CQRSdsl.Dsl.ClassifierReferencesProjectionDefinition)
+			{
+				global::CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionConnector newShape = new global::CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionConnector(this.Partition);
+				return newShape;
+			}
 			return base.CreateChildShape(element);
 		}
 		#endregion
@@ -537,6 +542,7 @@ namespace CQRSAzure.CQRSdsl.Dsl
 		private global::CQRSAzure.CQRSdsl.Dsl.ProjectionEventConnectionToolConnectAction projectionEventConnectionToolConnectAction;
 		private global::CQRSAzure.CQRSdsl.Dsl.AggregateParenthoodConnectionToolConnectAction aggregateParenthoodConnectionToolConnectAction;
 		private global::CQRSAzure.CQRSdsl.Dsl.ClassifierEventConnectionToolConnectAction classifierEventConnectionToolConnectAction;
+		private global::CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionConnectionToolConnectAction classifierProjectionConnectionToolConnectAction;
 		/// <summary>
 		/// Virtual method to provide a filter when to select the mouse action
 		/// </summary>
@@ -585,6 +591,15 @@ namespace CQRSAzure.CQRSdsl.Dsl
 						this.classifierEventConnectionToolConnectAction.MouseActionDeactivated += new DslDiagrams::MouseAction.MouseActionDeactivatedEventHandler(OnConnectActionDeactivated);
 					}
 					action = this.classifierEventConnectionToolConnectAction;
+				} 
+				else if (SelectedToolboxItemSupportsFilterString(activeView, global::CQRSAzure.CQRSdsl.Dsl.CQRSdslToolboxHelper.ClassifierProjectionConnectionToolFilterString))
+				{
+					if (this.classifierProjectionConnectionToolConnectAction == null)
+					{
+						this.classifierProjectionConnectionToolConnectAction = new global::CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionConnectionToolConnectAction(this);
+						this.classifierProjectionConnectionToolConnectAction.MouseActionDeactivated += new DslDiagrams::MouseAction.MouseActionDeactivatedEventHandler(OnConnectActionDeactivated);
+					}
+					action = this.classifierProjectionConnectionToolConnectAction;
 				} 
 				else
 				{
@@ -658,6 +673,11 @@ namespace CQRSAzure.CQRSdsl.Dsl
 						this.classifierEventConnectionToolConnectAction.Dispose();
 						this.classifierEventConnectionToolConnectAction = null;
 					}
+					if(this.classifierProjectionConnectionToolConnectAction != null)
+					{
+						this.classifierProjectionConnectionToolConnectAction.Dispose();
+						this.classifierProjectionConnectionToolConnectAction = null;
+					}
 					this.UnsubscribeCompartmentItemsEvents();
 				}
 			}
@@ -691,95 +711,6 @@ namespace CQRSAzure.CQRSdsl.Dsl
 			: base(partition, propertyAssignments)
 		{
 		}
-		#endregion
-		#region OutputCodeLanguage domain property code
-		
-		/// <summary>
-		/// OutputCodeLanguage domain property Id.
-		/// </summary>
-		public static readonly global::System.Guid OutputCodeLanguageDomainPropertyId = new global::System.Guid(0x0755a035, 0xf72c, 0x43e2, 0x87, 0xe3, 0x87, 0x5d, 0xca, 0x7e, 0x5f, 0x5f);
-		
-		/// <summary>
-		/// Storage for OutputCodeLanguage
-		/// </summary>
-		private TargetLanguage outputCodeLanguagePropertyStorage = TargetLanguage.VBNet;
-		
-		/// <summary>
-		/// Gets or sets the value of OutputCodeLanguage domain property.
-		/// The language to use to generate code from this model
-		/// </summary>
-		[DslDesign::DisplayNameResource("CQRSAzure.CQRSdsl.Dsl.CQRSdslDiagram/OutputCodeLanguage.DisplayName", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
-		[DslDesign::CategoryResource("CQRSAzure.CQRSdsl.Dsl.CQRSdslDiagram/OutputCodeLanguage.Category", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("CQRSAzure.CQRSdsl.Dsl.CQRSdslDiagram/OutputCodeLanguage.Description", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
-		[global::System.ComponentModel.DefaultValue(TargetLanguage.VBNet)]
-		[DslModeling::DomainObjectId("0755a035-f72c-43e2-87e3-875dca7e5f5f")]
-		public TargetLanguage OutputCodeLanguage
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return outputCodeLanguagePropertyStorage;
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				OutputCodeLanguagePropertyHandler.Instance.SetValue(this, value);
-			}
-		}
-		/// <summary>
-		/// Value handler for the CQRSdslDiagram.OutputCodeLanguage domain property.
-		/// </summary>
-		internal sealed partial class OutputCodeLanguagePropertyHandler : DslModeling::DomainPropertyValueHandler<CQRSdslDiagram, TargetLanguage>
-		{
-			private OutputCodeLanguagePropertyHandler() { }
-		
-			/// <summary>
-			/// Gets the singleton instance of the CQRSdslDiagram.OutputCodeLanguage domain property value handler.
-			/// </summary>
-			public static readonly OutputCodeLanguagePropertyHandler Instance = new OutputCodeLanguagePropertyHandler();
-		
-			/// <summary>
-			/// Gets the Id of the CQRSdslDiagram.OutputCodeLanguage domain property.
-			/// </summary>
-			public sealed override global::System.Guid DomainPropertyId
-			{
-				[global::System.Diagnostics.DebuggerStepThrough]
-				get
-				{
-					return OutputCodeLanguageDomainPropertyId;
-				}
-			}
-			
-			/// <summary>
-			/// Gets a strongly-typed value of the property on specified element.
-			/// </summary>
-			/// <param name="element">Element which owns the property.</param>
-			/// <returns>Property value.</returns>
-			public override sealed TargetLanguage GetValue(CQRSdslDiagram element)
-			{
-				if (element == null) throw new global::System.ArgumentNullException("element");
-				return element.outputCodeLanguagePropertyStorage;
-			}
-		
-			/// <summary>
-			/// Sets property value on an element.
-			/// </summary>
-			/// <param name="element">Element which owns the property.</param>
-			/// <param name="newValue">New property value.</param>
-			public override sealed void SetValue(CQRSdslDiagram element, TargetLanguage newValue)
-			{
-				if (element == null) throw new global::System.ArgumentNullException("element");
-		
-				TargetLanguage oldValue = GetValue(element);
-				if (newValue != oldValue)
-				{
-					ValueChanging(element, oldValue, newValue);
-					element.outputCodeLanguagePropertyStorage = newValue;
-					ValueChanged(element, oldValue, newValue);
-				}
-			}
-		}
-		
 		#endregion
 		#region CopyrightNotice domain property code
 		
@@ -957,184 +888,6 @@ namespace CQRSAzure.CQRSdsl.Dsl
 		}
 		
 		#endregion
-		#region SubfolderPerModel domain property code
-		
-		/// <summary>
-		/// SubfolderPerModel domain property Id.
-		/// </summary>
-		public static readonly global::System.Guid SubfolderPerModelDomainPropertyId = new global::System.Guid(0x1fca977f, 0x2697, 0x42e0, 0xaf, 0x61, 0xfe, 0x29, 0x63, 0x3c, 0x20, 0x81);
-		
-		/// <summary>
-		/// Storage for SubfolderPerModel
-		/// </summary>
-		private global::System.Boolean subfolderPerModelPropertyStorage = true;
-		
-		/// <summary>
-		/// Gets or sets the value of SubfolderPerModel domain property.
-		/// Description for CQRSAzure.CQRSdsl.Dsl.CQRSdslDiagram.Subfolder Per Model
-		/// </summary>
-		[DslDesign::DisplayNameResource("CQRSAzure.CQRSdsl.Dsl.CQRSdslDiagram/SubfolderPerModel.DisplayName", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
-		[DslDesign::CategoryResource("CQRSAzure.CQRSdsl.Dsl.CQRSdslDiagram/SubfolderPerModel.Category", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("CQRSAzure.CQRSdsl.Dsl.CQRSdslDiagram/SubfolderPerModel.Description", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
-		[global::System.ComponentModel.DefaultValue(true)]
-		[DslModeling::DomainObjectId("1fca977f-2697-42e0-af61-fe29633c2081")]
-		public global::System.Boolean SubfolderPerModel
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return subfolderPerModelPropertyStorage;
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				SubfolderPerModelPropertyHandler.Instance.SetValue(this, value);
-			}
-		}
-		/// <summary>
-		/// Value handler for the CQRSdslDiagram.SubfolderPerModel domain property.
-		/// </summary>
-		internal sealed partial class SubfolderPerModelPropertyHandler : DslModeling::DomainPropertyValueHandler<CQRSdslDiagram, global::System.Boolean>
-		{
-			private SubfolderPerModelPropertyHandler() { }
-		
-			/// <summary>
-			/// Gets the singleton instance of the CQRSdslDiagram.SubfolderPerModel domain property value handler.
-			/// </summary>
-			public static readonly SubfolderPerModelPropertyHandler Instance = new SubfolderPerModelPropertyHandler();
-		
-			/// <summary>
-			/// Gets the Id of the CQRSdslDiagram.SubfolderPerModel domain property.
-			/// </summary>
-			public sealed override global::System.Guid DomainPropertyId
-			{
-				[global::System.Diagnostics.DebuggerStepThrough]
-				get
-				{
-					return SubfolderPerModelDomainPropertyId;
-				}
-			}
-			
-			/// <summary>
-			/// Gets a strongly-typed value of the property on specified element.
-			/// </summary>
-			/// <param name="element">Element which owns the property.</param>
-			/// <returns>Property value.</returns>
-			public override sealed global::System.Boolean GetValue(CQRSdslDiagram element)
-			{
-				if (element == null) throw new global::System.ArgumentNullException("element");
-				return element.subfolderPerModelPropertyStorage;
-			}
-		
-			/// <summary>
-			/// Sets property value on an element.
-			/// </summary>
-			/// <param name="element">Element which owns the property.</param>
-			/// <param name="newValue">New property value.</param>
-			public override sealed void SetValue(CQRSdslDiagram element, global::System.Boolean newValue)
-			{
-				if (element == null) throw new global::System.ArgumentNullException("element");
-		
-				global::System.Boolean oldValue = GetValue(element);
-				if (newValue != oldValue)
-				{
-					ValueChanging(element, oldValue, newValue);
-					element.subfolderPerModelPropertyStorage = newValue;
-					ValueChanged(element, oldValue, newValue);
-				}
-			}
-		}
-		
-		#endregion
-		#region SubfolderPerAggregate domain property code
-		
-		/// <summary>
-		/// SubfolderPerAggregate domain property Id.
-		/// </summary>
-		public static readonly global::System.Guid SubfolderPerAggregateDomainPropertyId = new global::System.Guid(0xab1493fe, 0x58ae, 0x4ece, 0x90, 0xc2, 0x75, 0x6f, 0xfb, 0xae, 0xb6, 0x61);
-		
-		/// <summary>
-		/// Storage for SubfolderPerAggregate
-		/// </summary>
-		private global::System.Boolean subfolderPerAggregatePropertyStorage = true;
-		
-		/// <summary>
-		/// Gets or sets the value of SubfolderPerAggregate domain property.
-		/// Description for CQRSAzure.CQRSdsl.Dsl.CQRSdslDiagram.Subfolder Per Aggregate
-		/// </summary>
-		[DslDesign::DisplayNameResource("CQRSAzure.CQRSdsl.Dsl.CQRSdslDiagram/SubfolderPerAggregate.DisplayName", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
-		[DslDesign::CategoryResource("CQRSAzure.CQRSdsl.Dsl.CQRSdslDiagram/SubfolderPerAggregate.Category", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("CQRSAzure.CQRSdsl.Dsl.CQRSdslDiagram/SubfolderPerAggregate.Description", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
-		[global::System.ComponentModel.DefaultValue(true)]
-		[DslModeling::DomainObjectId("ab1493fe-58ae-4ece-90c2-756ffbaeb661")]
-		public global::System.Boolean SubfolderPerAggregate
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return subfolderPerAggregatePropertyStorage;
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				SubfolderPerAggregatePropertyHandler.Instance.SetValue(this, value);
-			}
-		}
-		/// <summary>
-		/// Value handler for the CQRSdslDiagram.SubfolderPerAggregate domain property.
-		/// </summary>
-		internal sealed partial class SubfolderPerAggregatePropertyHandler : DslModeling::DomainPropertyValueHandler<CQRSdslDiagram, global::System.Boolean>
-		{
-			private SubfolderPerAggregatePropertyHandler() { }
-		
-			/// <summary>
-			/// Gets the singleton instance of the CQRSdslDiagram.SubfolderPerAggregate domain property value handler.
-			/// </summary>
-			public static readonly SubfolderPerAggregatePropertyHandler Instance = new SubfolderPerAggregatePropertyHandler();
-		
-			/// <summary>
-			/// Gets the Id of the CQRSdslDiagram.SubfolderPerAggregate domain property.
-			/// </summary>
-			public sealed override global::System.Guid DomainPropertyId
-			{
-				[global::System.Diagnostics.DebuggerStepThrough]
-				get
-				{
-					return SubfolderPerAggregateDomainPropertyId;
-				}
-			}
-			
-			/// <summary>
-			/// Gets a strongly-typed value of the property on specified element.
-			/// </summary>
-			/// <param name="element">Element which owns the property.</param>
-			/// <returns>Property value.</returns>
-			public override sealed global::System.Boolean GetValue(CQRSdslDiagram element)
-			{
-				if (element == null) throw new global::System.ArgumentNullException("element");
-				return element.subfolderPerAggregatePropertyStorage;
-			}
-		
-			/// <summary>
-			/// Sets property value on an element.
-			/// </summary>
-			/// <param name="element">Element which owns the property.</param>
-			/// <param name="newValue">New property value.</param>
-			public override sealed void SetValue(CQRSdslDiagram element, global::System.Boolean newValue)
-			{
-				if (element == null) throw new global::System.ArgumentNullException("element");
-		
-				global::System.Boolean oldValue = GetValue(element);
-				if (newValue != oldValue)
-				{
-					ValueChanging(element, oldValue, newValue);
-					element.subfolderPerAggregatePropertyStorage = newValue;
-					ValueChanged(element, oldValue, newValue);
-				}
-			}
-		}
-		
-		#endregion
 	}
 }
 namespace CQRSAzure.CQRSdsl.Dsl
@@ -1156,21 +909,22 @@ namespace CQRSAzure.CQRSdsl.Dsl
 		/// Rule that initiates view fixup when an element that has an associated shape is added to the model. 
 		/// </summary>
 		[DslModeling::RuleOn(typeof(global::CQRSAzure.CQRSdsl.Dsl.AggregateIdentifier), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
-		[DslModeling::RuleOn(typeof(global::CQRSAzure.CQRSdsl.Dsl.QueryDefinition), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
-		[DslModeling::RuleOn(typeof(global::CQRSAzure.CQRSdsl.Dsl.EventDefinition), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
-		[DslModeling::RuleOn(typeof(global::CQRSAzure.CQRSdsl.Dsl.ProjectionDefinition), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
-		[DslModeling::RuleOn(typeof(global::CQRSAzure.CQRSdsl.Dsl.CommandDefinition), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
-		[DslModeling::RuleOn(typeof(global::CQRSAzure.CQRSdsl.Dsl.IdentityGroup), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
-		[DslModeling::RuleOn(typeof(global::CQRSAzure.CQRSdsl.Dsl.Classifier), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
-		[DslModeling::RuleOn(typeof(global::CQRSAzure.CQRSdsl.Dsl.AggregateIdentifierIsChildOfTargetAggregateIdentifiers), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
-		[DslModeling::RuleOn(typeof(global::CQRSAzure.CQRSdsl.Dsl.AggregateIdentifierHasEventDefinitions), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
-		[DslModeling::RuleOn(typeof(global::CQRSAzure.CQRSdsl.Dsl.AggregateIdentifierHasProjectionDefinitions), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
-		[DslModeling::RuleOn(typeof(global::CQRSAzure.CQRSdsl.Dsl.AggregateIdentifierHasQueryDefinitions), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
-		[DslModeling::RuleOn(typeof(global::CQRSAzure.CQRSdsl.Dsl.AggregateIdentifierHasCommandDefinitions), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
-		[DslModeling::RuleOn(typeof(global::CQRSAzure.CQRSdsl.Dsl.ProjectionDefinitionHandlesEventDefinitions), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
-		[DslModeling::RuleOn(typeof(global::CQRSAzure.CQRSdsl.Dsl.AggregateIdentifierHasIdentityGrouped), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::CQRSAzure.CQRSdsl.Dsl.IdentityGroupReferencesClassifier), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::CQRSAzure.CQRSdsl.Dsl.AggregateIdentifierHasIdentityGrouped), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::CQRSAzure.CQRSdsl.Dsl.ProjectionDefinitionHandlesEventDefinitions), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::CQRSAzure.CQRSdsl.Dsl.AggregateIdentifierHasCommandDefinitions), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::CQRSAzure.CQRSdsl.Dsl.AggregateIdentifierHasQueryDefinitions), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::CQRSAzure.CQRSdsl.Dsl.AggregateIdentifierHasProjectionDefinitions), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::CQRSAzure.CQRSdsl.Dsl.ClassifierHandlesEvents), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::CQRSAzure.CQRSdsl.Dsl.AggregateIdentifierHasEventDefinitions), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::CQRSAzure.CQRSdsl.Dsl.Classifier), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::CQRSAzure.CQRSdsl.Dsl.IdentityGroup), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::CQRSAzure.CQRSdsl.Dsl.CommandDefinition), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::CQRSAzure.CQRSdsl.Dsl.ProjectionDefinition), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::CQRSAzure.CQRSdsl.Dsl.EventDefinition), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::CQRSAzure.CQRSdsl.Dsl.QueryDefinition), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::CQRSAzure.CQRSdsl.Dsl.AggregateIdentifierIsChildOfTargetAggregateIdentifiers), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::CQRSAzure.CQRSdsl.Dsl.ClassifierReferencesProjectionDefinition), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
 		internal sealed partial class FixUpDiagram : FixUpDiagramBase
 		{
 			[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
@@ -1190,29 +944,29 @@ namespace CQRSAzure.CQRSdsl.Dsl
 				{
 					parentElement = GetParentForAggregateIdentifier((global::CQRSAzure.CQRSdsl.Dsl.AggregateIdentifier)childElement);
 				} else
-				if(childElement is global::CQRSAzure.CQRSdsl.Dsl.QueryDefinition)
+				if(childElement is global::CQRSAzure.CQRSdsl.Dsl.Classifier)
 				{
-					parentElement = GetParentForQueryDefinition((global::CQRSAzure.CQRSdsl.Dsl.QueryDefinition)childElement);
-				} else
-				if(childElement is global::CQRSAzure.CQRSdsl.Dsl.EventDefinition)
-				{
-					parentElement = GetParentForEventDefinition((global::CQRSAzure.CQRSdsl.Dsl.EventDefinition)childElement);
-				} else
-				if(childElement is global::CQRSAzure.CQRSdsl.Dsl.ProjectionDefinition)
-				{
-					parentElement = GetParentForProjectionDefinition((global::CQRSAzure.CQRSdsl.Dsl.ProjectionDefinition)childElement);
-				} else
-				if(childElement is global::CQRSAzure.CQRSdsl.Dsl.CommandDefinition)
-				{
-					parentElement = GetParentForCommandDefinition((global::CQRSAzure.CQRSdsl.Dsl.CommandDefinition)childElement);
+					parentElement = GetParentForClassifier((global::CQRSAzure.CQRSdsl.Dsl.Classifier)childElement);
 				} else
 				if(childElement is global::CQRSAzure.CQRSdsl.Dsl.IdentityGroup)
 				{
 					parentElement = GetParentForIdentityGroup((global::CQRSAzure.CQRSdsl.Dsl.IdentityGroup)childElement);
 				} else
-				if(childElement is global::CQRSAzure.CQRSdsl.Dsl.Classifier)
+				if(childElement is global::CQRSAzure.CQRSdsl.Dsl.CommandDefinition)
 				{
-					parentElement = GetParentForClassifier((global::CQRSAzure.CQRSdsl.Dsl.Classifier)childElement);
+					parentElement = GetParentForCommandDefinition((global::CQRSAzure.CQRSdsl.Dsl.CommandDefinition)childElement);
+				} else
+				if(childElement is global::CQRSAzure.CQRSdsl.Dsl.ProjectionDefinition)
+				{
+					parentElement = GetParentForProjectionDefinition((global::CQRSAzure.CQRSdsl.Dsl.ProjectionDefinition)childElement);
+				} else
+				if(childElement is global::CQRSAzure.CQRSdsl.Dsl.EventDefinition)
+				{
+					parentElement = GetParentForEventDefinition((global::CQRSAzure.CQRSdsl.Dsl.EventDefinition)childElement);
+				} else
+				if(childElement is global::CQRSAzure.CQRSdsl.Dsl.QueryDefinition)
+				{
+					parentElement = GetParentForQueryDefinition((global::CQRSAzure.CQRSdsl.Dsl.QueryDefinition)childElement);
 				} else
 				{
 					parentElement = null;
@@ -1385,6 +1139,7 @@ namespace CQRSAzure.CQRSdsl.Dsl
 		[DslModeling::RuleOn(typeof(global::CQRSAzure.CQRSdsl.Dsl.ProjectionDefinitionHasEventPropertyOperations), FireTime=DslModeling::TimeToFire.TopLevelCommit, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::CQRSAzure.CQRSdsl.Dsl.CommandDefinitionHasParameters), FireTime=DslModeling::TimeToFire.TopLevelCommit, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::CQRSAzure.CQRSdsl.Dsl.ClassifierHasEventEvaluations), FireTime=DslModeling::TimeToFire.TopLevelCommit, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations), FireTime=DslModeling::TimeToFire.TopLevelCommit, InitiallyDisabled=true)]
 		internal sealed class CompartmentItemAddRule : DslModeling::AddRule
 		{
 			/// <summary>
@@ -1435,6 +1190,11 @@ namespace CQRSAzure.CQRSdsl.Dsl
 				{
 					global::System.Collections.IEnumerable elements = GetClassifierForClassifierCompartmentShapeEventEvaluationsCompartmentFromLastLink((global::CQRSAzure.CQRSdsl.Dsl.ClassifierHasEventEvaluations)e.ModelElement);
 					UpdateCompartments(elements, typeof(global::CQRSAzure.CQRSdsl.Dsl.ClassifierCompartmentShape), "EventEvaluationsCompartment", repaintOnly);
+				}
+				if(e.ModelElement is global::CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations)
+				{
+					global::System.Collections.IEnumerable elements = GetClassifierForClassifierCompartmentShapeProjectionEvaluationsCompartmentFromLastLink((global::CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations)e.ModelElement);
+					UpdateCompartments(elements, typeof(global::CQRSAzure.CQRSdsl.Dsl.ClassifierCompartmentShape), "ProjectionEvaluationsCompartment", repaintOnly);
 				}
 			}
 			
@@ -1537,6 +1297,20 @@ namespace CQRSAzure.CQRSdsl.Dsl
 				if ( result == null ) return new DslModeling::ModelElement[0];
 				return new DslModeling::ModelElement[] {result};
 			}
+			internal static global::System.Collections.ICollection GetClassifierForClassifierCompartmentShapeProjectionEvaluationsCompartmentFromLastLink(global::CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations root)
+			{
+				// Segment 0
+				global::CQRSAzure.CQRSdsl.Dsl.Classifier result = root.Classifier;
+				if ( result == null ) return new DslModeling::ModelElement[0];
+				return new DslModeling::ModelElement[] {result};
+			}
+			internal static global::System.Collections.ICollection GetClassifierForClassifierCompartmentShapeProjectionEvaluationsCompartment(global::CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation root)
+			{
+				// Segments 1 and 0
+				global::CQRSAzure.CQRSdsl.Dsl.Classifier result = root.Classifier;
+				if ( result == null ) return new DslModeling::ModelElement[0];
+				return new DslModeling::ModelElement[] {result};
+			}
 			#endregion
 	
 			#region helper method to update compartments 
@@ -1589,6 +1363,7 @@ namespace CQRSAzure.CQRSdsl.Dsl
 		[DslModeling::RuleOn(typeof(global::CQRSAzure.CQRSdsl.Dsl.ProjectionDefinitionHasEventPropertyOperations), FireTime=DslModeling::TimeToFire.TopLevelCommit, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::CQRSAzure.CQRSdsl.Dsl.CommandDefinitionHasParameters), FireTime=DslModeling::TimeToFire.TopLevelCommit, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::CQRSAzure.CQRSdsl.Dsl.ClassifierHasEventEvaluations), FireTime=DslModeling::TimeToFire.TopLevelCommit, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations), FireTime=DslModeling::TimeToFire.TopLevelCommit, InitiallyDisabled=true)]
 		internal sealed class CompartmentItemDeleteRule : DslModeling::DeleteRule
 		{
 			/// <summary>
@@ -1638,6 +1413,11 @@ namespace CQRSAzure.CQRSdsl.Dsl
 					global::System.Collections.ICollection elements = CompartmentItemAddRule.GetClassifierForClassifierCompartmentShapeEventEvaluationsCompartmentFromLastLink((global::CQRSAzure.CQRSdsl.Dsl.ClassifierHasEventEvaluations)e.ModelElement);
 					CompartmentItemAddRule.UpdateCompartments(elements, typeof(global::CQRSAzure.CQRSdsl.Dsl.ClassifierCompartmentShape), "EventEvaluationsCompartment", repaintOnly);
 				}
+				if(e.ModelElement is global::CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations)
+				{
+					global::System.Collections.ICollection elements = CompartmentItemAddRule.GetClassifierForClassifierCompartmentShapeProjectionEvaluationsCompartmentFromLastLink((global::CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations)e.ModelElement);
+					CompartmentItemAddRule.UpdateCompartments(elements, typeof(global::CQRSAzure.CQRSdsl.Dsl.ClassifierCompartmentShape), "ProjectionEvaluationsCompartment", repaintOnly);
+				}
 			}
 		}
 		
@@ -1651,6 +1431,7 @@ namespace CQRSAzure.CQRSdsl.Dsl
 		[DslModeling::RuleOn(typeof(global::CQRSAzure.CQRSdsl.Dsl.ProjectionEventPropertyOperation), FireTime=DslModeling::TimeToFire.TopLevelCommit, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::CQRSAzure.CQRSdsl.Dsl.CommandParameter), FireTime=DslModeling::TimeToFire.TopLevelCommit, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::CQRSAzure.CQRSdsl.Dsl.ClassifierEventEvaluation), FireTime=DslModeling::TimeToFire.TopLevelCommit, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation), FireTime=DslModeling::TimeToFire.TopLevelCommit, InitiallyDisabled=true)]
 		internal sealed class CompartmentItemChangeRule : DslModeling::ChangeRule 
 		{
 			/// <summary>
@@ -1700,6 +1481,11 @@ namespace CQRSAzure.CQRSdsl.Dsl
 					global::System.Collections.IEnumerable elements = CompartmentItemAddRule.GetClassifierForClassifierCompartmentShapeEventEvaluationsCompartment((global::CQRSAzure.CQRSdsl.Dsl.ClassifierEventEvaluation)e.ModelElement);
 					CompartmentItemAddRule.UpdateCompartments(elements, typeof(global::CQRSAzure.CQRSdsl.Dsl.ClassifierCompartmentShape), "EventEvaluationsCompartment", repaintOnly);
 				}
+				if(e.ModelElement is global::CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation && e.DomainProperty.Id == global::CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation.DescriptionDomainPropertyId)
+				{
+					global::System.Collections.IEnumerable elements = CompartmentItemAddRule.GetClassifierForClassifierCompartmentShapeProjectionEvaluationsCompartment((global::CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation)e.ModelElement);
+					CompartmentItemAddRule.UpdateCompartments(elements, typeof(global::CQRSAzure.CQRSdsl.Dsl.ClassifierCompartmentShape), "ProjectionEvaluationsCompartment", repaintOnly);
+				}
 			}
 		}
 		
@@ -1713,6 +1499,7 @@ namespace CQRSAzure.CQRSdsl.Dsl
 		[DslModeling::RuleOn(typeof(global::CQRSAzure.CQRSdsl.Dsl.ProjectionDefinitionHasEventPropertyOperations), FireTime=DslModeling::TimeToFire.TopLevelCommit, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::CQRSAzure.CQRSdsl.Dsl.CommandDefinitionHasParameters), FireTime=DslModeling::TimeToFire.TopLevelCommit, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::CQRSAzure.CQRSdsl.Dsl.ClassifierHasEventEvaluations), FireTime=DslModeling::TimeToFire.TopLevelCommit, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations), FireTime=DslModeling::TimeToFire.TopLevelCommit, InitiallyDisabled=true)]
 		internal sealed class CompartmentItemRolePlayerChangeRule : DslModeling::RolePlayerChangeRule 
 		{
 			/// <summary>
@@ -1916,6 +1703,33 @@ namespace CQRSAzure.CQRSdsl.Dsl
 						CompartmentItemAddRule.UpdateCompartments(elements, typeof(global::CQRSAzure.CQRSdsl.Dsl.ClassifierCompartmentShape), "EventEvaluationsCompartment", repaintOnly);
 					}
 				}
+				if(typeof(global::CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations).IsAssignableFrom(e.DomainRelationship.ImplementationClass))
+				{
+					if(e.DomainRole.IsSource)
+					{
+						//global::System.Collections.IEnumerable oldElements = CompartmentItemAddRule.GetClassifierForClassifierCompartmentShapeProjectionEvaluationsCompartmentFromLastLink((global::CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation)e.OldRolePlayer);
+						//foreach(DslModeling::ModelElement element in oldElements)
+						//{
+						//	DslModeling::LinkedElementCollection<DslDiagrams::PresentationElement> pels = DslDiagrams::PresentationViewsSubject.GetPresentation(element);
+						//	foreach(DslDiagrams::PresentationElement pel in pels)
+						//	{
+						//		global::CQRSAzure.CQRSdsl.Dsl.ClassifierCompartmentShape compartmentShape = pel as global::CQRSAzure.CQRSdsl.Dsl.ClassifierCompartmentShape;
+						//		if(compartmentShape != null)
+						//		{
+						//			compartmentShape.GetCompartmentMappings()[1].InitializeCompartmentShape(compartmentShape);
+						//		}
+						//	}
+						//}
+						
+						global::System.Collections.IEnumerable elements = CompartmentItemAddRule.GetClassifierForClassifierCompartmentShapeProjectionEvaluationsCompartmentFromLastLink((global::CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations)e.ElementLink);
+						CompartmentItemAddRule.UpdateCompartments(elements, typeof(global::CQRSAzure.CQRSdsl.Dsl.ClassifierCompartmentShape), "ProjectionEvaluationsCompartment", repaintOnly);
+					}
+					else 
+					{
+						global::System.Collections.IEnumerable elements = CompartmentItemAddRule.GetClassifierForClassifierCompartmentShapeProjectionEvaluationsCompartment((global::CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation)e.NewRolePlayer);
+						CompartmentItemAddRule.UpdateCompartments(elements, typeof(global::CQRSAzure.CQRSdsl.Dsl.ClassifierCompartmentShape), "ProjectionEvaluationsCompartment", repaintOnly);
+					}
+				}
 			}
 		}
 	
@@ -1929,6 +1743,7 @@ namespace CQRSAzure.CQRSdsl.Dsl
 		[DslModeling::RuleOn(typeof(global::CQRSAzure.CQRSdsl.Dsl.ProjectionDefinitionHasEventPropertyOperations), FireTime=DslModeling::TimeToFire.TopLevelCommit, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::CQRSAzure.CQRSdsl.Dsl.CommandDefinitionHasParameters), FireTime=DslModeling::TimeToFire.TopLevelCommit, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::CQRSAzure.CQRSdsl.Dsl.ClassifierHasEventEvaluations), FireTime=DslModeling::TimeToFire.TopLevelCommit, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations), FireTime=DslModeling::TimeToFire.TopLevelCommit, InitiallyDisabled=true)]
 		internal sealed class CompartmentItemRolePlayerPositionChangeRule : DslModeling::RolePlayerPositionChangeRule 
 		{
 			/// <summary>
@@ -1997,6 +1812,14 @@ namespace CQRSAzure.CQRSdsl.Dsl
 					{
 						global::System.Collections.IEnumerable elements = CompartmentItemAddRule.GetClassifierForClassifierCompartmentShapeEventEvaluationsCompartment((global::CQRSAzure.CQRSdsl.Dsl.ClassifierEventEvaluation)e.CounterpartRolePlayer);
 						CompartmentItemAddRule.UpdateCompartments(elements, typeof(global::CQRSAzure.CQRSdsl.Dsl.ClassifierCompartmentShape), "EventEvaluationsCompartment", repaintOnly);
+					}
+				}
+				if(typeof(global::CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations).IsAssignableFrom(e.DomainRelationship.ImplementationClass))
+				{
+					if(!e.CounterpartDomainRole.IsSource)
+					{
+						global::System.Collections.IEnumerable elements = CompartmentItemAddRule.GetClassifierForClassifierCompartmentShapeProjectionEvaluationsCompartment((global::CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation)e.CounterpartRolePlayer);
+						CompartmentItemAddRule.UpdateCompartments(elements, typeof(global::CQRSAzure.CQRSdsl.Dsl.ClassifierCompartmentShape), "ProjectionEvaluationsCompartment", repaintOnly);
 					}
 				}
 			}
@@ -2082,6 +1905,7 @@ namespace CQRSAzure.CQRSdsl.Dsl
 		[DslModeling::RuleOn(typeof(global::CQRSAzure.CQRSdsl.Dsl.AggregateIdentifierHasIdentityGrouped), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::CQRSAzure.CQRSdsl.Dsl.IdentityGroupReferencesClassifier), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::CQRSAzure.CQRSdsl.Dsl.ClassifierHandlesEvents), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::CQRSAzure.CQRSdsl.Dsl.ClassifierReferencesProjectionDefinition), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
 		internal sealed class ConnectorRolePlayerChanged : DslModeling::RolePlayerChangeRule
 		{
 			/// <summary>

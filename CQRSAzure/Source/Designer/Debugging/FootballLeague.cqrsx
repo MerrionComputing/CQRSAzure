@@ -1,0 +1,302 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cQRSModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.1.0.0" Id="1c15ed7f-780b-440c-bbc8-6944f8464718" name="Football League" notes="Domain represents an amateur football league (soccer)" xmlns="http://schemas.microsoft.com/dsltools/CQRSdsl">
+  <aggregateIdentifiers>
+    <cQRSModelHasAggregateIdentifiers Id="63c953fa-a8d8-45dd-b86b-56176e6670d1">
+      <aggregateIdentifier Id="16703a1a-80f9-4495-a6d7-152fc0f19336" name="Team" description="An unique team registered in the league" keyName="TeamName" keyDataType="DomainUniqueString">
+        <eventDefinitions>
+          <aggregateIdentifierHasEventDefinitions Id="f304f9f4-979d-47d0-8727-0d82733a9635" name="Team's event definitions">
+            <eventDefinition Id="9475591d-e6b6-42ca-a01b-f6783123e307" name="Game Played" description="A fixture was fulfilled" version="1">
+              <eventProperties>
+                <eventDefinitionHasEventProperties Id="4218a618-6c6a-4e5c-afac-ca9abf12cdf1">
+                  <eventProperty Id="4e3d6f45-0411-4761-9b7a-ae146f9da803" name="Venue" description="Where was the match played?" dataType="String" />
+                </eventDefinitionHasEventProperties>
+                <eventDefinitionHasEventProperties Id="97ac316e-0a86-46f4-ad5c-5dd1676c29cd">
+                  <eventProperty Id="cba9c167-f111-4202-8ca6-948fced10541" name="Home Team Score" description="How many goals did the home team score?" />
+                </eventDefinitionHasEventProperties>
+                <eventDefinitionHasEventProperties Id="efa80354-d1bd-4a9f-b76c-94760d307b77">
+                  <eventProperty Id="c6561c03-b029-4543-9a3e-7326c88fe530" name="Away Team Score" description="How many goals did the away team score?" />
+                </eventDefinitionHasEventProperties>
+              </eventProperties>
+            </eventDefinition>
+          </aggregateIdentifierHasEventDefinitions>
+          <aggregateIdentifierHasEventDefinitions Id="3a83721b-276e-45f8-a7b6-8b64f354ffa1">
+            <eventDefinition Id="46b53f45-32f4-4dbc-984d-52fb74002b0e" name="Relegated" description="The team was relegated down from the division" version="0">
+              <eventProperties>
+                <eventDefinitionHasEventProperties Id="a0fa8db8-ccc4-49ac-bfff-c2464473a0ce">
+                  <eventProperty Id="dbe91b2b-8ace-4478-97d9-5665910f7ded" name="New Division" description="The name of the division the team were relegated to" dataType="String" />
+                </eventDefinitionHasEventProperties>
+                <eventDefinitionHasEventProperties Id="be227d00-b992-4a47-acb3-b77e9a6fe604">
+                  <eventProperty Id="97b1db70-4be1-40d2-b545-674d36b25d67" name="Notes" description="Additional information about the relegation" dataType="String" />
+                </eventDefinitionHasEventProperties>
+              </eventProperties>
+            </eventDefinition>
+          </aggregateIdentifierHasEventDefinitions>
+          <aggregateIdentifierHasEventDefinitions Id="335f6af5-04d7-4926-92d2-5ef2e8564ae5">
+            <eventDefinition Id="914b7a7f-0f83-4280-b820-0f5780a24869" name="Promoted" description="Team was promoted up to a new division" version="0">
+              <eventProperties>
+                <eventDefinitionHasEventProperties Id="75890304-27fc-478c-ae5a-9306b2d029fc">
+                  <eventProperty Id="b17dc626-0168-4bba-b02e-d2bcf4318b72" name="New Division" description="The name of the division the " dataType="String" />
+                </eventDefinitionHasEventProperties>
+              </eventProperties>
+            </eventDefinition>
+          </aggregateIdentifierHasEventDefinitions>
+        </eventDefinitions>
+        <projectionDefinitions>
+          <aggregateIdentifierHasProjectionDefinitions Id="b8e0fec9-fec9-4f26-a383-84fb94e3fe43">
+            <projectionDefinition Id="63e94e45-f939-41d2-8849-ac8f5473eb7e" name="Summary" description="Summary information about the team">
+              <projectionProperties>
+                <projectionDefinitionHasProjectionProperties Id="4784f7b5-9dd3-42d8-a616-aaa7938a9f2b">
+                  <projectionProperty Id="76d96445-5001-4411-b8c5-6e6b80fc2e8d" name="TeamName" description="The registered name of the team" dataType="String" />
+                </projectionDefinitionHasProjectionProperties>
+                <projectionDefinitionHasProjectionProperties Id="0f63dad6-793d-42f4-a562-64972e10a2d2">
+                  <projectionProperty Id="5f100ac1-f44a-4a7b-b976-c1eeb98f9b52" name="Total Games Played" />
+                </projectionDefinitionHasProjectionProperties>
+              </projectionProperties>
+              <eventDefinitions>
+                <projectionDefinitionHandlesEventDefinitions Id="4bad1717-cb36-418d-8925-f53989ef6b5c" name="Summary projection's events handled">
+                  <eventDefinitionMoniker name="/1c15ed7f-780b-440c-bbc8-6944f8464718/Team/Game Played" />
+                </projectionDefinitionHandlesEventDefinitions>
+              </eventDefinitions>
+              <projectionEventPropertyOperations>
+                <projectionDefinitionHasEventPropertyOperations Id="7a6aa767-d30f-4f42-afc7-4120389cb72c">
+                  <projectionEventPropertyOperation Id="3f92b444-15a9-4eb4-be4f-5f78021a0ac7" eventName="Game Played" targetPropertyName="Total Games Played" propertyOperationToPerform="IncrementCount" />
+                </projectionDefinitionHasEventPropertyOperations>
+              </projectionEventPropertyOperations>
+            </projectionDefinition>
+          </aggregateIdentifierHasProjectionDefinitions>
+        </projectionDefinitions>
+        <queryDefinitions>
+          <aggregateIdentifierHasQueryDefinitions Id="8e684c9b-5623-488a-8ed1-3de3156358a9">
+            <queryDefinition Id="10c0e5dd-2dde-447c-a225-791e8978578e" name="Get Premier League Teams Summary" description="Get summary information for the teams in the premier league" multiRowResults="true">
+              <queryInputParameters>
+                <queryDefinitionHasQueryInputParameters Id="fdac8964-b16e-4fd4-a5f5-cec766cdd281">
+                  <queryInputParameter Id="44be28d9-0cbd-4403-a41f-1fc802fc0ae9" name="As Of" description="The effective date/time for the summary" dataType="Date" isAggregateKey="false" isEffectiveDate="true" />
+                </queryDefinitionHasQueryInputParameters>
+              </queryInputParameters>
+              <queryReturnParameters>
+                <queryDefinitionHasQueryReturnParameters Id="897cef00-2f57-4a9c-b114-241d40c1d829">
+                  <queryReturnParameter Id="9c78a6ee-a456-4ef7-829f-3c5e2d63447f" name="Name" description="Name of the team" dataType="String" />
+                </queryDefinitionHasQueryReturnParameters>
+                <queryDefinitionHasQueryReturnParameters Id="e096acf5-30c6-4fc6-b83c-52ea486eec73">
+                  <queryReturnParameter Id="bcafc465-8a0b-43ae-9415-98023a4b551d" name="Games Played" description="Total games played to date" dataType="Integer" />
+                </queryDefinitionHasQueryReturnParameters>
+              </queryReturnParameters>
+              <identityGroup>
+                <queryDefinitionReferencesIdentityGroup Id="930ef79d-d5d8-4192-a4d7-c74c847464e5">
+                  <identityGroupMoniker Id="aa5374e6-2db3-45f8-aa4b-aec9aa43a300" />
+                </queryDefinitionReferencesIdentityGroup>
+              </identityGroup>
+            </queryDefinition>
+          </aggregateIdentifierHasQueryDefinitions>
+        </queryDefinitions>
+        <identityGrouped>
+          <aggregateIdentifierHasIdentityGrouped Id="e929d6da-328c-40c7-b1e4-46d8987c7d40">
+            <identityGroup Id="aa5374e6-2db3-45f8-aa4b-aec9aa43a300" isInstance="false" isGlobal="false" name="Premier League" description="Top division of the league" notes="This group re-evaluates at the end of each season when teams are promoted or relegated">
+              <classifier>
+                <identityGroupReferencesClassifier Id="4cd28563-7bf4-4062-9712-e3bc43c224a0">
+                  <classifierMoniker Id="38cbab92-8d47-4bb9-9e2b-4548f079def7" />
+                </identityGroupReferencesClassifier>
+              </classifier>
+            </identityGroup>
+          </aggregateIdentifierHasIdentityGrouped>
+          <aggregateIdentifierHasIdentityGrouped Id="674a1048-58b2-4941-9862-0ac707cec1bc">
+            <identityGroup Id="ddcddefd-c7c9-440a-b6fa-df8f347cf595" isInstance="false" isGlobal="true" name="All" description="All teams" />
+          </aggregateIdentifierHasIdentityGrouped>
+        </identityGrouped>
+        <classifiers>
+          <aggregateIdentifierHasClassifiers Id="d3fc7442-2f27-4336-bdc5-d589be340536">
+            <classifier Id="38cbab92-8d47-4bb9-9e2b-4548f079def7" name="Is Premier League" description="Classifier to determine if a team is in the premier league">
+              <eventDefinitions>
+                <classifierHandlesEvents Id="6f978e74-d078-4456-a190-02f4567062a0">
+                  <eventDefinitionMoniker name="/1c15ed7f-780b-440c-bbc8-6944f8464718/Team/Relegated" />
+                </classifierHandlesEvents>
+                <classifierHandlesEvents Id="073fe09b-76d4-47c7-bbbe-0be2b6f8a1e8">
+                  <eventDefinitionMoniker name="/1c15ed7f-780b-440c-bbc8-6944f8464718/Team/Promoted" />
+                </classifierHandlesEvents>
+              </eventDefinitions>
+              <classifierEventEvaluations>
+                <classifierHasEventEvaluations Id="4845de5a-c389-4510-a075-ecc77e1c741f">
+                  <classifierEventEvaluation Id="dbdf322d-1b91-42ca-9f3a-ec632a8bdfc3" eventName="Relegated" description="If a team is relegated out of the premier league, remove them from the group" onTrue="Exclude" onFalse="Unchanged" target="Premier League" />
+                </classifierHasEventEvaluations>
+                <classifierHasEventEvaluations Id="071f34ec-5bc2-4661-9bdb-ac8b5f7ae248">
+                  <classifierEventEvaluation Id="2c1439b6-17f7-450c-89af-ae2a2bb3866b" eventName="Promoted" sourceEventPropertyName="New Division" notes="This is done as a Contains test to prove that works - an equals test could be used in its place" description="Was the team promoted into the premier league?" propertyEvaluationToPerform="Contains" target="Premier League" />
+                </classifierHasEventEvaluations>
+              </classifierEventEvaluations>
+            </classifier>
+          </aggregateIdentifierHasClassifiers>
+        </classifiers>
+      </aggregateIdentifier>
+    </cQRSModelHasAggregateIdentifiers>
+    <cQRSModelHasAggregateIdentifiers Id="0ec73f93-596d-4f94-90dc-7c7450288fa2">
+      <aggregateIdentifier Id="b2edf933-b34f-4b08-9cda-5b7c42d0ff4f" name="Player" description="A regsitered player" keyName="RegistrationNumber" keyDataType="IncrementalNumber">
+        <eventDefinitions>
+          <aggregateIdentifierHasEventDefinitions Id="56a34c53-9dfc-4801-8f8b-5d79f37c2c26">
+            <eventDefinition Id="53f0be0e-849b-4c8e-a8a7-1dd5a9aadd80" name="Registered" description="Player registered with the league" notes="This will generate the player's unique regsitration id" version="0">
+              <eventProperties>
+                <eventDefinitionHasEventProperties Id="29a3e00c-77e5-4637-9bb3-3016cfbf4650">
+                  <eventProperty Id="f4c71dca-e821-4f3d-8114-2c98fda5b557" name="PreviousClub" description="Where did the player come from" dataType="Date" />
+                </eventDefinitionHasEventProperties>
+                <eventDefinitionHasEventProperties Id="c82c7c4a-60b2-473b-9b5e-ed0374dc535b">
+                  <eventProperty Id="7ba1886a-83a9-4dbe-8084-c9b870564d44" name="Amateur" description="Is the player registered as an amateur" dataType="Boolean" />
+                </eventDefinitionHasEventProperties>
+                <eventDefinitionHasEventProperties Id="1fc91042-1d5d-490e-956f-4d8285c852fa">
+                  <eventProperty Id="e7b00056-5cdf-42ca-8bde-132fc3a40b01" name="DateOfBirth" description="Player's date of birth" dataType="Date" />
+                </eventDefinitionHasEventProperties>
+              </eventProperties>
+            </eventDefinition>
+          </aggregateIdentifierHasEventDefinitions>
+          <aggregateIdentifierHasEventDefinitions Id="cbf661dd-3424-4521-a8d8-5f185790daf8">
+            <eventDefinition Id="e45bd6cf-6304-4637-9f02-219e3c3ede47" name="Injured" description="Player suffered an injury" notes="This may trigger an injured players fund claim" version="0">
+              <eventProperties>
+                <eventDefinitionHasEventProperties Id="85f1c33a-e593-4fa2-b2fe-f1787d1d324b">
+                  <eventProperty Id="5c419c79-98e1-4fcc-acfa-4eb5b3b358dd" name="DateNotified" description="When was the injury notified to the league?" dataType="Date" />
+                </eventDefinitionHasEventProperties>
+                <eventDefinitionHasEventProperties Id="6da861a4-fce1-4384-9a36-2fd7ad9dd2a6">
+                  <eventProperty Id="5873ce9e-c5b3-4d61-8731-bd6bbca2bf21" name="Description" description="What is the nature of the injury" dataType="String" />
+                </eventDefinitionHasEventProperties>
+              </eventProperties>
+            </eventDefinition>
+          </aggregateIdentifierHasEventDefinitions>
+        </eventDefinitions>
+        <projectionDefinitions>
+          <aggregateIdentifierHasProjectionDefinitions Id="082e6214-04aa-48f5-b1c3-bd61b801f48b">
+            <projectionDefinition Id="4795a952-17e5-4b71-b5cc-f301e73d1cc7" name="Summary" description="Player information overview">
+              <projectionProperties>
+                <projectionDefinitionHasProjectionProperties Id="acaa44e9-4337-4a96-89a7-82a070e7ef57">
+                  <projectionProperty Id="cedf18eb-cdc6-4291-8395-76043fac4ce0" name="PlayerName" description="The name of the player" dataType="String" />
+                </projectionDefinitionHasProjectionProperties>
+                <projectionDefinitionHasProjectionProperties Id="8f37af0a-3eea-45ba-9e77-eac0a9d9df10">
+                  <projectionProperty Id="334aec4d-9e61-47be-aa14-dedbd2e8f088" name="CurrentClub" description="The name of the club the player is signed to" dataType="String" />
+                </projectionDefinitionHasProjectionProperties>
+                <projectionDefinitionHasProjectionProperties Id="29fa0d4b-a7f9-4a82-a839-6cc2a8b87baa">
+                  <projectionProperty Id="8195cf68-6241-4b6f-a668-39da99a48a8d" name="Photo" description="Player profile photograph" dataType="Image" />
+                </projectionDefinitionHasProjectionProperties>
+                <projectionDefinitionHasProjectionProperties Id="243291a6-564c-4797-8949-93b2a84b91d8">
+                  <projectionProperty Id="661c5768-17b7-4248-b804-8492271cacad" name="Amateur" description="Is the player an amateur" dataType="Boolean" />
+                </projectionDefinitionHasProjectionProperties>
+              </projectionProperties>
+              <eventDefinitions>
+                <projectionDefinitionHandlesEventDefinitions Id="0fb32e31-7d39-469c-83a0-8863e339cb4c">
+                  <eventDefinitionMoniker name="/1c15ed7f-780b-440c-bbc8-6944f8464718/Player/Registered" />
+                </projectionDefinitionHandlesEventDefinitions>
+              </eventDefinitions>
+              <projectionEventPropertyOperations>
+                <projectionDefinitionHasEventPropertyOperations Id="0126a166-6485-4d18-8e61-cb837361e677">
+                  <projectionEventPropertyOperation Id="9749a37c-f52b-4af4-be47-1b7350f0bb68" eventName="Registered" sourceEventPropertyName="Amateur" targetPropertyName="Amateur" description="Set the player's amateur status when they register for a club" notes="This status can only change when a player registers" />
+                </projectionDefinitionHasEventPropertyOperations>
+              </projectionEventPropertyOperations>
+            </projectionDefinition>
+          </aggregateIdentifierHasProjectionDefinitions>
+        </projectionDefinitions>
+        <commandDefinitions>
+          <aggregateIdentifierHasCommandDefinitions Id="1a1a1a53-253e-4adc-8c59-d8b2df0b0a67">
+            <commandDefinition Id="54c3dcc9-bcce-4092-88b2-98cc99b9dcff" name="SignPlayerToTeam" description="The player was signed up to a team for the season">
+              <commandParameters>
+                <commandDefinitionHasParameters Id="cb9ffc75-2543-40be-9569-224afe3b26ea">
+                  <commandParameter Id="31cbc723-c345-4998-bc8d-65285e99dd44" name="Player Name" description="The name of the player being signed" parameterType="String" isAggregateKey="false" />
+                </commandDefinitionHasParameters>
+                <commandDefinitionHasParameters Id="8d671f07-9a18-4ea6-8a3b-0c9c3e62cd4e">
+                  <commandParameter Id="b1c79679-4302-4880-a427-60cd8b106cae" name="Team Name" description="The team which they are signing to" parameterType="String" isAggregateKey="false" />
+                </commandDefinitionHasParameters>
+                <commandDefinitionHasParameters Id="d2c863f0-065c-4b02-a50d-cd6fa80d6df9">
+                  <commandParameter Id="0aa90a61-0a7d-4315-b53c-d9ad5f6af69c" name="First Eligibility Date" description="The date from which the player is eligble to play for the new team" parameterType="Date" isAggregateKey="false" />
+                </commandDefinitionHasParameters>
+              </commandParameters>
+            </commandDefinition>
+          </aggregateIdentifierHasCommandDefinitions>
+        </commandDefinitions>
+        <queryDefinitions>
+          <aggregateIdentifierHasQueryDefinitions Id="754a4ac4-8380-47f5-8db5-d7fc3fcf04ad">
+            <queryDefinition Id="5a3ec0ea-7aeb-4e5c-a40f-7f33df74fcd8" name="GetPlayerSummary" description="Get the current summary information about the player">
+              <queryInputParameters>
+                <queryDefinitionHasQueryInputParameters Id="305b9906-d785-4b37-9994-162071630d49">
+                  <queryInputParameter Id="a16203ea-414b-4f81-b37c-0477540c28cd" name="AsOfDate" description="The effective date for which we want summary information" dataType="Date" isAggregateKey="false" isEffectiveDate="true" />
+                </queryDefinitionHasQueryInputParameters>
+              </queryInputParameters>
+              <queryReturnParameters>
+                <queryDefinitionHasQueryReturnParameters Id="a18195db-e739-41a6-b5c6-7df9fd0a34d3">
+                  <queryReturnParameter Id="4976e8de-ad01-4184-9980-568a3f1bf6d1" name="PlayerName" description="The name of the registered player" dataType="String" />
+                </queryDefinitionHasQueryReturnParameters>
+              </queryReturnParameters>
+              <identityGroup>
+                <queryDefinitionReferencesIdentityGroup Id="21807ffb-85d6-4cd6-9130-05e75970a969">
+                  <identityGroupMoniker Id="eb24def0-ce3c-4459-bead-896951622328" />
+                </queryDefinitionReferencesIdentityGroup>
+              </identityGroup>
+            </queryDefinition>
+          </aggregateIdentifierHasQueryDefinitions>
+        </queryDefinitions>
+        <identityGrouped>
+          <aggregateIdentifierHasIdentityGrouped Id="921a9d85-7eea-4f2c-bb08-3cd9ae73c0f9">
+            <identityGroup Id="eb24def0-ce3c-4459-bead-896951622328" isInstance="false" isGlobal="true" name="All Players" description="All the players registered in this league" />
+          </aggregateIdentifierHasIdentityGrouped>
+        </identityGrouped>
+      </aggregateIdentifier>
+    </cQRSModelHasAggregateIdentifiers>
+    <cQRSModelHasAggregateIdentifiers Id="8b8c353e-756d-4bf8-910b-f79688ba6b71">
+      <aggregateIdentifier Id="db031f1f-57f0-46f4-996b-e1fe330f1797" name="Season" description="A year of games" keyName="Year" keyDataType="DomainUniqueString">
+        <eventDefinitions>
+          <aggregateIdentifierHasEventDefinitions Id="fb456804-a033-4148-9933-c7796e62f68b">
+            <eventDefinition Id="1aa90f78-317e-43ac-8d4f-9e64ebb4521a" name="Started" description="A new season was started" version="0">
+              <eventProperties>
+                <eventDefinitionHasEventProperties Id="d18da3c7-39ab-460a-8471-38c5ed5fcc2f">
+                  <eventProperty Id="2db5077d-18d5-4384-adbf-bd6b330600db" name="Start Date" description="The date the season officially started" dataType="Date" />
+                </eventDefinitionHasEventProperties>
+                <eventDefinitionHasEventProperties Id="e99b11e7-9ce8-4e4a-b5f4-98395f83e2de">
+                  <eventProperty Id="862430a4-f8d4-44a9-8a19-d56ec797da0d" name="Planned End Date" description="The initial planned end date for the season" dataType="Date" />
+                </eventDefinitionHasEventProperties>
+              </eventProperties>
+            </eventDefinition>
+          </aggregateIdentifierHasEventDefinitions>
+        </eventDefinitions>
+        <targetAggregateIdentifiers>
+          <aggregateIdentifierIsChildOfTargetAggregateIdentifiers Id="5274afc4-f69a-4cfe-a21e-cbd03486dd58">
+            <aggregateIdentifierMoniker name="/1c15ed7f-780b-440c-bbc8-6944f8464718/Game" />
+          </aggregateIdentifierIsChildOfTargetAggregateIdentifiers>
+        </targetAggregateIdentifiers>
+      </aggregateIdentifier>
+    </cQRSModelHasAggregateIdentifiers>
+    <cQRSModelHasAggregateIdentifiers Id="ce36bd0e-1e0a-476e-a857-258cc954fa8c">
+      <aggregateIdentifier Id="d7e3e0de-32e4-4436-818a-a0f29663a892" name="Game" description="A unique game between two teams">
+        <eventDefinitions>
+          <aggregateIdentifierHasEventDefinitions Id="a38aab1f-a21e-4dc2-8e3b-2f44859ad014">
+            <eventDefinition Id="1a346c84-0934-4d80-a1ff-06378fa3bc1f" name="Scheduled" description="A game is to be played in the future" version="0">
+              <eventProperties>
+                <eventDefinitionHasEventProperties Id="c8cb3fd4-3953-4fbd-aec8-5e53266daa6f">
+                  <eventProperty Id="c8dcf5ee-09d7-4dc7-9628-c142a6889186" name="Home Team" dataType="String" />
+                </eventDefinitionHasEventProperties>
+                <eventDefinitionHasEventProperties Id="ade62704-0bc5-4b68-860e-2dbc7f808873">
+                  <eventProperty Id="3660e586-ec64-443c-b3fa-a3c36deab4f8" name="Away Team" dataType="String" />
+                </eventDefinitionHasEventProperties>
+                <eventDefinitionHasEventProperties Id="92410466-2309-4677-9502-a09932b40c5e">
+                  <eventProperty Id="504f0066-fa29-46eb-8973-90acb790bb0b" name="Date of fixture" description="The provisional date for the fixture" dataType="Date" />
+                </eventDefinitionHasEventProperties>
+              </eventProperties>
+            </eventDefinition>
+          </aggregateIdentifierHasEventDefinitions>
+          <aggregateIdentifierHasEventDefinitions Id="68701744-3d26-456b-b03e-b3293f83bcdf">
+            <eventDefinition Id="f689e40e-08de-4db2-92f7-8213d6115981" name="Rescheduled" description="The date of a fixture has changed" version="0">
+              <eventProperties>
+                <eventDefinitionHasEventProperties Id="fd8eac97-ea50-46c8-a40f-f84a403db1e1">
+                  <eventProperty Id="7b249b17-c38a-48bd-a2c0-5b38e22b17ed" name="Date of fixture" description="The new date the game is scheduled for" dataType="Date" />
+                </eventDefinitionHasEventProperties>
+                <eventDefinitionHasEventProperties Id="0e8e6cca-9a5d-4db0-99a8-2ea7554dcb76">
+                  <eventProperty Id="ae5881c1-261e-4cad-a441-ed5d116f1cb5" name="Reason" description="The reason that the game was rescheduled" dataType="String" />
+                </eventDefinitionHasEventProperties>
+              </eventProperties>
+            </eventDefinition>
+          </aggregateIdentifierHasEventDefinitions>
+          <aggregateIdentifierHasEventDefinitions Id="366fd79e-3ad2-41c7-9763-1d09187b1cae">
+            <eventDefinition Id="4e37e150-4a88-411d-8b83-68e3b5aff56a" name="Started" description="The game has kicked off" version="0">
+              <eventProperties>
+                <eventDefinitionHasEventProperties Id="6a41c3ba-b896-4414-a0e2-157889919444">
+                  <eventProperty Id="b90354bd-23cd-4c1f-8b0b-6e94baa1aa50" name="Kick Off Time" description="Date and time the game was started" dataType="Date" />
+                </eventDefinitionHasEventProperties>
+              </eventProperties>
+            </eventDefinition>
+          </aggregateIdentifierHasEventDefinitions>
+        </eventDefinitions>
+      </aggregateIdentifier>
+    </cQRSModelHasAggregateIdentifiers>
+  </aggregateIdentifiers>
+</cQRSModel>

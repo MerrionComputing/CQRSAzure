@@ -1,0 +1,191 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cQRSModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.1.0.0" Id="e3878a2e-137d-4ee8-8337-8d3c9c2adfde" name="TennisTournament" notes="Using the model per Dino Esposito in training conference" description="A domain representing a single tennis tournament" subfolderPerDomain="true" subfolderPerAggregate="true" xmlns="http://schemas.microsoft.com/dsltools/CQRSdsl">
+  <aggregateIdentifiers>
+    <cQRSModelHasAggregateIdentifiers Id="822e44dc-653e-4a65-9ec1-70eef4e161f3">
+      <aggregateIdentifier Id="13e05c2c-a581-4b92-9a05-f7b2d828d6fd" name="Match" description="A single instance of a match in the tournament" keyName="MatchNumber" keyDataType="IncrementalNumber">
+        <eventDefinitions>
+          <aggregateIdentifierHasEventDefinitions Id="39173a89-c737-432a-a5ac-d8a7b33759d7">
+            <eventDefinition Id="3cfc7f43-fc4a-407f-8323-f2a304d53370" name="Scheduled" description="A match has been scheduled to be played" version="0">
+              <eventProperties>
+                <eventDefinitionHasEventProperties Id="39e71533-3d84-40a4-a631-e7636ef22ec5" name="Match is scheduled">
+                  <eventProperty Id="a90da5a0-4538-4755-af27-f64909ff98a5" name="Start" description="When the match is scheduled to be played" dataType="Date" />
+                </eventDefinitionHasEventProperties>
+                <eventDefinitionHasEventProperties Id="c05f4b1c-56cf-49c2-add4-3ce1410f156d">
+                  <eventProperty Id="0f92ee3c-f7ee-4daa-aacc-0ccec9bdfd71" name="Court" description="Which counrt the match is to be played on" />
+                </eventDefinitionHasEventProperties>
+                <eventDefinitionHasEventProperties Id="c608de41-24dc-4f90-86ba-3b53861495c5">
+                  <eventProperty Id="3039b81a-0b3b-44fa-8220-bf37e7366128" name="Umpire" description="The name of the umpire to umpire the match" dataType="String" />
+                </eventDefinitionHasEventProperties>
+                <eventDefinitionHasEventProperties Id="51493fcb-b7ff-4ef8-9aa6-c6144ce88ba0">
+                  <eventProperty Id="eeacf747-167c-4448-a8dd-5d4ad66f12c5" name="Player(s) 1" description="The name of player or pair of players on one side" dataType="String" notes="For a doubles match we use the pair of names with /" />
+                </eventDefinitionHasEventProperties>
+                <eventDefinitionHasEventProperties Id="9a41d8a6-8cfb-42b0-829a-95470605dc31">
+                  <eventProperty Id="f7dcaf9c-3844-4f6a-a041-59c4ece8cc44" name="Player(s) 2" description="The player or players on the other side" dataType="String" />
+                </eventDefinitionHasEventProperties>
+              </eventProperties>
+            </eventDefinition>
+          </aggregateIdentifierHasEventDefinitions>
+          <aggregateIdentifierHasEventDefinitions Id="f59c4f82-5e1f-483a-904c-60cf513188c4">
+            <eventDefinition Id="d6dec3d2-5c01-46f7-843c-4e160b5df50b" name="Started" description="Match started" version="0" category="Match Status">
+              <eventProperties>
+                <eventDefinitionHasEventProperties Id="91976be9-961e-4c47-8824-917bafabf487">
+                  <eventProperty Id="a8462e5f-87a8-4802-bc1b-00dcb9086030" name="Actual Start" description="When did the match actually start" dataType="Date" />
+                </eventDefinitionHasEventProperties>
+              </eventProperties>
+            </eventDefinition>
+          </aggregateIdentifierHasEventDefinitions>
+          <aggregateIdentifierHasEventDefinitions Id="9eec6e98-79d3-4464-a5da-f13987832539">
+            <eventDefinition Id="80bb3a25-a394-4b81-b352-22c0866a42c5" name="Served" description="Service taken" version="0">
+              <eventProperties>
+                <eventDefinitionHasEventProperties Id="95e587bd-a2e2-4430-a04f-3c7c7893af00">
+                  <eventProperty Id="f8cfea9b-c423-4c12-a29e-074452b02ef2" name="Player Number" />
+                </eventDefinitionHasEventProperties>
+              </eventProperties>
+            </eventDefinition>
+          </aggregateIdentifierHasEventDefinitions>
+          <aggregateIdentifierHasEventDefinitions Id="4db59e58-fa4d-479a-9f77-ec612cf7c356">
+            <eventDefinition Id="1dd6255e-6613-4282-96b4-a4e07d0b656e" name="GameFinished" version="0" category="Match Status">
+              <eventProperties>
+                <eventDefinitionHasEventProperties Id="89cdff11-826f-4648-93d1-01738425a206">
+                  <eventProperty Id="c2209be4-3508-46a5-9a39-e7c77b8c761c" name="Winner" dataType="String" />
+                </eventDefinitionHasEventProperties>
+                <eventDefinitionHasEventProperties Id="3c820af1-9566-4556-b70b-02c0e9f10da2">
+                  <eventProperty Id="ef6f394c-db85-4872-8725-655a27de909d" name="Duration (mins)" />
+                </eventDefinitionHasEventProperties>
+                <eventDefinitionHasEventProperties Id="312eabfa-390d-4c55-b33e-e05428023b3b">
+                  <eventProperty Id="7682a556-dad5-4ba2-8926-12ec758ad552" name="Score" dataType="String" />
+                </eventDefinitionHasEventProperties>
+              </eventProperties>
+            </eventDefinition>
+          </aggregateIdentifierHasEventDefinitions>
+        </eventDefinitions>
+        <projectionDefinitions>
+          <aggregateIdentifierHasProjectionDefinitions Id="f5f7837b-b81d-441b-9ca3-047725b8e5d4">
+            <projectionDefinition Id="289e95c1-2660-4e69-b1b2-6177a23d3892" name="Match Summary">
+              <projectionProperties>
+                <projectionDefinitionHasProjectionProperties Id="9d1ca3ef-b965-4d76-a290-a212afd1c653">
+                  <projectionProperty Id="98f4c239-20fa-4f3f-8f50-e0946589cda8" name="Has Started" description="Has the match started?" dataType="Boolean" />
+                </projectionDefinitionHasProjectionProperties>
+                <projectionDefinitionHasProjectionProperties Id="1d83bdeb-df23-4864-b657-f0a198701df5">
+                  <projectionProperty Id="c820e36b-0bd4-4bb0-900d-7eaa3e8b9f55" name="Court" description="The court the match is being played on" />
+                </projectionDefinitionHasProjectionProperties>
+                <projectionDefinitionHasProjectionProperties Id="301769a1-c102-4a0c-81c1-994bd390095c">
+                  <projectionProperty Id="6d6767bc-ff7e-4894-af3d-9760b12a7aee" name="Last Service By" description="Which player took the last service?" />
+                </projectionDefinitionHasProjectionProperties>
+                <projectionDefinitionHasProjectionProperties Id="7ab86de9-fa4e-4a67-a097-6376d1933114">
+                  <projectionProperty Id="495a9518-efe8-4b43-a6bc-355882c84b3a" name="Total Duration" description="Total minutes in matches complete" />
+                </projectionDefinitionHasProjectionProperties>
+              </projectionProperties>
+              <eventDefinitions>
+                <projectionDefinitionHandlesEventDefinitions Id="c939c48f-20c0-4a1b-af1d-40d22ae70480" name="ProjectionDefinitionHandlesEventDefinitions1">
+                  <eventDefinitionMoniker name="/e3878a2e-137d-4ee8-8337-8d3c9c2adfde/Match/Scheduled" />
+                </projectionDefinitionHandlesEventDefinitions>
+                <projectionDefinitionHandlesEventDefinitions Id="bca2e712-1e9b-4444-b24e-6f7dc66da19e" name="ProjectionDefinitionHandlesEventDefinitions2">
+                  <eventDefinitionMoniker name="/e3878a2e-137d-4ee8-8337-8d3c9c2adfde/Match/GameFinished" />
+                </projectionDefinitionHandlesEventDefinitions>
+              </eventDefinitions>
+              <projectionEventPropertyOperations>
+                <projectionDefinitionHasEventPropertyOperations Id="37aa15c9-70c3-4fd7-b4d7-b6c342a5d69e">
+                  <projectionEventPropertyOperation Id="ec808daf-6dec-4c99-aaf0-e6eb939d689b" eventName="Scheduled" sourceEventPropertyName="Court" targetPropertyName="Court" />
+                </projectionDefinitionHasEventPropertyOperations>
+                <projectionDefinitionHasEventPropertyOperations Id="c6408268-df1f-4f0f-98dd-300608ca3dd1">
+                  <projectionEventPropertyOperation Id="42214bcb-77a2-40d7-b628-338aaa710912" eventName="GameFinished" sourceEventPropertyName="Duration (mins)" targetPropertyName="Total Duration" propertyOperationToPerform="IncrementByValue" notes="When a game finishes add it's duration to the total match duration" />
+                </projectionDefinitionHasEventPropertyOperations>
+              </projectionEventPropertyOperations>
+            </projectionDefinition>
+          </aggregateIdentifierHasProjectionDefinitions>
+        </projectionDefinitions>
+        <commandDefinitions>
+          <aggregateIdentifierHasCommandDefinitions Id="d4b6b31a-a49e-4371-918e-0c2ae185e2ad">
+            <commandDefinition Id="79db2280-8c8f-4295-9afd-514169d13d75" name="Reschedule Match" description="Reschedule a match" notes="This could be due to an overrun or a court conflict">
+              <commandParameters>
+                <commandDefinitionHasParameters Id="4eacd1fd-f52a-43c7-990b-ff791af9e1bb">
+                  <commandParameter Id="cfe6b1ad-dc79-44ca-bf93-9c933e3ccb05" name="Match To Reschedule" parameterType="Integer" isAggregateKey="true" isIdentityGroupName="false" />
+                </commandDefinitionHasParameters>
+                <commandDefinitionHasParameters Id="ad5559a5-b5fd-4084-885d-fb97a06838c8">
+                  <commandParameter Id="b1c7d436-448d-4e8b-acdb-6881a7b7c53b" name="Reason" description="Why is the match being rescheduled?" parameterType="String" isAggregateKey="false" isIdentityGroupName="false" />
+                </commandDefinitionHasParameters>
+                <commandDefinitionHasParameters Id="4c86fb29-5b5a-4e24-b3e3-dd4fd2b61ef9">
+                  <commandParameter Id="2ca9dc87-cacf-4326-b6c4-2373d6dac0a9" name="Court" description="The court the match is scheduled on" parameterType="Integer" notes="This may change when a match is rescheduled" isAggregateKey="false" isIdentityGroupName="false" />
+                </commandDefinitionHasParameters>
+                <commandDefinitionHasParameters Id="ea4c634b-be93-4d85-835b-2800180be655">
+                  <commandParameter Id="e0ac2b70-09f6-410f-be2a-568df820289d" name="Start" description="Start date/time for the match" parameterType="Date" isAggregateKey="false" isIdentityGroupName="false" />
+                </commandDefinitionHasParameters>
+              </commandParameters>
+              <identityGroup>
+                <commandDefinitionReferencesIdentityGroup Id="969689b9-b020-4e4d-a40a-fa7ce0964b77">
+                  <identityGroupMoniker Id="374b9355-0b89-4eea-99b6-c0d09b256a1a" />
+                </commandDefinitionReferencesIdentityGroup>
+              </identityGroup>
+            </commandDefinition>
+          </aggregateIdentifierHasCommandDefinitions>
+        </commandDefinitions>
+        <queryDefinitions>
+          <aggregateIdentifierHasQueryDefinitions Id="55ef85a8-2723-4399-9905-a2f46f5bb659">
+            <queryDefinition Id="b92fb5ac-faf6-4fe1-a804-f86621e32025" name="Get Completed Games" description="Get summary information about all the games played" multiRowResults="true">
+              <queryInputParameters>
+                <queryDefinitionHasQueryInputParameters Id="446d909e-4319-40e3-babd-04525cc2f3b5">
+                  <queryInputParameter Id="f8052f04-7c52-4983-80eb-58a523919dc6" name="As Of" description="The effective date for which to get the completed games" dataType="Date" isAggregateKey="false" isEffectiveDate="true" isIdentityGroupName="false" />
+                </queryDefinitionHasQueryInputParameters>
+              </queryInputParameters>
+              <queryReturnParameters>
+                <queryDefinitionHasQueryReturnParameters Id="81ce9b53-f257-4ac5-a9f0-c29de6f55e3b">
+                  <queryReturnParameter Id="fb5c06b2-c05d-42b8-9e13-8001db406961" name="Winner" dataType="String" />
+                </queryDefinitionHasQueryReturnParameters>
+              </queryReturnParameters>
+              <identityGroup>
+                <queryDefinitionReferencesIdentityGroup Id="e4153eae-cb8b-4723-b076-598c4ec91501">
+                  <identityGroupMoniker Id="ff2fd9dc-9336-43fa-84d0-95ac812d872c" />
+                </queryDefinitionReferencesIdentityGroup>
+              </identityGroup>
+              <projectionDefinition>
+                <queryDefinitionReferencesProjectionDefinition Id="befe4504-45d5-4906-969e-e7a8e5fc6563">
+                  <projectionDefinitionMoniker name="/e3878a2e-137d-4ee8-8337-8d3c9c2adfde/Match/Match Summary" />
+                </queryDefinitionReferencesProjectionDefinition>
+              </projectionDefinition>
+            </queryDefinition>
+          </aggregateIdentifierHasQueryDefinitions>
+        </queryDefinitions>
+        <identityGrouped>
+          <aggregateIdentifierHasIdentityGrouped Id="89aaf9df-1fb5-475f-8053-cd7a75c9a02d">
+            <identityGroup Id="fcc15415-e4b8-43a3-9493-d7240403efc5" isInstance="false" isGlobal="false" name="In Play" description="The set of matches currently in progress" notes="This  is used for live-score streaming" category="Match Status">
+              <classifier>
+                <identityGroupReferencesClassifier Id="df1f1766-7708-46ea-894f-e57c73f7a0ee">
+                  <classifierMoniker Id="e03cd15b-f733-4b99-b807-ba235f55abec" />
+                </identityGroupReferencesClassifier>
+              </classifier>
+            </identityGroup>
+          </aggregateIdentifierHasIdentityGrouped>
+          <aggregateIdentifierHasIdentityGrouped Id="d1ff41ef-3d61-4a03-81c8-a314a409208e">
+            <identityGroup Id="ff2fd9dc-9336-43fa-84d0-95ac812d872c" isInstance="false" isGlobal="false" name="Complete" description="Matches that have finished" />
+          </aggregateIdentifierHasIdentityGrouped>
+          <aggregateIdentifierHasIdentityGrouped Id="269a42e5-6a68-4977-88bc-05c602b071e4">
+            <identityGroup Id="374b9355-0b89-4eea-99b6-c0d09b256a1a" isInstance="false" isGlobal="false" name="Not Started" description="Match that has not yet been started" category="Match Status" />
+          </aggregateIdentifierHasIdentityGrouped>
+        </identityGrouped>
+        <classifiers>
+          <aggregateIdentifierHasClassifiers Id="a4a2aadc-473e-45d5-9478-4614d37950f3">
+            <classifier Id="e03cd15b-f733-4b99-b807-ba235f55abec" name="Game In Play">
+              <eventDefinitions>
+                <classifierHandlesEvents Id="df79580e-e637-4e63-bbd9-caeb24c88217">
+                  <eventDefinitionMoniker name="/e3878a2e-137d-4ee8-8337-8d3c9c2adfde/Match/Started" />
+                </classifierHandlesEvents>
+                <classifierHandlesEvents Id="fe6c0fd7-ad93-4a53-befa-c7ddf75f5f27">
+                  <eventDefinitionMoniker name="/e3878a2e-137d-4ee8-8337-8d3c9c2adfde/Match/GameFinished" />
+                </classifierHandlesEvents>
+              </eventDefinitions>
+              <classifierEventEvaluations>
+                <classifierHasEventEvaluations Id="515fe9dc-c36d-40f6-8c54-21df9374f4af">
+                  <classifierEventEvaluation Id="62785927-aace-40e6-8bb3-1cefabd3cd21" eventName="Started" description="The match started" onFalse="Unchanged" />
+                </classifierHasEventEvaluations>
+                <classifierHasEventEvaluations Id="8a68f587-f59e-415d-adfe-0d55a8f025ab">
+                  <classifierEventEvaluation Id="d226fa39-77c4-47a9-b3ba-55d4f4cd83a8" eventName="GameFinished" onTrue="Exclude" />
+                </classifierHasEventEvaluations>
+              </classifierEventEvaluations>
+            </classifier>
+          </aggregateIdentifierHasClassifiers>
+        </classifiers>
+      </aggregateIdentifier>
+    </cQRSModelHasAggregateIdentifiers>
+  </aggregateIdentifiers>
+</cQRSModel>

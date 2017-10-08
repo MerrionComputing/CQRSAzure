@@ -40,7 +40,7 @@ Public Class EventCodeGenerator
             interfaceDeclaration.Comments.AddRange(CommentGeneration.RemarksCommentSection({m_event.Notes}))
         End If
 
-        ' Make the interface inherit Interface IEvent(Of TAggregate As CQRSAzure.Aggregation.IAggregationIdentifier)
+        ' Make the interface inherit Interface IEvent(Of TAggregate As IAggregationIdentifier)
         Dim parentAggregateInterface As CodeTypeReference = InterfaceCodeGeneration.ImplementsInterfaceReference(m_event.AggregateIdentifier.Name)
         Dim genericEventInterface As CodeTypeReference = InterfaceCodeGeneration.ImplementsGenericInterfaceReference("IEvent", {parentAggregateInterface})
         interfaceDeclaration.BaseTypes.Add(genericEventInterface)
@@ -79,6 +79,7 @@ Public Class EventCodeGenerator
         For Each importNamespace As CodeNamespaceImport In RequiredNamespaces
             aggregateNamespace.Imports.Add(importNamespace)
         Next
+
         eventClasseRet.Namespaces.Add(aggregateNamespace)
         If (Not String.IsNullOrWhiteSpace(m_event.AggregateIdentifier.Notes)) Then
             aggregateNamespace.Comments.AddRange(CommentGeneration.RemarksCommentSection({m_event.AggregateIdentifier.Notes}))
@@ -96,10 +97,13 @@ Public Class EventCodeGenerator
         classDeclaration.BaseTypes.Add(New CodeTypeReference(GetType(Object)))
         classDeclaration.BaseTypes.Add(InterfaceCodeGeneration.ImplementsInterfaceReference(m_event.Name))
 
+        'and also make it serializable
+        classDeclaration.CustomAttributes.Add(AttributeCodeGenerator.SerializableAttribute)
+
         'Add the model name (DomainNameAttribute)
         If Not String.IsNullOrWhiteSpace(m_event.AggregateIdentifier.CQRSModel.Name) Then
             Dim params As New List(Of CodeAttributeArgument)
-            params.Add(New CodeAttributeArgument("domainNameIn", New CodePrimitiveExpression(m_event.AggregateIdentifier.CQRSModel.Name)))
+            params.Add(New CodeAttributeArgument(New CodePrimitiveExpression(m_event.AggregateIdentifier.CQRSModel.Name)))
             classDeclaration.CustomAttributes.Add(
                 AttributeCodeGenerator.ParameterisedAttribute("CQRSAzure.EventSourcing.DomainNameAttribute",
                                                               params))
@@ -108,11 +112,25 @@ Public Class EventCodeGenerator
         'Add the category attribute
         If Not String.IsNullOrWhiteSpace(m_event.Category) Then
             Dim params As New List(Of CodeAttributeArgument)
-            params.Add(New CodeAttributeArgument("categoryNameIn", New CodePrimitiveExpression(m_event.Category)))
+            params.Add(New CodeAttributeArgument(New CodePrimitiveExpression(m_event.Category)))
             classDeclaration.CustomAttributes.Add(
                 AttributeCodeGenerator.ParameterisedAttribute("CQRSAzure.EventSourcing.Category",
                                                               params))
         End If
+
+        'Add the EventAsOfDateAttribute
+        For Each eventProp In m_event.EventProperties
+            If (eventProp.IsEffectiveDate) Then
+                'Add an attribute to mark this property as the event effective date provider EventAsOfDateAttribute
+                Dim params As New List(Of CodeAttributeArgument)
+                params.Add(New CodeAttributeArgument(New CodePrimitiveExpression(EventCodeGenerator.ToMemberName(eventProp.Name, False))))
+
+                classDeclaration.CustomAttributes.Add(
+                    AttributeCodeGenerator.ParameterisedAttribute("CQRSAzure.EventSourcing.EventAsOfDateAttribute", params)
+                    )
+                Exit For
+            End If
+        Next
 
         'add all the backing code..
         ' Version number constant
@@ -120,6 +138,13 @@ Public Class EventCodeGenerator
         If (versionConst IsNot Nothing) Then
             versionConst.Comments.Add(New CodeCommentStatement("Version number - always increment this if the event definition changes", False))
             classDeclaration.Members.Add(versionConst)
+            'add a property to get the event version for IEvent<>.GetVersion
+            Dim propertyVersionMember As CodeMemberProperty = PropertyCodeGeneration.PublicMember("Version", PropertyDataType.PositiveInteger, backingProperty:="EVENT_VERSION")
+            If (propertyVersionMember IsNot Nothing) Then
+                propertyVersionMember.ImplementationTypes.Add(InterfaceCodeGeneration.ImplementsInterfaceReference(m_event.Name))
+
+                classDeclaration.Members.Add(propertyVersionMember)
+            End If
         End If
 
         '1) private members
@@ -129,28 +154,29 @@ Public Class EventCodeGenerator
             Dim propertyMember As CodeMemberProperty = PropertyCodeGeneration.PublicMember(eventProp)
             If (propertyMember IsNot Nothing) Then
                 propertyMember.ImplementationTypes.Add(InterfaceCodeGeneration.ImplementsInterfaceReference(m_event.Name))
+
                 classDeclaration.Members.Add(propertyMember)
             End If
         Next
         '3) add constructors
         Dim emptyConstructor As New CodeConstructor()
         emptyConstructor.Attributes += MemberAttributes.Public
-        emptyConstructor.Comments.AddRange(CommentGeneration.SummaryCommentSection({"Empty constructor for serialisation",
-                                                                                   "This should be removed if serialisation is not needed"}))
+        emptyConstructor.Comments.AddRange(CommentGeneration.SummaryCommentSection({"Empty constructor For serialisation",
+                                                                                   "This should be removed If serialisation Is Not needed"}))
         classDeclaration.Members.Add(emptyConstructor)
 
-        If (m_options.ConstructorPreference <> ModelCodeGenerationOptions.ConstructorPreferenceSetting.ParametersOnly) Then
+        If (m_options.ConstructorPreference <> ModelCodegenerationOptionsBase.ConstructorPreferenceSetting.ParametersOnly) Then
             Dim variableName As String = ModelCodeGenerator.MakeImplementationClassName(m_event.Name) & "Init"
             Dim fromInterfaceConstructor As CodeConstructor = ConstructorCodeGenerator.InterfaceBasedConstructor(m_event.EventProperties.Cast(Of IEventPropertyEntity).ToList(), ModelCodeGenerator.MakeInterfaceName(m_event.Name), variableName)
-            fromInterfaceConstructor.Comments.AddRange(CommentGeneration.SummaryCommentSection({"Create and populate a new instance of this class from the underlying interface"}))
-            fromInterfaceConstructor.Comments.AddRange(CommentGeneration.RemarksCommentSection({"This should be called when the event is created from an event stream"}))
+            fromInterfaceConstructor.Comments.AddRange(CommentGeneration.SummaryCommentSection({"Create And populate a New instance Of this Class from the underlying Interface"}))
+            fromInterfaceConstructor.Comments.AddRange(CommentGeneration.RemarksCommentSection({"This should be called When the Event Is created from an Event stream"}))
             classDeclaration.Members.Add(fromInterfaceConstructor)
         End If
 
-        If (m_options.ConstructorPreference <> ModelCodeGenerationOptions.ConstructorPreferenceSetting.InterfaceOnly) Then
+        If (m_options.ConstructorPreference <> ModelCodegenerationOptionsBase.ConstructorPreferenceSetting.InterfaceOnly) Then
             Dim fromParametersConstructor As CodeConstructor = ConstructorCodeGenerator.ParameterisedConstructor(m_event.EventProperties.Cast(Of IEventPropertyEntity).ToList())
-            fromParametersConstructor.Comments.AddRange(CommentGeneration.SummaryCommentSection({"Create and populate a new instance of this class from the underlying properties"}))
-            fromParametersConstructor.Comments.AddRange(CommentGeneration.RemarksCommentSection({"This should be called when the event is created from an event stream"}))
+            fromParametersConstructor.Comments.AddRange(CommentGeneration.SummaryCommentSection({"Create And populate a New instance Of this Class from the underlying properties"}))
+            fromParametersConstructor.Comments.AddRange(CommentGeneration.RemarksCommentSection({"This should be called When the Event Is created from an Event stream"}))
             fromParametersConstructor.Comments.AddRange(Me.ParameterComments())
             classDeclaration.Members.Add(fromParametersConstructor)
 
@@ -167,7 +193,7 @@ Public Class EventCodeGenerator
 
             Dim createFunction As CodeMemberMethod = MethodCodeGenerator.PublicParameterisedFunction("Create", createParameters, makeStatic:=True, returnType:=New CodeTypeReference(ModelCodeGenerator.MakeInterfaceName(m_event.Name)))
             If createFunction IsNot Nothing Then
-                createFunction.Comments.AddRange(CommentGeneration.SummaryCommentSection({"Factory method to create an instance of this event"}))
+                createFunction.Comments.AddRange(CommentGeneration.SummaryCommentSection({"Factory method To create an instance Of this Event"}))
                 createFunction.Comments.AddRange(Me.ParameterComments())
                 ' Call the fromParametersConstructor..e.g. return new ThisEvent(Parameter_1, Parameter_2) 
 
@@ -179,6 +205,61 @@ Public Class EventCodeGenerator
                 classDeclaration.Members.Add(createFunction)
             End If
         End If
+
+        'add a serialization constructor..
+        'e.g. Protected Sub New(ByVal info As SerializationInfo, ByVal context As StreamingContext)
+        Dim serializationConstructor As CodeConstructor = ConstructorCodeGenerator.SerializationConstructor(m_event.EventProperties)
+        serializationConstructor.Comments.AddRange(CommentGeneration.SummaryCommentSection({"Create And populate a New instance Of this Class from the serialized data"}))
+        serializationConstructor.Comments.AddRange(CommentGeneration.ParamCommentsSection("info", {"The SerializationInfo passed In containing the values Of this Event"}))
+        serializationConstructor.Comments.AddRange(CommentGeneration.ParamCommentsSection("context", {"Additional StreamingContext On how the Event Is streamed"}))
+
+        classDeclaration.Members.Add(serializationConstructor)
+
+        'add a Public Sub GetObjectData(ByVal info As SerializationInfo, ByVal context As StreamingContext) Implements ISerializable.GetObjectData
+        Dim infoParameter As New CodeParameterDeclarationExpression(New CodeTypeReference("SerializationInfo"), "info")
+        Dim contextParameter As New CodeParameterDeclarationExpression(New CodeTypeReference("StreamingContext"), "context")
+
+        Dim GetObjectDataSub As CodeMemberMethod = MethodCodeGenerator.PublicParameterisedSub("GetObjectData",
+                                                                                              {infoParameter,
+                                                                                               contextParameter}
+                                                                                                         )
+
+        'Make it implement the ISerializable reference
+        Dim implementsISerializable As CodeTypeReference = InterfaceCodeGeneration.ImplementsInterfaceReference("ISerializable")
+        If (implementsISerializable IsNot Nothing) Then
+            GetObjectDataSub.ImplementationTypes.Add(implementsISerializable)
+        End If
+
+        'Add the comments to this ISerializable
+        GetObjectDataSub.Comments.AddRange(CommentGeneration.SummaryCommentSection({"Populates a SerializationInfo with the data needed to serialize this event instance"}))
+        GetObjectDataSub.Comments.AddRange(CommentGeneration.RemarksCommentSection({"The version number is also to be saved"}))
+
+        'Add If (info Is Nothing) Then Throw New ArgumentNullException("info")
+
+        Dim addValueMethodReference As New CodeMethodReferenceExpression(New CodeVariableReferenceExpression("info"), "AddValue")
+        For Each param As IEventPropertyEntity In m_event.EventProperties.Cast(Of IEventPropertyEntity).ToList()
+            'add the info.AddValue("[name]", [name])
+            Dim addValueMethodInvoke As New CodeMethodInvokeExpression(addValueMethodReference,
+                                                                       {New CodePrimitiveExpression(EventCodeGenerator.ToMemberName(param.Name, False, False)),
+                                                                       New CodeVariableReferenceExpression(EventCodeGenerator.ToMemberName(param.Name, True, False))
+                                                                       }
+                                                                       )
+
+            GetObjectDataSub.Statements.Add(addValueMethodInvoke)
+
+        Next
+
+        'add the info.AddValue("EVENT_VERSION", versionNumber)
+        Dim addEventVersionMethodInvoke As New CodeMethodInvokeExpression(addValueMethodReference,
+                                                                       {New CodePrimitiveExpression("EVENT_VERSION"),
+                                                                       New CodeVariableReferenceExpression("EVENT_VERSION")
+                                                                       }
+                                                                       )
+
+        GetObjectDataSub.Statements.Add(addEventVersionMethodInvoke)
+
+        classDeclaration.Members.Add(GetObjectDataSub)
+
 
         'put the built class into the namespace
         aggregateNamespace.Types.Add(classDeclaration)
@@ -208,17 +289,18 @@ Public Class EventCodeGenerator
     Public ReadOnly Property RequiredNamespaces As IEnumerable(Of CodeNamespaceImport) Implements IEntityCodeGenerator.RequiredNamespaces
         Get
             Return {
-                New CodeNamespaceImport("CQRSAzure"),
+                New CodeNamespaceImport("System"),
+                New CodeNamespaceImport("System.Runtime.Serialization"),
+                New CodeNamespaceImport("System.Security.Permissions"),
                 New CodeNamespaceImport("CQRSAzure.EventSourcing"),
-                New CodeNamespaceImport("CQRSAzure.Aggregation"),
                 CodeGenerationUtilities.CreateNamespaceImport({m_event.AggregateIdentifier.CQRSModel.Name,
                     m_event.AggregateIdentifier.Name})
                 }
         End Get
     End Property
 
-    Private m_options As ModelCodeGenerationOptions = ModelCodeGenerationOptions.DefaultOptions()
-    Public Sub SetCodeGenerationOptions(options As ModelCodeGenerationOptions) Implements IEntityCodeGenerator.SetCodeGenerationOptions
+    Private m_options As IModelCodeGenerationOptions = ModelCodeGenerationOptions.Default()
+    Public Sub SetCodeGenerationOptions(options As IModelCodeGenerationOptions) Implements IEntityCodeGenerator.SetCodeGenerationOptions
         m_options = options
     End Sub
 
@@ -226,24 +308,52 @@ Public Class EventCodeGenerator
 
         Select Case propertyType
             Case PropertyDataType.Boolean
-                Return New CodeTypeReference(GetType(Boolean))
+                Return New CodeTypeReference(GetType(System.Boolean))
             Case PropertyDataType.Date
-                Return New CodeTypeReference(GetType(Date))
+                Return New CodeTypeReference(GetType(System.DateTime))
             Case PropertyDataType.Decimal
-                Return New CodeTypeReference(GetType(Decimal))
+                Return New CodeTypeReference(GetType(System.Decimal))
             Case PropertyDataType.FloatingPointNumber
-                Return New CodeTypeReference(GetType(Double))
+                Return New CodeTypeReference(GetType(System.Double))
             Case PropertyDataType.Image
-                Return New CodeTypeReference(GetType(Byte()))
+                Return New CodeTypeReference(GetType(System.Byte()))
             Case PropertyDataType.Integer
-                Return New CodeTypeReference(GetType(Integer))
+                Return New CodeTypeReference(GetType(System.Int32))
+            Case PropertyDataType.PositiveInteger
+                Return New CodeTypeReference(GetType(System.UInt32))
             Case PropertyDataType.String
-                Return New CodeTypeReference(GetType(String))
+                Return New CodeTypeReference(GetType(System.String))
             Case Else
-                Return New CodeTypeReference(GetType(Object))
+                Return New CodeTypeReference(GetType(System.Object))
         End Select
 
     End Function
+
+    Public Shared Function ToMemberTypeName(ByVal propertyType As PropertyDataType) As String
+
+        Select Case propertyType
+            Case PropertyDataType.Boolean
+                Return "Boolean"
+            Case PropertyDataType.Date
+                Return "DateTime"
+            Case PropertyDataType.Decimal
+                Return "Decimal"
+            Case PropertyDataType.FloatingPointNumber
+                Return "Double"
+            Case PropertyDataType.Image
+                Return "Byte()"
+            Case PropertyDataType.Integer
+                Return "Integer"
+            Case PropertyDataType.PositiveInteger
+                Return "UInt"
+            Case PropertyDataType.String
+                Return "String"
+            Case Else
+                Return "Object"
+        End Select
+
+    End Function
+
 
     ''' <summary>
     ''' Turn the given event property name to a valid code property name
@@ -263,10 +373,10 @@ Public Class EventCodeGenerator
     Public Shared Function ToMemberName(ByVal propertyName As String, ByVal backingField As Boolean, Optional ByVal inputParameter As Boolean = False) As String
 
         If (String.IsNullOrWhiteSpace(propertyName)) Then
-            Throw New ArgumentException("A property member name cannot be blank", NameOf(propertyName))
+            Throw New ArgumentException("A Property member name cannot be blank", NameOf(propertyName))
         End If
 
-        Dim invalidCharacters As Char() = " -!,.;':@£$%^&*()-+=/\#~"
+        Dim invalidCharacters As Char() = " -!, .;':@£$%^&*()-+=/\#~"
         Dim returnMembername As String = String.Join("_", propertyName.Split(invalidCharacters)).Trim()
 
         If ((String.IsNullOrWhiteSpace(returnMembername)) OrElse (String.IsNullOrWhiteSpace(returnMembername.TrimEnd("_")))) Then

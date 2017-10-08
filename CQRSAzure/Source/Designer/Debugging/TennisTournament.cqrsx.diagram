@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cQRSdslDiagram dslVersion="1.1.0.0" Id="678f9e89-c02a-4047-b667-b5cda2152171" absoluteBounds="0, 0, 11, 9.25" name="TennisTournament">
+  <cQRSModelMoniker Id="e3878a2e-137d-4ee8-8337-8d3c9c2adfde" />
+  <nestedChildShapes>
+    <aggregateGeometryShape Id="b3b58c59-7c20-4219-b9e8-b612522f5111" absoluteBounds="0.5, 0.5, 2, 1" outlineColor="Black">
+      <aggregateIdentifierMoniker name="/e3878a2e-137d-4ee8-8337-8d3c9c2adfde/Match" />
+    </aggregateGeometryShape>
+    <eventDefinitionCompartmentShape Id="a16c15f0-d2d6-4539-9141-1cb94ff70c38" absoluteBounds="0.5, 3.875, 2, 0.85938964843749943">
+      <eventDefinitionMoniker name="/e3878a2e-137d-4ee8-8337-8d3c9c2adfde/Match/Scheduled" />
+      <relativeChildShapes />
+      <nestedChildShapes>
+        <elementListCompartment Id="f731b56c-55c9-4753-9429-65445809370e" isExpanded="false" absoluteBounds="0.515, 4.385, 1.9700000000000002, 0.2493896484375" name="EventProperties" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </eventDefinitionCompartmentShape>
+    <aggregateEventConnector Id="7009b45d-1c6a-4d5a-8c31-39808c631e0c" edgePoints="[(1.5 : 1.5); (1.5 : 3.875)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <aggregateIdentifierHasEventDefinitionsMoniker Id="39173a89-c737-432a-a5ac-d8a7b33759d7" />
+      <nodes>
+        <aggregateGeometryShapeMoniker Id="b3b58c59-7c20-4219-b9e8-b612522f5111" />
+        <eventDefinitionCompartmentShapeMoniker Id="a16c15f0-d2d6-4539-9141-1cb94ff70c38" />
+      </nodes>
+    </aggregateEventConnector>
+    <eventDefinitionCompartmentShape Id="15289b6b-face-4de3-9223-fe636a4e95a8" absoluteBounds="2.625, 1.875, 1.5, 1.0516910807291664">
+      <eventDefinitionMoniker name="/e3878a2e-137d-4ee8-8337-8d3c9c2adfde/Match/Started" />
+      <relativeChildShapes />
+      <nestedChildShapes>
+        <elementListCompartment Id="f061c8a0-3339-40f6-8916-ba028af5e18e" absoluteBounds="2.64, 2.385, 1.4700000000000002, 0.44169108072916663" name="EventProperties" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </eventDefinitionCompartmentShape>
+    <aggregateEventConnector Id="b7d2bc79-203e-4563-81d4-8227b5304b43" edgePoints="[(2.0312525 : 1.5); (2.0312525 : 2.40084554036458); (2.625 : 2.40084554036458)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <aggregateIdentifierHasEventDefinitionsMoniker Id="f59c4f82-5e1f-483a-904c-60cf513188c4" />
+      <nodes>
+        <aggregateGeometryShapeMoniker Id="b3b58c59-7c20-4219-b9e8-b612522f5111" />
+        <eventDefinitionCompartmentShapeMoniker Id="15289b6b-face-4de3-9223-fe636a4e95a8" />
+      </nodes>
+    </aggregateEventConnector>
+    <eventDefinitionCompartmentShape Id="53096180-a8a3-4b05-b7cc-a8c84923ad06" absoluteBounds="4.25, 1.875, 1.5, 0.85938964843749988">
+      <eventDefinitionMoniker name="/e3878a2e-137d-4ee8-8337-8d3c9c2adfde/Match/Served" />
+      <relativeChildShapes />
+      <nestedChildShapes>
+        <elementListCompartment Id="55f7460b-3299-4d4c-ab5a-a76833a9fa19" isExpanded="false" absoluteBounds="4.265, 2.385, 1.4700000000000002, 0.2493896484375" name="EventProperties" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </eventDefinitionCompartmentShape>
+    <aggregateEventConnector Id="61a61dbc-9646-47c5-8c6a-1195246dc473" edgePoints="[(2.5 : 1.03030303030303); (5 : 1.03030303030303); (5 : 1.875)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <aggregateIdentifierHasEventDefinitionsMoniker Id="9eec6e98-79d3-4464-a5da-f13987832539" />
+      <nodes>
+        <aggregateGeometryShapeMoniker Id="b3b58c59-7c20-4219-b9e8-b612522f5111" />
+        <eventDefinitionCompartmentShapeMoniker Id="53096180-a8a3-4b05-b7cc-a8c84923ad06" />
+      </nodes>
+    </aggregateEventConnector>
+    <eventDefinitionCompartmentShape Id="37510b10-aaa5-4c14-835e-64ebfaa86b6a" absoluteBounds="6, 1.875, 1.5, 0.85938964843749988">
+      <eventDefinitionMoniker name="/e3878a2e-137d-4ee8-8337-8d3c9c2adfde/Match/GameFinished" />
+      <relativeChildShapes />
+      <nestedChildShapes>
+        <elementListCompartment Id="e3fc8102-c5ef-4a5e-b736-0d97d1a91fba" isExpanded="false" absoluteBounds="6.015, 2.385, 1.4700000000000002, 0.2493896484375" name="EventProperties" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </eventDefinitionCompartmentShape>
+    <aggregateEventConnector Id="a3d9c70f-7a32-449c-ad40-812cf055ef48" edgePoints="[(2.5 : 0.826086956521739); (6.5937505 : 0.826086956521739); (6.5937505 : 1.875)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <aggregateIdentifierHasEventDefinitionsMoniker Id="4db59e58-fa4d-479a-9f77-ec612cf7c356" />
+      <nodes>
+        <aggregateGeometryShapeMoniker Id="b3b58c59-7c20-4219-b9e8-b612522f5111" />
+        <eventDefinitionCompartmentShapeMoniker Id="37510b10-aaa5-4c14-835e-64ebfaa86b6a" />
+      </nodes>
+    </aggregateEventConnector>
+    <identityGroupGeometryShape Id="97e612ff-190d-41d3-b91e-6b45167427de" absoluteBounds="7.25, 0.5, 1.5, 0.5">
+      <identityGroupMoniker Id="fcc15415-e4b8-43a3-9493-d7240403efc5" />
+      <relativeChildShapes />
+    </identityGroupGeometryShape>
+    <aggregateIdentityGroupConnector Id="2a1c51a9-7f2d-4601-b1bf-c34300248a7e" edgePoints="[(2.5 : 0.60054347826087); (7.25 : 0.60054347826087)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <aggregateIdentifierHasIdentityGroupedMoniker Id="89aaf9df-1fb5-475f-8053-cd7a75c9a02d" />
+      <nodes>
+        <aggregateGeometryShapeMoniker Id="b3b58c59-7c20-4219-b9e8-b612522f5111" />
+        <identityGroupGeometryShapeMoniker Id="97e612ff-190d-41d3-b91e-6b45167427de" />
+      </nodes>
+    </aggregateIdentityGroupConnector>
+    <classifierCompartmentShape Id="38781247-74c3-4a2e-a982-0c94aa2c3237" absoluteBounds="7.875, 1.75, 1.5, 1.2439925130208329">
+      <classifierMoniker Id="e03cd15b-f733-4b99-b807-ba235f55abec" />
+      <relativeChildShapes />
+      <nestedChildShapes>
+        <elementListCompartment Id="f6486556-b54f-4bd7-bcce-893035ecb698" absoluteBounds="7.89, 2.26, 1.4700000000000002, 0.63399251302083326" name="EventEvaluationsCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classifierCompartmentShape>
+    <identityGroupClassifierConnector Id="e0033a04-0f63-4712-9a90-bdf2cf46a0e4" edgePoints="[(8.3125 : 1); (8.3125 : 1.75)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <identityGroupReferencesClassifierMoniker Id="df1f1766-7708-46ea-894f-e57c73f7a0ee" />
+      <nodes>
+        <identityGroupGeometryShapeMoniker Id="97e612ff-190d-41d3-b91e-6b45167427de" />
+        <classifierCompartmentShapeMoniker Id="38781247-74c3-4a2e-a982-0c94aa2c3237" />
+      </nodes>
+    </identityGroupClassifierConnector>
+    <classifierEventConnector Id="176ef7a0-4803-4470-8276-24a7304fb97e" edgePoints="[(7.875 : 2.86179036458333); (6.83333333333333 : 2.86179036458333 : JumpStart); (6.66666666666667 : 2.86179036458333 : JumpEnd); (4.125 : 2.86179036458333)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <classifierHandlesEventsMoniker Id="df79580e-e637-4e63-bbd9-caeb24c88217" />
+      <nodes>
+        <classifierCompartmentShapeMoniker Id="38781247-74c3-4a2e-a982-0c94aa2c3237" />
+        <eventDefinitionCompartmentShapeMoniker Id="15289b6b-face-4de3-9223-fe636a4e95a8" />
+      </nodes>
+    </classifierEventConnector>
+    <classifierEventConnector Id="2f548a1d-8764-4627-9706-73d88a7837ad" edgePoints="[(7.875 : 2.30469482421875); (7.5 : 2.30469482421875)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <classifierHandlesEventsMoniker Id="fe6c0fd7-ad93-4a53-befa-c7ddf75f5f27" />
+      <nodes>
+        <classifierCompartmentShapeMoniker Id="38781247-74c3-4a2e-a982-0c94aa2c3237" />
+        <eventDefinitionCompartmentShapeMoniker Id="37510b10-aaa5-4c14-835e-64ebfaa86b6a" />
+      </nodes>
+    </classifierEventConnector>
+    <identityGroupGeometryShape Id="8ba58117-5213-41b4-b9ec-7139ad0fdfac" absoluteBounds="3.375, 3.375, 1.5, 0.5">
+      <identityGroupMoniker Id="ff2fd9dc-9336-43fa-84d0-95ac812d872c" />
+      <relativeChildShapes />
+    </identityGroupGeometryShape>
+    <aggregateIdentityGroupConnector Id="6e376df5-f703-45b8-b9e8-d1d1c5c8807a" edgePoints="[(0.9687475 : 1.5); (0.9687475 : 3.59375); (3.375 : 3.59375)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <aggregateIdentifierHasIdentityGroupedMoniker Id="d1ff41ef-3d61-4a03-81c8-a314a409208e" />
+      <nodes>
+        <aggregateGeometryShapeMoniker Id="b3b58c59-7c20-4219-b9e8-b612522f5111" />
+        <identityGroupGeometryShapeMoniker Id="8ba58117-5213-41b4-b9ec-7139ad0fdfac" />
+      </nodes>
+    </aggregateIdentityGroupConnector>
+    <queryDefinitionShape Id="7b1e2a78-0755-449e-a70c-716fed773b4c" absoluteBounds="8.125, 4.75, 2, 1.5033821614583331">
+      <queryDefinitionMoniker name="/e3878a2e-137d-4ee8-8337-8d3c9c2adfde/Match/Get Completed Games" />
+      <relativeChildShapes />
+      <nestedChildShapes>
+        <elementListCompartment Id="176d2d27-acf1-4d16-93ce-456b4db09476" absoluteBounds="8.14, 5.26, 1.9700000000000002, 0.44169108072916663" name="InputParametersCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="f2618c01-3a58-496d-b400-5c5cca24006a" absoluteBounds="8.14, 5.7116910807291665, 1.9700000000000002, 0.44169108072916663" name="OutputParametersCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </queryDefinitionShape>
+    <aggregateQueryDefinitionConnector Id="00625328-efba-47b6-90fc-eabf10ffef46" edgePoints="[(2.5 : 1.28125); (9.78125 : 1.28125); (9.78125 : 4.75)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <aggregateIdentifierHasQueryDefinitionsMoniker Id="55ef85a8-2723-4399-9905-a2f46f5bb659" />
+      <nodes>
+        <aggregateGeometryShapeMoniker Id="b3b58c59-7c20-4219-b9e8-b612522f5111" />
+        <queryDefinitionShapeMoniker Id="7b1e2a78-0755-449e-a70c-716fed773b4c" />
+      </nodes>
+    </aggregateQueryDefinitionConnector>
+    <projectionDefinitionCompartmentShape Id="b6bb845d-79b9-498e-8b7e-e2c8b434ef57" absoluteBounds="3.375, 5.625, 2.375, 2.2725878906249992">
+      <projectionDefinitionMoniker name="/e3878a2e-137d-4ee8-8337-8d3c9c2adfde/Match/Match Summary" />
+      <relativeChildShapes />
+      <nestedChildShapes>
+        <elementListCompartment Id="3ca21ae0-3541-4d55-99ec-6d5696f1bb8a" absoluteBounds="3.39, 6.135, 2.3449999999999998, 1.0185953776041665" name="ProjectionProperties" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="eba771e1-17ec-42d7-88fd-819551787b81" absoluteBounds="3.39, 7.1635953776041665, 2.3449999999999998, 0.63399251302083326" name="PropertyOperations" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </projectionDefinitionCompartmentShape>
+    <aggregateProjectionConnector Id="147de3e5-032d-4473-9841-da8668f004af" edgePoints="[(1.5 : 1.5); (1.5 : 3.625); (2.75 : 3.625); (2.75 : 6.7612939453125); (3.375 : 6.7612939453125)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <aggregateIdentifierHasProjectionDefinitionsMoniker Id="f5f7837b-b81d-441b-9ca3-047725b8e5d4" />
+      <nodes>
+        <aggregateGeometryShapeMoniker Id="b3b58c59-7c20-4219-b9e8-b612522f5111" />
+        <projectionDefinitionCompartmentShapeMoniker Id="b6bb845d-79b9-498e-8b7e-e2c8b434ef57" />
+      </nodes>
+    </aggregateProjectionConnector>
+    <projectionEventConnector Id="ab464cb1-6148-42f0-aedd-65867afbf88b" edgePoints="[(4.5625 : 5.625); (4.5625 : 4.33594482421875); (2.5 : 4.33594482421875)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <projectionDefinitionHandlesEventDefinitionsMoniker Id="c939c48f-20c0-4a1b-af1d-40d22ae70480" />
+      <nodes>
+        <projectionDefinitionCompartmentShapeMoniker Id="b6bb845d-79b9-498e-8b7e-e2c8b434ef57" />
+        <eventDefinitionCompartmentShapeMoniker Id="a16c15f0-d2d6-4539-9141-1cb94ff70c38" />
+      </nodes>
+    </projectionEventConnector>
+    <projectionEventConnector Id="a6ffda8f-a062-4dc4-a494-86d9124e46e6" edgePoints="[(5.75 : 6.7612939453125); (6.75 : 6.7612939453125); (6.75 : 2.7343896484375)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <projectionDefinitionHandlesEventDefinitionsMoniker Id="bca2e712-1e9b-4444-b24e-6f7dc66da19e" />
+      <nodes>
+        <projectionDefinitionCompartmentShapeMoniker Id="b6bb845d-79b9-498e-8b7e-e2c8b434ef57" />
+        <eventDefinitionCompartmentShapeMoniker Id="37510b10-aaa5-4c14-835e-64ebfaa86b6a" />
+      </nodes>
+    </projectionEventConnector>
+    <commandDefinitionCompartmentShape Id="dd673add-9181-4803-9a7c-0d0ee2c00882" absoluteBounds="0.5, 7.375, 1.875, 1.6285953776041655">
+      <commandDefinitionMoniker name="/e3878a2e-137d-4ee8-8337-8d3c9c2adfde/Match/Reschedule Match" />
+      <relativeChildShapes />
+      <nestedChildShapes>
+        <elementListCompartment Id="04c88584-2c39-48a4-b12b-34a097f4c7b0" absoluteBounds="0.515, 7.885, 1.8450000000000002, 1.0185953776041665" name="PropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </commandDefinitionCompartmentShape>
+    <aggregateCommandDefinitionConnector Id="ee902021-6adc-4bb2-aa70-97997533078e" edgePoints="[(0.5 : 1); (0.125 : 1); (0.125 : 8.18929768880208); (0.5 : 8.18929768880208)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <aggregateIdentifierHasCommandDefinitionsMoniker Id="d4b6b31a-a49e-4371-918e-0c2ae185e2ad" />
+      <nodes>
+        <aggregateGeometryShapeMoniker Id="b3b58c59-7c20-4219-b9e8-b612522f5111" />
+        <commandDefinitionCompartmentShapeMoniker Id="dd673add-9181-4803-9a7c-0d0ee2c00882" />
+      </nodes>
+    </aggregateCommandDefinitionConnector>
+    <identityGroupGeometryShape Id="1d68712b-fa77-4b4f-9805-5e28a23fc0cb" absoluteBounds="0.625, 5.625, 1.5, 0.5">
+      <identityGroupMoniker Id="374b9355-0b89-4eea-99b6-c0d09b256a1a" />
+      <relativeChildShapes />
+    </identityGroupGeometryShape>
+    <aggregateIdentityGroupConnector Id="560747a9-5c50-411c-adaa-22c92bd9374a" edgePoints="[(0.5 : 1.281252); (0.25 : 1.281252); (0.25 : 5.875); (0.625 : 5.875)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <aggregateIdentifierHasIdentityGroupedMoniker Id="269a42e5-6a68-4977-88bc-05c602b071e4" />
+      <nodes>
+        <aggregateGeometryShapeMoniker Id="b3b58c59-7c20-4219-b9e8-b612522f5111" />
+        <identityGroupGeometryShapeMoniker Id="1d68712b-fa77-4b4f-9805-5e28a23fc0cb" />
+      </nodes>
+    </aggregateIdentityGroupConnector>
+  </nestedChildShapes>
+</cQRSdslDiagram>

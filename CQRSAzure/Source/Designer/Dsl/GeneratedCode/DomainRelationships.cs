@@ -4370,246 +4370,6 @@ namespace CQRSAzure.CQRSdsl.Dsl
 namespace CQRSAzure.CQRSdsl.Dsl
 {
 	/// <summary>
-	/// DomainRelationship CQRSModelHasModelSet
-	/// Additional setting that controsl how the model is truend into code or
-	/// documentation
-	/// </summary>
-	[DslDesign::DisplayNameResource("CQRSAzure.CQRSdsl.Dsl.CQRSModelHasModelSet.DisplayName", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("CQRSAzure.CQRSdsl.Dsl.CQRSModelHasModelSet.Description", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
-	[DslModeling::DomainModelOwner(typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel))]
-	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainRelationship(IsEmbedding=true)]
-	[DslModeling::DomainObjectId("2a88a228-fa99-41c6-8bb8-fb443b96ce5e")]
-	public partial class CQRSModelHasModelSet : DslModeling::ElementLink
-	{
-		#region Constructors, domain class Id
-		
-		/// <summary>
-		/// CQRSModelHasModelSet domain class Id.
-		/// </summary>
-		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x2a88a228, 0xfa99, 0x41c6, 0x8b, 0xb8, 0xfb, 0x44, 0x3b, 0x96, 0xce, 0x5e);
-	
-				
-		/// <summary>
-		/// Constructor
-		/// Creates a CQRSModelHasModelSet link in the same Partition as the given CQRSModel
-		/// </summary>
-		/// <param name="source">CQRSModel to use as the source of the relationship.</param>
-		/// <param name="target">ModelSetting to use as the target of the relationship.</param>
-		public CQRSModelHasModelSet(CQRSModel source, ModelSetting target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(CQRSModelHasModelSet.CQRSModelDomainRoleId, source), new DslModeling::RoleAssignment(CQRSModelHasModelSet.ModelSettingDomainRoleId, target)}, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public CQRSModelHasModelSet(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
-			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="store">Store where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public CQRSModelHasModelSet(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
-			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, propertyAssignments)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		public CQRSModelHasModelSet(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
-			: base(partition, roleAssignments, null)
-		{
-		}
-		
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new link is to be created.</param>
-		/// <param name="roleAssignments">List of relationship role assignments.</param>
-		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
-		public CQRSModelHasModelSet(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
-			: base(partition, roleAssignments, propertyAssignments)
-		{
-		}
-		#endregion
-		#region CQRSModel domain role code
-		
-		/// <summary>
-		/// CQRSModel domain role Id.
-		/// </summary>
-		public static readonly global::System.Guid CQRSModelDomainRoleId = new global::System.Guid(0xb7cc451c, 0x4223, 0x43ac, 0x8f, 0xfd, 0x68, 0x4c, 0xd0, 0x57, 0x1b, 0xb2);
-		
-		/// <summary>
-		/// DomainRole CQRSModel
-		/// Description for CQRSAzure.CQRSdsl.Dsl.CQRSModelHasModelSet.CQRSModel
-		/// </summary>
-		[DslDesign::DisplayNameResource("CQRSAzure.CQRSdsl.Dsl.CQRSModelHasModelSet/CQRSModel.DisplayName", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("CQRSAzure.CQRSdsl.Dsl.CQRSModelHasModelSet/CQRSModel.Description", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ModelSet", PropertyDisplayNameKey="CQRSAzure.CQRSdsl.Dsl.CQRSModelHasModelSet/CQRSModel.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.PropagatesCopyToLinkAndOppositeRolePlayer, Multiplicity = DslModeling::Multiplicity.ZeroMany)]
-		[DslModeling::DomainObjectId("b7cc451c-4223-43ac-8ffd-684cd0571bb2")]
-		public virtual CQRSModel CQRSModel
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return (CQRSModel)DslModeling::DomainRoleInfo.GetRolePlayer(this, CQRSModelDomainRoleId);
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, CQRSModelDomainRoleId, value);
-			}
-		}
-				
-		#endregion
-		#region Static methods to access CQRSModel of a ModelSetting
-		/// <summary>
-		/// Gets CQRSModel.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static CQRSModel GetCQRSModel(ModelSetting element)
-		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ModelSettingDomainRoleId) as CQRSModel;
-		}
-		
-		/// <summary>
-		/// Sets CQRSModel.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetCQRSModel(ModelSetting element, CQRSModel newCQRSModel)
-		{
-			DslModeling::DomainRoleInfo.SetLinkedElement(element, ModelSettingDomainRoleId, newCQRSModel);
-		}
-		#endregion
-		#region ModelSetting domain role code
-		
-		/// <summary>
-		/// ModelSetting domain role Id.
-		/// </summary>
-		public static readonly global::System.Guid ModelSettingDomainRoleId = new global::System.Guid(0x685143c1, 0x54fd, 0x4a30, 0x88, 0xdc, 0xd8, 0x25, 0xc4, 0xe5, 0x35, 0x33);
-		
-		/// <summary>
-		/// DomainRole ModelSetting
-		/// Description for CQRSAzure.CQRSdsl.Dsl.CQRSModelHasModelSet.ModelSetting
-		/// </summary>
-		[DslDesign::DisplayNameResource("CQRSAzure.CQRSdsl.Dsl.CQRSModelHasModelSet/ModelSetting.DisplayName", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("CQRSAzure.CQRSdsl.Dsl.CQRSModelHasModelSet/ModelSetting.Description", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "CQRSModel", PropertyDisplayNameKey="CQRSAzure.CQRSdsl.Dsl.CQRSModelHasModelSet/ModelSetting.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.One)]
-		[DslModeling::DomainObjectId("685143c1-54fd-4a30-88dc-d825c4e53533")]
-		public virtual ModelSetting ModelSetting
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return (ModelSetting)DslModeling::DomainRoleInfo.GetRolePlayer(this, ModelSettingDomainRoleId);
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, ModelSettingDomainRoleId, value);
-			}
-		}
-				
-		#endregion
-		#region Static methods to access ModelSet of a CQRSModel
-		/// <summary>
-		/// Gets a list of ModelSet.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<ModelSetting> GetModelSet(CQRSModel element)
-		{
-			return GetRoleCollection<DslModeling::LinkedElementCollection<ModelSetting>, ModelSetting>(element, CQRSModelDomainRoleId);
-		}
-		#endregion
-		#region CQRSModel link accessor
-		/// <summary>
-		/// Get the list of CQRSModelHasModelSet links to a CQRSModel.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::CQRSAzure.CQRSdsl.Dsl.CQRSModelHasModelSet> GetLinksToModelSet ( global::CQRSAzure.CQRSdsl.Dsl.CQRSModel cQRSModelInstance )
-		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::CQRSAzure.CQRSdsl.Dsl.CQRSModelHasModelSet>(cQRSModelInstance, global::CQRSAzure.CQRSdsl.Dsl.CQRSModelHasModelSet.CQRSModelDomainRoleId);
-		}
-		#endregion
-		#region ModelSetting link accessor
-		/// <summary>
-		/// Get the CQRSModelHasModelSet link to a ModelSetting.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::CQRSAzure.CQRSdsl.Dsl.CQRSModelHasModelSet GetLinkToCQRSModel (global::CQRSAzure.CQRSdsl.Dsl.ModelSetting modelSettingInstance)
-		{
-			global::System.Collections.Generic.IList<global::CQRSAzure.CQRSdsl.Dsl.CQRSModelHasModelSet> links = DslModeling::DomainRoleInfo.GetElementLinks<global::CQRSAzure.CQRSdsl.Dsl.CQRSModelHasModelSet>(modelSettingInstance, global::CQRSAzure.CQRSdsl.Dsl.CQRSModelHasModelSet.ModelSettingDomainRoleId);
-			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ModelSetting not obeyed.");
-			if ( links.Count == 0 )
-			{
-				return null;
-			}
-			else
-			{
-				return links[0];
-			}
-		}
-		#endregion
-		#region CQRSModelHasModelSet instance accessors
-		
-		/// <summary>
-		/// Get any CQRSModelHasModelSet links between a given CQRSModel and a ModelSetting.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::CQRSAzure.CQRSdsl.Dsl.CQRSModelHasModelSet> GetLinks( global::CQRSAzure.CQRSdsl.Dsl.CQRSModel source, global::CQRSAzure.CQRSdsl.Dsl.ModelSetting target )
-		{
-			global::System.Collections.Generic.List<global::CQRSAzure.CQRSdsl.Dsl.CQRSModelHasModelSet> outLinks = new global::System.Collections.Generic.List<global::CQRSAzure.CQRSdsl.Dsl.CQRSModelHasModelSet>();
-			global::System.Collections.Generic.IList<global::CQRSAzure.CQRSdsl.Dsl.CQRSModelHasModelSet> links = DslModeling::DomainRoleInfo.GetElementLinks<global::CQRSAzure.CQRSdsl.Dsl.CQRSModelHasModelSet>(source, global::CQRSAzure.CQRSdsl.Dsl.CQRSModelHasModelSet.CQRSModelDomainRoleId);
-			foreach ( global::CQRSAzure.CQRSdsl.Dsl.CQRSModelHasModelSet link in links )
-			{
-				if ( target.Equals(link.ModelSetting) )
-				{
-					outLinks.Add(link);
-				}
-			}
-			return outLinks.AsReadOnly();
-		}
-		/// <summary>
-		/// Get the one CQRSModelHasModelSet link between a given CQRSModeland a ModelSetting.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::CQRSAzure.CQRSdsl.Dsl.CQRSModelHasModelSet GetLink( global::CQRSAzure.CQRSdsl.Dsl.CQRSModel source, global::CQRSAzure.CQRSdsl.Dsl.ModelSetting target )
-		{
-			global::System.Collections.Generic.IList<global::CQRSAzure.CQRSdsl.Dsl.CQRSModelHasModelSet> links = DslModeling::DomainRoleInfo.GetElementLinks<global::CQRSAzure.CQRSdsl.Dsl.CQRSModelHasModelSet>(source, global::CQRSAzure.CQRSdsl.Dsl.CQRSModelHasModelSet.CQRSModelDomainRoleId);
-			foreach ( global::CQRSAzure.CQRSdsl.Dsl.CQRSModelHasModelSet link in links )
-			{
-				if ( target.Equals(link.ModelSetting) )
-				{
-					return link;
-				}
-			}
-			return null;
-		}
-		
-		#endregion
-	}
-}
-namespace CQRSAzure.CQRSdsl.Dsl
-{
-	/// <summary>
 	/// DomainRelationship QueryDefinitionReferencesIdentityGroup
 	/// The identity reference group to use to run this query against a set of aggregate
 	/// identifiers
@@ -6788,6 +6548,508 @@ namespace CQRSAzure.CQRSdsl.Dsl
 			foreach ( global::CQRSAzure.CQRSdsl.Dsl.QueryDefinitionReferencesProjectionDefinition link in links )
 			{
 				if ( target.Equals(link.ProjectionDefinition) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace CQRSAzure.CQRSdsl.Dsl
+{
+	/// <summary>
+	/// DomainRelationship ClassifierReferencesProjectionDefinition
+	/// For a classifier that relies on a projection, this is the projection concerned
+	/// </summary>
+	[DslDesign::DisplayNameResource("CQRSAzure.CQRSdsl.Dsl.ClassifierReferencesProjectionDefinition.DisplayName", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("CQRSAzure.CQRSdsl.Dsl.ClassifierReferencesProjectionDefinition.Description", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+	[DslModeling::DomainModelOwner(typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel))]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("05477329-76e7-4b3a-b817-03642eaecf6b")]
+	public partial class ClassifierReferencesProjectionDefinition : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// ClassifierReferencesProjectionDefinition domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x05477329, 0x76e7, 0x4b3a, 0xb8, 0x17, 0x03, 0x64, 0x2e, 0xae, 0xcf, 0x6b);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a ClassifierReferencesProjectionDefinition link in the same Partition as the given Classifier
+		/// </summary>
+		/// <param name="source">Classifier to use as the source of the relationship.</param>
+		/// <param name="target">ProjectionDefinition to use as the target of the relationship.</param>
+		public ClassifierReferencesProjectionDefinition(Classifier source, ProjectionDefinition target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ClassifierReferencesProjectionDefinition.ClassifierDomainRoleId, source), new DslModeling::RoleAssignment(ClassifierReferencesProjectionDefinition.ProjectionDefinitionDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ClassifierReferencesProjectionDefinition(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ClassifierReferencesProjectionDefinition(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ClassifierReferencesProjectionDefinition(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ClassifierReferencesProjectionDefinition(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region Classifier domain role code
+		
+		/// <summary>
+		/// Classifier domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ClassifierDomainRoleId = new global::System.Guid(0x13ee9f93, 0x66bb, 0x4917, 0x85, 0xe2, 0xe4, 0x82, 0xc9, 0xc6, 0x61, 0xaa);
+		
+		/// <summary>
+		/// DomainRole Classifier
+		/// Description for
+		/// CQRSAzure.CQRSdsl.Dsl.ClassifierReferencesProjectionDefinition.Classifier
+		/// </summary>
+		[DslDesign::DisplayNameResource("CQRSAzure.CQRSdsl.Dsl.ClassifierReferencesProjectionDefinition/Classifier.DisplayName", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("CQRSAzure.CQRSdsl.Dsl.ClassifierReferencesProjectionDefinition/Classifier.Description", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ProjectionDefinition", PropertyDisplayNameKey="CQRSAzure.CQRSdsl.Dsl.ClassifierReferencesProjectionDefinition/Classifier.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("13ee9f93-66bb-4917-85e2-e482c9c661aa")]
+		public virtual Classifier Classifier
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (Classifier)DslModeling::DomainRoleInfo.GetRolePlayer(this, ClassifierDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ClassifierDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access Classifier of a ProjectionDefinition
+		/// <summary>
+		/// Gets Classifier.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static Classifier GetClassifier(ProjectionDefinition element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ProjectionDefinitionDomainRoleId) as Classifier;
+		}
+		
+		/// <summary>
+		/// Sets Classifier.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetClassifier(ProjectionDefinition element, Classifier newClassifier)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ProjectionDefinitionDomainRoleId, newClassifier);
+		}
+		#endregion
+		#region ProjectionDefinition domain role code
+		
+		/// <summary>
+		/// ProjectionDefinition domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ProjectionDefinitionDomainRoleId = new global::System.Guid(0xb5f11c71, 0xdbde, 0x4508, 0xb1, 0x00, 0x91, 0xd4, 0x4c, 0x9d, 0xd6, 0xe6);
+		
+		/// <summary>
+		/// DomainRole ProjectionDefinition
+		/// Description for
+		/// CQRSAzure.CQRSdsl.Dsl.ClassifierReferencesProjectionDefinition.ProjectionDefinition
+		/// </summary>
+		[DslDesign::DisplayNameResource("CQRSAzure.CQRSdsl.Dsl.ClassifierReferencesProjectionDefinition/ProjectionDefinition.DisplayName", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("CQRSAzure.CQRSdsl.Dsl.ClassifierReferencesProjectionDefinition/ProjectionDefinition.Description", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Classifier", PropertyDisplayNameKey="CQRSAzure.CQRSdsl.Dsl.ClassifierReferencesProjectionDefinition/ProjectionDefinition.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("b5f11c71-dbde-4508-b100-91d44c9dd6e6")]
+		public virtual ProjectionDefinition ProjectionDefinition
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ProjectionDefinition)DslModeling::DomainRoleInfo.GetRolePlayer(this, ProjectionDefinitionDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ProjectionDefinitionDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ProjectionDefinition of a Classifier
+		/// <summary>
+		/// Gets ProjectionDefinition.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static ProjectionDefinition GetProjectionDefinition(Classifier element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ClassifierDomainRoleId) as ProjectionDefinition;
+		}
+		
+		/// <summary>
+		/// Sets ProjectionDefinition.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetProjectionDefinition(Classifier element, ProjectionDefinition newProjectionDefinition)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ClassifierDomainRoleId, newProjectionDefinition);
+		}
+		#endregion
+		#region Classifier link accessor
+		/// <summary>
+		/// Get the ClassifierReferencesProjectionDefinition link to a Classifier.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::CQRSAzure.CQRSdsl.Dsl.ClassifierReferencesProjectionDefinition GetLinkToProjectionDefinition (global::CQRSAzure.CQRSdsl.Dsl.Classifier classifierInstance)
+		{
+			global::System.Collections.Generic.IList<global::CQRSAzure.CQRSdsl.Dsl.ClassifierReferencesProjectionDefinition> links = DslModeling::DomainRoleInfo.GetElementLinks<global::CQRSAzure.CQRSdsl.Dsl.ClassifierReferencesProjectionDefinition>(classifierInstance, global::CQRSAzure.CQRSdsl.Dsl.ClassifierReferencesProjectionDefinition.ClassifierDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Classifier not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region ProjectionDefinition link accessor
+		/// <summary>
+		/// Get the ClassifierReferencesProjectionDefinition link to a ProjectionDefinition.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::CQRSAzure.CQRSdsl.Dsl.ClassifierReferencesProjectionDefinition GetLinkToClassifier (global::CQRSAzure.CQRSdsl.Dsl.ProjectionDefinition projectionDefinitionInstance)
+		{
+			global::System.Collections.Generic.IList<global::CQRSAzure.CQRSdsl.Dsl.ClassifierReferencesProjectionDefinition> links = DslModeling::DomainRoleInfo.GetElementLinks<global::CQRSAzure.CQRSdsl.Dsl.ClassifierReferencesProjectionDefinition>(projectionDefinitionInstance, global::CQRSAzure.CQRSdsl.Dsl.ClassifierReferencesProjectionDefinition.ProjectionDefinitionDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ProjectionDefinition not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region ClassifierReferencesProjectionDefinition instance accessors
+		
+		/// <summary>
+		/// Get any ClassifierReferencesProjectionDefinition links between a given Classifier and a ProjectionDefinition.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::CQRSAzure.CQRSdsl.Dsl.ClassifierReferencesProjectionDefinition> GetLinks( global::CQRSAzure.CQRSdsl.Dsl.Classifier source, global::CQRSAzure.CQRSdsl.Dsl.ProjectionDefinition target )
+		{
+			global::System.Collections.Generic.List<global::CQRSAzure.CQRSdsl.Dsl.ClassifierReferencesProjectionDefinition> outLinks = new global::System.Collections.Generic.List<global::CQRSAzure.CQRSdsl.Dsl.ClassifierReferencesProjectionDefinition>();
+			global::System.Collections.Generic.IList<global::CQRSAzure.CQRSdsl.Dsl.ClassifierReferencesProjectionDefinition> links = DslModeling::DomainRoleInfo.GetElementLinks<global::CQRSAzure.CQRSdsl.Dsl.ClassifierReferencesProjectionDefinition>(source, global::CQRSAzure.CQRSdsl.Dsl.ClassifierReferencesProjectionDefinition.ClassifierDomainRoleId);
+			foreach ( global::CQRSAzure.CQRSdsl.Dsl.ClassifierReferencesProjectionDefinition link in links )
+			{
+				if ( target.Equals(link.ProjectionDefinition) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one ClassifierReferencesProjectionDefinition link between a given Classifierand a ProjectionDefinition.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::CQRSAzure.CQRSdsl.Dsl.ClassifierReferencesProjectionDefinition GetLink( global::CQRSAzure.CQRSdsl.Dsl.Classifier source, global::CQRSAzure.CQRSdsl.Dsl.ProjectionDefinition target )
+		{
+			global::System.Collections.Generic.IList<global::CQRSAzure.CQRSdsl.Dsl.ClassifierReferencesProjectionDefinition> links = DslModeling::DomainRoleInfo.GetElementLinks<global::CQRSAzure.CQRSdsl.Dsl.ClassifierReferencesProjectionDefinition>(source, global::CQRSAzure.CQRSdsl.Dsl.ClassifierReferencesProjectionDefinition.ClassifierDomainRoleId);
+			foreach ( global::CQRSAzure.CQRSdsl.Dsl.ClassifierReferencesProjectionDefinition link in links )
+			{
+				if ( target.Equals(link.ProjectionDefinition) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace CQRSAzure.CQRSdsl.Dsl
+{
+	/// <summary>
+	/// DomainRelationship ClassifierHasClassifierProjectionPropertyEvaluations
+	/// Description for
+	/// CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations
+	/// </summary>
+	[DslDesign::DisplayNameResource("CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations.DisplayName", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations.Description", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+	[DslModeling::DomainModelOwner(typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel))]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainObjectId("52db539a-cddf-48d5-8379-ed7c7db835c9")]
+	public partial class ClassifierHasClassifierProjectionPropertyEvaluations : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// ClassifierHasClassifierProjectionPropertyEvaluations domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x52db539a, 0xcddf, 0x48d5, 0x83, 0x79, 0xed, 0x7c, 0x7d, 0xb8, 0x35, 0xc9);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a ClassifierHasClassifierProjectionPropertyEvaluations link in the same Partition as the given Classifier
+		/// </summary>
+		/// <param name="source">Classifier to use as the source of the relationship.</param>
+		/// <param name="target">ClassifierProjectionPropertyEvaluation to use as the target of the relationship.</param>
+		public ClassifierHasClassifierProjectionPropertyEvaluations(Classifier source, ClassifierProjectionPropertyEvaluation target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ClassifierHasClassifierProjectionPropertyEvaluations.ClassifierDomainRoleId, source), new DslModeling::RoleAssignment(ClassifierHasClassifierProjectionPropertyEvaluations.ClassifierProjectionPropertyEvaluationDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ClassifierHasClassifierProjectionPropertyEvaluations(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ClassifierHasClassifierProjectionPropertyEvaluations(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ClassifierHasClassifierProjectionPropertyEvaluations(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ClassifierHasClassifierProjectionPropertyEvaluations(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region Classifier domain role code
+		
+		/// <summary>
+		/// Classifier domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ClassifierDomainRoleId = new global::System.Guid(0x160c519a, 0x48cb, 0x40c4, 0xb7, 0x26, 0x5e, 0x2b, 0x86, 0xfe, 0x0b, 0x69);
+		
+		/// <summary>
+		/// DomainRole Classifier
+		/// Description for
+		/// CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations.Classifier
+		/// </summary>
+		[DslDesign::DisplayNameResource("CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations/Classifier.DisplayName", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations/Classifier.Description", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ClassifierProjectionPropertyEvaluations", PropertyDisplayNameKey="CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations/Classifier.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.PropagatesCopyToLinkAndOppositeRolePlayer, Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("160c519a-48cb-40c4-b726-5e2b86fe0b69")]
+		public virtual Classifier Classifier
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (Classifier)DslModeling::DomainRoleInfo.GetRolePlayer(this, ClassifierDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ClassifierDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access Classifier of a ClassifierProjectionPropertyEvaluation
+		/// <summary>
+		/// Gets Classifier.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static Classifier GetClassifier(ClassifierProjectionPropertyEvaluation element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ClassifierProjectionPropertyEvaluationDomainRoleId) as Classifier;
+		}
+		
+		/// <summary>
+		/// Sets Classifier.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetClassifier(ClassifierProjectionPropertyEvaluation element, Classifier newClassifier)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ClassifierProjectionPropertyEvaluationDomainRoleId, newClassifier);
+		}
+		#endregion
+		#region ClassifierProjectionPropertyEvaluation domain role code
+		
+		/// <summary>
+		/// ClassifierProjectionPropertyEvaluation domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ClassifierProjectionPropertyEvaluationDomainRoleId = new global::System.Guid(0x2ace4ffb, 0x8d4d, 0x4d08, 0x86, 0x15, 0x71, 0xaf, 0xa0, 0x7c, 0x67, 0xc6);
+		
+		/// <summary>
+		/// DomainRole ClassifierProjectionPropertyEvaluation
+		/// Description for
+		/// CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations.ClassifierProjectionPropertyEvaluation
+		/// </summary>
+		[DslDesign::DisplayNameResource("CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations/ClassifierProjectionPropertyEvaluation.DisplayName", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations/ClassifierProjectionPropertyEvaluation.Description", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Classifier", PropertyDisplayNameKey="CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations/ClassifierProjectionPropertyEvaluation.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainObjectId("2ace4ffb-8d4d-4d08-8615-71afa07c67c6")]
+		public virtual ClassifierProjectionPropertyEvaluation ClassifierProjectionPropertyEvaluation
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ClassifierProjectionPropertyEvaluation)DslModeling::DomainRoleInfo.GetRolePlayer(this, ClassifierProjectionPropertyEvaluationDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ClassifierProjectionPropertyEvaluationDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ClassifierProjectionPropertyEvaluations of a Classifier
+		/// <summary>
+		/// Gets a list of ClassifierProjectionPropertyEvaluations.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<ClassifierProjectionPropertyEvaluation> GetClassifierProjectionPropertyEvaluations(Classifier element)
+		{
+			return GetRoleCollection<DslModeling::LinkedElementCollection<ClassifierProjectionPropertyEvaluation>, ClassifierProjectionPropertyEvaluation>(element, ClassifierDomainRoleId);
+		}
+		#endregion
+		#region Classifier link accessor
+		/// <summary>
+		/// Get the list of ClassifierHasClassifierProjectionPropertyEvaluations links to a Classifier.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations> GetLinksToClassifierProjectionPropertyEvaluations ( global::CQRSAzure.CQRSdsl.Dsl.Classifier classifierInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations>(classifierInstance, global::CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations.ClassifierDomainRoleId);
+		}
+		#endregion
+		#region ClassifierProjectionPropertyEvaluation link accessor
+		/// <summary>
+		/// Get the ClassifierHasClassifierProjectionPropertyEvaluations link to a ClassifierProjectionPropertyEvaluation.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations GetLinkToClassifier (global::CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation classifierProjectionPropertyEvaluationInstance)
+		{
+			global::System.Collections.Generic.IList<global::CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations> links = DslModeling::DomainRoleInfo.GetElementLinks<global::CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations>(classifierProjectionPropertyEvaluationInstance, global::CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations.ClassifierProjectionPropertyEvaluationDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ClassifierProjectionPropertyEvaluation not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region ClassifierHasClassifierProjectionPropertyEvaluations instance accessors
+		
+		/// <summary>
+		/// Get any ClassifierHasClassifierProjectionPropertyEvaluations links between a given Classifier and a ClassifierProjectionPropertyEvaluation.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations> GetLinks( global::CQRSAzure.CQRSdsl.Dsl.Classifier source, global::CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation target )
+		{
+			global::System.Collections.Generic.List<global::CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations> outLinks = new global::System.Collections.Generic.List<global::CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations>();
+			global::System.Collections.Generic.IList<global::CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations> links = DslModeling::DomainRoleInfo.GetElementLinks<global::CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations>(source, global::CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations.ClassifierDomainRoleId);
+			foreach ( global::CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations link in links )
+			{
+				if ( target.Equals(link.ClassifierProjectionPropertyEvaluation) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one ClassifierHasClassifierProjectionPropertyEvaluations link between a given Classifierand a ClassifierProjectionPropertyEvaluation.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations GetLink( global::CQRSAzure.CQRSdsl.Dsl.Classifier source, global::CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation target )
+		{
+			global::System.Collections.Generic.IList<global::CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations> links = DslModeling::DomainRoleInfo.GetElementLinks<global::CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations>(source, global::CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations.ClassifierDomainRoleId);
+			foreach ( global::CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations link in links )
+			{
+				if ( target.Equals(link.ClassifierProjectionPropertyEvaluation) )
 				{
 					return link;
 				}

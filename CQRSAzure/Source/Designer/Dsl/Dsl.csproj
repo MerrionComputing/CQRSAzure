@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="14.0">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="15.0">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\DSLTools\Microsoft.DslTools.settings.targets" />
   <PropertyGroup>
@@ -12,14 +12,14 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CQRSAzure.CQRSdsl.Dsl</RootNamespace>
     <AssemblyName>CQRSAzure.CQRSdsl.Dsl</AssemblyName>
-    <AssemblyOriginatorKeyFile>..\Key.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>DSL.key.snk</AssemblyOriginatorKeyFile>
     <AssemblyOriginatorKeyMode>File</AssemblyOriginatorKeyMode>
     <SignAssembly>true</SignAssembly>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <GacTargetOutput>false</GacTargetOutput>
     <StartupObject>
     </StartupObject>
-    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
+    <MinimumVisualStudioVersion>15.0</MinimumVisualStudioVersion>
     <SccProjectName>
     </SccProjectName>
     <SccLocalPath>
@@ -41,6 +41,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -70,31 +71,27 @@
     <Reference Include="Microsoft.VisualStudio.TextTemplating$(T4VersionSuffix)" />
     <Reference Include="Microsoft.VisualStudio.TextTemplating.Interfaces.10.0" />
     <Reference Include="Microsoft.VisualStudio.TextTemplating.Interfaces.11.0" />
+    <Reference Include="Microsoft.VisualStudio.TextTemplating.Interfaces.15.0, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualStudio.TextTemplating.VSHost.15.0, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
-    <Reference Include="System.Collections.Immutable, Version=1.1.37.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Collections.Immutable.1.1.37\lib\dotnet\System.Collections.Immutable.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="System.Collections.Immutable, Version=1.2.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Collections.Immutable.1.4.0\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.Composition.AttributedModel, Version=1.0.30.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Composition.1.0.30\lib\portable-net45+win8+wp8+wpa81\System.Composition.AttributedModel.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="System.Composition.AttributedModel, Version=1.0.32.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Composition.AttributedModel.1.1.0\lib\portable-net45+win8+wp8+wpa81\System.Composition.AttributedModel.dll</HintPath>
     </Reference>
-    <Reference Include="System.Composition.Convention, Version=1.0.30.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Composition.1.0.30\lib\portable-net45+win8+wp8+wpa81\System.Composition.Convention.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="System.Composition.Convention, Version=1.0.32.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Composition.Convention.1.1.0\lib\portable-net45+win8+wp8+wpa81\System.Composition.Convention.dll</HintPath>
     </Reference>
-    <Reference Include="System.Composition.Hosting, Version=1.0.30.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Composition.1.0.30\lib\portable-net45+win8+wp8+wpa81\System.Composition.Hosting.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="System.Composition.Hosting, Version=1.0.32.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Composition.Hosting.1.1.0\lib\portable-net45+win8+wp8+wpa81\System.Composition.Hosting.dll</HintPath>
     </Reference>
-    <Reference Include="System.Composition.Runtime, Version=1.0.30.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Composition.1.0.30\lib\portable-net45+win8+wp8+wpa81\System.Composition.Runtime.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="System.Composition.Runtime, Version=1.0.32.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Composition.Runtime.1.1.0\lib\portable-net45+win8+wp8+wpa81\System.Composition.Runtime.dll</HintPath>
     </Reference>
-    <Reference Include="System.Composition.TypedParts, Version=1.0.30.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Composition.1.0.30\lib\portable-net45+win8+wp8+wpa81\System.Composition.TypedParts.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="System.Composition.TypedParts, Version=1.0.32.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Composition.TypedParts.1.1.0\lib\portable-net45+win8+wp8+wpa81\System.Composition.TypedParts.dll</HintPath>
     </Reference>
     <Reference Include="System.Core">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
@@ -102,12 +99,16 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Drawing.Design" />
+    <Reference Include="System.Reflection.Metadata, Version=1.4.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reflection.Metadata.1.5.0\lib\portable-net45+win8\System.Reflection.Metadata.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.XML" />
     <Reference Include="System.Xaml" />
     <Reference Include="WindowsBase">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="Microsoft.VisualStudio.TextTemplating.Interfaces.12.0" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CustomCode\Extensions\ClassifierEventEvaluationExtension.cs" />
@@ -115,11 +116,13 @@
     <Compile Include="CustomCode\Function\CommandDefinitionCompartmentShapeBase.Function.cs" />
     <Compile Include="CustomCode\Function\CQRSdslDiagram.Function.cs" />
     <Compile Include="CustomCode\Function\CQRSModel.Function.cs" />
+    <Compile Include="CustomCode\Function\DocumentationGenerationOptions.cs" />
     <Compile Include="CustomCode\Function\IdentityGroupGeometryShape.Function.cs" />
     <Compile Include="CustomCode\Function\ModelCodeGenerationOptions.cs" />
     <Compile Include="CustomCode\Function\ProjectionDefinitionCompartmentShapeBase.Function.cs" />
     <Compile Include="CustomCode\Function\QueryDefinitionShapeBase.Function.cs" />
     <None Include="app.config" />
+    <None Include="DSL.key.snk" />
     <None Include="GeneratedCode\SerializationHelper.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>SerializationHelper.cs</LastGenOutput>
@@ -128,7 +131,10 @@
     <Compile Include="CustomCode\Function\EventDefinitionCompartmentShapeBase.Function.cs" />
     <Compile Include="CustomCode\Interfaces\ICategorisedEntity.cs" />
     <Compile Include="CustomCode\Interfaces\IClassifierEntity.cs" />
+    <Compile Include="CustomCode\Interfaces\IClassifierEventEvaluation.cs" />
+    <Compile Include="CustomCode\Interfaces\IClassifierPropertyEvaluationEntity.cs" />
     <Compile Include="CustomCode\Interfaces\ICommandParameterEntity.cs" />
+    <Compile Include="CustomCode\Interfaces\IDocumentationGenerationOptions.cs" />
     <Compile Include="CustomCode\Interfaces\IEventPropertyEntity.cs" />
     <Compile Include="CustomCode\Interfaces\IAggregateIdentifierEntity.cs" />
     <Compile Include="CustomCode\Interfaces\ICommandDefinitionEntity.cs" />
@@ -143,6 +149,8 @@
     <Compile Include="CustomCode\Interfaces\IQueryDefinitionEntity.cs" />
     <Compile Include="CustomCode\Interfaces\IQueryInputParameterEntity.cs" />
     <Compile Include="CustomCode\Interfaces\IQueryReturnParameter.cs" />
+    <Compile Include="CustomCode\Interfaces\ISnapshotSupport.cs" />
+    <Compile Include="CustomCode\Interfaces\ITargetttedEntity.cs" />
     <Compile Include="CustomCode\ToolTips\AggregateGeometryShape.ToolTip.cs" />
     <Compile Include="CustomCode\ToolTips\AggregateParenthoodConnector.ToolTip.cs" />
     <Compile Include="CustomCode\ToolTips\ClassifierCompartmentShape.ToolTip.cs" />
@@ -156,6 +164,7 @@
     <Compile Include="CustomCode\UI\AggregateIdentifier.UI.cs" />
     <Compile Include="CustomCode\UI\ClassifierCompartmentShape.cs" />
     <Compile Include="CustomCode\UI\ClassifierEventEvaluation.UI.cs" />
+    <Compile Include="CustomCode\UI\ClassifierProjectionPropertyEvaluation.UI.cs" />
     <Compile Include="CustomCode\UI\CodeGenerationSettingsTypeEditor.cs" />
     <Compile Include="CustomCode\UI\CQRSdslDiagram.UI.cs" />
     <Compile Include="CustomCode\UI\Decorators\WrappedTextField.cs" />
@@ -174,6 +183,7 @@
     <Compile Include="CustomCode\Validation\AggregateIdentifier.cs" />
     <Compile Include="CustomCode\Validation\Classifier.cs" />
     <Compile Include="CustomCode\Validation\ClassifierEventEvaluation.cs" />
+    <Compile Include="CustomCode\Validation\ClassifierProjectionPropertyEvaluation.cs" />
     <Compile Include="CustomCode\Validation\CommandDefinition.cs" />
     <Compile Include="CustomCode\Validation\CommandParameter.cs" />
     <Compile Include="CustomCode\Validation\CQRSModel.cs" />

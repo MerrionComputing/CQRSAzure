@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace CQRSAzure.CQRSdsl.CustomCode.Interfaces
 {
     public interface IProjectionDefinitionEntity
-        : IDocumentedEntity, INamedEntity, ICategorisedEntity
+        : IDocumentedEntity, INamedEntity, ICategorisedEntity, ISnapshotSupport 
     {
 
     }

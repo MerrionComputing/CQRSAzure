@@ -38,6 +38,10 @@ Public Class ProjectionCodeGenerator
             interfaceDeclaration.Comments.AddRange(CommentGeneration.RemarksCommentSection({m_projection.Notes}))
         End If
 
+        ' Make the interface inherit Interface IProjection(Of TAggregate As IAggregationIdentifier, TAggregateKey)
+        Dim parentAggregateInterface As CodeTypeReference = InterfaceCodeGeneration.ImplementsInterfaceReference(m_projection.AggregateIdentifier.Name)
+        Dim genericEventInterface As CodeTypeReference = InterfaceCodeGeneration.ImplementsGenericInterfaceReference("IProjection", {parentAggregateInterface, AggregateIdentifierCodeGenerator.ToMemberType(m_projection.AggregateIdentifier.KeyDataType)})
+        interfaceDeclaration.BaseTypes.Add(genericEventInterface)
 
         'For each specific event handled, add a IHandleEvent(Of In TEvent As IEvent) for that event
         If (m_projection.EventDefinitions IsNot Nothing) Then
@@ -94,14 +98,19 @@ Public Class ProjectionCodeGenerator
         If (Not String.IsNullOrWhiteSpace(m_projection.Notes)) Then
             classDeclaration.Comments.AddRange(CommentGeneration.RemarksCommentSection({m_projection.Notes}))
         End If
+
+        'Make the class inherit from CQRSAzure.EventSourcing.ProjectionBase<TAggregate,TAggregateKey>
+        Dim parentAggregateInterface As CodeTypeReference = InterfaceCodeGeneration.ImplementsInterfaceReference(m_projection.AggregateIdentifier.Name)
+        Dim projectionBaseType As CodeTypeReference = New CodeTypeReference("CQRSAzure.EventSourcing.ProjectionBase", {parentAggregateInterface, AggregateIdentifierCodeGenerator.ToMemberType(m_projection.AggregateIdentifier.KeyDataType)})
+
+        classDeclaration.BaseTypes.Add(projectionBaseType)
         'Make the class implement the interface
-        classDeclaration.BaseTypes.Add(New CodeTypeReference(GetType(Object)))
         classDeclaration.BaseTypes.Add(InterfaceCodeGeneration.ImplementsInterfaceReference(m_projection.Name))
 
         'Add the model name (DomainNameAttribute)
         If Not String.IsNullOrWhiteSpace(m_projection.AggregateIdentifier.CQRSModel.Name) Then
             Dim params As New List(Of CodeAttributeArgument)
-            params.Add(New CodeAttributeArgument("domainNameIn", New CodePrimitiveExpression(m_projection.AggregateIdentifier.CQRSModel.Name)))
+            params.Add(New CodeAttributeArgument(New CodePrimitiveExpression(m_projection.AggregateIdentifier.CQRSModel.Name)))
             classDeclaration.CustomAttributes.Add(
                 AttributeCodeGenerator.ParameterisedAttribute("CQRSAzure.EventSourcing.DomainNameAttribute",
                                                               params))
@@ -110,7 +119,7 @@ Public Class ProjectionCodeGenerator
         'Add the category attribute
         If Not String.IsNullOrWhiteSpace(m_projection.Category) Then
             Dim params As New List(Of CodeAttributeArgument)
-            params.Add(New CodeAttributeArgument("categoryNameIn", New CodePrimitiveExpression(m_projection.Category)))
+            params.Add(New CodeAttributeArgument(New CodePrimitiveExpression(m_projection.Category)))
             classDeclaration.CustomAttributes.Add(
                 AttributeCodeGenerator.ParameterisedAttribute("CQRSAzure.EventSourcing.Category",
                                                               params))
@@ -177,6 +186,73 @@ Public Class ProjectionCodeGenerator
             End If
         End If
 
+        'Add the must-override parts of ProjectionBase<>
+        '1) public override bool SupportsSnapshots
+        Dim supportsSnapshotsProperty = PropertyCodeGeneration.PublicMember("SupportsSnapshots",
+                                                                            PropertyDataType.Boolean,
+                                                                            omitBackingProperty:=True
+                                                                            )
+        If (supportsSnapshotsProperty IsNot Nothing) Then
+            MethodCodeGenerator.MakeOverrides(supportsSnapshotsProperty)
+            If (m_projection.CanSnapshot) Then
+                supportsSnapshotsProperty.GetStatements.Add(New CodeMethodReturnStatement(New CodePrimitiveExpression(True)))
+            Else
+                supportsSnapshotsProperty.GetStatements.Add(New CodeMethodReturnStatement(New CodePrimitiveExpression(False)))
+            End If
+
+            classDeclaration.Members.Add(supportsSnapshotsProperty)
+        End If
+
+
+        '2) public override bool HandlesEventType(Type eventType)
+        Dim handleEventTypeParameter As New CodeParameterDeclarationExpression("Type", "eventType")
+        Dim HandlesEventTypeFunction As CodeMemberMethod = MethodCodeGenerator.PublicParameterisedFunction("HandlesEventType",
+                                                                                            {handleEventTypeParameter},
+                                                                                            returnType:=New CodeTypeReference(GetType(Boolean)))
+
+        'Add comments to this sub
+        Dim handledTypesDocumentation As New List(Of String)()
+        handledTypesDocumentation.Add("Event types handled")
+        For Each evd As EventDefinition In m_projection.EventDefinitions
+            handledTypesDocumentation.Add(evd.Name & " - " & evd.Description)
+        Next
+        HandlesEventTypeFunction.Comments.AddRange(CommentGeneration.SummaryCommentSection({"Does the projection handle this event type"}))
+        HandlesEventTypeFunction.Comments.AddRange(CommentGeneration.ParamCommentsSection("eventType", {"The event type to check"}))
+        HandlesEventTypeFunction.Comments.AddRange(CommentGeneration.RemarksCommentSection(handledTypesDocumentation.ToArray()))
+
+        If (HandlesEventTypeFunction IsNot Nothing) Then
+            'Make it override the base function
+            MethodCodeGenerator.MakeOverrides(HandlesEventTypeFunction)
+
+            For Each evd As EventDefinition In m_projection.EventDefinitions
+                'If the type is this type, return true
+
+            Next
+
+            'Finally return false if we fell through to here
+            HandlesEventTypeFunction.Statements.Add(New CodeMethodReturnStatement(New CodePrimitiveExpression(False)))
+
+            classDeclaration.Members.Add(HandlesEventTypeFunction)
+        End If
+
+        '3) public override void HandleEvent<TEvent>(TEvent eventToHandle)
+        Dim handleEventGenericParameters As New CodeTypeParameterCollection({New CodeTypeParameter("TEvent")})
+        Dim handleEventParameter As New CodeParameterDeclarationExpression("TEvent", "eventToHandle")
+        Dim handleEventSub As CodeMemberMethod = MethodCodeGenerator.PublicParameterisedSub("HandleEvent",
+                                                                                            {handleEventParameter},
+                                                                                            genericTypeRestrictions:=handleEventGenericParameters)
+        If (handleEventSub IsNot Nothing) Then
+            'Make it override the base function
+            MethodCodeGenerator.MakeOverrides(handleEventSub)
+
+            For Each evd As EventDefinition In m_projection.EventDefinitions
+                'If the type is this type, pass it on to the relevant handler already coded
+
+            Next
+
+            classDeclaration.Members.Add(handleEventSub)
+        End If
+
         projectionNamespace.Types.Add(classDeclaration)
 
         Return projectionClasseRet
@@ -200,9 +276,8 @@ Public Class ProjectionCodeGenerator
     Public ReadOnly Property RequiredNamespaces As IEnumerable(Of CodeNamespaceImport) Implements IEntityCodeGenerator.RequiredNamespaces
         Get
             Return {
-                New CodeNamespaceImport("CQRSAzure"),
+                New CodeNamespaceImport("System"),
                 New CodeNamespaceImport("CQRSAzure.EventSourcing"),
-                New CodeNamespaceImport("CQRSAzure.Aggregation"),
                 CodeGenerationUtilities.CreateNamespaceImport({m_projection.AggregateIdentifier.CQRSModel.Name,
                     m_projection.AggregateIdentifier.Name}),
                 CodeGenerationUtilities.CreateNamespaceImport({
@@ -213,8 +288,8 @@ Public Class ProjectionCodeGenerator
         End Get
     End Property
 
-    Private m_options As ModelCodeGenerationOptions = ModelCodeGenerationOptions.DefaultOptions()
-    Public Sub SetCodeGenerationOptions(options As ModelCodeGenerationOptions) Implements IEntityCodeGenerator.SetCodeGenerationOptions
+    Private m_options As IModelCodeGenerationOptions = ModelCodeGenerationOptions.Default()
+    Public Sub SetCodeGenerationOptions(options As IModelCodeGenerationOptions) Implements IEntityCodeGenerator.SetCodeGenerationOptions
         m_options = options
     End Sub
 
@@ -263,11 +338,22 @@ Public Class ProjectionCodeGenerator
 
                         Select Case m_operation.PropertyOperationToPerform
                             Case PropertyOperation.DecrementByValue
+                                Dim rhs As New CodeBinaryOperatorExpression(
+                                                m_TargetReference,
+                                                CodeBinaryOperatorType.Subtract,
+                                                m_SourceReference)
+                                ret.Add(New CodeAssignStatement(m_TargetReference, rhs))
 
                             Case PropertyOperation.IncrementByValue
+                                Dim rhs As New CodeBinaryOperatorExpression(
+                                                m_TargetReference,
+                                                CodeBinaryOperatorType.Add,
+                                                m_SourceReference)
+                                ret.Add(New CodeAssignStatement(m_TargetReference, rhs))
 
                             Case PropertyOperation.SetToValue
                                 ret.Add(New CodeAssignStatement(m_TargetReference, m_SourceReference))
+
                         End Select
 
                     Else
@@ -275,13 +361,24 @@ Public Class ProjectionCodeGenerator
                             Case PropertyOperation.SetFlag
                                 'set to true
                                 ret.Add(New CodeAssignStatement(m_TargetReference, New CodePrimitiveExpression(True)))
+
                             Case PropertyOperation.UnsetFlag
                                 'set to false
                                 ret.Add(New CodeAssignStatement(m_TargetReference, New CodePrimitiveExpression(False)))
+
                             Case PropertyOperation.IncrementCount
+                                Dim rhs As New CodeBinaryOperatorExpression(
+                                                m_TargetReference,
+                                                CodeBinaryOperatorType.Add,
+                                                New CodePrimitiveExpression(1))
+                                ret.Add(New CodeAssignStatement(m_TargetReference, rhs))
 
                             Case PropertyOperation.DecrementCount
-
+                                Dim rhs As New CodeBinaryOperatorExpression(
+                                                m_TargetReference,
+                                                CodeBinaryOperatorType.Subtract,
+                                                New CodePrimitiveExpression(1))
+                                ret.Add(New CodeAssignStatement(m_TargetReference, rhs))
                         End Select
                     End If
 

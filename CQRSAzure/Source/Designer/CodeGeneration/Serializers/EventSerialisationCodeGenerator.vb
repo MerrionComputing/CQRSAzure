@@ -1,6 +1,7 @@
 ﻿Imports System.CodeDom
 Imports System.Runtime.Serialization
 Imports CQRSAzure.CQRSdsl.CodeGeneration
+Imports CQRSAzure.CQRSdsl.CustomCode.Interfaces
 Imports CQRSAzure.CQRSdsl.Dsl
 
 ''' <summary>
@@ -30,7 +31,8 @@ Public Class EventSerialisationCodeGenerator
     Public ReadOnly Property NamespaceHierarchy As IList(Of String) Implements IEntityCodeGeneratorBase.NamespaceHierarchy
         Get
             If (m_event IsNot Nothing) Then
-                Return {m_event.AggregateIdentifier.CQRSModel.Name,
+                Return {
+                    m_event.AggregateIdentifier.CQRSModel.Name,
                     m_event.AggregateIdentifier.Name,
                     EventCodeGenerator.EVENT_FILENAME_IDENTIFIER}
             Else
@@ -42,17 +44,16 @@ Public Class EventSerialisationCodeGenerator
     Public ReadOnly Property RequiredNamespaces As IEnumerable(Of CodeNamespaceImport) Implements IEntityCodeGeneratorBase.RequiredNamespaces
         Get
             Return {
-                New CodeNamespaceImport("CQRSAzure"),
+                New CodeNamespaceImport("System.Runtime.Serialization"),
                 New CodeNamespaceImport("CQRSAzure.EventSourcing"),
-                New CodeNamespaceImport("CQRSAzure.Aggregation"),
                 CodeGenerationUtilities.CreateNamespaceImport({m_event.AggregateIdentifier.CQRSModel.Name,
                     m_event.AggregateIdentifier.Name})
                 }
         End Get
     End Property
 
-    Private m_options As ModelCodeGenerationOptions = ModelCodeGenerationOptions.DefaultOptions()
-    Public Sub SetCodeGenerationOptions(options As ModelCodeGenerationOptions) Implements IEntityCodeGeneratorBase.SetCodeGenerationOptions
+    Private m_options As IModelCodeGenerationOptions = ModelCodeGenerationOptions.Default()
+    Public Sub SetCodeGenerationOptions(options As IModelCodeGenerationOptions) Implements IEntityCodeGeneratorBase.SetCodeGenerationOptions
         m_options = options
     End Sub
 

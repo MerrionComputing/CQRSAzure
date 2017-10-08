@@ -16,9 +16,9 @@ using System.Runtime.ConstrainedExecution;
 [assembly: AssemblyTitle("CQRS DSL Designer")]
 [assembly: AssemblyDescription("CQRS on Azure - Domain Specific Language - Designer")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Merrion")]
 [assembly: AssemblyProduct("CQRSAzure")]
-[assembly: AssemblyCopyright("Duncan Jones - 2015")]
+[assembly: AssemblyCopyright("Duncan Jones - 2015-2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: System.Resources.NeutralResourcesLanguage("en")]
@@ -34,7 +34,7 @@ using System.Runtime.ConstrainedExecution;
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.2.0.1")]
 [assembly: ComVisible(false)]
 [assembly: CLSCompliant(false)]
 [assembly: ReliabilityContract(Consistency.MayCorruptProcess, Cer.None)]

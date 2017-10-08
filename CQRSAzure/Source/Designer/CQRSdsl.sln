@@ -1,0 +1,50 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.16
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Binaries", "Binaries", "{BAD7B0B8-8D80-4A8D-85D2-8DE520D6DB7F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dsl", "Dsl\Dsl.csproj", "{5E4BF33A-9965-4FB7-89E0-4D1EFC8F676E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DslPackage", "DslPackage\DslPackage.csproj", "{6F75F296-E7BC-40A8-9307-97A9556A2896}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "CodeGeneration", "CodeGeneration\CodeGeneration.vbproj", "{DC185A58-1DB8-4624-ADBE-9529CCAB9297}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "CQRSdslUnitTest", "CQRSdslUnitTest\CQRSdslUnitTest.vbproj", "{0D384FD5-66F1-497F-B688-674C3086F99B}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "DocumentationGeneration", "DocumentationGeneration\DocumentationGeneration.vbproj", "{2AB57BBA-FA59-4D73-96D5-BE109330DDDD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+		Description = CQRS DSL Designer
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5E4BF33A-9965-4FB7-89E0-4D1EFC8F676E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E4BF33A-9965-4FB7-89E0-4D1EFC8F676E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E4BF33A-9965-4FB7-89E0-4D1EFC8F676E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E4BF33A-9965-4FB7-89E0-4D1EFC8F676E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F75F296-E7BC-40A8-9307-97A9556A2896}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F75F296-E7BC-40A8-9307-97A9556A2896}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F75F296-E7BC-40A8-9307-97A9556A2896}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F75F296-E7BC-40A8-9307-97A9556A2896}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC185A58-1DB8-4624-ADBE-9529CCAB9297}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC185A58-1DB8-4624-ADBE-9529CCAB9297}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC185A58-1DB8-4624-ADBE-9529CCAB9297}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{DC185A58-1DB8-4624-ADBE-9529CCAB9297}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC185A58-1DB8-4624-ADBE-9529CCAB9297}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D384FD5-66F1-497F-B688-674C3086F99B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D384FD5-66F1-497F-B688-674C3086F99B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D384FD5-66F1-497F-B688-674C3086F99B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D384FD5-66F1-497F-B688-674C3086F99B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2AB57BBA-FA59-4D73-96D5-BE109330DDDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AB57BBA-FA59-4D73-96D5-BE109330DDDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AB57BBA-FA59-4D73-96D5-BE109330DDDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AB57BBA-FA59-4D73-96D5-BE109330DDDD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

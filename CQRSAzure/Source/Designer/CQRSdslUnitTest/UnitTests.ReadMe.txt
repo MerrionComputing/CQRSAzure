@@ -1,0 +1,6 @@
+﻿Unit tests
+==========
+
+Unit tests are written to the standard MS tool so as to be executed automatically
+when a new build is checked in.
+

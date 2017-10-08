@@ -1,4 +1,5 @@
-﻿''' <summary>
+﻿Imports CQRSAzure.CQRSdsl.CustomCode.Interfaces
+''' <summary>
 ''' A class to generate a .csprj or .vbprj for a subset of the files
 ''' generated 
 ''' </summary>
@@ -71,13 +72,13 @@ Public Class ModelProjectGenerator
         End Get
     End Property
 
-    Public Function GetProjectFilename(ByVal codelanguage As CodeGeneration.ModelCodeGenerationOptions.SupportedLanguages)
+    Public Function GetProjectFilename(ByVal codelanguage As ModelCodegenerationOptionsBase.SupportedLanguages)
 
         Dim filenameBase As String = ProjectName.Trim() & "." & Classification.ToString()
         Select Case codelanguage
-            Case ModelCodeGenerationOptions.SupportedLanguages.CSharp
+            Case ModelCodegenerationOptionsBase.SupportedLanguages.CSharp
                 Return filenameBase & ".csproj"
-            Case ModelCodeGenerationOptions.SupportedLanguages.VBNet
+            Case ModelCodegenerationOptionsBase.SupportedLanguages.VBNet
                 Return filenameBase & ".vbproj"
         End Select
 

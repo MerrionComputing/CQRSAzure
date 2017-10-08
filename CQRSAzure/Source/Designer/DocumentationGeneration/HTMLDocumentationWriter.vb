@@ -1,4 +1,5 @@
 ﻿Imports System.IO
+Imports CQRSAzure.CQRSdsl.CustomCode.Interfaces
 Imports CQRSAzure.CQRSdsl.DocumentationGeneration
 
 ''' <summary>
@@ -14,7 +15,7 @@ Public Class HTMLDocumentationWriter
 
     Private m_currentPage As String
 
-    Private m_docOptions As DocumentationGeneration.ModelDocumentationGeneratorOptions = DocumentationGeneration.ModelDocumentationGeneratorOptions.DefaultOptions()
+    Private m_docOptions As IDocumentationGenerationOptions = Nothing
 
     Public Property CurrentPage As String Implements IDocumentationWriter.CurrentPage
         Get
@@ -67,7 +68,7 @@ Public Class HTMLDocumentationWriter
         For Each pgToSave As HTMLDocumentationPage In m_pages.Values
             'pass in the project global values
             'and save the page
-            pgToSave.Save()
+            pgToSave.Save(m_docOptions)
         Next
     End Sub
 
@@ -123,6 +124,16 @@ Public Class HTMLDocumentationWriter
 
     End Function
 
+    Public Sub New(Optional ByVal options As IDocumentationGenerationOptions = Nothing)
+
+        If (options IsNot Nothing) Then
+            m_docOptions = options
+        Else
+            m_docOptions = ModelDocumentationGeneratorOptions.DefaultOptions()
+        End If
+
+    End Sub
+
 End Class
 
 Public Class HTMLDocumentationPage
@@ -165,7 +176,7 @@ Public Class HTMLDocumentationPage
     ''' <summary>
     ''' Save this file
     ''' </summary>
-    Public Sub Save(Optional docOptions As DocumentationGeneration.ModelDocumentationGeneratorOptions = Nothing)
+    Public Sub Save(Optional docOptions As IDocumentationGenerationOptions = Nothing)
 
         AddOrUpdateSetting("Documentation-PageName", PageName)
 

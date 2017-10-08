@@ -67,6 +67,13 @@ h1.IdentityGroup
     background-repeat: no-repeat;
 }
 
+h1.Classifier
+{
+    /* Classifier page heading */
+    border-bottom:1px solid aquamarine;
+    background-image: url("Projection.PNG");
+    background-repeat: no-repeat;
+}
 
 h2{
     /* Section sub heading */
