@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+    <metadata>
+		  <!-- The identifier that must be unique within the hosting gallery -->
+		  <id>CQRSAzure.Framework</id>
+
+		  <!-- The package version number that is used when resolving dependencies -->
+		  <version>1.0.0.310317</version>
+
+		  <!-- Authors contain text that appears directly on the gallery -->
+		  <authors>Duncan E Jones</authors>
+
+		  <!-- Owners are typically nuget.org identities that allow gallery
+				  users to easily find other packages by the same owners.  -->
+		  <owners>merrion</owners>
+
+		  <!-- License and project URLs provide links for the gallery -->
+		  <licenseUrl>http://opensource.org/licenses/MS-PL</licenseUrl>
+		  <projectUrl>https://www.codeproject.com/Articles/714742/CQRS-on-Windows-Azure-Event-Sourcing</projectUrl>
+
+		  <!-- The icon is used in Visual Studio's package manager UI -->
+		  <iconUrl>https://www.codeproject.com/KB/vb/714742/CQRSAzure_nugeticon.png</iconUrl>
+
+		  <!-- If true, this value prompts the user to accept the license when
+				  installing the package. -->
+		  <requireLicenseAcceptance>false</requireLicenseAcceptance>
+
+		  <!-- Any details about this particular release -->
+		  <releaseNotes>1.0 First stable release</releaseNotes>
+
+		  <!-- The description can be used in package manager UI. Note that the
+				  nuget.org gallery uses information you add in the portal. -->
+		  <description>Framework for hosting a CQRS and Event Sourcing architecture on Azure</description>
+
+		  <!-- Copyright information -->
+		  <copyright>Copyright ©2017 Duncan Jones</copyright>
+
+		  <!-- Tags appear in the gallery and can be used for tag searches -->
+		  <tags>CQRS Azure EventSourcing Command Query</tags>
+
+		  <!-- Dependencies are automatically installed when the package is installed -->
+		  <dependencies>
+			  <dependency id="Microsoft.Rest.ClientRuntime" version="2.3.6"/>
+			  <dependency id="Microsoft.Rest.ClientRuntime.Azure" version="3.3.5" />
+			  <dependency id="Newtonsoft.Json" version="10.0.1"  />
+			  <dependency id="WindowsAzure.ServiceBus" version="4.0.0" />
+			  <dependency id="Microsoft.Azure.KeyVault.Core" version="1.0.0"/>
+			  <dependency id="Microsoft.Data.Edm" version="5.7.0"/>
+			  <dependency id="Microsoft.Data.OData" version="5.7.0"  />
+			  <dependency id="Microsoft.Data.Services.Client" version="5.7.0"/>
+			  <dependency id="Microsoft.WindowsAzure.ConfigurationManager" version="3.2.1" />
+			  <dependency id="System.Spatial" version="5.7.0" />
+			  <dependency id="WindowsAzure.Storage" version="7.2.0"  />
+		  </dependencies>
+    </metadata>
+
+    <!-- A readme.txt will be displayed when the package is installed -->
+    <files>
+      <file src="lib\*.*" target="lib"/>
+      <file src="content\CQRSAzure.Framework.ReadMe.txt" target="content" />
+    </files>
+</package>
