@@ -1,0 +1,14 @@
+﻿Hosting
+=======
+
+Common functionality to allow multiple command handlers or multiple query handlers to be set up in a load-balanced configuration
+so that they can hand off commands or queries and scale horizontally.
+
+A host can forward on any message it receives if it decides that it is not best suited to handle a request, and the originator 
+host identification is always held in the message so that the response can be directed straight back to the requester
+
+The host needs to know the command, query and identity group queues for the domain so that it can take items off the queue and 
+process them.
+
+It also needs to know the configuration settings used to access teh underlying event streams and snapshots for the domain.
+(A host can run multiple domains - although I suspect a 1-1 will be easier to understand in most cases)

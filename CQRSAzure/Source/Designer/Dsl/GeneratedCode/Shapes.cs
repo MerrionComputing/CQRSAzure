@@ -3224,7 +3224,7 @@ namespace CQRSAzure.CQRSdsl.Dsl
 				{
 					localCompartmentsOffset = baseCompartmentDescriptions.Length;
 				}
-				compartmentDescriptions = new DslDiagrams::ElementListCompartmentDescription[1+localCompartmentsOffset];
+				compartmentDescriptions = new DslDiagrams::ElementListCompartmentDescription[2+localCompartmentsOffset];
 				
 				if(baseCompartmentDescriptions!=null)
 				{
@@ -3238,6 +3238,15 @@ namespace CQRSAzure.CQRSdsl.Dsl
 						null, null,
 						false);
 					compartmentDescriptions[localCompartmentsOffset+0] = descriptor;
+				}
+				{
+					string title = global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel.SingletonResourceManager.GetString("ClassifierCompartmentShapeProjectionEvaluationsCompartmentTitle");
+					DslDiagrams::ElementListCompartmentDescription descriptor = new DslDiagrams::ElementListCompartmentDescription("ProjectionEvaluationsCompartment", title, 
+						global::System.Drawing.Color.FromKnownColor(global::System.Drawing.KnownColor.Moccasin), false, 
+						global::System.Drawing.Color.FromKnownColor(global::System.Drawing.KnownColor.White), false,
+						null, null,
+						false);
+					compartmentDescriptions[localCompartmentsOffset+1] = descriptor;
 				}
 			}
 			
@@ -3271,7 +3280,7 @@ namespace CQRSAzure.CQRSdsl.Dsl
 					{
 						localCompartmentMappingsOffset = baseMappings.Length;
 					}
-					DslDiagrams::CompartmentMapping[] mappings = new DslDiagrams::CompartmentMapping[1+localCompartmentMappingsOffset];
+					DslDiagrams::CompartmentMapping[] mappings = new DslDiagrams::CompartmentMapping[2+localCompartmentMappingsOffset];
 					
 					if(baseMappings!=null)
 					{
@@ -3291,6 +3300,14 @@ namespace CQRSAzure.CQRSdsl.Dsl
 																				GetElementsFromClassifierForEventEvaluationsCompartment,
 																				null,
 																				GetDisplayPropertyFromClassifierForEventEvaluationsCompartment,	// This method needs to be provided. Please see comment-block above.
+																				null);
+					mappings[localCompartmentMappingsOffset+1] = new DslDiagrams::ElementListCompartmentMapping(
+																				"ProjectionEvaluationsCompartment", 
+																				global::CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation.DescriptionDomainPropertyId, 
+																				global::CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation.DomainClassId, 
+																				GetElementsFromClassifierForProjectionEvaluationsCompartment,
+																				null,
+																				null,
 																				null);
 					compartmentMappings.Add(typeof(global::CQRSAzure.CQRSdsl.Dsl.Classifier), mappings);
 				}
@@ -3326,6 +3343,13 @@ namespace CQRSAzure.CQRSdsl.Dsl
 				global::CQRSAzure.CQRSdsl.Dsl.Classifier root = (global::CQRSAzure.CQRSdsl.Dsl.Classifier)rootElement;
 					// Segments 0 and 1
 					DslModeling::LinkedElementCollection<global::CQRSAzure.CQRSdsl.Dsl.ClassifierEventEvaluation> result = root.ClassifierEventEvaluations;
+				return result;
+			}
+			internal static global::System.Collections.IList GetElementsFromClassifierForProjectionEvaluationsCompartment(DslModeling::ModelElement rootElement)
+			{
+				global::CQRSAzure.CQRSdsl.Dsl.Classifier root = (global::CQRSAzure.CQRSdsl.Dsl.Classifier)rootElement;
+					// Segments 0 and 1
+					DslModeling::LinkedElementCollection<global::CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation> result = root.ClassifierProjectionPropertyEvaluations;
 				return result;
 			}
 			#endregion

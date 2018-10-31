@@ -19,11 +19,29 @@
     <GuidSymbol name="guidCustomDiagramMenuCmdSet"
       value="{986DE2DB-3E48-429B-8474-1248E06D8C27}" >
       <IDSymbol name="grpidDiagramMenuGroup" value="0x01001"/>
+      <IDSymbol name="grpidDataMenuGroup" value="0x02001"/>
       <IDSymbol name="cmdidShowHideModelTipsContextMenuCommand" value="0x00001"/>
       <IDSymbol name="cmdidIncrementEventVersionContextMenuCommand" value="0x00002"/>
       <IDSymbol name="cmdidExpandCollapseAggregateContextMenuCommand" value="0x00003"/>
+      <IDSymbol name="cmdidModelSettings" value ="0x00004"/>
       <IDSymbol name="cmdidGenerateCQRSModelCode" value="0x00011"/>
       <IDSymbol name="cmdidGenerateCQRSModelDocumentation" value="0x00021"/>
+      <IDSymbol name="cmdidDataTopLevelMenuCommand" value="0x00031"/>
+    </GuidSymbol>
+    <GuidSymbol name="guidDataMenuGroup"
+       value="{986DE2DB-3E48-429B-8474-1238E06D8C36}" >
+      <IDSymbol name="grpidDataMenuGroup" value="0x02001"/>
+      <!-- Child menus of the data top level menu  -->
+      <IDSymbol name="cmdidDataAddAggregateInstanceMenuCommand" value="0x00032"/>
+      <IDSymbol name="cmdidDataAddEventToAggregateInstanceMenuCommand" value="0x00033"/>
+      <IDSymbol name="cmdidDataShowEventsForAggregateInstanceMenuCommand" value="0x00034"/>
+      <IDSymbol name="cmdidDataRunProjectionForAggregateInstanceMenuCommand" value="0x00035"/>
+      <IDSymbol name="cmdidDataRunClassifierForAggregateInstanceMenuCommand" value="0x00036"/>
+      <IDSymbol name="cmdidDataShowIdentifierGroupMembersMenuCommand" value="0x00037"/>
+      <IDSymbol name="cmdidDataRunQueryForIdentifierGroupMenuCommand" value="0x00038"/>
+      <IDSymbol name="cmdidDataRunCommandForIdentifierGroupMenuCommand" value="0x00039"/>
+      <IDSymbol name="cmdidDataImportMenuCommand" value="0x00040"/>
+      <IDSymbol name="cmdidDataExportMenuCommand" value="0x00041"/>
     </GuidSymbol>
   </Symbols>
   <Commands package="guidPkg">
@@ -40,7 +58,13 @@
         <!-- These symbols are defined in GeneratedVSCT.vsct -->
         <Parent guid="guidCmdSet" id="menuidContext" />
       </Group>
+      <!-- grpidDataMenuGroup -->
+      <Group guid="guidDataMenuGroup" id="grpidDataMenuGroup" priority="0x0200">
+        <Parent guid="guidCustomDiagramMenuCmdSet" id="cmdidDataTopLevelMenuCommand" />
+      </Group>
     </Groups>
+    <Menus>
+    </Menus>
     <Buttons>
       <!-- Show/Hide model tips -->
       <Button guid="guidCustomDiagramMenuCmdSet" id="cmdidShowHideModelTipsContextMenuCommand"
@@ -53,7 +77,7 @@
       </Button>
       <!-- Increment the event version number-->
       <Button guid="guidCustomDiagramMenuCmdSet" id="cmdidIncrementEventVersionContextMenuCommand"
-        priority="0x0100" type="Button">
+        priority="0x0200" type="Button">
         <Parent guid="guidCustomDiagramMenuCmdSet" id="grpidDiagramMenuGroup"/>
         <CommandFlag>DefaultDisabled</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
@@ -64,7 +88,7 @@
       </Button>
       <!-- Expand or collapse the selected aggregate-->
       <Button guid="guidCustomDiagramMenuCmdSet" id="cmdidExpandCollapseAggregateContextMenuCommand"
-        priority="0x0100" type="Button">
+        priority="0x0200" type="Button">
         <Parent guid="guidCustomDiagramMenuCmdSet" id="grpidDiagramMenuGroup"/>
         <CommandFlag>DefaultDisabled</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
@@ -73,11 +97,22 @@
           <ButtonText>Expand/Collapse Aggregate</ButtonText>
         </Strings>
       </Button>
+      <!-- Show the model properties -->
+      <Button guid="guidCustomDiagramMenuCmdSet" id="cmdidModelSettings"
+       priority="0x0100" type="Button">
+        <Parent guid="guidCustomDiagramMenuCmdSet" id="grpidDiagramMenuGroup"/>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <Strings>
+          <ButtonText>Model settings</ButtonText>
+        </Strings>
+      </Button>     
       <!-- Generate code -->
       <Button guid="guidCustomDiagramMenuCmdSet" id="cmdidGenerateCQRSModelCode"
   priority="0x0200" type="Button">
         <Parent guid="guidCustomDiagramMenuCmdSet" id="grpidDiagramMenuGroup"/>
         <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
         <Strings>
           <ButtonText>Generate model code</ButtonText>
         </Strings>
@@ -87,12 +122,119 @@
  priority="0x0200" type="Button">
         <Parent guid="guidCustomDiagramMenuCmdSet" id="grpidDiagramMenuGroup"/>
         <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
         <Strings>
           <ButtonText>Generate model documentation</ButtonText>
         </Strings>
-      </Button>     
+      </Button>
+      <!-- Data top level menu-->
+      <Button guid="guidCustomDiagramMenuCmdSet" id="cmdidDataTopLevelMenuCommand" priority="0x0300" type="MenuButton">
+        <Parent guid="guidCustomDiagramMenuCmdSet" id="grpidDiagramMenuGroup"/>
+        <Strings>
+          <ButtonText>Data ... </ButtonText>
+        </Strings>
+      </Button>
+      <!-- Child menus of the data top level menu  -->
+      <Button guid="guidDataMenuGroup" id="cmdidDataAddAggregateInstanceMenuCommand" priority="0x0301" type="Button">
+        <Parent guid="guidCustomDiagramMenuCmdSet" id="cmdidDataTopLevelMenuCommand"/>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <Strings>
+          <ButtonText>Add aggregate instance</ButtonText>
+        </Strings>       
+      </Button>    
+      <Button guid="guidDataMenuGroup" id="cmdidDataShowEventsForAggregateInstanceMenuCommand" priority="0x0302" type="Button">
+        <Parent guid="guidCustomDiagramMenuCmdSet" id="cmdidDataTopLevelMenuCommand"/>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <Strings>
+          <ButtonText>Show aggregate event stream</ButtonText>
+        </Strings>       
+      </Button>
+      <Button guid="guidDataMenuGroup" id="cmdidDataRunProjectionForAggregateInstanceMenuCommand" priority="0x0303" type="Button">
+        <Parent guid="guidCustomDiagramMenuCmdSet" id="cmdidDataTopLevelMenuCommand"/>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <Strings>
+          <ButtonText>Run projection for aggregate instance</ButtonText>
+        </Strings>
+      </Button>
+      <Button guid="guidDataMenuGroup" id="cmdidDataRunClassifierForAggregateInstanceMenuCommand" priority="0x0304" type="Button">
+        <Parent guid="guidCustomDiagramMenuCmdSet" id="cmdidDataTopLevelMenuCommand"/>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <Strings>
+          <ButtonText>Run classifier for aggregate instance</ButtonText>
+        </Strings>
+      </Button>
+      <Button guid="guidDataMenuGroup" id="cmdidDataShowIdentifierGroupMembersMenuCommand" priority="0x0305" type="Button">
+        <Parent guid="guidCustomDiagramMenuCmdSet" id="cmdidDataTopLevelMenuCommand"/>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <Strings>
+          <ButtonText>Show identifier group members</ButtonText>
+        </Strings>
+      </Button>
+      <Button guid="guidDataMenuGroup" id="cmdidDataRunQueryForIdentifierGroupMenuCommand" priority="0x0306" type="Button">
+        <Parent guid="guidCustomDiagramMenuCmdSet" id="cmdidDataTopLevelMenuCommand"/>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <Strings>
+          <ButtonText>Run query for identifier group</ButtonText>
+        </Strings>
+      </Button>
+      <Button guid="guidDataMenuGroup" id="cmdidDataRunCommandForIdentifierGroupMenuCommand" priority="0x0307" type="Button">
+        <Parent guid="guidCustomDiagramMenuCmdSet" id="cmdidDataTopLevelMenuCommand"/>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <Strings>
+          <ButtonText>Run command for identifier group</ButtonText>
+        </Strings>
+      </Button>
+      <Button guid="guidDataMenuGroup" id="cmdidDataImportMenuCommand" priority="0x0308" type="Button">
+        <Parent guid="guidCustomDiagramMenuCmdSet" id="cmdidDataTopLevelMenuCommand"/>
+        <Strings>
+          <ButtonText>Import</ButtonText>
+        </Strings>
+      </Button>
+      <Button guid="guidDataMenuGroup" id="cmdidDataExportMenuCommand" priority="0x0309" type="Button">
+        <Parent guid="guidCustomDiagramMenuCmdSet" id="cmdidDataTopLevelMenuCommand"/>
+        <Strings>
+          <ButtonText>Export</ButtonText>
+        </Strings>
+      </Button>
     </Buttons>
   </Commands>
+  <CommandPlacements>
+    <!-- Place the various data command buttons under the data top level button -->
+    <CommandPlacement guid="guidDataMenuGroup" id="cmdidDataAddAggregateInstanceMenuCommand"  priority="0x0001">
+      <Parent guid="guidCustomDiagramMenuCmdSet" id="cmdidDataTopLevelMenuCommand"/>
+    </CommandPlacement>
+    <CommandPlacement guid="guidDataMenuGroup" id="cmdidDataShowEventsForAggregateInstanceMenuCommand"  priority="0x0002">
+      <Parent guid="guidCustomDiagramMenuCmdSet" id="cmdidDataTopLevelMenuCommand"/>
+    </CommandPlacement>
+    <CommandPlacement guid="guidDataMenuGroup" id="cmdidDataRunProjectionForAggregateInstanceMenuCommand"  priority="0x0003">
+      <Parent guid="guidCustomDiagramMenuCmdSet" id="cmdidDataTopLevelMenuCommand"/>
+    </CommandPlacement>
+    <CommandPlacement guid="guidDataMenuGroup" id="cmdidDataRunClassifierForAggregateInstanceMenuCommand"  priority="0x0004">
+      <Parent guid="guidCustomDiagramMenuCmdSet" id="cmdidDataTopLevelMenuCommand"/>
+    </CommandPlacement>
+    <CommandPlacement guid="guidDataMenuGroup" id="cmdidDataShowIdentifierGroupMembersMenuCommand"  priority="0x0005">
+      <Parent guid="guidCustomDiagramMenuCmdSet" id="cmdidDataTopLevelMenuCommand"/>
+    </CommandPlacement>
+    <CommandPlacement guid="guidDataMenuGroup" id="cmdidDataRunQueryForIdentifierGroupMenuCommand"  priority="0x0006">
+      <Parent guid="guidCustomDiagramMenuCmdSet" id="cmdidDataTopLevelMenuCommand"/>
+    </CommandPlacement>
+    <CommandPlacement guid="guidDataMenuGroup" id="cmdidDataRunCommandForIdentifierGroupMenuCommand"  priority="0x0007">
+      <Parent guid="guidCustomDiagramMenuCmdSet" id="cmdidDataTopLevelMenuCommand"/>
+    </CommandPlacement>
+    <CommandPlacement guid="guidDataMenuGroup" id="cmdidDataImportMenuCommand"  priority="0x0008">
+      <Parent guid="guidCustomDiagramMenuCmdSet" id="cmdidDataTopLevelMenuCommand"/>
+    </CommandPlacement>
+    <CommandPlacement guid="guidDataMenuGroup" id="cmdidDataExportMenuCommand"  priority="0x0009">
+      <Parent guid="guidCustomDiagramMenuCmdSet" id="cmdidDataTopLevelMenuCommand"/>
+    </CommandPlacement>
+  </CommandPlacements>
   <VisibilityConstraints>
     <!-- Ensure that the diagram commands are only loaded for this DSL -->
     <VisibilityItem guid="guidCustomDiagramMenuCmdSet" id="cmdidIncrementEventVersionContextMenuCommand"

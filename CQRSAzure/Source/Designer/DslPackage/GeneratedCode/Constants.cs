@@ -18,7 +18,7 @@ namespace CQRSAzure.CQRSdsl.Dsl
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
 		public const string CompanyName = @"CQRSAzure";
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
-		public const string ProductVersion = "1.1.0.0";
+		public const string ProductVersion = "1.2.0.0";
 
 		// Menu definitions
 		public static readonly global::System.ComponentModel.Design.CommandID CQRSdslDiagramMenu = new global::System.ComponentModel.Design.CommandID(new global::System.Guid(CQRSdslCommandSetId), 0x10000);

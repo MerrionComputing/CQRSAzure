@@ -1,5 +1,4 @@
-﻿Imports CQRSAzure.QueryDefinition
-''' <summary>
+﻿''' <summary>
 ''' Base class from which the query definitions should be build
 ''' </summary>
 ''' <remarks>
@@ -9,8 +8,13 @@
 Public MustInherit Class QueryDefinitionBase(Of TResult)
     Implements IQueryDefinition(Of TResult)
 
+    Public Const PARAMETER_NAME_IDENTITY_GROUP As String = "CQRSAZURE.IDENTITY_GROUP_NAME"
+    Public Const PARAMETER_NAME_PROJECTION As String = "CQRSAZURE.PROJECTION_NAME"
+
     Private m_instanceId As Guid = Guid.NewGuid()
     Private m_parameters As Dictionary(Of String, IQueryParameter)
+    Private m_multiline As Boolean = False
+
 
     ''' <summary>
     ''' The unique name for the query 
@@ -31,6 +35,38 @@ Public MustInherit Class QueryDefinitionBase(Of TResult)
             Return m_instanceId
         End Get
     End Property
+
+    ''' <summary>
+    ''' The name of the identity group over which this query should be executed
+    ''' </summary>
+    ''' <returns></returns>
+    Public ReadOnly Property IdentityGroupName As String Implements IQueryDefinition.IdentityGroupName
+        Get
+            If ParameterExists(PARAMETER_NAME_IDENTITY_GROUP, 0) Then
+                Return GetParameterValue(Of String)(PARAMETER_NAME_IDENTITY_GROUP, 0)
+            End If
+
+            Return "" ' No identity group is specified for this query intsance to use
+        End Get
+    End Property
+
+    Public ReadOnly Property ProjectionName As String Implements IQueryDefinition.ProjectionName
+        Get
+            If ParameterExists(PARAMETER_NAME_PROJECTION, 0) Then
+                Return GetParameterValue(Of String)(PARAMETER_NAME_PROJECTION, 0)
+            End If
+
+            Return "" ' No projection is specified for this query intsance to use
+        End Get
+    End Property
+
+    Public ReadOnly Property MultiRowResults As Boolean Implements IQueryDefinition.MultiRowResults
+        Get
+            Return m_multiline
+        End Get
+    End Property
+
+
 
     Protected Sub AddParameter(Of TValueType)(parameter As QueryParameter(Of TValueType)) Implements IQueryDefinition(Of TResult).AddParameter
         If (String.IsNullOrWhiteSpace(parameter.Name)) Then
@@ -101,7 +137,7 @@ Public MustInherit Class QueryDefinitionBase(Of TResult)
             m_parameters(MakeKey(parameterName, parameterIndex)).SetValue(value)
         Else
             'add the parameter
-            AddParameter(Of TValueType)(QueryParameter(Of TValueType).Create(Of TValueType)(parameterName, parameterIndex, value))
+            AddParameter(Of TValueType)(QueryParameter(Of TValueType).Create(parameterName, parameterIndex, value))
         End If
 
     End Sub

@@ -1,0 +1,16 @@
+﻿Local File
+==========
+
+Implementations backed by a local file store
+
+This allows event streams to be stored in a source control system to "seed" any unit tests and also allows
+local development and testing of the business rules in events/projections/queries etc.
+
+Files are stored in a folder set in the settings (app.config) or if that is not supplied then they are saved in the LocalAppData
+folder.
+
+Event streams go in e.g.:-
+{root}\{domain}\{aggregate name}\eventstreams\{key}.eventstream
+
+Snapshots go in e.g. :-
+{root}\{domain}\{aggregate name}\snapshots\{key}.snapshot.{as-of-sequence-number}

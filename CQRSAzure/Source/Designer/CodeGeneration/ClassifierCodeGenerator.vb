@@ -1,6 +1,7 @@
 ﻿Imports System.CodeDom
 Imports System.CodeDom.Compiler
 Imports CQRSAzure.CQRSdsl.CodeGeneration
+Imports CQRSAzure.CQRSdsl.CustomCode.Interfaces
 Imports CQRSAzure.CQRSdsl.Dsl
 
 ''' <summary>
@@ -25,12 +26,17 @@ Public Class ClassifierCodeGenerator
     Public ReadOnly Property RequiredNamespaces As IEnumerable(Of CodeNamespaceImport) Implements IEntityCodeGenerator.RequiredNamespaces
         Get
             Return {
-                New CodeNamespaceImport("CQRSAzure"),
+                New CodeNamespaceImport("System"),
                 New CodeNamespaceImport("CQRSAzure.IdentifierGroup"),
                 New CodeNamespaceImport("CQRSAzure.EventSourcing"),
-                New CodeNamespaceImport("CQRSAzure.Aggregation"),
                 CodeGenerationUtilities.CreateNamespaceImport({m_classifier.AggregateIdentifier.CQRSModel.Name,
-                    m_classifier.AggregateIdentifier.Name})
+                    m_classifier.AggregateIdentifier.Name}),
+                CodeGenerationUtilities.CreateNamespaceImport({m_classifier.AggregateIdentifier.CQRSModel.Name,
+                    m_classifier.AggregateIdentifier.Name,
+                    EventCodeGenerator.EVENT_FILENAME_IDENTIFIER}),
+                CodeGenerationUtilities.CreateNamespaceImport({m_classifier.AggregateIdentifier.CQRSModel.Name,
+                    m_classifier.AggregateIdentifier.Name,
+                    ProjectionCodeGenerator.PROJECTION_FILENAME_IDENTIFIER})
                 }
         End Get
     End Property
@@ -71,16 +77,31 @@ Public Class ClassifierCodeGenerator
             interfaceDeclaration.Comments.AddRange(CommentGeneration.RemarksCommentSection({m_classifier.Notes}))
         End If
 
-        If (m_classifier.EventDefinitions IsNot Nothing) Then
-            For Each evt In m_classifier.EventDefinitions
-                'ClassifierEventHandler(Of TEvent As IEvent)
-                Dim implementsIHandleEvent As CodeTypeReference = InterfaceCodeGeneration.ImplementsGenericInterfaceReference("CQRSAzure.IdentifierGroup.IClassifierEventHandler",
+        If (m_classifier.DataSourceType = ClassifierDataSourceType.EventHandler) Then
+            ' Add an interface for each type of event handled..
+            If (m_classifier.EventDefinitions IsNot Nothing) Then
+                For Each evt In m_classifier.EventDefinitions
+                    'IClassifierEventHandler(Of TEvent As IEvent)
+                    Dim implementsIHandleEvent As CodeTypeReference = InterfaceCodeGeneration.ImplementsGenericInterfaceReference("CQRSAzure.IdentifierGroup.IClassifierEventHandler",
                                                                                                                               {New CodeTypeReference(ModelCodeGenerator.MakeInterfaceName(evt.Name))}
                                                                                                                               )
-                If (implementsIHandleEvent IsNot Nothing) Then
-                    interfaceDeclaration.BaseTypes.Add(implementsIHandleEvent)
+                    If (implementsIHandleEvent IsNot Nothing) Then
+                        interfaceDeclaration.BaseTypes.Add(implementsIHandleEvent)
+                    End If
+                Next
+            End If
+        End If
+
+        If (m_classifier.DataSourceType = ClassifierDataSourceType.Projection) Then
+            If (m_classifier.ProjectionDefinition IsNot Nothing) Then
+                'IClassifierProjectionHandler(Of TProjection As IProjectionDefinition)
+                Dim implementsIHandleProjection As CodeTypeReference = InterfaceCodeGeneration.ImplementsGenericInterfaceReference("CQRSAzure.IdentifierGroup.IClassifierProjectionHandler",
+                                                                                                                              {New CodeTypeReference(ModelCodeGenerator.MakeInterfaceName(m_classifier.ProjectionDefinition.Name))}
+                                                                                                                              )
+                If (implementsIHandleProjection IsNot Nothing) Then
+                    interfaceDeclaration.BaseTypes.Add(implementsIHandleProjection)
                 End If
-            Next
+            End If
         End If
 
         classifierNamespace.Types.Add(interfaceDeclaration)
@@ -119,7 +140,7 @@ Public Class ClassifierCodeGenerator
         'Add the model name (DomainNameAttribute)
         If Not String.IsNullOrWhiteSpace(m_classifier.AggregateIdentifier.CQRSModel.Name) Then
             Dim params As New List(Of CodeAttributeArgument)
-            params.Add(New CodeAttributeArgument("domainNameIn", New CodePrimitiveExpression(m_classifier.AggregateIdentifier.CQRSModel.Name)))
+            params.Add(New CodeAttributeArgument(New CodePrimitiveExpression(m_classifier.AggregateIdentifier.CQRSModel.Name)))
             classDeclaration.CustomAttributes.Add(
                 AttributeCodeGenerator.ParameterisedAttribute("CQRSAzure.EventSourcing.DomainNameAttribute",
                                                               params))
@@ -128,60 +149,61 @@ Public Class ClassifierCodeGenerator
         'Add the category attribute
         If Not String.IsNullOrWhiteSpace(m_classifier.Category) Then
             Dim params As New List(Of CodeAttributeArgument)
-            params.Add(New CodeAttributeArgument("categoryNameIn", New CodePrimitiveExpression(m_classifier.Category)))
+            params.Add(New CodeAttributeArgument(New CodePrimitiveExpression(m_classifier.Category)))
             classDeclaration.CustomAttributes.Add(
                 AttributeCodeGenerator.ParameterisedAttribute("CQRSAzure.EventSourcing.Category",
                                                               params))
         End If
 
-        '
-        If (m_classifier.EventDefinitions IsNot Nothing) Then
-            Dim returnType As New CodeTypeReference("EvaluationResult")
-            For Each evt In m_classifier.EventDefinitions
-                'Create a Function Evaluate(ByVal eventToEvaluate As TEvent) As EvaluationResult
-                Dim eventParameter As New CodeParameterDeclarationExpression(InterfaceCodeGeneration.ImplementsInterfaceReference(evt.Name), "eventToEvaluate")
-                Dim eventHandlerMethod As CodeMemberMethod = MethodCodeGenerator.PrivateParameterisedFunction("Evaluate",
+        If (m_classifier.DataSourceType = ClassifierDataSourceType.EventHandler) Then
+            'Add code to perform each event's handling
+            If (m_classifier.EventDefinitions IsNot Nothing) Then
+                Dim returnType As New CodeTypeReference("IClassifierDataSourceHandler.EvaluationResult")
+                For Each evt In m_classifier.EventDefinitions
+                    'Create a Function Evaluate(ByVal eventToEvaluate As TEvent) As EvaluationResult
+                    Dim eventParameter As New CodeParameterDeclarationExpression(InterfaceCodeGeneration.ImplementsInterfaceReference(evt.Name), "eventToEvaluate")
+                    Dim eventHandlerMethod As CodeMemberMethod = MethodCodeGenerator.PublicParameterisedFunction("EvaluateEvent",
                                                                                                               {eventParameter},
                                                                                                               returnType)
 
-                If (eventHandlerMethod IsNot Nothing) Then
-                    ' Make it implement the interface
-                    Dim implementsIHandleEvent As CodeTypeReference = InterfaceCodeGeneration.ImplementsGenericInterfaceReference("CQRSAzure.IdentifierGroup.IClassifierEventHandler",
+                    If (eventHandlerMethod IsNot Nothing) Then
+                        ' Make it implement the interface
+                        Dim implementsIHandleEvent As CodeTypeReference = InterfaceCodeGeneration.ImplementsGenericInterfaceReference("CQRSAzure.IdentifierGroup.IClassifierEventHandler",
                                                                                                                                   {New CodeTypeReference(ModelCodeGenerator.MakeInterfaceName(evt.Name))})
-                    If (implementsIHandleEvent IsNot Nothing) Then
-                        eventHandlerMethod.ImplementationTypes.Add(implementsIHandleEvent)
-                    End If
-                    '
-                    If (Not String.IsNullOrWhiteSpace(evt.Description)) Then
-                        eventHandlerMethod.Comments.AddRange(CommentGeneration.SummaryCommentSection({evt.Description}))
-                    Else
-                        eventHandlerMethod.Comments.AddRange(CommentGeneration.SummaryCommentSection({"Handle the " & evt.Name & " event "}))
-                    End If
-                    If (Not String.IsNullOrWhiteSpace(evt.Notes)) Then
-                        eventHandlerMethod.Comments.AddRange(CommentGeneration.RemarksCommentSection({evt.Notes}))
-                    End If
-
-                    'Perform any classification operations
-                    For Each eval In m_classifier.ClassifierEventEvaluations.Where(Function(ByVal cee As ClassifierEventEvaluation) (cee.EventName.Equals(evt.Name)))
-                        eventHandlerMethod.Statements.Add(New CodeCommentStatement(eval.ToString))
-                        If (eval.PropertyEvaluationToPerform = PropertyEvaluation.Always) Then
-                            'just return the [value if true]
-                            eventHandlerMethod.Statements.Add(ToReturnStatement(eval.OnTrue))
+                        If (implementsIHandleEvent IsNot Nothing) Then
+                            eventHandlerMethod.ImplementationTypes.Add(implementsIHandleEvent)
+                        End If
+                        '
+                        If (Not String.IsNullOrWhiteSpace(evt.Description)) Then
+                            eventHandlerMethod.Comments.AddRange(CommentGeneration.SummaryCommentSection({evt.Description}))
                         Else
-                            If (eval.PropertyEvaluationToPerform = PropertyEvaluation.Custom) Then
-                                eventHandlerMethod.Statements.Add(New CodeCommentStatement("TODO : Code the custom evaluation for this event"))
-                            End If
-                            'Get the data type of the thing we are testing against
-                            Dim sourceDataType As PropertyDataType = PropertyDataType.String
-                            If (Not String.IsNullOrWhiteSpace(eval.SourceEventPropertyName)) Then
-                                Dim evp As EventProperty = eval.SelectedEvent.EventProperties.
-                                Where(Function(ByVal f As EventProperty) f.Name = eval.SourceEventPropertyName).FirstOrDefault()
-                                If (evp IsNot Nothing) Then
-                                    sourceDataType = evp.DataType
+                            eventHandlerMethod.Comments.AddRange(CommentGeneration.SummaryCommentSection({"Handle the " & evt.Name & " event "}))
+                        End If
+                        If (Not String.IsNullOrWhiteSpace(evt.Notes)) Then
+                            eventHandlerMethod.Comments.AddRange(CommentGeneration.RemarksCommentSection({evt.Notes}))
+                        End If
+
+                        'Perform any classification operations
+                        For Each eval In m_classifier.ClassifierEventEvaluations.Where(Function(ByVal cee As ClassifierEventEvaluation) (cee.EventName.Equals(evt.Name)))
+                            eventHandlerMethod.Statements.Add(New CodeCommentStatement(eval.ToString))
+                            If (eval.PropertyEvaluationToPerform = PropertyEvaluation.Always) Then
+                                'just return the [value if true]
+                                eventHandlerMethod.Statements.Add(ToReturnStatement(eval.OnTrue))
+                            Else
+                                If (eval.PropertyEvaluationToPerform = PropertyEvaluation.Custom) Then
+                                    eventHandlerMethod.Statements.Add(New CodeCommentStatement("TODO : Code the custom evaluation for this event"))
                                 End If
-                            End If
-                            'make an if/else to evaluate the test given
-                            eventHandlerMethod.Statements.Add(ToConditionalReturnStatement(eval.PropertyEvaluationToPerform,
+                                'Get the data type of the thing we are testing against
+                                Dim sourceDataType As PropertyDataType = PropertyDataType.String
+                                If (Not String.IsNullOrWhiteSpace(eval.SourceEventPropertyName)) Then
+                                    Dim evp As EventProperty = eval.SelectedEvent.EventProperties.
+                                Where(Function(ByVal f As EventProperty) f.Name = eval.SourceEventPropertyName).FirstOrDefault()
+                                    If (evp IsNot Nothing) Then
+                                        sourceDataType = evp.DataType
+                                    End If
+                                End If
+                                'make an if/else to evaluate the test given
+                                eventHandlerMethod.Statements.Add(ToEventConditionalReturnStatement(eval.PropertyEvaluationToPerform,
                                                                                            eval.SourceEventPropertyName,
                                                                                            sourceDataType,
                                                                                            eval.Target,
@@ -189,14 +211,77 @@ Public Class ClassifierCodeGenerator
                                                                                            eval.OnTrue,
                                                                                            eval.OnFalse))
 
+                            End If
+                        Next
+
+                        classDeclaration.Members.Add(eventHandlerMethod)
+
+                    End If
+
+                Next
+            End If
+        End If
+
+        If (m_classifier.DataSourceType = ClassifierDataSourceType.Projection) Then
+            'Add code to perform the projection's handling
+            If (m_classifier.ProjectionDefinition IsNot Nothing) Then
+                'add a method to handle EvaluateProjection
+                Dim returnType As New CodeTypeReference("IClassifierDataSourceHandler.EvaluationResult")
+                Dim projectionParameter As New CodeParameterDeclarationExpression(InterfaceCodeGeneration.ImplementsInterfaceReference(m_classifier.ProjectionDefinition.Name), "projectionToEvaluate")
+                Dim projectionHandlerMethod As CodeMemberMethod = MethodCodeGenerator.PublicParameterisedFunction("EvaluateProjection",
+                                                                                                          {projectionParameter},
+                                                                                                          returnType)
+
+                If (projectionHandlerMethod IsNot Nothing) Then
+                    ' Make it implement the interface
+                    Dim implementsIHandleEvent As CodeTypeReference = InterfaceCodeGeneration.ImplementsGenericInterfaceReference("CQRSAzure.IdentifierGroup.IClassifierProjectionHandler",
+                                                                                                                              {New CodeTypeReference(ModelCodeGenerator.MakeInterfaceName(m_classifier.ProjectionDefinition.Name))})
+                    If (implementsIHandleEvent IsNot Nothing) Then
+                        projectionHandlerMethod.ImplementationTypes.Add(implementsIHandleEvent)
+                    End If
+                    '
+                    If (Not String.IsNullOrWhiteSpace(m_classifier.ProjectionDefinition.Description)) Then
+                        projectionHandlerMethod.Comments.AddRange(CommentGeneration.SummaryCommentSection({m_classifier.ProjectionDefinition.Description}))
+                    Else
+                        projectionHandlerMethod.Comments.AddRange(CommentGeneration.SummaryCommentSection({"Handle the " & m_classifier.ProjectionDefinition.Name & " projection "}))
+                    End If
+                    If (Not String.IsNullOrWhiteSpace(m_classifier.ProjectionDefinition.Notes)) Then
+                        projectionHandlerMethod.Comments.AddRange(CommentGeneration.RemarksCommentSection({m_classifier.ProjectionDefinition.Notes}))
+                    End If
+
+
+
+                    ' Fill the method content
+                    For Each projectionPropertyEval In m_classifier.ClassifierProjectionPropertyEvaluations
+
+
+                        'Get the data type of the thing we are testing against... how?
+                        Dim sourceDataType As PropertyDataType = PropertyDataType.String
+                        If (m_classifier.ProjectionDefinition IsNot Nothing) Then
+                            If (Not String.IsNullOrWhiteSpace(projectionPropertyEval.SourceEventPropertyName)) Then
+                                Dim evp As ProjectionProperty = m_classifier.ProjectionDefinition.ProjectionProperties.
+                                  Where(Function(ByVal f As ProjectionProperty) f.Name = projectionPropertyEval.SourceEventPropertyName).FirstOrDefault()
+                                If (evp IsNot Nothing) Then
+                                    sourceDataType = evp.DataType
+                                End If
+                            End If
                         End If
+
+                        projectionHandlerMethod.Statements.Add(ToProjectionConditionalReturnStatement(projectionPropertyEval.PropertyEvaluationToPerform,
+                                                                                           projectionPropertyEval.SourceEventPropertyName,
+                                                                                           sourceDataType,
+                                                                                           projectionPropertyEval.Target,
+                                                                                           projectionPropertyEval.TargetType,
+                                                                                           projectionPropertyEval.OnTrue))
                     Next
 
-                    classDeclaration.Members.Add(eventHandlerMethod)
+                    ' Return Exclude if we got to the end of the analysis and didn't decide to include it...
+                    projectionHandlerMethod.Statements.Add(ToReturnStatement(IdentityGroupClassification.Exclude))
 
+                    classDeclaration.Members.Add(projectionHandlerMethod)
                 End If
 
-            Next
+            End If
         End If
 
         'Add constructors
@@ -215,8 +300,8 @@ Public Class ClassifierCodeGenerator
     End Function
 
 
-    Private m_options As ModelCodeGenerationOptions = ModelCodeGenerationOptions.DefaultOptions()
-    Public Sub SetCodeGenerationOptions(options As ModelCodeGenerationOptions) Implements IEntityCodeGenerator.SetCodeGenerationOptions
+    Private m_options As IModelCodeGenerationOptions = ModelCodeGenerationOptions.Default()
+    Public Sub SetCodeGenerationOptions(options As IModelCodeGenerationOptions) Implements IEntityCodeGenerator.SetCodeGenerationOptions
         m_options = options
     End Sub
 
@@ -227,7 +312,7 @@ Public Class ClassifierCodeGenerator
     Private Shared Function ToReturnStatement(ByVal valueToReturn As IdentityGroupClassification) As CodeStatement
 
         Dim expression As CodeExpression = Nothing
-        Dim EvaluationResultExpression As CodeExpression = New CodeTypeReferenceExpression("EvaluationResult")
+        Dim EvaluationResultExpression As CodeExpression = New CodeTypeReferenceExpression("IClassifierDataSourceHandler.EvaluationResult")
         If (valueToReturn = IdentityGroupClassification.Exclude) Then
             'EvaluationResult.Exclude
             expression = New CodeFieldReferenceExpression(EvaluationResultExpression, "Exclude")
@@ -247,13 +332,34 @@ Public Class ClassifierCodeGenerator
 
     End Function
 
-    Private Shared Function ToConditionalReturnStatement(propertyEvaluationToPerform As PropertyEvaluation,
+    Private Shared Function ToProjectionConditionalReturnStatement(propertyEvaluationToPerform As PropertyEvaluation,
+                                          sourceEventPropertyName As String,
+                                          sourcePropertyType As PropertyDataType,
+                                          target As String,
+                                          targetType As EvaluationTargetType,
+                                          onTrue As IdentityGroupClassification) As CodeStatement
+
+        Dim onTrueStatement As CodeStatement = ToReturnStatement(onTrue)
+        Dim ifThen As CodeConditionStatement = New CodeConditionStatement()
+        ifThen.TrueStatements.Add(onTrueStatement)
+
+        Dim sourceReference As New CodeFieldReferenceExpression()
+        sourceReference.FieldName = EventCodeGenerator.ToMemberName(sourceEventPropertyName, False)
+        sourceReference.TargetObject = New CodeVariableReferenceExpression("projectionToEvaluate")
+
+        ifThen = MakeConditionalEvaluation(propertyEvaluationToPerform, sourcePropertyType, target, targetType, ifThen, sourceReference)
+
+        Return ifThen
+
+    End Function
+
+    Private Shared Function ToEventConditionalReturnStatement(propertyEvaluationToPerform As PropertyEvaluation,
                                               sourceEventPropertyName As String,
                                               sourcePropertyType As PropertyDataType,
                                               target As String,
                                               targetType As EvaluationTargetType,
                                               onTrue As IdentityGroupClassification,
-                                              onFalse As IdentityGroupClassification) As CodeStatement
+                                               onFalse As IdentityGroupClassification) As CodeStatement
         '
         Dim onTrueStatement As CodeStatement = ToReturnStatement(onTrue)
         Dim onFalseStatement As CodeStatement = ToReturnStatement(onFalse)
@@ -266,6 +372,13 @@ Public Class ClassifierCodeGenerator
         sourceReference.FieldName = EventCodeGenerator.ToMemberName(sourceEventPropertyName, False)
         sourceReference.TargetObject = New CodeVariableReferenceExpression("eventToEvaluate")
 
+        ifThenElse = MakeConditionalEvaluation(propertyEvaluationToPerform, sourcePropertyType, target, targetType, ifThenElse, sourceReference)
+
+        Return ifThenElse
+
+    End Function
+
+    Private Shared Function MakeConditionalEvaluation(propertyEvaluationToPerform As PropertyEvaluation, sourcePropertyType As PropertyDataType, target As String, targetType As EvaluationTargetType, ifThenElse As CodeConditionStatement, sourceReference As CodeFieldReferenceExpression) As CodeConditionStatement
         Dim targetReference As CodeExpression = Nothing
         If (targetType = EvaluationTargetType.Constant) Then
             If (sourcePropertyType = PropertyDataType.String) Then
@@ -387,9 +500,5 @@ Public Class ClassifierCodeGenerator
         End Select
 
         Return ifThenElse
-
     End Function
-
-
-
 End Class

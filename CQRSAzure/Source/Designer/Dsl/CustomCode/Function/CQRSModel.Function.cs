@@ -40,7 +40,7 @@ namespace CQRSAzure.CQRSdsl.Dsl
         /// Get the code generation options that have been set at the model level
         /// </summary>
         /// <remarks>
-        /// Thers emay be overridden on a per-user basis as part of the build process
+        /// These may be overridden on a per-user basis as part of the build process
         /// </remarks>
         public IModelCodeGenerationOptions GetCodeGenerationOptions()
         {
@@ -49,15 +49,93 @@ namespace CQRSAzure.CQRSdsl.Dsl
             System.IO.DirectoryInfo DirectoryRootIn = null;
             bool SeparateFolderPerModelIn = true ;
             bool SeparateFolderPerAggregateIn = true ;
+            bool GenerateEntityFrameworkClassesIn = false;
 
             // Read the model properties that affect code generation
-            
+            if (this.DefaultCodeGenerationLanguage == TargetLanguage.CSharp)
+            {
+                CodeLanguageIn = ModelCodegenerationOptionsBase.SupportedLanguages.CSharp;
+            }
+            if (! this.SubfolderPerDomain )
+            {
+                SeparateFolderPerModelIn = false;
+            }
+            if (!this.SubfolderPerAggregate)
+            {
+                SeparateFolderPerAggregateIn = false;
+            }
+
+            if (! string.IsNullOrWhiteSpace (this.CodeRootFolder ))
+            {
+                if (System.IO.Directory.Exists(this.CodeRootFolder))
+                {
+                    DirectoryRootIn = new System.IO.DirectoryInfo(this.CodeRootFolder);
+                }
+                else
+                {
+                    // Can you make this into a relative path??
+                    if (!System.IO.Path.IsPathRooted(this.DocumentationRootFolder))
+                    {
+                        DirectoryRootIn = new System.IO.DirectoryInfo(
+                            System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory
+                                , this.CodeRootFolder));
+                    }
+                }
+            }
+            else
+            {
+                DirectoryRootIn = new System.IO.DirectoryInfo(System.IO.Path.Combine(System.IO.Path.GetTempPath(),
+                    this.Name,
+                    "Code"));
+            }
+
+            if (this.GenerateEntityFrameworkClasses )
+            {
+                GenerateEntityFrameworkClassesIn = true;
+            }
+
+            // Read any per-user overrides ??
 
             return ModelCodeGenerationOptions.Create(CodeLanguageIn,
                 ConstructorPreferenceIn,
                 DirectoryRootIn,
                 SeparateFolderPerModelIn,
-                SeparateFolderPerAggregateIn);
+                SeparateFolderPerAggregateIn,
+                GenerateEntityFrameworkClassesIn);
+        }
+
+        /// <summary>
+        /// Get the code generation options that have been set at the model level
+        /// </summary>
+        public IDocumentationGenerationOptions GetDocumentationGenerationOptions()
+        {
+            System.IO.DirectoryInfo DirectoryRootIn = null;
+
+            if (!string.IsNullOrWhiteSpace(this.DocumentationRootFolder))
+            {
+                if (System.IO.Directory.Exists(this.DocumentationRootFolder))
+                {
+                    DirectoryRootIn = new System.IO.DirectoryInfo(this.DocumentationRootFolder);
+                }
+                else
+                {
+                    // Can you make this into a relative path??
+                    if (! System.IO.Path.IsPathRooted(this.DocumentationRootFolder) )
+                    {
+                        DirectoryRootIn = new System.IO.DirectoryInfo(
+                            System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory
+                                , this.DocumentationRootFolder));
+                    }
+                }
+            }
+            else
+            {
+                DirectoryRootIn = new System.IO.DirectoryInfo(System.IO.Path.Combine(System.IO.Path.GetTempPath(),
+                    this.Name,
+                    "Documentation"));
+            }
+
+            return DocumentationGenerationOptions.Create(DirectoryRootIn);
         }
 
     }

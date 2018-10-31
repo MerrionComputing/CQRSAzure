@@ -1,4 +1,5 @@
 ﻿Imports CQRSAzure.EventSourcing
+Imports CQRSAzure.IdentifierGroup
 
 ''' <summary>
 ''' An interface for any class that decides if an aggregate is in or our of an identity group
@@ -9,6 +10,8 @@
 Public Interface IClassifier(Of TAggregate As IAggregationIdentifier, TAggregateKey)
     Inherits IClassifier
 
+
+
     ''' <summary>
     ''' Perform whatever evaluation is required to handle the specific event
     ''' </summary>
@@ -16,19 +19,43 @@ Public Interface IClassifier(Of TAggregate As IAggregationIdentifier, TAggregate
     ''' The specific event to handle and perform whatever processing is required in order to 
     ''' evaluate the status of the aggregate instance in relation to the identity group
     ''' </param>
-    Function Evaluate(Of TEvent As IEvent(Of TAggregate))(ByVal eventToHandle As TEvent) As IClassifierEventHandler.EvaluationResult
+    Function EvaluateEvent(Of TEvent As IEvent(Of TAggregate))(ByVal eventToHandle As TEvent) As IClassifierDataSourceHandler.EvaluationResult
+
+    Function EvaluateProjection(Of TProjection As IProjection(Of TAggregate, TAggregateKey))(ByVal projection As TProjection) As IClassifierDataSourceHandler.EvaluationResult
 
     ''' <summary>
-    ''' Load the snapshot of this projection as the starting point for populating this classification
+    ''' Load the starting point of this classifier from the given classifier snapshot
     ''' </summary>
-    ''' <param name="snapshotToLoad">
-    ''' The stored snapshot for the given classifier
+    ''' <typeparam name="TClassifier">
+    ''' Th eclassifier type (the type of this interface's implementing class)
+    ''' </typeparam>
+    ''' <param name="latestSnapshot">
+    ''' The classifier snapshot saved away by an earlier evaluation
     ''' </param>
-    Sub LoadSnapshot(ByVal snapshotToLoad As IClassifierSnapshot(Of TAggregate, TAggregateKey))
+    Sub LoadFromSnapshot(Of TClassifier As IClassifier)(latestSnapshot As IClassifierSnapshot(Of TAggregate, TAggregateKey, TClassifier))
+
+    ''' <summary>
+    ''' Turn the current state of this projection to a snapshot
+    ''' </summary>
+    Function ToSnapshot(Of TClassifier As IClassifier)() As IClassifierSnapshot(Of TAggregate, TAggregateKey, TClassifier)
 
 End Interface
 
 Public Interface IClassifier
+
+    ''' <summary>
+    ''' How does the classifier get the data it uses to perform a classification
+    ''' </summary>
+    Enum ClassifierDataSourceType
+        ''' <summary>
+        ''' Directly processing the event stream with an event handler
+        ''' </summary>
+        EventHandler = 0
+        ''' <summary>
+        ''' Running a projection and analysing the result from that
+        ''' </summary>
+        Projection = 1
+    End Enum
 
     ''' <summary>
     ''' Does this classifier use snapshots to save the latest state or does it need to evaluate the entire 
@@ -50,24 +77,16 @@ Public Interface IClassifier
     ''' </returns>
     Function HandlesEventType(ByVal eventType As Type) As Boolean
 
-End Interface
-
-''' <summary>
-''' An interface for a class that handles a specific event to decide if an aggregate is in or out of an identity group
-''' </summary>
-''' <typeparam name="TEvent">
-''' The specific event being evaluated
-''' </typeparam>
-Public Interface IClassifierEventHandler(Of TEvent As IEvent)
-    Inherits IClassifierEventHandler
-
-
-
-    Function Evaluate(ByVal eventToEvaluate As TEvent) As EvaluationResult
+    ''' <summary>
+    ''' How does the classifier get the data it uses to perform a classification
+    ''' </summary>
+    ReadOnly Property ClassifierDataSource As ClassifierDataSourceType
 
 End Interface
 
-Public Interface IClassifierEventHandler
+
+
+Public Interface IClassifierDataSourceHandler
 
     ''' <summary>
     ''' The evaluation result of evaluating this given event

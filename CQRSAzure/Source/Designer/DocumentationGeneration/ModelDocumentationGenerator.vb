@@ -6,7 +6,7 @@ Imports CQRSAzure.CQRSdsl.CustomCode.Interfaces
 ''' </summary>
 Public Class ModelDocumentationGenerator
     Private ReadOnly m_model As CQRSModel
-    Private ReadOnly m_options As ModelDocumentationGeneratorOptions
+    Private ReadOnly m_options As IDocumentationGenerationOptions
     Private ReadOnly m_docWriter As IDocumentationWriter
 
     ''' <summary>
@@ -20,7 +20,7 @@ Public Class ModelDocumentationGenerator
     End Property
 
 
-    Public ReadOnly Property Options As ModelDocumentationGeneratorOptions
+    Public ReadOnly Property Options As IDocumentationGenerationOptions
         Get
             Return m_options
         End Get
@@ -86,6 +86,11 @@ Public Class ModelDocumentationGenerator
                 idGrpDoc.Generate()
             Next
 
+            'document the classifiers
+            For Each cls As Classifier In aggregate.Classifiers
+                Dim clsDoc As New ClassifierDocumentationGeneration(cls, Me.Options, Me.DocumentationWriter)
+                clsDoc.Generate()
+            Next
         Next
 
         'Finally save the resuling documentation
@@ -96,7 +101,7 @@ Public Class ModelDocumentationGenerator
 
 #Region "Constructors"
     Public Sub New(ByVal modelToDocument As CQRSModel,
-                   Optional ByVal options As ModelDocumentationGeneratorOptions = Nothing,
+                   Optional ByVal options As IDocumentationGenerationOptions = Nothing,
                    Optional ByVal docWriter As IDocumentationWriter = Nothing)
 
         If (options IsNot Nothing) Then
@@ -107,7 +112,7 @@ Public Class ModelDocumentationGenerator
         If (docWriter IsNot Nothing) Then
             m_docWriter = docWriter
         Else
-            m_docWriter = New HTMLDocumentationWriter()
+            m_docWriter = New HTMLDocumentationWriter(m_options)
         End If
         m_model = modelToDocument
 

@@ -76,10 +76,10 @@ Public MustInherit Class EventStreamExceptionBase
         MyBase.New(info, context)
         If (info Is Nothing) Then Throw New ArgumentNullException("info")
 
-        m_domainname = info.GetValue("DomainName", GetType(String))
-        m_aggregateName = info.GetValue("AggregateName", GetType(String))
-        m_key = info.GetValue("AggregateKey", GetType(String))
-        m_sequence = info.GetValue("SequenceNumber", GetType(Long))
+        m_domainname = info.GetValue(NameOf(DomainName), GetType(String))
+        m_aggregateName = info.GetValue(NameOf(AggregateName), GetType(String))
+        m_key = info.GetValue(NameOf(AggregateKey), GetType(String))
+        m_sequence = info.GetValue(NameOf(SequenceNumber), GetType(Long))
 
     End Sub
 
@@ -88,10 +88,10 @@ Public MustInherit Class EventStreamExceptionBase
 
         If (info Is Nothing) Then Throw New ArgumentNullException("info")
 
-        info.AddValue("DomainName", DomainName)
-        info.AddValue("AggregateName", AggregateName)
-        info.AddValue("AggregateKey", AggregateKey)
-        info.AddValue("SequenceNumber", SequenceNumber)
+        info.AddValue(NameOf(DomainName), DomainName)
+        info.AddValue(NameOf(AggregateName), AggregateName)
+        info.AddValue(NameOf(AggregateKey), AggregateKey)
+        info.AddValue(NameOf(SequenceNumber), SequenceNumber)
 
         MyBase.GetObjectData(info, context)
     End Sub

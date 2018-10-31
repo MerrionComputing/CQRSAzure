@@ -52,8 +52,32 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.ApplicationInsights, Version=2.4.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.2.4.0\lib\net46\Microsoft.ApplicationInsights.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Data.Edm, Version=5.8.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Data.Edm.5.8.3\lib\net40\Microsoft.Data.Edm.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Data.OData, Version=5.8.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Data.OData.5.8.3\lib\net40\Microsoft.Data.OData.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.2.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.4.1\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Spatial, Version=5.8.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Spatial.5.8.3\lib\net40\System.Spatial.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -72,19 +96,75 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommandEventStream\CompletedCommandsIdentityGroup.vb" />
+    <Compile Include="CommandEventStream\FatalErroredCommandsIdentityGroup.vb" />
+    <Compile Include="Configuration\CQRSAzureIdentifierGroupAggregateMapElement.vb" />
+    <Compile Include="Configuration\CQRSAzureIdentifierGroupAggregateMapElementCollection.vb" />
+    <Compile Include="Configuration\CQRSAzureIdentifierGroupConfigurationSection.vb" />
+    <Compile Include="Configuration\CQRSAzureIdentifierGroupImplementationSettingsElement.vb" />
+    <Compile Include="Configuration\CQRSAzureIdentifierGroupImplementationSettingsElementCollection.vb" />
+    <Compile Include="Configuration\CQRSAzureIdentifierGroupSnapshotSettingsElement.vb" />
+    <Compile Include="Configuration\CQRSAzureIdentifierGroupSnapshotSettingsElementCollection.vb" />
+    <Compile Include="Configuration\IIdentityGroupClassifierImplementationMap.vb" />
     <Compile Include="Definitions\AllIdentityGroup.vb" />
     <Compile Include="Definitions\ClassifierBase.vb" />
     <Compile Include="Definitions\IdentityGroupBase.vb" />
     <Compile Include="Definitions\InstanceIdentityGroup.vb" />
+    <Compile Include="Exceptions\ClassifierProcessorException.vb" />
+    <Compile Include="Exceptions\SnapshotWriteOutOfSequenceException.vb" />
+    <Compile Include="IdentifierGroup.vb" />
+    <Compile Include="Implementation\Azure\Blob\AzureBlobIdentifierGroupProcessor.vb" />
+    <Compile Include="Implementation\Azure\Blob\AzureBlobIdentifierGroupSnapshotReader.vb" />
+    <Compile Include="Implementation\Azure\Blob\AzureBlobIdentifierGroupSnapshotWriter.vb" />
+    <Compile Include="Implementation\Azure\Blob\BlobWrappedIdentifierGroupSnapshot.vb" />
+    <Compile Include="Implementation\Azure\File\AzureFileIdentifierGroupProcessor.vb" />
+    <Compile Include="Implementation\Azure\File\AzureFileIdentifierGroupSnapshotReader.vb" />
+    <Compile Include="Implementation\Azure\File\AzureFileIdentifierGroupSnapshotWriter.vb" />
+    <Compile Include="Implementation\Azure\SQL\AzureSQLIdentifierGroupProcessor.vb" />
+    <Compile Include="Implementation\Azure\SQL\AzureSQLIdentifierGroupSnapshotReader.vb" />
+    <Compile Include="Implementation\Azure\SQL\AzureSQLIdentifierGroupSnapshotWriter.vb" />
+    <Compile Include="Implementation\Azure\Table\AzureTableIdentifierGroupProcessor.vb" />
+    <Compile Include="Implementation\Azure\Table\AzureTableIdentifierGroupSnapshotReader.vb" />
+    <Compile Include="Implementation\Azure\Table\AzureTableIdentifierGroupSnapshotWriter.vb" />
+    <Compile Include="Implementation\ClassifierSnapshot.vb" />
+    <Compile Include="Implementation\IdentifierGroupFunctions.vb" />
+    <Compile Include="Implementation\IdentifierGroupProcessor.vb" />
     <Compile Include="Implementation\Azure\Blob\AzureBlobClassifier.vb" />
     <Compile Include="Implementation\Azure\File\AzureFileClassifier.vb" />
     <Compile Include="Implementation\Azure\SQL\AzureSQLClassifier.vb" />
     <Compile Include="Implementation\Azure\Table\AzureTableClassifier.vb" />
     <Compile Include="Implementation\ClassifierProcessor.vb" />
     <Compile Include="Implementation\InMemory\InMemoryClassifier.vb" />
+    <Compile Include="Implementation\InMemory\InMemoryClassifierSnapshotBase.vb" />
+    <Compile Include="Implementation\InMemory\InMemoryClassifierSnapshotReader.vb" />
+    <Compile Include="Implementation\InMemory\InMemoryClassifierSnapshotWriter.vb" />
+    <Compile Include="Implementation\InMemory\InMemoryIdentifierGroupProcessor.vb" />
+    <Compile Include="Implementation\InMemory\InMemoryIdentifierGroupSnapshotBase.vb" />
+    <Compile Include="Implementation\InMemory\InMemoryIdentifierGroupSnapshotReader.vb" />
+    <Compile Include="Implementation\InMemory\InMemoryIdentifierGroupSnapshotWriter.vb" />
+    <Compile Include="Implementation\LocalClassifierFilterProvider.vb" />
+    <Compile Include="Implementation\Local\File\LocalFileClassifier.vb" />
+    <Compile Include="Implementation\Local\File\LocalFileClassifierSnapshotBase.vb" />
+    <Compile Include="Implementation\Local\File\LocalFileClassifierSnapshotReader.vb" />
+    <Compile Include="Implementation\Local\File\LocalFileClassifierSnapshotWriter.vb" />
+    <Compile Include="Implementation\Local\File\LocalFileIdentifierGroupProcessor.vb" />
+    <Compile Include="Implementation\Local\File\LocalFileIdentifierGroupSnapshotBase.vb" />
+    <Compile Include="Implementation\Local\File\LocalFileIdentifierGroupSnapshotReader.vb" />
+    <Compile Include="Implementation\Local\File\LocalFileIdentifierGroupSnapshotWriter.vb" />
     <Compile Include="Interfaces\IClassifier.vb" />
+    <Compile Include="Interfaces\IClassifierEventHandler.vb" />
+    <Compile Include="Interfaces\IClassifierProcessor.vb" />
+    <Compile Include="Interfaces\IClassifierProcessorFactory.vb" />
+    <Compile Include="Interfaces\IClassifierProjectionHandler.vb" />
+    <Compile Include="Interfaces\IClassifierFilterProvider.vb" />
     <Compile Include="Interfaces\IClassifierSnapshot.vb" />
-    <Compile Include="Interfaces\IIdentityGroup.vb" />
+    <Compile Include="Interfaces\IClassifierSnapshotReader.vb" />
+    <Compile Include="Interfaces\IClassifierSnapshotWriter.vb" />
+    <Compile Include="Interfaces\IIdentifierGroupProcessor.vb" />
+    <Compile Include="Interfaces\IIdentifierGroupSnapshot.vb" />
+    <Compile Include="Interfaces\IIdentifierGroupSnapshotReader.vb" />
+    <Compile Include="Interfaces\IIdentifierGroupSnapshotWriter.vb" />
+    <Compile Include="Interfaces\IIdentifierGroup.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -110,6 +190,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
@@ -119,15 +200,19 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Configuration\IdentifierGroup.Configuration.ReadMe.txt" />
     <Content Include="CQRSAzure.IdentifierGroup.Overview.txt" />
     <Content Include="Implementation\Azure\Azure.ReadMe.txt" />
+    <Content Include="Implementation\Azure\Blob\Azure.Blob.ReadMe..txt" />
+    <Content Include="Implementation\Local\File\Local.File.ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CQRSAzure.Aggregation\CQRSAzure.Aggregation\CQRSAzure.Aggregation.vbproj">
-      <Project>{55dc5457-47f2-4992-968d-3658624acf37}</Project>
-      <Name>CQRSAzure.Aggregation</Name>
+    <ProjectReference Include="..\CQRS.EventSourcing.Implementation\CQRSAzure.EventSourcing.Implementation.vbproj">
+      <Project>{dfb8e469-c9b7-4ae5-b238-330fa64490af}</Project>
+      <Name>CQRSAzure.EventSourcing.Implementation</Name>
     </ProjectReference>
     <ProjectReference Include="..\CQRSAzure.EventSourcing\CQRSAzure.EventSourcing.vbproj">
       <Project>{551fbd94-8ce5-4e33-818a-9c3fc171f1ce}</Project>

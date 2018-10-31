@@ -46,19 +46,23 @@ namespace CQRSAzure.CQRSdsl.Dsl
 		/// See the MSDN documentation for the ToolboxItemFilterAttribute class for more information on toolbox
 		/// item filters.
 		/// </remarks>
-		public const string ToolboxFilterString = "CQRSdsl.1.1";
+		public const string ToolboxFilterString = "CQRSdsl.1.2";
 		/// <summary>
 		/// Toolbox item filter string used to identify ProjectionEventConnectionTool connector tool.
 		/// </summary>
-		public const string ProjectionEventConnectionToolFilterString = "ProjectionEventConnectionTool.1.1";
+		public const string ProjectionEventConnectionToolFilterString = "ProjectionEventConnectionTool.1.2";
 		/// <summary>
 		/// Toolbox item filter string used to identify AggregateParenthoodConnectionTool connector tool.
 		/// </summary>
-		public const string AggregateParenthoodConnectionToolFilterString = "AggregateParenthoodConnectionTool.1.1";
+		public const string AggregateParenthoodConnectionToolFilterString = "AggregateParenthoodConnectionTool.1.2";
 		/// <summary>
 		/// Toolbox item filter string used to identify ClassifierEventConnectionTool connector tool.
 		/// </summary>
-		public const string ClassifierEventConnectionToolFilterString = "ClassifierEventConnectionTool.1.1";
+		public const string ClassifierEventConnectionToolFilterString = "ClassifierEventConnectionTool.1.2";
+		/// <summary>
+		/// Toolbox item filter string used to identify ClassifierProjectionConnectionTool connector tool.
+		/// </summary>
+		public const string ClassifierProjectionConnectionToolFilterString = "ClassifierProjectionConnectionTool.1.2";
 
 	
 		private global::System.Collections.Generic.Dictionary<string, DslDesign::ModelingToolboxItem> toolboxItemCache = new global::System.Collections.Generic.Dictionary<string, DslDesign::ModelingToolboxItem>();
@@ -106,7 +110,7 @@ namespace CQRSAzure.CQRSdsl.Dsl
 		{
 			get
 			{
-				return 10;
+				return 11;
 			}
 		}
 		
@@ -319,6 +323,24 @@ namespace CQRSAzure.CQRSdsl.Dsl
 						new global::System.ComponentModel.ToolboxItemFilterAttribute[] { // Collection of ToolboxItemFilterAttribute objects that determine visibility of the toolbox item.
 							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString, global::System.ComponentModel.ToolboxItemFilterType.Require), 
 							new global::System.ComponentModel.ToolboxItemFilterAttribute(ClassifierEventConnectionToolFilterString)
+						});
+					break;
+				case "CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionConnectionToolToolboxItem":
+
+					// Add ClassifierProjectionConnectionTool connector tool.
+					result = new DslDesign::ModelingToolboxItem(
+						"CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionConnectionToolToolboxItem", // Unique identifier (non-localized) for the toolbox item.
+						11, // Position relative to other items in the same toolbox tab.
+						resourceManager.GetString("ClassifierProjectionConnectionToolToolboxItem", resourceCulture), // Localized display name for the item.
+						(global::System.Drawing.Bitmap)DslDiagrams::ImageHelper.GetImage(resourceManager.GetObject("ClassifierProjectionConnectionToolToolboxBitmap", resourceCulture)), // Image displayed next to the toolbox item.				
+						"CQRSAzure.CQRSdsl.Dsl.CQRS DesignerToolboxTab", // Unique identifier (non-localized) for the toolbox item tab.
+						resourceManager.GetString("CQRS DesignerToolboxTab", resourceCulture), // Localized display name for the toolbox tab.
+						"ClassifierProjectionConnectionTool", // F1 help keyword for the toolbox item.
+						resourceManager.GetString("ClassifierProjectionConnectionToolToolboxTooltip", resourceCulture), // Localized tooltip text for the toolbox item.
+						null, // Connector toolbox items do not have an underlying data object.
+						new global::System.ComponentModel.ToolboxItemFilterAttribute[] { // Collection of ToolboxItemFilterAttribute objects that determine visibility of the toolbox item.
+							new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString, global::System.ComponentModel.ToolboxItemFilterType.Require), 
+							new global::System.ComponentModel.ToolboxItemFilterAttribute(ClassifierProjectionConnectionToolFilterString)
 						});
 					break;
 				default:

@@ -25,4 +25,21 @@ Public Class CQRSAzureEventSourcingConfigurationSection
         End Get
     End Property
 
+    <ConfigurationProperty(NameOf(SnapshotSettings), IsRequired:=False)>
+    <ConfigurationCollection(GetType(CQRSAzureEventSourcingProjectionSnapshotSettingsElement),
+                             AddItemName:=CQRSAzureEventSourcingProjectionSnapshotSettingsElementCollection.AddItemName)>
+    Public ReadOnly Property SnapshotSettings As CQRSAzureEventSourcingProjectionSnapshotSettingsElementCollection
+        Get
+            Return Me(NameOf(SnapshotSettings))
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' An empty configuration that can be used as a default if Null/Nothing is not allowed
+    ''' </summary>
+    ''' <returns></returns>
+    Public Shared Function DefaultConfiguration() As CQRSAzureEventSourcingConfigurationSection
+        Return New CQRSAzureEventSourcingConfigurationSection()
+    End Function
+
 End Class

@@ -1,11 +1,24 @@
-﻿''' <summary>
+﻿
+''' <summary>
+''' Type safe query definition that specifies the expected return results
+''' </summary>
+''' <typeparam name="TResult">
+''' The data type of the data we expect back from this query
+''' </typeparam>
+Public Interface IQueryDefinition(Of TResult)
+    Inherits IQueryDefinition
+
+End Interface
+
+''' <summary>
 ''' Interface to be implemented by all query definitions 
 ''' </summary>
 ''' <remarks>
 ''' This allows for a separation of concerns between the definition of the query and any parameters it requires,
 ''' the validation(s) of that query and the execution of the query
 ''' </remarks>
-Public Interface IQueryDefinition(Of TResult)
+Public Interface IQueryDefinition
+
 
     ''' <summary>
     ''' Unique identifier of this query instance
@@ -105,5 +118,26 @@ Public Interface IQueryDefinition(Of TResult)
     ''' </remarks>
     Sub SetParameterValue(Of TValueType)(ByVal parameterName As String, ByVal parameterIndex As Integer, ByRef value As TValueType)
 
+    ''' <summary>
+    ''' The name of the identity group over which this query is to be executed
+    ''' </summary>
+    ''' <remarks>
+    ''' This may be blank if the query runs over all event stream instances, and is passed as a specific named parameter so that the 
+    ''' identity group can be tuned/set at the application front end
+    ''' </remarks>
+    ReadOnly Property IdentityGroupName As String
+
+    ''' <summary>
+    ''' The name of the projection to run over each member of the identity group to get the results for the query
+    ''' </summary>
+    ''' <remarks>
+    ''' This may also be blank meaning use the default projection defined for the query (lookup by name)
+    ''' </remarks>
+    ReadOnly Property ProjectionName As String
+
+    ''' <summary>
+    ''' Does the query return a set of results (as an IEnumerable) as opposed to just one result object
+    ''' </summary>
+    ReadOnly Property MultiRowResults As Boolean
 
 End Interface

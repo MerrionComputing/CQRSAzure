@@ -95,8 +95,8 @@ Public NotInheritable Class QueryParameter(Of TValue)
     ''' <param name="value">
     ''' The value to use for this parameter
     ''' </param>
-    Public Shared Function Create(Of TValueType)(ByVal name As String, ByVal index As Integer, ByVal value As TValueType) As QueryParameter(Of TValueType)
-        Return New QueryParameter(Of TValueType)(name, index, value)
+    Public Shared Function Create(ByVal name As String, ByVal index As Integer, ByVal value As TValue) As QueryParameter(Of TValue)
+        Return New QueryParameter(Of TValue)(name, index, value)
     End Function
 
     ''' <summary>

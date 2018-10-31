@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CQRSAzure.CQRSdsl.CustomCode.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,7 @@ namespace CQRSAzure.CQRSdsl.Dsl
     /// </summary>
     public partial class ClassifierEventEvaluation
     {
+
 
         /// <summary>
         /// Put together a string representing this event evaluation operation

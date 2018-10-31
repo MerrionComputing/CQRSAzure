@@ -55,12 +55,22 @@ namespace CQRSAzure.CQRSdsl.Dsl
             }
         }
 
+        private readonly bool _generateEntityFrameworkClasses;
+        public bool GenerateEntityFrameworkClasses
+        {
+            get
+            {
+                return _generateEntityFrameworkClasses;
+            }
+        }
+
         private ModelCodeGenerationOptions(
                     ModelCodegenerationOptionsBase.SupportedLanguages CodeLanguageIn,
                     ModelCodegenerationOptionsBase.ConstructorPreferenceSetting ConstructorPreferenceIn,
                     System.IO.DirectoryInfo DirectoryRootIn,
                     bool SeparateFolderPerModelIn,
-                    bool SeparateFolderPerAggregateIn)
+                    bool SeparateFolderPerAggregateIn,
+                    bool GenerateEntityFrameworkClassesIn = false )
         {
 
             _codelanguage = CodeLanguageIn;
@@ -69,21 +79,36 @@ namespace CQRSAzure.CQRSdsl.Dsl
             _separateFolderPerModel = SeparateFolderPerModelIn;
             _separateFolderPerAggregate = SeparateFolderPerAggregateIn;
 
+            _generateEntityFrameworkClasses = GenerateEntityFrameworkClassesIn;
         }
 
 
-        public static ModelCodeGenerationOptions Create(ModelCodegenerationOptionsBase.SupportedLanguages CodeLanguageIn,
+        public static IModelCodeGenerationOptions Create(ModelCodegenerationOptionsBase.SupportedLanguages CodeLanguageIn,
                     ModelCodegenerationOptionsBase.ConstructorPreferenceSetting ConstructorPreferenceIn,
                     System.IO.DirectoryInfo DirectoryRootIn,
                     bool SeparateFolderPerModelIn,
-                    bool SeparateFolderPerAggregateIn)
+                    bool SeparateFolderPerAggregateIn,
+                    bool GenerateEntityFrameworkClassesIn = false)
         {
 
             return new ModelCodeGenerationOptions(CodeLanguageIn,
                 ConstructorPreferenceIn,
                 DirectoryRootIn,
                 SeparateFolderPerModelIn,
-                SeparateFolderPerAggregateIn);
+                SeparateFolderPerAggregateIn,
+                GenerateEntityFrameworkClassesIn);
+
+        }
+
+        public static IModelCodeGenerationOptions Default()
+        {
+            return new ModelCodeGenerationOptions(ModelCodegenerationOptionsBase.SupportedLanguages.CSharp,
+                ModelCodegenerationOptionsBase.ConstructorPreferenceSetting.GenerateBoth,
+               new System.IO.DirectoryInfo(System.IO.Path.GetTempPath()),
+               true,
+               true, 
+               false
+               );
 
         }
 

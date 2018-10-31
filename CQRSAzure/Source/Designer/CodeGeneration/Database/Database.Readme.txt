@@ -1,0 +1,12 @@
+﻿Database
+========
+
+Creates the DBContext related classes to create the tables and foreign-key links needed to create an Event Stream backing store for the CQRS model 
+which uses Azure SQL as it's backing store.
+
+The table structure is that there is a core "Aggregate Event Stream" table which has fields to uniquely identify the aggregate instance,
+the event type and sequence number.  There is then a separate table created for each event type specified for that aggregate which holds the additional
+data properties of that event.
+
+The SQL code generation will create DBSet entities for every aggregate in the model.  If you only want some of them backed by an SQL database (in a hybrid model)
+then you will need to turn off the DBSet properties for that aggregate.

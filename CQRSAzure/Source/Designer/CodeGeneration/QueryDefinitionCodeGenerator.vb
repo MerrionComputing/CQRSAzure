@@ -139,29 +139,46 @@ Public Class QueryDefinitionCodeGenerator
         'Add the model name (DomainNameAttribute)
         If Not String.IsNullOrWhiteSpace(m_query.AggregateIdentifier.CQRSModel.Name) Then
             Dim params As New List(Of CodeAttributeArgument)
-            params.Add(New CodeAttributeArgument("domainNameIn", New CodePrimitiveExpression(m_query.AggregateIdentifier.CQRSModel.Name)))
+            params.Add(New CodeAttributeArgument(New CodePrimitiveExpression(m_query.AggregateIdentifier.CQRSModel.Name)))
             classDeclaration.CustomAttributes.Add(
-                AttributeCodeGenerator.ParameterisedAttribute("CQRSAzure.EventSourcing.DomainNameAttribute",
+                AttributeCodeGenerator.ParameterisedAttribute(AttributeCodeGenerator.ATTRIBUTENAME_DOMAIN,
                                                               params))
         End If
 
         'Add the category attribute
         If Not String.IsNullOrWhiteSpace(m_query.Category) Then
             Dim params As New List(Of CodeAttributeArgument)
-            params.Add(New CodeAttributeArgument("categoryNameIn", New CodePrimitiveExpression(m_query.Category)))
+            params.Add(New CodeAttributeArgument(New CodePrimitiveExpression(m_query.Category)))
             classDeclaration.CustomAttributes.Add(
-                AttributeCodeGenerator.ParameterisedAttribute("CQRSAzure.EventSourcing.Category",
+                AttributeCodeGenerator.ParameterisedAttribute(AttributeCodeGenerator.ATTRIBUTENAME_CATEGORY,
                                                               params))
         End If
 
+        ' If the query is linked to a named identity group, add that as an attribute to the class
+        If (m_query.IdentityGroup IsNot Nothing) Then
+            Dim params As New List(Of CodeAttributeArgument)
+            params.Add(New CodeAttributeArgument(New CodePrimitiveExpression(m_query.IdentityGroup.Name)))
+            classDeclaration.CustomAttributes.Add(
+                            AttributeCodeGenerator.ParameterisedAttribute(AttributeCodeGenerator.ATTRIBUTENAME_IDENTITY_GROUP, params))
+        End If
+
         'Public MustOverride ReadOnly Property QueryName As String
+        Dim propQueryname As CodeMemberProperty = InterfaceCodeGeneration.SimplePropertyDeclaration(True, "QueryName", PropertyDataType.String, publicMember:=True)
+        If (propQueryname IsNot Nothing) Then
+            propQueryname.Comments.AddRange(CommentGeneration.SummaryCommentSection({"The unique name of this query", m_query.Name}))
+            propQueryname.ImplementationTypes.Add(InterfaceCodeGeneration.ImplementsInterfaceReference("QueryDefinition"))
+            MethodCodeGenerator.MakeOverrides(propQueryname)
+            'return a string constant 
+            propQueryname.GetStatements.Add(New CodeMethodReturnStatement(New CodePrimitiveExpression(m_query.Name)))
+            classDeclaration.Members.Add(propQueryname)
+        End If
 
         ' Add the input parameters definition
         ' (Note - no private memebrs required as we use the base.AddParameter syntax)
         If (m_query.QueryInputParameters IsNot Nothing) Then
             If (m_query.QueryInputParameters.Count > 0) Then
                 For Each qryInProp In m_query.QueryInputParameters
-                    Dim inputParamMember As CodeMemberProperty = InterfaceCodeGeneration.SimplePropertyDeclaration(False, qryInProp.Name, qryInProp.DataType)
+                    Dim inputParamMember As CodeMemberProperty = InterfaceCodeGeneration.SimplePropertyDeclaration(False, qryInProp.Name, qryInProp.DataType, publicMember:=True)
                     If (inputParamMember IsNot Nothing) Then
                         'Add business meaning comments
                         If Not String.IsNullOrEmpty(qryInProp.Description) Then
@@ -170,16 +187,31 @@ Public Class QueryDefinitionCodeGenerator
                         If Not String.IsNullOrEmpty(qryInProp.Notes) Then
                             inputParamMember.Comments.AddRange(CommentGeneration.RemarksCommentSection({qryInProp.Notes}))
                         End If
+
+                        If (qryInProp.IsAggregateKey) Then
+                            'Add an AggregateKey attribute
+                            inputParamMember.CustomAttributes.Add(
+                            AttributeCodeGenerator.ParameterisedAttribute(AttributeCodeGenerator.ATTRIBUTENAME_AGGREGATE_KEY, New List(Of CodeAttributeArgument)))
+                        End If
+                        If (qryInProp.IsIdentityGroupName) Then
+                            'Add an IdentityGroup attribute
+                            inputParamMember.CustomAttributes.Add(
+                            AttributeCodeGenerator.ParameterisedAttribute(AttributeCodeGenerator.ATTRIBUTENAME_IDENTITY_GROUP, New List(Of CodeAttributeArgument)))
+                        End If
+
                         ' Add the inner code to the get and set
                         'GetStatements --> MyBase.GetParameterValue(parameterName, 0)
 
+                        Dim valueTypeReference As CodeTypeReference = InterfaceCodeGeneration.ToPropertyTypeReference(qryInProp.DataType)
                         Dim GetParameterValueParameters As CodeExpression() = {New CodePrimitiveExpression(qryInProp.Name), New CodePrimitiveExpression(0)}
-                        Dim GetParameterValueMethod As New CodeMethodReferenceExpression(New CodeBaseReferenceExpression(), "GetParameterValue")
+                        Dim GetParameterValueMethod As New CodeMethodReferenceExpression(New CodeBaseReferenceExpression(), "GetParameterValue", valueTypeReference)
                         Dim GetParameterValueInvoke As New CodeMethodInvokeExpression(GetParameterValueMethod, GetParameterValueParameters)
                         inputParamMember.GetStatements.Add(New CodeMethodReturnStatement(GetParameterValueInvoke))
 
                         'SetStatements --> MyBase.SetParameterValue
-                        Dim SetParameterValueParameters As CodeExpression() = {New CodePrimitiveExpression(qryInProp.Name), New CodePrimitiveExpression(0), New CodeVariableReferenceExpression("Value")}
+                        Dim valueParam As CodeVariableReferenceExpression = New CodeVariableReferenceExpression("value")
+                        Dim refValueParam As CodeDirectionExpression = New CodeDirectionExpression(FieldDirection.Ref, valueParam)
+                        Dim SetParameterValueParameters As CodeExpression() = {New CodePrimitiveExpression(qryInProp.Name), New CodePrimitiveExpression(0), refValueParam}
                         Dim SetParameterValueMethod As New CodeMethodReferenceExpression(New CodeBaseReferenceExpression(), "SetParameterValue")
                         Dim SetParameterValueInvoke As New CodeMethodInvokeExpression(SetParameterValueMethod, SetParameterValueParameters)
                         inputParamMember.SetStatements.Add(SetParameterValueInvoke)
@@ -223,9 +255,9 @@ Public Class QueryDefinitionCodeGenerator
     Public ReadOnly Property RequiredNamespaces As IEnumerable(Of CodeNamespaceImport) Implements IEntityCodeGenerator.RequiredNamespaces
         Get
             Return {
-                New CodeNamespaceImport("CQRSAzure"),
+                New CodeNamespaceImport("System"),
+                New CodeNamespaceImport("System.Collections.Generic"),
                 New CodeNamespaceImport("CQRSAzure.EventSourcing"),
-                New CodeNamespaceImport("CQRSAzure.Aggregation"),
                 New CodeNamespaceImport("CQRSAzure.QueryDefinition"),
                 CodeGenerationUtilities.CreateNamespaceImport({m_query.AggregateIdentifier.CQRSModel.Name,
                     m_query.AggregateIdentifier.Name})
@@ -234,8 +266,8 @@ Public Class QueryDefinitionCodeGenerator
     End Property
 
 
-    Private m_options As ModelCodeGenerationOptions = ModelCodeGenerationOptions.DefaultOptions()
-    Public Sub SetCodeGenerationOptions(options As ModelCodeGenerationOptions) Implements IEntityCodeGenerator.SetCodeGenerationOptions
+    Private m_options As IModelCodeGenerationOptions = ModelCodeGenerationOptions.Default()
+    Public Sub SetCodeGenerationOptions(options As IModelCodeGenerationOptions) Implements IEntityCodeGenerator.SetCodeGenerationOptions
         m_options = options
     End Sub
 
@@ -364,7 +396,7 @@ Public Class QueryHandlerCodeGenerator
         'Add the model name (DomainNameAttribute)
         If Not String.IsNullOrWhiteSpace(m_query.AggregateIdentifier.CQRSModel.Name) Then
             Dim params As New List(Of CodeAttributeArgument)
-            params.Add(New CodeAttributeArgument("domainNameIn", New CodePrimitiveExpression(m_query.AggregateIdentifier.CQRSModel.Name)))
+            params.Add(New CodeAttributeArgument(New CodePrimitiveExpression(m_query.AggregateIdentifier.CQRSModel.Name)))
             classDeclaration.CustomAttributes.Add(
                 AttributeCodeGenerator.ParameterisedAttribute("CQRSAzure.EventSourcing.DomainNameAttribute",
                                                               params))
@@ -373,7 +405,7 @@ Public Class QueryHandlerCodeGenerator
         'Add the category attribute
         If Not String.IsNullOrWhiteSpace(m_query.Category) Then
             Dim params As New List(Of CodeAttributeArgument)
-            params.Add(New CodeAttributeArgument("categoryNameIn", New CodePrimitiveExpression(m_query.Category)))
+            params.Add(New CodeAttributeArgument(New CodePrimitiveExpression(m_query.Category)))
             classDeclaration.CustomAttributes.Add(
                 AttributeCodeGenerator.ParameterisedAttribute("CQRSAzure.EventSourcing.Category",
                                                               params))
@@ -392,6 +424,7 @@ Public Class QueryHandlerCodeGenerator
         Dim qryParameter As New CodeParameterDeclarationExpression(qryDefinitionInterface, "qryToHandle")
         Dim handleQueryFunction = MethodCodeGenerator.PublicParameterisedFunction("HandleQuery", returnType, {qryParameter})
         If (handleQueryFunction IsNot Nothing) Then
+            MethodCodeGenerator.MakeOverrides(handleQueryFunction)
             'Add comment summary to the function
             If (String.IsNullOrWhiteSpace(m_query.Description)) Then
                 handleQueryFunction.Comments.AddRange(CommentGeneration.SummaryCommentSection({"Handle the query definition", m_query.Name}))
@@ -444,20 +477,21 @@ Public Class QueryHandlerCodeGenerator
     Public ReadOnly Property RequiredNamespaces As IEnumerable(Of CodeNamespaceImport) Implements IEntityCodeGenerator.RequiredNamespaces
         Get
             Return {
-                New CodeNamespaceImport("CQRSAzure"),
                 New CodeNamespaceImport("CQRSAzure.EventSourcing"),
-                New CodeNamespaceImport("CQRSAzure.Aggregation"),
                 New CodeNamespaceImport("CQRSAzure.QueryDefinition"),
                 New CodeNamespaceImport("CQRSAzure.QueryHandler"),
+                New CodeNamespaceImport("System.Collections.Generic"),
                 CodeGenerationUtilities.CreateNamespaceImport({m_query.AggregateIdentifier.CQRSModel.Name,
-                    m_query.AggregateIdentifier.Name})
+                    m_query.AggregateIdentifier.Name}),
+                CodeGenerationUtilities.CreateNamespaceImport({m_query.AggregateIdentifier.CQRSModel.Name,
+                    m_query.AggregateIdentifier.Name, QueryDefinitionCodeGenerator.QUERY_FILENAME_IDENTIFIER})
                 }
         End Get
     End Property
 
 
-    Private m_options As ModelCodeGenerationOptions = ModelCodeGenerationOptions.DefaultOptions()
-    Public Sub SetCodeGenerationOptions(options As ModelCodeGenerationOptions) Implements IEntityCodeGenerator.SetCodeGenerationOptions
+    Private m_options As IModelCodeGenerationOptions = ModelCodeGenerationOptions.Default()
+    Public Sub SetCodeGenerationOptions(options As IModelCodeGenerationOptions) Implements IEntityCodeGenerator.SetCodeGenerationOptions
         m_options = options
     End Sub
 

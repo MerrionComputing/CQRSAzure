@@ -1,4 +1,5 @@
 ﻿Imports System.CodeDom
+Imports CQRSAzure.CQRSdsl.CustomCode.Interfaces
 Imports CQRSAzure.CQRSdsl.Dsl
 
 Public Class CommandDefinitionCodeGenerator
@@ -50,6 +51,9 @@ Public Class CommandDefinitionCodeGenerator
         If (Not String.IsNullOrWhiteSpace(m_command.Notes)) Then
             interfaceDeclaration.Comments.AddRange(CommentGeneration.RemarksCommentSection({m_command.Notes}))
         End If
+
+        'Implement ICommandDefinition
+        interfaceDeclaration.BaseTypes.Add(InterfaceCodeGeneration.ImplementsInterfaceReference("CommandDefinition"))
 
         'Create the ICommandDefinition based interface
         If (m_command.CommandParameters IsNot Nothing) Then
@@ -107,29 +111,46 @@ Public Class CommandDefinitionCodeGenerator
         'Add the model name (DomainNameAttribute)
         If Not String.IsNullOrWhiteSpace(m_command.AggregateIdentifier.CQRSModel.Name) Then
             Dim params As New List(Of CodeAttributeArgument)
-            params.Add(New CodeAttributeArgument("domainNameIn", New CodePrimitiveExpression(m_command.AggregateIdentifier.CQRSModel.Name)))
+            params.Add(New CodeAttributeArgument(New CodePrimitiveExpression(m_command.AggregateIdentifier.CQRSModel.Name)))
             classDeclaration.CustomAttributes.Add(
-                AttributeCodeGenerator.ParameterisedAttribute("CQRSAzure.EventSourcing.DomainNameAttribute",
+                AttributeCodeGenerator.ParameterisedAttribute(AttributeCodeGenerator.ATTRIBUTENAME_DOMAIN,
                                                               params))
         End If
 
         'Add the category attribute
         If Not String.IsNullOrWhiteSpace(m_command.Category) Then
             Dim params As New List(Of CodeAttributeArgument)
-            params.Add(New CodeAttributeArgument("categoryNameIn", New CodePrimitiveExpression(m_command.Category)))
+            params.Add(New CodeAttributeArgument(New CodePrimitiveExpression(m_command.Category)))
             classDeclaration.CustomAttributes.Add(
-                AttributeCodeGenerator.ParameterisedAttribute("CQRSAzure.EventSourcing.Category",
+                AttributeCodeGenerator.ParameterisedAttribute(AttributeCodeGenerator.ATTRIBUTENAME_CATEGORY,
                                                               params))
         End If
 
-        'TODO : Implement CommandDefinitionBase.CommandName As String 
 
+        ' If the query is linked to a named identity group, add that as an attribute to the class
+        If (m_command.IdentityGroup IsNot Nothing) Then
+            Dim params As New List(Of CodeAttributeArgument)
+            params.Add(New CodeAttributeArgument(New CodePrimitiveExpression(m_command.IdentityGroup.Name)))
+            classDeclaration.CustomAttributes.Add(
+                            AttributeCodeGenerator.ParameterisedAttribute(AttributeCodeGenerator.ATTRIBUTENAME_IDENTITY_GROUP, New List(Of CodeAttributeArgument)))
+        End If
+
+        'Implement CommandDefinitionBase.CommandName As String 
+        Dim propCommandname As CodeMemberProperty = InterfaceCodeGeneration.SimplePropertyDeclaration(True, "CommandName", PropertyDataType.String, publicMember:=True)
+        If (propCommandname IsNot Nothing) Then
+            propCommandname.Comments.AddRange(CommentGeneration.SummaryCommentSection({"The unique name of this command", m_command.Name}))
+            propCommandname.ImplementationTypes.Add(InterfaceCodeGeneration.ImplementsInterfaceReference("CommandDefinition"))
+            MethodCodeGenerator.MakeOverrides(propCommandname)
+            'return a string constant 
+            propCommandname.GetStatements.Add(New CodeMethodReturnStatement(New CodePrimitiveExpression(m_command.Name)))
+            classDeclaration.Members.Add(propCommandname)
+        End If
 
         'Create the command properties
         ' Note - no backing parameter needed as we will be usingthe AddMember of the base class
         If (m_command.CommandParameters IsNot Nothing) Then
             For Each cmdPar In m_command.CommandParameters
-                Dim cmdParamMember As CodeMemberProperty = InterfaceCodeGeneration.SimplePropertyDeclaration(False, cmdPar.Name, cmdPar.ParameterType)
+                Dim cmdParamMember As CodeMemberProperty = InterfaceCodeGeneration.SimplePropertyDeclaration(False, cmdPar.Name, cmdPar.ParameterType, publicMember:=True)
                 If (cmdParamMember IsNot Nothing) Then
                     'Add business meaning comments
                     If Not String.IsNullOrEmpty(cmdPar.Description) Then
@@ -138,16 +159,31 @@ Public Class CommandDefinitionCodeGenerator
                     If Not String.IsNullOrEmpty(cmdPar.Notes) Then
                         cmdParamMember.Comments.AddRange(CommentGeneration.RemarksCommentSection({cmdPar.Notes}))
                     End If
+
+                    If (cmdPar.IsAggregateKey) Then
+                        'Add an AggregateKey attribute
+                        cmdParamMember.CustomAttributes.Add(
+                            AttributeCodeGenerator.ParameterisedAttribute(AttributeCodeGenerator.ATTRIBUTENAME_AGGREGATE_KEY, New List(Of CodeAttributeArgument)))
+                    End If
+                    If (cmdPar.IsIdentityGroupName) Then
+                        'Add an IdentityGroup attribute
+                        cmdParamMember.CustomAttributes.Add(
+                            AttributeCodeGenerator.ParameterisedAttribute(AttributeCodeGenerator.ATTRIBUTENAME_IDENTITY_GROUP, New List(Of CodeAttributeArgument)))
+                    End If
+
                     ' Add the inner code to the get and set
-                    'GetStatements --> MyBase.GetParameterValue(parameterName, 0)
+                    'GetStatements --> MyBase.GetParameterValue(Of TKey)(parameterName, 0)
 
                     Dim GetParameterValueParameters As CodeExpression() = {New CodePrimitiveExpression(cmdPar.Name), New CodePrimitiveExpression(0)}
-                    Dim GetParameterValueMethod As New CodeMethodReferenceExpression(New CodeBaseReferenceExpression(), "GetParameterValue")
+                    Dim valueTypeReference As CodeTypeReference = InterfaceCodeGeneration.ToPropertyTypeReference(cmdPar.ParameterType)
+                    Dim GetParameterValueMethod As New CodeMethodReferenceExpression(New CodeBaseReferenceExpression(), "GetParameterValue", valueTypeReference)
                     Dim GetParameterValueInvoke As New CodeMethodInvokeExpression(GetParameterValueMethod, GetParameterValueParameters)
                     cmdParamMember.GetStatements.Add(New CodeMethodReturnStatement(GetParameterValueInvoke))
 
                     'SetStatements --> MyBase.SetParameterValue
-                    Dim SetParameterValueParameters As CodeExpression() = {New CodePrimitiveExpression(cmdPar.Name), New CodePrimitiveExpression(0), New CodeVariableReferenceExpression("Value")}
+                    Dim valueParam As CodeVariableReferenceExpression = New CodeVariableReferenceExpression("value")
+                    Dim refValueParam As CodeDirectionExpression = New CodeDirectionExpression(FieldDirection.Ref, valueParam)
+                    Dim SetParameterValueParameters As CodeExpression() = {New CodePrimitiveExpression(cmdPar.Name), New CodePrimitiveExpression(0), refValueParam}
                     Dim SetParameterValueMethod As New CodeMethodReferenceExpression(New CodeBaseReferenceExpression(), "SetParameterValue")
                     Dim SetParameterValueInvoke As New CodeMethodInvokeExpression(SetParameterValueMethod, SetParameterValueParameters)
                     cmdParamMember.SetStatements.Add(SetParameterValueInvoke)
@@ -187,9 +223,8 @@ Public Class CommandDefinitionCodeGenerator
     Public ReadOnly Property RequiredNamespaces As IEnumerable(Of CodeNamespaceImport) Implements IEntityCodeGenerator.RequiredNamespaces
         Get
             Return {
-                New CodeNamespaceImport("CQRSAzure"),
+                New CodeNamespaceImport("System"),
                 New CodeNamespaceImport("CQRSAzure.EventSourcing"),
-                New CodeNamespaceImport("CQRSAzure.Aggregation"),
                 New CodeNamespaceImport("CQRSAzure.CommandDefinition"),
                 CodeGenerationUtilities.CreateNamespaceImport({m_command.AggregateIdentifier.CQRSModel.Name,
                     m_command.AggregateIdentifier.Name})
@@ -197,8 +232,8 @@ Public Class CommandDefinitionCodeGenerator
         End Get
     End Property
 
-    Private m_options As ModelCodeGenerationOptions = ModelCodeGenerationOptions.DefaultOptions()
-    Public Sub SetCodeGenerationOptions(options As ModelCodeGenerationOptions) Implements IEntityCodeGenerator.SetCodeGenerationOptions
+    Private m_options As IModelCodeGenerationOptions = ModelCodeGenerationOptions.Default()
+    Public Sub SetCodeGenerationOptions(options As IModelCodeGenerationOptions) Implements IEntityCodeGenerator.SetCodeGenerationOptions
         m_options = options
     End Sub
 
@@ -293,6 +328,7 @@ Public Class CommandHandlerCodeGenerator
         If (Not String.IsNullOrWhiteSpace(m_command.Notes)) Then
             classDeclaration.Comments.AddRange(CommentGeneration.RemarksCommentSection({m_command.Notes}))
         End If
+
         'Make the class implement the base class CommandHandlerBase(Of TCommandDefinition)  and the interface
         Dim cmdDefinitionInterface As CodeTypeReference = InterfaceCodeGeneration.ImplementsInterfaceReference(m_command.Name & "_" & CommandDefinitionCodeGenerator.COMMAND_DEFINITION_SUFFIX)
         classDeclaration.BaseTypes.Add(New CodeTypeReference("CommandHandlerBase", {cmdDefinitionInterface}))
@@ -301,7 +337,7 @@ Public Class CommandHandlerCodeGenerator
         'Add the model name (DomainNameAttribute)
         If Not String.IsNullOrWhiteSpace(m_command.AggregateIdentifier.CQRSModel.Name) Then
             Dim params As New List(Of CodeAttributeArgument)
-            params.Add(New CodeAttributeArgument("domainNameIn", New CodePrimitiveExpression(m_command.AggregateIdentifier.CQRSModel.Name)))
+            params.Add(New CodeAttributeArgument(New CodePrimitiveExpression(m_command.AggregateIdentifier.CQRSModel.Name)))
             classDeclaration.CustomAttributes.Add(
                 AttributeCodeGenerator.ParameterisedAttribute("CQRSAzure.EventSourcing.DomainNameAttribute",
                                                               params))
@@ -310,7 +346,7 @@ Public Class CommandHandlerCodeGenerator
         'Add the category attribute
         If Not String.IsNullOrWhiteSpace(m_command.Category) Then
             Dim params As New List(Of CodeAttributeArgument)
-            params.Add(New CodeAttributeArgument("categoryNameIn", New CodePrimitiveExpression(m_command.Category)))
+            params.Add(New CodeAttributeArgument(New CodePrimitiveExpression(m_command.Category)))
             classDeclaration.CustomAttributes.Add(
                 AttributeCodeGenerator.ParameterisedAttribute("CQRSAzure.EventSourcing.Category",
                                                               params))
@@ -320,6 +356,7 @@ Public Class CommandHandlerCodeGenerator
         Dim cmdParameter As New CodeParameterDeclarationExpression(cmdDefinitionInterface, "cmdToHandle")
         Dim handleCommandSub = MethodCodeGenerator.PublicParameterisedSub("HandleCommand", {cmdParameter})
         If (handleCommandSub IsNot Nothing) Then
+            MethodCodeGenerator.MakeOverrides(handleCommandSub)
             'add comment summary to the command
             If (String.IsNullOrWhiteSpace(m_command.Description)) Then
                 handleCommandSub.Comments.AddRange(CommentGeneration.SummaryCommentSection({"Handle the command definition", m_command.Name}))
@@ -361,19 +398,20 @@ Public Class CommandHandlerCodeGenerator
     Public ReadOnly Property RequiredNamespaces As IEnumerable(Of CodeNamespaceImport) Implements IEntityCodeGenerator.RequiredNamespaces
         Get
             Return {
-                New CodeNamespaceImport("CQRSAzure"),
                 New CodeNamespaceImport("CQRSAzure.EventSourcing"),
-                New CodeNamespaceImport("CQRSAzure.Aggregation"),
                 New CodeNamespaceImport("CQRSAzure.CommandDefinition"),
                 New CodeNamespaceImport("CQRSAzure.CommandHandler"),
                 CodeGenerationUtilities.CreateNamespaceImport({m_command.AggregateIdentifier.CQRSModel.Name,
-                    m_command.AggregateIdentifier.Name})
+                    m_command.AggregateIdentifier.Name}),
+                CodeGenerationUtilities.CreateNamespaceImport({m_command.AggregateIdentifier.CQRSModel.Name,
+                    m_command.AggregateIdentifier.Name,
+                    CommandDefinitionCodeGenerator.COMMAND_FILENAME_IDENTIFIER})
                 }
         End Get
     End Property
 
-    Private m_options As ModelCodeGenerationOptions = ModelCodeGenerationOptions.DefaultOptions()
-    Public Sub SetCodeGenerationOptions(options As ModelCodeGenerationOptions) Implements IEntityCodeGenerator.SetCodeGenerationOptions
+    Private m_options As IModelCodeGenerationOptions = ModelCodeGenerationOptions.Default()
+    Public Sub SetCodeGenerationOptions(options As IModelCodeGenerationOptions) Implements IEntityCodeGenerator.SetCodeGenerationOptions
         m_options = options
     End Sub
 

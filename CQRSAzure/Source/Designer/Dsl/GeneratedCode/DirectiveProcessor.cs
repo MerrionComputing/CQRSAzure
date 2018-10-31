@@ -415,7 +415,7 @@ namespace CQRSAzure.CQRSdsl.Dsl
 			references.Add(this.GetType().Assembly.Location);
 			references.Add(typeof(global::Microsoft.VisualStudio.Modeling.Diagrams.Diagram).Assembly.Location);
 			references.Add(typeof(DslModeling::Store).Assembly.Location);
-			references.Add("Microsoft.VisualStudio.TextTemplating.Modeling.14.0");
+			references.Add(typeof(Microsoft.VisualStudio.TextTemplating.VSHost.BaseCodeGenerator).Assembly.Location);
 			return references.ToArray();
 		}
 	}

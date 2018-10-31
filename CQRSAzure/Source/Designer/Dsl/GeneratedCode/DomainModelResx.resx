@@ -165,6 +165,110 @@
     <value>Documentation</value>
     <comment>Category for DomainProperty &apos;Description&apos; on DomainClass &apos;CQRSModel&apos;</comment>
   </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.CQRSModel/DefaultCodeGenerationLanguage.Description" xml:space="preserve">
+    <value>The default language to use when doing code generation for this model</value>
+    <comment>Description for DomainProperty &apos;DefaultCodeGenerationLanguage&apos; on DomainClass &apos;CQRSModel&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.CQRSModel/DefaultCodeGenerationLanguage.DisplayName" xml:space="preserve">
+    <value>Default Code Generation Language</value>
+    <comment>DisplayName for DomainProperty &apos;DefaultCodeGenerationLanguage&apos; on DomainClass &apos;CQRSModel&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.CQRSModel/DefaultCodeGenerationLanguage.Category" xml:space="preserve">
+    <value>Code Generation</value>
+    <comment>Category for DomainProperty &apos;DefaultCodeGenerationLanguage&apos; on DomainClass &apos;CQRSModel&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.CQRSModel/SubfolderPerDomain.Description" xml:space="preserve">
+    <value>Should each domain code be put in its own subfolder?</value>
+    <comment>Description for DomainProperty &apos;SubfolderPerDomain&apos; on DomainClass &apos;CQRSModel&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.CQRSModel/SubfolderPerDomain.DisplayName" xml:space="preserve">
+    <value>Subfolder Per Domain</value>
+    <comment>DisplayName for DomainProperty &apos;SubfolderPerDomain&apos; on DomainClass &apos;CQRSModel&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.CQRSModel/SubfolderPerDomain.Category" xml:space="preserve">
+    <value>Code Generation</value>
+    <comment>Category for DomainProperty &apos;SubfolderPerDomain&apos; on DomainClass &apos;CQRSModel&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.CQRSModel/SubfolderPerAggregate.Description" xml:space="preserve">
+    <value>Should each aggregate generate code into its own sub folder</value>
+    <comment>Description for DomainProperty &apos;SubfolderPerAggregate&apos; on DomainClass &apos;CQRSModel&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.CQRSModel/SubfolderPerAggregate.DisplayName" xml:space="preserve">
+    <value>Subfolder Per Aggregate</value>
+    <comment>DisplayName for DomainProperty &apos;SubfolderPerAggregate&apos; on DomainClass &apos;CQRSModel&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.CQRSModel/SubfolderPerAggregate.Category" xml:space="preserve">
+    <value>Code Generation</value>
+    <comment>Category for DomainProperty &apos;SubfolderPerAggregate&apos; on DomainClass &apos;CQRSModel&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.CQRSModel/MajorVersion.Description" xml:space="preserve">
+    <value>Major version number for the CQRS domain model</value>
+    <comment>Description for DomainProperty &apos;MajorVersion&apos; on DomainClass &apos;CQRSModel&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.CQRSModel/MajorVersion.DisplayName" xml:space="preserve">
+    <value>Major Version</value>
+    <comment>DisplayName for DomainProperty &apos;MajorVersion&apos; on DomainClass &apos;CQRSModel&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.CQRSModel/MajorVersion.Category" xml:space="preserve">
+    <value>Documentation</value>
+    <comment>Category for DomainProperty &apos;MajorVersion&apos; on DomainClass &apos;CQRSModel&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.CQRSModel/MinorVersion.Description" xml:space="preserve">
+    <value>Minor version number of the CQRS domain</value>
+    <comment>Description for DomainProperty &apos;MinorVersion&apos; on DomainClass &apos;CQRSModel&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.CQRSModel/MinorVersion.DisplayName" xml:space="preserve">
+    <value>Minor Version</value>
+    <comment>DisplayName for DomainProperty &apos;MinorVersion&apos; on DomainClass &apos;CQRSModel&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.CQRSModel/MinorVersion.Category" xml:space="preserve">
+    <value>Documentation</value>
+    <comment>Category for DomainProperty &apos;MinorVersion&apos; on DomainClass &apos;CQRSModel&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.CQRSModel/CodeRootFolder.Description" xml:space="preserve">
+    <value>The root folder to generate source code into for this domain</value>
+    <comment>Description for DomainProperty &apos;CodeRootFolder&apos; on DomainClass &apos;CQRSModel&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.CQRSModel/CodeRootFolder.DisplayName" xml:space="preserve">
+    <value>Code Root Folder</value>
+    <comment>DisplayName for DomainProperty &apos;CodeRootFolder&apos; on DomainClass &apos;CQRSModel&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.CQRSModel/CodeRootFolder.Category" xml:space="preserve">
+    <value>Code Generation</value>
+    <comment>Category for DomainProperty &apos;CodeRootFolder&apos; on DomainClass &apos;CQRSModel&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.CQRSModel/DocumentationRootFolder.Description" xml:space="preserve">
+    <value>The root folder to store the documentation generated for this domain in</value>
+    <comment>Description for DomainProperty &apos;DocumentationRootFolder&apos; on DomainClass &apos;CQRSModel&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.CQRSModel/DocumentationRootFolder.DisplayName" xml:space="preserve">
+    <value>Documentation Root Folder</value>
+    <comment>DisplayName for DomainProperty &apos;DocumentationRootFolder&apos; on DomainClass &apos;CQRSModel&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.CQRSModel/DocumentationRootFolder.Category" xml:space="preserve">
+    <value>Documentation</value>
+    <comment>Category for DomainProperty &apos;DocumentationRootFolder&apos; on DomainClass &apos;CQRSModel&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.CQRSModel/GenerateEntityFrameworkClasses.Description" xml:space="preserve">
+    <value>Should the model build the Entity Framework classes for storing the model in an SQL database</value>
+    <comment>Description for DomainProperty &apos;GenerateEntityFrameworkClasses&apos; on DomainClass &apos;CQRSModel&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.CQRSModel/GenerateEntityFrameworkClasses.DisplayName" xml:space="preserve">
+    <value>Generate Entity Framework Classes</value>
+    <comment>DisplayName for DomainProperty &apos;GenerateEntityFrameworkClasses&apos; on DomainClass &apos;CQRSModel&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.CQRSModel/GenerateEntityFrameworkClasses.Category" xml:space="preserve">
+    <value>Code Generation</value>
+    <comment>Category for DomainProperty &apos;GenerateEntityFrameworkClasses&apos; on DomainClass &apos;CQRSModel&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.CQRSModel/Framework.Description" xml:space="preserve">
+    <value>The framework to use for the generated code</value>
+    <comment>Description for DomainProperty &apos;Framework&apos; on DomainClass &apos;CQRSModel&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.CQRSModel/Framework.DisplayName" xml:space="preserve">
+    <value>Framework</value>
+    <comment>DisplayName for DomainProperty &apos;Framework&apos; on DomainClass &apos;CQRSModel&apos;</comment>
+  </data>
   <data name="CQRSAzure.CQRSdsl.Dsl.AggregateIdentifier.Description" xml:space="preserve">
     <value>Class to uniquely identiy a particular aggregate type</value>
     <comment>Description for DomainClass &apos;AggregateIdentifier&apos;</comment>
@@ -321,6 +425,14 @@
     <value>Category</value>
     <comment>DisplayName for DomainProperty &apos;Category&apos; on DomainClass &apos;ProjectionDefinition&apos;</comment>
   </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.ProjectionDefinition/CanSnapshot.Description" xml:space="preserve">
+    <value>Can a snapshot be taken of this projection</value>
+    <comment>Description for DomainProperty &apos;CanSnapshot&apos; on DomainClass &apos;ProjectionDefinition&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.ProjectionDefinition/CanSnapshot.DisplayName" xml:space="preserve">
+    <value>Can Snapshot</value>
+    <comment>DisplayName for DomainProperty &apos;CanSnapshot&apos; on DomainClass &apos;ProjectionDefinition&apos;</comment>
+  </data>
   <data name="CQRSAzure.CQRSdsl.Dsl.CommandDefinition.Description" xml:space="preserve">
     <value>Definition of a command that can raise one or more events for an aggregate root</value>
     <comment>Description for DomainClass &apos;CommandDefinition&apos;</comment>
@@ -412,6 +524,14 @@
   <data name="CQRSAzure.CQRSdsl.Dsl.EventProperty/Notes.Category" xml:space="preserve">
     <value>Documentation</value>
     <comment>Category for DomainProperty &apos;Notes&apos; on DomainClass &apos;EventProperty&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.EventProperty/IsEffectiveDate.Description" xml:space="preserve">
+    <value>Does this property provide the &quot;effective date&quot; the event occured on?</value>
+    <comment>Description for DomainProperty &apos;IsEffectiveDate&apos; on DomainClass &apos;EventProperty&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.EventProperty/IsEffectiveDate.DisplayName" xml:space="preserve">
+    <value>Is Effective Date</value>
+    <comment>DisplayName for DomainProperty &apos;IsEffectiveDate&apos; on DomainClass &apos;EventProperty&apos;</comment>
   </data>
   <data name="CQRSAzure.CQRSdsl.Dsl.ProjectionProperty.Description" xml:space="preserve">
     <value>A property providing the data component of a projection</value>
@@ -517,6 +637,22 @@
     <value>Is Aggregate Key</value>
     <comment>DisplayName for DomainProperty &apos;IsAggregateKey&apos; on DomainClass &apos;CommandParameter&apos;</comment>
   </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.CommandParameter/IsAggregateKey.Category" xml:space="preserve">
+    <value>Target</value>
+    <comment>Category for DomainProperty &apos;IsAggregateKey&apos; on DomainClass &apos;CommandParameter&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.CommandParameter/IsIdentityGroupName.Description" xml:space="preserve">
+    <value>Does this command parameter identify the identity group that the command should apply to?</value>
+    <comment>Description for DomainProperty &apos;IsIdentityGroupName&apos; on DomainClass &apos;CommandParameter&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.CommandParameter/IsIdentityGroupName.DisplayName" xml:space="preserve">
+    <value>Is Identity Group Name</value>
+    <comment>DisplayName for DomainProperty &apos;IsIdentityGroupName&apos; on DomainClass &apos;CommandParameter&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.CommandParameter/IsIdentityGroupName.Category" xml:space="preserve">
+    <value>Target</value>
+    <comment>Category for DomainProperty &apos;IsIdentityGroupName&apos; on DomainClass &apos;CommandParameter&apos;</comment>
+  </data>
   <data name="CQRSAzure.CQRSdsl.Dsl.QueryDefinition.Description" xml:space="preserve">
     <value>Definition of a query that can be executed against an aggregate identifier in this domain</value>
     <comment>Description for DomainClass &apos;QueryDefinition&apos;</comment>
@@ -617,6 +753,10 @@
     <value>Is Aggregate Key</value>
     <comment>DisplayName for DomainProperty &apos;IsAggregateKey&apos; on DomainClass &apos;QueryInputParameter&apos;</comment>
   </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.QueryInputParameter/IsAggregateKey.Category" xml:space="preserve">
+    <value>Target</value>
+    <comment>Category for DomainProperty &apos;IsAggregateKey&apos; on DomainClass &apos;QueryInputParameter&apos;</comment>
+  </data>
   <data name="CQRSAzure.CQRSdsl.Dsl.QueryInputParameter/Notes.Description" xml:space="preserve">
     <value>Additional notes for the query input parameter</value>
     <comment>Description for DomainProperty &apos;Notes&apos; on DomainClass &apos;QueryInputParameter&apos;</comment>
@@ -636,6 +776,18 @@
   <data name="CQRSAzure.CQRSdsl.Dsl.QueryInputParameter/IsEffectiveDate.DisplayName" xml:space="preserve">
     <value>Is Effective Date</value>
     <comment>DisplayName for DomainProperty &apos;IsEffectiveDate&apos; on DomainClass &apos;QueryInputParameter&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.QueryInputParameter/IsIdentityGroupName.Description" xml:space="preserve">
+    <value>Is this query parameter the unique key of the identity group the query is to run against?</value>
+    <comment>Description for DomainProperty &apos;IsIdentityGroupName&apos; on DomainClass &apos;QueryInputParameter&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.QueryInputParameter/IsIdentityGroupName.DisplayName" xml:space="preserve">
+    <value>Is Identity Group Name</value>
+    <comment>DisplayName for DomainProperty &apos;IsIdentityGroupName&apos; on DomainClass &apos;QueryInputParameter&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.QueryInputParameter/IsIdentityGroupName.Category" xml:space="preserve">
+    <value>Target</value>
+    <comment>Category for DomainProperty &apos;IsIdentityGroupName&apos; on DomainClass &apos;QueryInputParameter&apos;</comment>
   </data>
   <data name="CQRSAzure.CQRSdsl.Dsl.ProjectionEventPropertyOperation.Description" xml:space="preserve">
     <value>An operation to perform on a projection property when an event is handled by the projection</value>
@@ -749,30 +901,6 @@
     <value>Documentation</value>
     <comment>Category for DomainProperty &apos;Notes&apos; on DomainClass &apos;QueryReturnParameter&apos;</comment>
   </data>
-  <data name="CQRSAzure.CQRSdsl.Dsl.ModelSetting.Description" xml:space="preserve">
-    <value>A setting that controls how the model is turned into code or documentation</value>
-    <comment>Description for DomainClass &apos;ModelSetting&apos;</comment>
-  </data>
-  <data name="CQRSAzure.CQRSdsl.Dsl.ModelSetting.DisplayName" xml:space="preserve">
-    <value>Model Setting</value>
-    <comment>DisplayName for DomainClass &apos;ModelSetting&apos;</comment>
-  </data>
-  <data name="CQRSAzure.CQRSdsl.Dsl.ModelSetting/Name.Description" xml:space="preserve">
-    <value>The unique name of this model setting</value>
-    <comment>Description for DomainProperty &apos;Name&apos; on DomainClass &apos;ModelSetting&apos;</comment>
-  </data>
-  <data name="CQRSAzure.CQRSdsl.Dsl.ModelSetting/Name.DisplayName" xml:space="preserve">
-    <value>Name</value>
-    <comment>DisplayName for DomainProperty &apos;Name&apos; on DomainClass &apos;ModelSetting&apos;</comment>
-  </data>
-  <data name="CQRSAzure.CQRSdsl.Dsl.ModelSetting/Value.Description" xml:space="preserve">
-    <value>The value of this model setting</value>
-    <comment>Description for DomainProperty &apos;Value&apos; on DomainClass &apos;ModelSetting&apos;</comment>
-  </data>
-  <data name="CQRSAzure.CQRSdsl.Dsl.ModelSetting/Value.DisplayName" xml:space="preserve">
-    <value>Value</value>
-    <comment>DisplayName for DomainProperty &apos;Value&apos; on DomainClass &apos;ModelSetting&apos;</comment>
-  </data>
   <data name="CQRSAzure.CQRSdsl.Dsl.IdentityGroup.Description" xml:space="preserve">
     <value>A collection of 0 or more aggregate identifiers that share a common attribute that denotes identity</value>
     <comment>Description for DomainClass &apos;IdentityGroup&apos;</comment>
@@ -845,6 +973,22 @@
     <value>Category</value>
     <comment>DisplayName for DomainProperty &apos;Category&apos; on DomainClass &apos;IdentityGroup&apos;</comment>
   </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.IdentityGroup/ParentName.Description" xml:space="preserve">
+    <value>The name of the group of which this group is a wholy contained subset</value>
+    <comment>Description for DomainProperty &apos;ParentName&apos; on DomainClass &apos;IdentityGroup&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.IdentityGroup/ParentName.DisplayName" xml:space="preserve">
+    <value>Parent Name</value>
+    <comment>DisplayName for DomainProperty &apos;ParentName&apos; on DomainClass &apos;IdentityGroup&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.IdentityGroup/CanSnapshot.Description" xml:space="preserve">
+    <value>Can a snapshot be taken of the members of this identity group?</value>
+    <comment>Description for DomainProperty &apos;CanSnapshot&apos; on DomainClass &apos;IdentityGroup&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.IdentityGroup/CanSnapshot.DisplayName" xml:space="preserve">
+    <value>Can Snapshot</value>
+    <comment>DisplayName for DomainProperty &apos;CanSnapshot&apos; on DomainClass &apos;IdentityGroup&apos;</comment>
+  </data>
   <data name="CQRSAzure.CQRSdsl.Dsl.Classifier.Description" xml:space="preserve">
     <value>A specialised projection which classifies entities as being either in or out of a particular identity group</value>
     <comment>Description for DomainClass &apos;Classifier&apos;</comment>
@@ -892,6 +1036,22 @@
   <data name="CQRSAzure.CQRSdsl.Dsl.Classifier/Category.DisplayName" xml:space="preserve">
     <value>Category</value>
     <comment>DisplayName for DomainProperty &apos;Category&apos; on DomainClass &apos;Classifier&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.Classifier/CanSnapshot.Description" xml:space="preserve">
+    <value>Can a point-in-time snapshot be taken by this classifier?</value>
+    <comment>Description for DomainProperty &apos;CanSnapshot&apos; on DomainClass &apos;Classifier&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.Classifier/CanSnapshot.DisplayName" xml:space="preserve">
+    <value>Can Snapshot</value>
+    <comment>DisplayName for DomainProperty &apos;CanSnapshot&apos; on DomainClass &apos;Classifier&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.Classifier/DataSourceType.Description" xml:space="preserve">
+    <value>Does the data for the classifier come directly from an event stream or from a projection?</value>
+    <comment>Description for DomainProperty &apos;DataSourceType&apos; on DomainClass &apos;Classifier&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.Classifier/DataSourceType.DisplayName" xml:space="preserve">
+    <value>Data Source Type</value>
+    <comment>DisplayName for DomainProperty &apos;DataSourceType&apos; on DomainClass &apos;Classifier&apos;</comment>
   </data>
   <data name="CQRSAzure.CQRSdsl.Dsl.ClassifierEventEvaluation.Description" xml:space="preserve">
     <value>An evaluation to perform when an event is encountered to decide if an identity is or is not a member of an identity group</value>
@@ -976,6 +1136,78 @@
   <data name="CQRSAzure.CQRSdsl.Dsl.ClassifierEventEvaluation/TargetType.DisplayName" xml:space="preserve">
     <value>Target Type</value>
     <comment>DisplayName for DomainProperty &apos;TargetType&apos; on DomainClass &apos;ClassifierEventEvaluation&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation.Description" xml:space="preserve">
+    <value>Evaluation to perform on a property of a projection</value>
+    <comment>Description for DomainClass &apos;ClassifierProjectionPropertyEvaluation&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation.DisplayName" xml:space="preserve">
+    <value>Classifier Projection Property Evaluation</value>
+    <comment>DisplayName for DomainClass &apos;ClassifierProjectionPropertyEvaluation&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation/PropertyName.Description" xml:space="preserve">
+    <value>The name of the projection property to test</value>
+    <comment>Description for DomainProperty &apos;PropertyName&apos; on DomainClass &apos;ClassifierProjectionPropertyEvaluation&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation/PropertyName.DisplayName" xml:space="preserve">
+    <value>Property Name</value>
+    <comment>DisplayName for DomainProperty &apos;PropertyName&apos; on DomainClass &apos;ClassifierProjectionPropertyEvaluation&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation/Notes.Description" xml:space="preserve">
+    <value>Additional notes pertaining to this classifier projection property evaluation</value>
+    <comment>Description for DomainProperty &apos;Notes&apos; on DomainClass &apos;ClassifierProjectionPropertyEvaluation&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation/Notes.DisplayName" xml:space="preserve">
+    <value>Notes</value>
+    <comment>DisplayName for DomainProperty &apos;Notes&apos; on DomainClass &apos;ClassifierProjectionPropertyEvaluation&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation/Description.Description" xml:space="preserve">
+    <value>Description of this classifier projection property evaluation</value>
+    <comment>Description for DomainProperty &apos;Description&apos; on DomainClass &apos;ClassifierProjectionPropertyEvaluation&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation/Description.DisplayName" xml:space="preserve">
+    <value>Description</value>
+    <comment>DisplayName for DomainProperty &apos;Description&apos; on DomainClass &apos;ClassifierProjectionPropertyEvaluation&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation/PropertyEvaluationToPerform.Description" xml:space="preserve">
+    <value>The evaluation to perform on the projection property</value>
+    <comment>Description for DomainProperty &apos;PropertyEvaluationToPerform&apos; on DomainClass &apos;ClassifierProjectionPropertyEvaluation&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation/PropertyEvaluationToPerform.DisplayName" xml:space="preserve">
+    <value>Property Evaluation To Perform</value>
+    <comment>DisplayName for DomainProperty &apos;PropertyEvaluationToPerform&apos; on DomainClass &apos;ClassifierProjectionPropertyEvaluation&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation/OnTrue.Description" xml:space="preserve">
+    <value>What the property evaluating to true means to the identity group</value>
+    <comment>Description for DomainProperty &apos;OnTrue&apos; on DomainClass &apos;ClassifierProjectionPropertyEvaluation&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation/OnTrue.DisplayName" xml:space="preserve">
+    <value>On True</value>
+    <comment>DisplayName for DomainProperty &apos;OnTrue&apos; on DomainClass &apos;ClassifierProjectionPropertyEvaluation&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation/OnFalse.Description" xml:space="preserve">
+    <value>What happens to group membership if this property evaluates to false</value>
+    <comment>Description for DomainProperty &apos;OnFalse&apos; on DomainClass &apos;ClassifierProjectionPropertyEvaluation&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation/OnFalse.DisplayName" xml:space="preserve">
+    <value>On False</value>
+    <comment>DisplayName for DomainProperty &apos;OnFalse&apos; on DomainClass &apos;ClassifierProjectionPropertyEvaluation&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation/Target.Description" xml:space="preserve">
+    <value>What the property value is being evaluated against</value>
+    <comment>Description for DomainProperty &apos;Target&apos; on DomainClass &apos;ClassifierProjectionPropertyEvaluation&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation/Target.DisplayName" xml:space="preserve">
+    <value>Target</value>
+    <comment>DisplayName for DomainProperty &apos;Target&apos; on DomainClass &apos;ClassifierProjectionPropertyEvaluation&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation/TargetType.Description" xml:space="preserve">
+    <value>What is represented by the evaluation target</value>
+    <comment>Description for DomainProperty &apos;TargetType&apos; on DomainClass &apos;ClassifierProjectionPropertyEvaluation&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionPropertyEvaluation/TargetType.DisplayName" xml:space="preserve">
+    <value>Target Type</value>
+    <comment>DisplayName for DomainProperty &apos;TargetType&apos; on DomainClass &apos;ClassifierProjectionPropertyEvaluation&apos;</comment>
   </data>
   <data name="CQRSAzure.CQRSdsl.Dsl.CQRSModelHasAggregateIdentifiers.Description" xml:space="preserve">
     <value>Aggregate identifiers (types) in this domain</value>
@@ -1509,38 +1741,6 @@
     <value>Query Definition</value>
     <comment>PropertyDisplayName for DomainRole &apos;QueryReturnParameter&apos; on DomainRelationship &apos;QueryDefinitionHasQueryReturnParameters&apos;</comment>
   </data>
-  <data name="CQRSAzure.CQRSdsl.Dsl.CQRSModelHasModelSet.Description" xml:space="preserve">
-    <value>Additional setting that controsl how the model is truend into code or documentation</value>
-    <comment>Description for DomainClass &apos;CQRSModelHasModelSet&apos;</comment>
-  </data>
-  <data name="CQRSAzure.CQRSdsl.Dsl.CQRSModelHasModelSet.DisplayName" xml:space="preserve">
-    <value>CQRSModel Has Model Set</value>
-    <comment>DisplayName for DomainClass &apos;CQRSModelHasModelSet&apos;</comment>
-  </data>
-  <data name="CQRSAzure.CQRSdsl.Dsl.CQRSModelHasModelSet/CQRSModel.Description" xml:space="preserve">
-    <value>Description for CQRSAzure.CQRSdsl.Dsl.CQRSModelHasModelSet.CQRSModel</value>
-    <comment>Description for DomainRole &apos;CQRSModel&apos; on DomainRelationship &apos;CQRSModelHasModelSet&apos;</comment>
-  </data>
-  <data name="CQRSAzure.CQRSdsl.Dsl.CQRSModelHasModelSet/CQRSModel.DisplayName" xml:space="preserve">
-    <value>CQRSModel</value>
-    <comment>DisplayName for DomainRole &apos;CQRSModel&apos; on DomainRelationship &apos;CQRSModelHasModelSet&apos;</comment>
-  </data>
-  <data name="CQRSAzure.CQRSdsl.Dsl.CQRSModelHasModelSet/CQRSModel.PropertyDisplayName" xml:space="preserve">
-    <value>Model Set</value>
-    <comment>PropertyDisplayName for DomainRole &apos;CQRSModel&apos; on DomainRelationship &apos;CQRSModelHasModelSet&apos;</comment>
-  </data>
-  <data name="CQRSAzure.CQRSdsl.Dsl.CQRSModelHasModelSet/ModelSetting.Description" xml:space="preserve">
-    <value>Description for CQRSAzure.CQRSdsl.Dsl.CQRSModelHasModelSet.ModelSetting</value>
-    <comment>Description for DomainRole &apos;ModelSetting&apos; on DomainRelationship &apos;CQRSModelHasModelSet&apos;</comment>
-  </data>
-  <data name="CQRSAzure.CQRSdsl.Dsl.CQRSModelHasModelSet/ModelSetting.DisplayName" xml:space="preserve">
-    <value>Model Setting</value>
-    <comment>DisplayName for DomainRole &apos;ModelSetting&apos; on DomainRelationship &apos;CQRSModelHasModelSet&apos;</comment>
-  </data>
-  <data name="CQRSAzure.CQRSdsl.Dsl.CQRSModelHasModelSet/ModelSetting.PropertyDisplayName" xml:space="preserve">
-    <value>CQRSModel</value>
-    <comment>PropertyDisplayName for DomainRole &apos;ModelSetting&apos; on DomainRelationship &apos;CQRSModelHasModelSet&apos;</comment>
-  </data>
   <data name="CQRSAzure.CQRSdsl.Dsl.QueryDefinitionReferencesIdentityGroup.Description" xml:space="preserve">
     <value>The identity reference group to use to run this query against a set of aggregate identifiers</value>
     <comment>Description for DomainClass &apos;QueryDefinitionReferencesIdentityGroup&apos;</comment>
@@ -1821,6 +2021,70 @@
     <value>Query Definitions</value>
     <comment>PropertyDisplayName for DomainRole &apos;ProjectionDefinition&apos; on DomainRelationship &apos;QueryDefinitionReferencesProjectionDefinition&apos;</comment>
   </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.ClassifierReferencesProjectionDefinition.Description" xml:space="preserve">
+    <value>For a classifier that relies on a projection, this is the projection concerned</value>
+    <comment>Description for DomainClass &apos;ClassifierReferencesProjectionDefinition&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.ClassifierReferencesProjectionDefinition.DisplayName" xml:space="preserve">
+    <value>Classifier References Projection Definition</value>
+    <comment>DisplayName for DomainClass &apos;ClassifierReferencesProjectionDefinition&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.ClassifierReferencesProjectionDefinition/Classifier.Description" xml:space="preserve">
+    <value>Description for CQRSAzure.CQRSdsl.Dsl.ClassifierReferencesProjectionDefinition.Classifier</value>
+    <comment>Description for DomainRole &apos;Classifier&apos; on DomainRelationship &apos;ClassifierReferencesProjectionDefinition&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.ClassifierReferencesProjectionDefinition/Classifier.DisplayName" xml:space="preserve">
+    <value>Classifier</value>
+    <comment>DisplayName for DomainRole &apos;Classifier&apos; on DomainRelationship &apos;ClassifierReferencesProjectionDefinition&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.ClassifierReferencesProjectionDefinition/Classifier.PropertyDisplayName" xml:space="preserve">
+    <value>Projection Definition</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Classifier&apos; on DomainRelationship &apos;ClassifierReferencesProjectionDefinition&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.ClassifierReferencesProjectionDefinition/ProjectionDefinition.Description" xml:space="preserve">
+    <value>Description for CQRSAzure.CQRSdsl.Dsl.ClassifierReferencesProjectionDefinition.ProjectionDefinition</value>
+    <comment>Description for DomainRole &apos;ProjectionDefinition&apos; on DomainRelationship &apos;ClassifierReferencesProjectionDefinition&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.ClassifierReferencesProjectionDefinition/ProjectionDefinition.DisplayName" xml:space="preserve">
+    <value>Projection Definition</value>
+    <comment>DisplayName for DomainRole &apos;ProjectionDefinition&apos; on DomainRelationship &apos;ClassifierReferencesProjectionDefinition&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.ClassifierReferencesProjectionDefinition/ProjectionDefinition.PropertyDisplayName" xml:space="preserve">
+    <value>Classifier</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ProjectionDefinition&apos; on DomainRelationship &apos;ClassifierReferencesProjectionDefinition&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations.Description" xml:space="preserve">
+    <value>Description for CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations</value>
+    <comment>Description for DomainClass &apos;ClassifierHasClassifierProjectionPropertyEvaluations&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations.DisplayName" xml:space="preserve">
+    <value>Classifier Has Classifier Projection Property Evaluations</value>
+    <comment>DisplayName for DomainClass &apos;ClassifierHasClassifierProjectionPropertyEvaluations&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations/Classifier.Description" xml:space="preserve">
+    <value>Description for CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations.Classifier</value>
+    <comment>Description for DomainRole &apos;Classifier&apos; on DomainRelationship &apos;ClassifierHasClassifierProjectionPropertyEvaluations&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations/Classifier.DisplayName" xml:space="preserve">
+    <value>Classifier</value>
+    <comment>DisplayName for DomainRole &apos;Classifier&apos; on DomainRelationship &apos;ClassifierHasClassifierProjectionPropertyEvaluations&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations/Classifier.PropertyDisplayName" xml:space="preserve">
+    <value>Classifier Projection Property Evaluations</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Classifier&apos; on DomainRelationship &apos;ClassifierHasClassifierProjectionPropertyEvaluations&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations/ClassifierProjectionPropertyEvaluation.Description" xml:space="preserve">
+    <value>Description for CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations.ClassifierProjectionPropertyEvaluation</value>
+    <comment>Description for DomainRole &apos;ClassifierProjectionPropertyEvaluation&apos; on DomainRelationship &apos;ClassifierHasClassifierProjectionPropertyEvaluations&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations/ClassifierProjectionPropertyEvaluation.DisplayName" xml:space="preserve">
+    <value>Classifier Projection Property Evaluation</value>
+    <comment>DisplayName for DomainRole &apos;ClassifierProjectionPropertyEvaluation&apos; on DomainRelationship &apos;ClassifierHasClassifierProjectionPropertyEvaluations&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations/ClassifierProjectionPropertyEvaluation.PropertyDisplayName" xml:space="preserve">
+    <value>Classifier</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ClassifierProjectionPropertyEvaluation&apos; on DomainRelationship &apos;ClassifierHasClassifierProjectionPropertyEvaluations&apos;</comment>
+  </data>
   <data name="CQRSAzure.CQRSdsl.Dsl.KeyDataType/SystemGUID.DisplayName" xml:space="preserve">
     <value>SystemGUID</value>
     <comment>Display name for EnumerationLiteral &apos;SystemGUID&apos; on DomainEnumeration &apos;KeyDataType&apos;</comment>
@@ -1908,6 +2172,14 @@
   <data name="CQRSAzure.CQRSdsl.Dsl.PropertyDataType/GUID.Description" xml:space="preserve">
     <value>Globally unique identifier</value>
     <comment>Description for EnumerationLiteral &apos;GUID&apos; on DomainEnumeration &apos;PropertyDataType&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.PropertyDataType/PositiveInteger.DisplayName" xml:space="preserve">
+    <value>PositiveInteger</value>
+    <comment>Display name for EnumerationLiteral &apos;PositiveInteger&apos; on DomainEnumeration &apos;PropertyDataType&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.PropertyDataType/PositiveInteger.Description" xml:space="preserve">
+    <value>A whole number that is greater than zero</value>
+    <comment>Description for EnumerationLiteral &apos;PositiveInteger&apos; on DomainEnumeration &apos;PropertyDataType&apos;</comment>
   </data>
   <data name="CQRSAzure.CQRSdsl.Dsl.PropertyOperation/SetToValue.DisplayName" xml:space="preserve">
     <value>SetToValue</value>
@@ -2109,6 +2381,46 @@
     <value>The target is a named variable in the classifier class</value>
     <comment>Description for EnumerationLiteral &apos;Variable&apos; on DomainEnumeration &apos;EvaluationTargetType&apos;</comment>
   </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.ClassifierDataSourceType/EventHandler.DisplayName" xml:space="preserve">
+    <value>EventHandler</value>
+    <comment>Display name for EnumerationLiteral &apos;EventHandler&apos; on DomainEnumeration &apos;ClassifierDataSourceType&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.ClassifierDataSourceType/EventHandler.Description" xml:space="preserve">
+    <value>The classifier operates directly on the event stream by handling events</value>
+    <comment>Description for EnumerationLiteral &apos;EventHandler&apos; on DomainEnumeration &apos;ClassifierDataSourceType&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.ClassifierDataSourceType/Projection.DisplayName" xml:space="preserve">
+    <value>Projection</value>
+    <comment>Display name for EnumerationLiteral &apos;Projection&apos; on DomainEnumeration &apos;ClassifierDataSourceType&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.ClassifierDataSourceType/Projection.Description" xml:space="preserve">
+    <value>The classifier takes its data from a linked projection</value>
+    <comment>Description for EnumerationLiteral &apos;Projection&apos; on DomainEnumeration &apos;ClassifierDataSourceType&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.SupportingFramework/CQRSonAzure.DisplayName" xml:space="preserve">
+    <value>CQRSonAzure</value>
+    <comment>Display name for EnumerationLiteral &apos;CQRSonAzure&apos; on DomainEnumeration &apos;SupportingFramework&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.SupportingFramework/CQRSonAzure.Description" xml:space="preserve">
+    <value>Use CQRS on Azure Framework</value>
+    <comment>Description for EnumerationLiteral &apos;CQRSonAzure&apos; on DomainEnumeration &apos;SupportingFramework&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.SupportingFramework/Orleans.DisplayName" xml:space="preserve">
+    <value>Orleans</value>
+    <comment>Display name for EnumerationLiteral &apos;Orleans&apos; on DomainEnumeration &apos;SupportingFramework&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.SupportingFramework/Orleans.Description" xml:space="preserve">
+    <value>Use Microsoft Orleans based framework</value>
+    <comment>Description for EnumerationLiteral &apos;Orleans&apos; on DomainEnumeration &apos;SupportingFramework&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.SupportingFramework/EventStore.DisplayName" xml:space="preserve">
+    <value>EventStore</value>
+    <comment>Display name for EnumerationLiteral &apos;EventStore&apos; on DomainEnumeration &apos;SupportingFramework&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.SupportingFramework/EventStore.Description" xml:space="preserve">
+    <value>Generate EventStore code</value>
+    <comment>Description for EnumerationLiteral &apos;EventStore&apos; on DomainEnumeration &apos;SupportingFramework&apos;</comment>
+  </data>
   <data name="CQRSAzure.CQRSdsl.Dsl.AggregateGeometryShape.Description" xml:space="preserve">
     <value>Shape used to denote an aggregate on the layoud diagram</value>
     <comment>Description for DomainClass &apos;AggregateGeometryShape&apos;</comment>
@@ -2301,6 +2613,10 @@
     <value>Event Evaluations</value>
     <comment>Compartment title</comment>
   </data>
+  <data name="ClassifierCompartmentShapeProjectionEvaluationsCompartmentTitle" xml:space="preserve">
+    <value>Projection Property Evaluations</value>
+    <comment>Compartment title</comment>
+  </data>
   <data name="ClassifierCompartmentShapeNameTextDecoratorDefaultText" xml:space="preserve">
     <value>NameTextDecorator</value>
     <comment>Text decorator default text</comment>
@@ -2381,6 +2697,14 @@
     <value>Classifier Event Connector</value>
     <comment>DisplayName for DomainClass &apos;ClassifierEventConnector&apos;</comment>
   </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionConnector.Description" xml:space="preserve">
+    <value>Description for CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionConnector</value>
+    <comment>Description for DomainClass &apos;ClassifierProjectionConnector&apos;</comment>
+  </data>
+  <data name="CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionConnector.DisplayName" xml:space="preserve">
+    <value>Classifier Projection Connector</value>
+    <comment>DisplayName for DomainClass &apos;ClassifierProjectionConnector&apos;</comment>
+  </data>
   <data name="FormatList" xml:space="preserve">
     <value>CQRSdsl (*.cqrsx)|*.cqrsx</value>
     <comment>A list of file format specifiers for the Save dialog box</comment>
@@ -2396,18 +2720,6 @@
   <data name="CQRSAzure.CQRSdsl.Dsl.CQRSdslDiagram.DisplayName" xml:space="preserve">
     <value>CQRS Architecture diagram</value>
     <comment>DisplayName for DomainClass &apos;CQRSdslDiagram&apos;</comment>
-  </data>
-  <data name="CQRSAzure.CQRSdsl.Dsl.CQRSdslDiagram/OutputCodeLanguage.Description" xml:space="preserve">
-    <value>The language to use to generate code from this model</value>
-    <comment>Description for DomainProperty &apos;OutputCodeLanguage&apos; on DomainClass &apos;CQRSdslDiagram&apos;</comment>
-  </data>
-  <data name="CQRSAzure.CQRSdsl.Dsl.CQRSdslDiagram/OutputCodeLanguage.DisplayName" xml:space="preserve">
-    <value>Output Code Language</value>
-    <comment>DisplayName for DomainProperty &apos;OutputCodeLanguage&apos; on DomainClass &apos;CQRSdslDiagram&apos;</comment>
-  </data>
-  <data name="CQRSAzure.CQRSdsl.Dsl.CQRSdslDiagram/OutputCodeLanguage.Category" xml:space="preserve">
-    <value>Code Generation</value>
-    <comment>Category for DomainProperty &apos;OutputCodeLanguage&apos; on DomainClass &apos;CQRSdslDiagram&apos;</comment>
   </data>
   <data name="CQRSAzure.CQRSdsl.Dsl.CQRSdslDiagram/CopyrightNotice.Description" xml:space="preserve">
     <value>Copyright notice to include in generated code and documentation</value>
@@ -2432,30 +2744,6 @@
   <data name="CQRSAzure.CQRSdsl.Dsl.CQRSdslDiagram/CompanyName.Category" xml:space="preserve">
     <value>Documentation</value>
     <comment>Category for DomainProperty &apos;CompanyName&apos; on DomainClass &apos;CQRSdslDiagram&apos;</comment>
-  </data>
-  <data name="CQRSAzure.CQRSdsl.Dsl.CQRSdslDiagram/SubfolderPerModel.Description" xml:space="preserve">
-    <value>Description for CQRSAzure.CQRSdsl.Dsl.CQRSdslDiagram.Subfolder Per Model</value>
-    <comment>Description for DomainProperty &apos;SubfolderPerModel&apos; on DomainClass &apos;CQRSdslDiagram&apos;</comment>
-  </data>
-  <data name="CQRSAzure.CQRSdsl.Dsl.CQRSdslDiagram/SubfolderPerModel.DisplayName" xml:space="preserve">
-    <value>Subfolder Per Model</value>
-    <comment>DisplayName for DomainProperty &apos;SubfolderPerModel&apos; on DomainClass &apos;CQRSdslDiagram&apos;</comment>
-  </data>
-  <data name="CQRSAzure.CQRSdsl.Dsl.CQRSdslDiagram/SubfolderPerModel.Category" xml:space="preserve">
-    <value>Code Generation</value>
-    <comment>Category for DomainProperty &apos;SubfolderPerModel&apos; on DomainClass &apos;CQRSdslDiagram&apos;</comment>
-  </data>
-  <data name="CQRSAzure.CQRSdsl.Dsl.CQRSdslDiagram/SubfolderPerAggregate.Description" xml:space="preserve">
-    <value>Description for CQRSAzure.CQRSdsl.Dsl.CQRSdslDiagram.Subfolder Per Aggregate</value>
-    <comment>Description for DomainProperty &apos;SubfolderPerAggregate&apos; on DomainClass &apos;CQRSdslDiagram&apos;</comment>
-  </data>
-  <data name="CQRSAzure.CQRSdsl.Dsl.CQRSdslDiagram/SubfolderPerAggregate.DisplayName" xml:space="preserve">
-    <value>Subfolder Per Aggregate</value>
-    <comment>DisplayName for DomainProperty &apos;SubfolderPerAggregate&apos; on DomainClass &apos;CQRSdslDiagram&apos;</comment>
-  </data>
-  <data name="CQRSAzure.CQRSdsl.Dsl.CQRSdslDiagram/SubfolderPerAggregate.Category" xml:space="preserve">
-    <value>Code Generation</value>
-    <comment>Category for DomainProperty &apos;SubfolderPerAggregate&apos; on DomainClass &apos;CQRSdslDiagram&apos;</comment>
   </data>
   <data name="CQRS DesignerToolboxTab" xml:space="preserve">
     <value>CQRS Designer</value>
@@ -2539,6 +2827,14 @@
   </data>
   <data name="ClassifierEventConnectionToolToolboxTooltip" xml:space="preserve">
     <value>Classifier Event Connection Tool</value>
+    <comment>Toolbox tooltip text</comment>
+  </data>
+  <data name="ClassifierProjectionConnectionToolToolboxItem" xml:space="preserve">
+    <value>Classifier Projection Connection</value>
+    <comment>Toolbox item name</comment>
+  </data>
+  <data name="ClassifierProjectionConnectionToolToolboxTooltip" xml:space="preserve">
+    <value>Classifier Projection Connection</value>
     <comment>Toolbox tooltip text</comment>
   </data>
   <data name="UnresolvedToolboxItem" xml:space="preserve">
@@ -2763,6 +3059,10 @@ A DomainClass can be serialized as a moniker only if
     <comment>Toolbox item image</comment>
   </data>
   <data name="ClassifierEventConnectionToolToolboxBitmap" type="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
+    <value>..\Resources\ProjectionEventConnectorToolBitmap.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>Toolbox item image</comment>
+  </data>
+  <data name="ClassifierProjectionConnectionToolToolboxBitmap" type="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
     <value>..\Resources\ProjectionEventConnectorToolBitmap.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
     <comment>Toolbox item image</comment>
   </data>

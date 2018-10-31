@@ -1,0 +1,300 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cQRSdslDiagram dslVersion="1.1.0.0" Id="a4313dd9-da9d-49dc-8d0b-7da70806f858" absoluteBounds="0, 0, 16.375, 9.875" name="Sample" copyrightNotice="(c) 2016 Merrion Computing" companyName="Merrion Computing">
+  <cQRSModelMoniker Id="1c15ed7f-780b-440c-bbc8-6944f8464718" />
+  <nestedChildShapes>
+    <aggregateGeometryShape Id="20340525-305d-452e-a79a-9ed74b21c3fc" absoluteBounds="0.5, 0.5, 2.875, 1.125" outlineColor="Black">
+      <aggregateIdentifierMoniker name="/1c15ed7f-780b-440c-bbc8-6944f8464718/Team" />
+    </aggregateGeometryShape>
+    <aggregateEventConnector Id="a126f11a-9fe9-4a27-b65c-209ab1be91c5" edgePoints="[(3.375 : 0.96875); (4.125 : 0.96875)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <aggregateIdentifierHasEventDefinitionsMoniker Id="f304f9f4-979d-47d0-8727-0d82733a9635" />
+      <nodes>
+        <aggregateGeometryShapeMoniker Id="20340525-305d-452e-a79a-9ed74b21c3fc" />
+        <eventDefinitionCompartmentShapeMoniker Id="aa6c02e5-d1f3-44fa-874d-ce3339514106" />
+      </nodes>
+    </aggregateEventConnector>
+    <aggregateProjectionConnector Id="556294d8-66d4-4760-a3bb-7a80a2a0b8c0" edgePoints="[(3.12710334033613 : 1.625); (3.12710334033613 : 2.5625); (3.75 : 2.5625)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <aggregateIdentifierHasProjectionDefinitionsMoniker Id="b8e0fec9-fec9-4f26-a383-84fb94e3fe43" />
+      <nodes>
+        <aggregateGeometryShapeMoniker Id="20340525-305d-452e-a79a-9ed74b21c3fc" />
+        <projectionDefinitionCompartmentShapeMoniker Id="66879172-2dad-41ee-9171-20b456cbd73e" />
+      </nodes>
+    </aggregateProjectionConnector>
+    <aggregateGeometryShape Id="dd1a263f-8268-4ec2-9e9a-62a87b6f5464" absoluteBounds="9.375, 0.5, 1.5, 1" outlineColor="Black">
+      <aggregateIdentifierMoniker name="/1c15ed7f-780b-440c-bbc8-6944f8464718/Player" />
+    </aggregateGeometryShape>
+    <aggregateEventConnector Id="7f40effa-8626-4f52-bb68-446a36bdac31" edgePoints="[(10.1127450980392 : 1.5); (10.1127450980392 : 5.96814697265625); (9.75 : 5.96814697265625)]" manuallyRouted="true" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <aggregateIdentifierHasEventDefinitionsMoniker Id="56a34c53-9dfc-4801-8f8b-5d79f37c2c26" />
+      <nodes>
+        <aggregateGeometryShapeMoniker Id="dd1a263f-8268-4ec2-9e9a-62a87b6f5464" />
+        <eventDefinitionCompartmentShapeMoniker Id="b61f1d4c-e91b-4b58-a559-529dfbd074bc" />
+      </nodes>
+    </aggregateEventConnector>
+    <aggregateGeometryShape Id="135a3a2f-8d0f-4a0c-a1c1-82b9791764b7" absoluteBounds="11.625, 4.75, 1.75, 1" outlineColor="Black">
+      <aggregateIdentifierMoniker name="/1c15ed7f-780b-440c-bbc8-6944f8464718/Season" />
+    </aggregateGeometryShape>
+    <aggregateEventConnector Id="5cab38c6-cb8b-47c3-82ac-2771f89a3219" edgePoints="[(9.375 : 1.2812525); (7.625 : 1.2812525); (7.625 : 3)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <aggregateIdentifierHasEventDefinitionsMoniker Id="cbf661dd-3424-4521-a8d8-5f185790daf8" />
+      <nodes>
+        <aggregateGeometryShapeMoniker Id="dd1a263f-8268-4ec2-9e9a-62a87b6f5464" />
+        <eventDefinitionCompartmentShapeMoniker Id="0e68c6ea-44c8-47c2-b94e-1cfa982661ad" />
+      </nodes>
+    </aggregateEventConnector>
+    <aggregateProjectionConnector Id="6384950f-ccea-4f6d-adc0-1f6527971645" edgePoints="[(10.5576363888889 : 1.5); (10.5576363888889 : 7.18689697265625); (7.75 : 7.18689697265625)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <aggregateIdentifierHasProjectionDefinitionsMoniker Id="082e6214-04aa-48f5-b1c3-bd61b801f48b" />
+      <nodes>
+        <aggregateGeometryShapeMoniker Id="dd1a263f-8268-4ec2-9e9a-62a87b6f5464" />
+        <projectionDefinitionCompartmentShapeMoniker Id="989e9b4c-f3d8-4db3-b753-ded32953c621" />
+      </nodes>
+    </aggregateProjectionConnector>
+    <aggregateGeometryShape Id="4d347573-6cfc-4161-923c-90172793abe9" absoluteBounds="10.875, 6.625, 2.25, 1" outlineColor="Black">
+      <aggregateIdentifierMoniker name="/1c15ed7f-780b-440c-bbc8-6944f8464718/Game" />
+    </aggregateGeometryShape>
+    <queryDefinitionShape Id="6e5acaf6-0ca3-418b-b40c-18f818979609" absoluteBounds="12.625, 2.75, 3.375, 1.5033821614583331">
+      <queryDefinitionMoniker name="/1c15ed7f-780b-440c-bbc8-6944f8464718/Player/GetPlayerSummary" />
+      <relativeChildShapes />
+      <nestedChildShapes>
+        <elementListCompartment Id="4b56138e-b714-4abc-8c99-8b10b74462aa" absoluteBounds="12.64, 3.26, 3.3449999999999998, 0.44169108072916674" name="InputParametersCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="4f2f936f-fbab-41ec-be38-21f3a83c32fe" absoluteBounds="12.64, 3.7116910807291665, 3.3449999999999998, 0.44169108072916674" name="OutputParametersCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </queryDefinitionShape>
+    <aggregateQueryDefinitionConnector Id="52c8f68e-071a-457b-a713-32597d5b2b2f" edgePoints="[(10.429689625 : 1.5); (10.429689625 : 3.50169108072917); (10.4743030555556 : 3.50169108072917 : JumpStart); (10.6409697222222 : 3.50169108072917 : JumpEnd); (12.625 : 3.50169108072917)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <aggregateIdentifierHasQueryDefinitionsMoniker Id="754a4ac4-8380-47f5-8db5-d7fc3fcf04ad" />
+      <nodes>
+        <aggregateGeometryShapeMoniker Id="dd1a263f-8268-4ec2-9e9a-62a87b6f5464" />
+        <queryDefinitionShapeMoniker Id="6e5acaf6-0ca3-418b-b40c-18f818979609" />
+      </nodes>
+    </aggregateQueryDefinitionConnector>
+    <aggregateCommandDefinitionConnector Id="9f76b473-8f01-4c66-81cc-ed33bb329db3" edgePoints="[(10.875 : 0.84375); (12.75 : 0.84375)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <aggregateIdentifierHasCommandDefinitionsMoniker Id="1a1a1a53-253e-4adc-8c59-d8b2df0b0a67" />
+      <nodes>
+        <aggregateGeometryShapeMoniker Id="dd1a263f-8268-4ec2-9e9a-62a87b6f5464" />
+        <commandDefinitionCompartmentShapeMoniker Id="9f13b844-8fb5-4642-a47f-9e10cedcfffe" />
+      </nodes>
+    </aggregateCommandDefinitionConnector>
+    <eventDefinitionCompartmentShape Id="aa6c02e5-d1f3-44fa-874d-ce3339514106" absoluteBounds="4.125, 0.5, 2, 1.4362939453125">
+      <eventDefinitionMoniker name="/1c15ed7f-780b-440c-bbc8-6944f8464718/Team/Game Played" />
+      <relativeChildShapes />
+      <nestedChildShapes>
+        <elementListCompartment Id="6632c760-7a33-4912-9bb9-d46839fa0d90" absoluteBounds="4.14, 1.01, 1.9700000000000002, 0.8262939453125" name="EventProperties" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </eventDefinitionCompartmentShape>
+    <eventDefinitionCompartmentShape Id="b61f1d4c-e91b-4b58-a559-529dfbd074bc" absoluteBounds="8.25, 5.25, 1.5, 1.4362939453124994">
+      <eventDefinitionMoniker name="/1c15ed7f-780b-440c-bbc8-6944f8464718/Player/Registered" />
+      <relativeChildShapes />
+      <nestedChildShapes>
+        <elementListCompartment Id="b26033d4-3af1-4f4b-ae5f-204243658d9e" absoluteBounds="8.265, 5.76, 1.4700000000000002, 0.8262939453125" name="EventProperties" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </eventDefinitionCompartmentShape>
+    <eventDefinitionCompartmentShape Id="0e68c6ea-44c8-47c2-b94e-1cfa982661ad" absoluteBounds="6.875, 3, 1.5, 1.2439925130208325">
+      <eventDefinitionMoniker name="/1c15ed7f-780b-440c-bbc8-6944f8464718/Player/Injured" />
+      <relativeChildShapes />
+      <nestedChildShapes>
+        <elementListCompartment Id="dc3e20b9-90e3-42e2-be20-511190e14bd5" absoluteBounds="6.89, 3.51, 1.4700000000000002, 0.63399251302083326" name="EventProperties" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </eventDefinitionCompartmentShape>
+    <projectionDefinitionCompartmentShape Id="66879172-2dad-41ee-9171-20b456cbd73e" absoluteBounds="3.75, 2.375, 2.5, 1.118779296875">
+      <projectionDefinitionMoniker name="/1c15ed7f-780b-440c-bbc8-6944f8464718/Team/Summary" />
+      <relativeChildShapes />
+      <nestedChildShapes>
+        <elementListCompartment Id="98646684-a7da-44d6-a3cf-d7bab6d1003d" isExpanded="false" absoluteBounds="3.765, 2.885, 2.4699999999999998, 0.2493896484375" name="ProjectionProperties" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="f032cef3-a418-4cc8-a5b0-f1b471304688" isExpanded="false" absoluteBounds="3.765, 3.1443896484375, 2.4699999999999998, 0.2493896484375" name="PropertyOperations" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </projectionDefinitionCompartmentShape>
+    <projectionDefinitionCompartmentShape Id="989e9b4c-f3d8-4db3-b753-ded32953c621" absoluteBounds="4.625, 5.875, 3.125, 2.0802864583333331">
+      <projectionDefinitionMoniker name="/1c15ed7f-780b-440c-bbc8-6944f8464718/Player/Summary" />
+      <relativeChildShapes />
+      <nestedChildShapes>
+        <elementListCompartment Id="610a769e-723f-48d4-bee5-2cb7a327224a" absoluteBounds="4.64, 6.385, 3.0949999999999998, 1.0185953776041665" name="ProjectionProperties" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="04c1419b-55a5-4553-a9c5-74ee85a4d88b" absoluteBounds="4.64, 7.4135953776041665, 3.0949999999999998, 0.44169108072916652" name="PropertyOperations" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </projectionDefinitionCompartmentShape>
+    <commandDefinitionCompartmentShape Id="9f13b844-8fb5-4642-a47f-9e10cedcfffe" absoluteBounds="12.75, 0.5, 2.875, 1.4362939453125">
+      <commandDefinitionMoniker name="/1c15ed7f-780b-440c-bbc8-6944f8464718/Player/SignPlayerToTeam" />
+      <relativeChildShapes />
+      <nestedChildShapes>
+        <elementListCompartment Id="b38ac980-d848-45e6-879e-60df9f89a27d" absoluteBounds="12.765, 1.01, 2.8449999999999998, 0.8262939453125" name="PropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </commandDefinitionCompartmentShape>
+    <projectionEventConnector Id="87514c83-7bd9-42b3-98af-509e814b54d8" edgePoints="[(7.75 : 6.37265292722713); (8 : 6.37265292722713); (8 : 6.28064697265625); (8.25 : 6.28064697265625)]" manuallyRouted="true" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <projectionDefinitionHandlesEventDefinitionsMoniker Id="0fb32e31-7d39-469c-83a0-8863e339cb4c" />
+      <nodes>
+        <projectionDefinitionCompartmentShapeMoniker Id="989e9b4c-f3d8-4db3-b753-ded32953c621" />
+        <eventDefinitionCompartmentShapeMoniker Id="b61f1d4c-e91b-4b58-a559-529dfbd074bc" />
+      </nodes>
+    </projectionEventConnector>
+    <aggregateParenthoodConnector Id="16b86bc9-f0a8-40f8-a9ad-0cd38e3fd908" edgePoints="[(12.28125 : 5.75); (12.28125 : 6.625)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <aggregateIdentifierIsChildOfTargetAggregateIdentifiersMoniker Id="5274afc4-f69a-4cfe-a21e-cbd03486dd58" />
+      <nodes>
+        <aggregateGeometryShapeMoniker Id="135a3a2f-8d0f-4a0c-a1c1-82b9791764b7" />
+        <aggregateGeometryShapeMoniker Id="4d347573-6cfc-4161-923c-90172793abe9" />
+      </nodes>
+    </aggregateParenthoodConnector>
+    <projectionEventConnector Id="b8e73af8-1a9a-4c63-8737-f6701f702449" edgePoints="[(5.125 : 2.375); (5.125 : 1.9362939453125)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <projectionDefinitionHandlesEventDefinitionsMoniker Id="4bad1717-cb36-418d-8925-f53989ef6b5c" />
+      <nodes>
+        <projectionDefinitionCompartmentShapeMoniker Id="66879172-2dad-41ee-9171-20b456cbd73e" />
+        <eventDefinitionCompartmentShapeMoniker Id="aa6c02e5-d1f3-44fa-874d-ce3339514106" />
+      </nodes>
+    </projectionEventConnector>
+    <identityGroupGeometryShape Id="4dbdc813-eb4a-44c5-b771-555e8df30cbb" absoluteBounds="0.5, 2.75, 1.75, 0.375">
+      <identityGroupMoniker Id="aa5374e6-2db3-45f8-aa4b-aec9aa43a300" />
+      <relativeChildShapes />
+    </identityGroupGeometryShape>
+    <aggregateIdentityGroupConnector Id="5ba75bf1-7e03-4fa9-908f-aad0cc2d0baa" edgePoints="[(2.15625 : 1.625); (2.15625 : 2.75)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <aggregateIdentifierHasIdentityGroupedMoniker Id="e929d6da-328c-40c7-b1e4-46d8987c7d40" />
+      <nodes>
+        <aggregateGeometryShapeMoniker Id="20340525-305d-452e-a79a-9ed74b21c3fc" />
+        <identityGroupGeometryShapeMoniker Id="4dbdc813-eb4a-44c5-b771-555e8df30cbb" />
+      </nodes>
+    </aggregateIdentityGroupConnector>
+    <identityGroupGeometryShape Id="f5217c91-3916-46c6-aa98-d6991746566c" absoluteBounds="0.5, 2, 1.5, 0.375">
+      <identityGroupMoniker Id="ddcddefd-c7c9-440a-b6fa-df8f347cf595" />
+      <relativeChildShapes />
+    </identityGroupGeometryShape>
+    <aggregateIdentityGroupConnector Id="499c8871-0f94-44c5-bf5c-aee551ab489e" edgePoints="[(1.25 : 1.625); (1.25 : 2)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <aggregateIdentifierHasIdentityGroupedMoniker Id="674a1048-58b2-4941-9862-0ac707cec1bc" />
+      <nodes>
+        <aggregateGeometryShapeMoniker Id="20340525-305d-452e-a79a-9ed74b21c3fc" />
+        <identityGroupGeometryShapeMoniker Id="f5217c91-3916-46c6-aa98-d6991746566c" />
+      </nodes>
+    </aggregateIdentityGroupConnector>
+    <identityGroupGeometryShape Id="651a28af-9908-4304-90c4-b8324875bb05" absoluteBounds="11, 1.875, 1.5, 0.5">
+      <identityGroupMoniker Id="eb24def0-ce3c-4459-bead-896951622328" />
+      <relativeChildShapes />
+    </identityGroupGeometryShape>
+    <aggregateIdentityGroupConnector Id="51654ffc-5c8a-496b-bb4a-6ce3b65f889f" edgePoints="[(10.6777777777778 : 1.5); (10.6777777777778 : 2.125); (11 : 2.125)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <aggregateIdentifierHasIdentityGroupedMoniker Id="921a9d85-7eea-4f2c-bb08-3cd9ae73c0f9" />
+      <nodes>
+        <aggregateGeometryShapeMoniker Id="dd1a263f-8268-4ec2-9e9a-62a87b6f5464" />
+        <identityGroupGeometryShapeMoniker Id="651a28af-9908-4304-90c4-b8324875bb05" />
+      </nodes>
+    </aggregateIdentityGroupConnector>
+    <eventDefinitionCompartmentShape Id="a1254595-fba5-4cc7-a8ab-fe1b17e7d1be" absoluteBounds="8.125, 7.875, 2.125, 1.4362939453124994">
+      <eventDefinitionMoniker name="/1c15ed7f-780b-440c-bbc8-6944f8464718/Game/Scheduled" />
+      <relativeChildShapes />
+      <nestedChildShapes>
+        <elementListCompartment Id="4566a2fd-e65d-4400-ab99-640087e3d63e" absoluteBounds="8.14, 8.385, 2.0949999999999998, 0.8262939453125" name="EventProperties" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </eventDefinitionCompartmentShape>
+    <aggregateEventConnector Id="7753cb5c-0a9b-4c86-b0f7-1fb75e3672c1" edgePoints="[(11.0892857142857 : 7.625); (11.0892857142857 : 8); (10.5 : 8); (10.5 : 7.625); (9.1875 : 7.625); (9.1875 : 7.875)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <aggregateIdentifierHasEventDefinitionsMoniker Id="a38aab1f-a21e-4dc2-8e3b-2f44859ad014" />
+      <nodes>
+        <aggregateGeometryShapeMoniker Id="4d347573-6cfc-4161-923c-90172793abe9" />
+        <eventDefinitionCompartmentShapeMoniker Id="a1254595-fba5-4cc7-a8ab-fe1b17e7d1be" />
+      </nodes>
+    </aggregateEventConnector>
+    <eventDefinitionCompartmentShape Id="6b1a10bb-d452-467d-8b6d-88f481037441" absoluteBounds="10.625, 8.375, 2, 1.2439925130208334">
+      <eventDefinitionMoniker name="/1c15ed7f-780b-440c-bbc8-6944f8464718/Game/Rescheduled" />
+      <relativeChildShapes />
+      <nestedChildShapes>
+        <elementListCompartment Id="f0c5e735-b079-4a78-9384-2b0615c197a4" absoluteBounds="10.64, 8.885, 1.9700000000000002, 0.63399251302083326" name="EventProperties" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </eventDefinitionCompartmentShape>
+    <aggregateEventConnector Id="932a30b1-8eae-4c6f-bda1-49a074186597" edgePoints="[(11.43359375 : 7.625); (11.43359375 : 8.375)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <aggregateIdentifierHasEventDefinitionsMoniker Id="68701744-3d26-456b-b03e-b3293f83bcdf" />
+      <nodes>
+        <aggregateGeometryShapeMoniker Id="4d347573-6cfc-4161-923c-90172793abe9" />
+        <eventDefinitionCompartmentShapeMoniker Id="6b1a10bb-d452-467d-8b6d-88f481037441" />
+      </nodes>
+    </aggregateEventConnector>
+    <eventDefinitionCompartmentShape Id="427280aa-dd13-44c9-baf9-87c8f4772c19" absoluteBounds="12.875, 8.375, 1.5, 1.0516910807291655">
+      <eventDefinitionMoniker name="/1c15ed7f-780b-440c-bbc8-6944f8464718/Game/Started" />
+      <relativeChildShapes />
+      <nestedChildShapes>
+        <elementListCompartment Id="532e1658-c656-423a-b7aa-dce1035425b8" absoluteBounds="12.89, 8.885, 1.4700000000000002, 0.44169108072916663" name="EventProperties" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </eventDefinitionCompartmentShape>
+    <aggregateEventConnector Id="e9348f77-1c69-422c-9ea6-bad1c4760f7c" edgePoints="[(13 : 7.625); (13 : 8.375)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <aggregateIdentifierHasEventDefinitionsMoniker Id="366fd79e-3ad2-41c7-9763-1d09187b1cae" />
+      <nodes>
+        <aggregateGeometryShapeMoniker Id="4d347573-6cfc-4161-923c-90172793abe9" />
+        <eventDefinitionCompartmentShapeMoniker Id="427280aa-dd13-44c9-baf9-87c8f4772c19" />
+      </nodes>
+    </aggregateEventConnector>
+    <eventDefinitionCompartmentShape Id="00bec836-4457-4d50-abe8-abe2b59f1f16" absoluteBounds="0.5, 5.625, 1.5, 1.2439925130208325">
+      <eventDefinitionMoniker name="/1c15ed7f-780b-440c-bbc8-6944f8464718/Team/Relegated" />
+      <relativeChildShapes />
+      <nestedChildShapes>
+        <elementListCompartment Id="cb4b0055-af18-4be7-adcf-ecdbf7a07f59" absoluteBounds="0.5149999999999999, 6.135, 1.4700000000000002, 0.63399251302083326" name="EventProperties" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </eventDefinitionCompartmentShape>
+    <aggregateEventConnector Id="04fca928-216b-4716-912c-3d1854d7f375" edgePoints="[(0.5 : 1.0625); (0.125 : 1.0625); (0.125 : 6.24699625651042); (0.5 : 6.24699625651042)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <aggregateIdentifierHasEventDefinitionsMoniker Id="3a83721b-276e-45f8-a7b6-8b64f354ffa1" />
+      <nodes>
+        <aggregateGeometryShapeMoniker Id="20340525-305d-452e-a79a-9ed74b21c3fc" />
+        <eventDefinitionCompartmentShapeMoniker Id="00bec836-4457-4d50-abe8-abe2b59f1f16" />
+      </nodes>
+    </aggregateEventConnector>
+    <classifierCompartmentShape Id="19e79141-9c01-48ce-aee1-33969c3a9723" absoluteBounds="0.5, 3.375, 2, 1.2439925130208329">
+      <classifierMoniker Id="38cbab92-8d47-4bb9-9e2b-4548f079def7" />
+      <relativeChildShapes />
+      <nestedChildShapes>
+        <elementListCompartment Id="978f7ffd-ea02-49d8-ba04-66a74e108546" absoluteBounds="0.515, 3.885, 1.9700000000000002, 0.63399251302083326" name="EventEvaluationsCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classifierCompartmentShape>
+    <identityGroupClassifierConnector Id="798fb0b3-0f62-4217-ba9a-7cdee66ff2e4" edgePoints="[(1.375 : 3.125); (1.375 : 3.375)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <identityGroupReferencesClassifierMoniker Id="4cd28563-7bf4-4062-9712-e3bc43c224a0" />
+      <nodes>
+        <identityGroupGeometryShapeMoniker Id="4dbdc813-eb4a-44c5-b771-555e8df30cbb" />
+        <classifierCompartmentShapeMoniker Id="19e79141-9c01-48ce-aee1-33969c3a9723" />
+      </nodes>
+    </identityGroupClassifierConnector>
+    <classifierEventConnector Id="c4353488-8ff7-4516-9e36-4cdf554a69a8" edgePoints="[(1.25 : 4.61899251302083); (1.25 : 5.625)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <classifierHandlesEventsMoniker Id="6f978e74-d078-4456-a190-02f4567062a0" />
+      <nodes>
+        <classifierCompartmentShapeMoniker Id="19e79141-9c01-48ce-aee1-33969c3a9723" />
+        <eventDefinitionCompartmentShapeMoniker Id="00bec836-4457-4d50-abe8-abe2b59f1f16" />
+      </nodes>
+    </classifierEventConnector>
+    <eventDefinitionCompartmentShape Id="d4c746ae-318c-4d3d-a9d8-1f54f5a3203a" absoluteBounds="2.25, 5.75, 1.5, 1.0516910807291664">
+      <eventDefinitionMoniker name="/1c15ed7f-780b-440c-bbc8-6944f8464718/Team/Promoted" />
+      <relativeChildShapes />
+      <nestedChildShapes>
+        <elementListCompartment Id="4c62eaab-9265-45db-91c2-d2a850c90b93" absoluteBounds="2.265, 6.26, 1.4700000000000002, 0.44169108072916663" name="EventProperties" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </eventDefinitionCompartmentShape>
+    <aggregateEventConnector Id="1edd06d5-498d-4eeb-9ae7-f3df0d8cd6a3" edgePoints="[(2.703125 : 1.625); (2.703125 : 5.75)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <aggregateIdentifierHasEventDefinitionsMoniker Id="335f6af5-04d7-4926-92d2-5ef2e8564ae5" />
+      <nodes>
+        <aggregateGeometryShapeMoniker Id="20340525-305d-452e-a79a-9ed74b21c3fc" />
+        <eventDefinitionCompartmentShapeMoniker Id="d4c746ae-318c-4d3d-a9d8-1f54f5a3203a" />
+      </nodes>
+    </aggregateEventConnector>
+    <classifierEventConnector Id="d5918c0d-b825-42af-90f1-d5305913806e" edgePoints="[(2.375 : 4.61899251302083); (2.375 : 5.75)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <classifierHandlesEventsMoniker Id="073fe09b-76d4-47c7-bbbe-0be2b6f8a1e8" />
+      <nodes>
+        <classifierCompartmentShapeMoniker Id="19e79141-9c01-48ce-aee1-33969c3a9723" />
+        <eventDefinitionCompartmentShapeMoniker Id="d4c746ae-318c-4d3d-a9d8-1f54f5a3203a" />
+      </nodes>
+    </classifierEventConnector>
+    <eventDefinitionCompartmentShape Id="8bb606c5-db8a-4f4b-8844-4be48c344c61" absoluteBounds="14.625, 4.75, 1.5, 1.2439925130208325">
+      <eventDefinitionMoniker name="/1c15ed7f-780b-440c-bbc8-6944f8464718/Season/Started" />
+      <relativeChildShapes />
+      <nestedChildShapes>
+        <elementListCompartment Id="203c33e6-ea6e-4de3-8386-66e9ac954958" absoluteBounds="14.64, 5.26, 1.4700000000000002, 0.63399251302083326" name="EventProperties" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </eventDefinitionCompartmentShape>
+    <aggregateEventConnector Id="3b7582eb-9256-453f-a681-3c622a9f1578" edgePoints="[(13.375 : 5.25); (14.625 : 5.25)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <aggregateIdentifierHasEventDefinitionsMoniker Id="fb456804-a033-4148-9933-c7796e62f68b" />
+      <nodes>
+        <aggregateGeometryShapeMoniker Id="135a3a2f-8d0f-4a0c-a1c1-82b9791764b7" />
+        <eventDefinitionCompartmentShapeMoniker Id="8bb606c5-db8a-4f4b-8844-4be48c344c61" />
+      </nodes>
+    </aggregateEventConnector>
+    <queryDefinitionShape Id="8a7458ac-83bd-42c1-a08e-75d297e8b61a" absoluteBounds="3.625, 4, 2.625, 1.5033821614583323">
+      <queryDefinitionMoniker name="/1c15ed7f-780b-440c-bbc8-6944f8464718/Team/Get Premier League Teams Summary" />
+      <relativeChildShapes />
+      <nestedChildShapes>
+        <elementListCompartment Id="1d492df1-393a-442f-9e84-ac79b0abbad0" isExpanded="false" absoluteBounds="3.64, 4.51, 2.5949999999999998, 0.2493896484375" name="InputParametersCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="a5f3207c-66d7-4452-8cd7-effeee273266" absoluteBounds="3.64, 4.7693896484375, 2.5949999999999998, 0.63399251302083326" name="OutputParametersCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </queryDefinitionShape>
+    <aggregateQueryDefinitionConnector Id="31acc41d-e0a5-456a-9910-c8324f79359d" edgePoints="[(2.81670168067227 : 1.625); (2.81670168067227 : 4.75169108072917); (3.625 : 4.75169108072917)]" fixedFrom="Caller" fixedTo="Algorithm">
+      <aggregateIdentifierHasQueryDefinitionsMoniker Id="8e684c9b-5623-488a-8ed1-3de3156358a9" />
+      <nodes>
+        <aggregateGeometryShapeMoniker Id="20340525-305d-452e-a79a-9ed74b21c3fc" />
+        <queryDefinitionShapeMoniker Id="8a7458ac-83bd-42c1-a08e-75d297e8b61a" />
+      </nodes>
+    </aggregateQueryDefinitionConnector>
+  </nestedChildShapes>
+</cQRSdslDiagram>

@@ -20,4 +20,9 @@ End Interface
 Public Interface IEvent(Of TAggregate As CQRSAzure.EventSourcing.IAggregationIdentifier)
     Inherits IEvent
 
+    ''' <summary>
+    ''' The version of the event 
+    ''' </summary>
+    ReadOnly Property Version As UInteger
+
 End Interface

@@ -6,7 +6,7 @@ Public MustInherit Class EntityDocumentationGeneratorBase
 
     Private m_docWriter As IDocumentationWriter
 
-    Private m_options As ModelDocumentationGeneratorOptions
+    Private m_options As IDocumentationGenerationOptions
 
     ''' <summary>
     ''' The filename base depends on what type of entity we are processing...
@@ -20,7 +20,7 @@ Public MustInherit Class EntityDocumentationGeneratorBase
     ''' </param>
     Public MustOverride Sub Generate(Optional docWriter As IDocumentationWriter = Nothing) Implements IEntityDocumentationGenerator.Generate
 
-    Public Sub SetCodeDocumentationOptions(options As ModelDocumentationGeneratorOptions) Implements IEntityDocumentationGenerator.SetCodeDocumentationOptions
+    Public Sub SetCodeDocumentationOptions(options As IDocumentationGenerationOptions) Implements IEntityDocumentationGenerator.SetCodeDocumentationOptions
         m_options = options
     End Sub
 
@@ -30,7 +30,7 @@ Public MustInherit Class EntityDocumentationGeneratorBase
         End Get
     End Property
 
-    Public Sub New(Optional ByVal options As ModelDocumentationGeneratorOptions = Nothing,
+    Public Sub New(Optional ByVal options As IDocumentationGenerationOptions = Nothing,
                    Optional ByVal documentWriter As IDocumentationWriter = Nothing)
         If (options IsNot Nothing) Then
             m_options = options

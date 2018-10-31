@@ -1,0 +1,14 @@
+﻿Overview
+========
+
+Aggregate mapping is the process of linking a specified aggregate class with the underlying technology used to 
+provide its event stream and any projection caching technology.
+
+It is to allow for a complete separation between the business side of the application (the Aggregates, Projections, Commands and Queries etc.)
+and the data implementation layer so that they may be tested independently.
+
+This link can be created by an application configuration file using <CQRSAzureEventSourcingConfiguration> desction:-
+
+  ImplementationMaps:: Link between an aggregate class (with domain name) and it's underlying implementations
+  Implementations:: Specific ways to store event streams (on azure or in memory)
+

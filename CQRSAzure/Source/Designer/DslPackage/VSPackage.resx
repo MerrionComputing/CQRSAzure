@@ -127,11 +127,104 @@
   <data name="103" xml:space="preserve">
     <value>CQRSdsl</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="104" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\ModelExplorerToolWindowBitmaps.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="104" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        Qk02AwAAAAAAADYAAAAoAAAAEAAAABAAAAABABgAAAAAAAAAAADEDgAAxA4AAAAAAAAAAAAA/wD//wD/
+        /wD//wD//wD//wD//wD//wD//wD//wD//wD//wD//wD//wD//wD//wD//wD//wD//wD//wD//wD//wD/
+        /wD//wD//wD/9vb29vb29vb29vb29vb29vb29vb2/wD//wD//wD//wD//wD//wD//wD/9vb29vb29vb2
+        QkJCQkJCQkJCQkJCQkJC9vb2/wD//wD//wD//wD//wD//wD//wD/9vb29vb29vb2QkJCIwl7Iwl7Iwl7
+        QkJC9vb2/wD//wD//wD//wD//wD//wD//wD/9vb2QkJCQkJCQkJCRBD1RBD1RBD1QkJC9vb2/wD//wD/
+        /wD//wD//wD//wD//wD/9vb2QkJC9vb2QkJCQkJCQkJCQkJCQkJC9vb2/wD//wD//wD//wD//wD//wD/
+        /wD/9vb2QkJC9vb29vb29vb29vb29vb29vb29vb2/wD//wD//wD//wD//wD//wD//wD/9vb2QkJC9vb2
+        QkJCQkJCQkJCQkJCQkJC9vb29vb29vb29vb29vb29vb29vb29vb29vb2QkJC9vb2QkJCB28MB28MB28M
+        QkJC9vb29vb29vb29vb29vb29vb29vb29vb29vb2QkJCQkJCQkJCFtMeFtMeFtMeQkJC9vb29vb2QkJC
+        QkJCQkJCQkJCQkJC9vb29vb2QkJC9vb2QkJCQkJCQkJCQkJCQkJC9vb29vb2QkJCCJOZCJOZCJOZQkJC
+        QkJCQkJCQkJC9vb29vb29vb29vb29vb29vb29vb29vb2QkJCLtzkLtzkLtzkQkJC9vb29vb29vb29vb2
+        /wD//wD//wD//wD//wD//wD/9vb2QkJCQkJCQkJCQkJCQkJC9vb2/wD//wD//wD//wD//wD//wD//wD/
+        /wD//wD/9vb29vb29vb29vb29vb29vb29vb2/wD//wD//wD//wD//wD//wD//wD//wD//wD//wD//wD/
+        /wD//wD//wD//wD//wD//wD//wD//wD//wD//wD//wD//wD//wD//wD/
+</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="201" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\File.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ThumbnailView" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        Qk1CAQAAAAAAAHYAAAAoAAAAEQAAABEAAAABAAQAAAAAAAAAAAAAAAAAAAAAABAAAAAQAAAAAAAA/wAA
+        gP8AgAD/AICA/4AAAP+AAID/gIAA/8DAwP+AgID/AAD//wD/AP8A/////wAA//8A/////wD/////////
+        //9/////8AAAAP////eA////8AAAAP///3iID///8AAAAP//93eHd///8AAAAP////eA////8AAAAP/3
+        //eA//f/8AAAAP9w//eA//cP8AAAAPeAAAB4AAeA8AAAAHiIiIiIiIiIAAAAAPeAd3d4d3eA8AAAAP9w
+        //eA//cP8AAAAP/3//eA//f/8AAAAP////eA////8AAAAP//9wiIgP//8AAAAP///3iID///8AAAAP//
+        //eA////8AAAAP////9/////8AAAAA==
+</value>
+    <comment>Invoke the thumbnail window</comment>
+  </data>
+  <data name="Zoom100Button" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        Qk02BAAAAAAAADYAAAAoAAAAEAAAABAAAAABACAAAAAAAAAAAADDDgAAww4AAAAAAAAAAAAAAAAAAPb2
+        9u/29vb/9vb2MAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPb2
+        9u++kFz/vpBc//b29u/29vYwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAD29vb/vpBc/5xTAP++kFz/9vb2//b29v/29vb/9vb2jwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAA9vb2MPb29u++kFz/nFMA/5xTAP+cUwD/ol0P/+DNuf/29vaPAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAD29vYw9vb2/5xTAP/h0sP/8e/w/+HSw/+iXQ//9vb2/wAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAPb29v+nZx7/8e/w//Hv8P/x7/D/nFMA/+vi1/8AAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAA9vb2//b29v/29vb/ol0P/+HSw//x7/D/4dLD/6JdD//29vb/9vb2//b2
+        9v/29vb/9vb2//b29v/29vb/9vb2//b29v9CQkL/ZGRk/8+4nv+iXQ//nFMA/6JdD//Uwq3/ZGRk/0JC
+        Qv9CQkL/QkJC/0JCQv9CQkL/QkJC//b29v/29vb/QkJC//Hv8P/y8PH/9PT0//X09f/09PT/8vDx//Hv
+        8P/x7/D/8e/w//Hv8P/x7/D/8e/w/0JCQv/29vb/9vb2/0JCQv/x7/D/8e/w/0JCQv/x7/D/QkJC/0JC
+        Qv9CQkL/8e/w/0JCQv9CQkL/QkJC//Hv8P9CQkL/9vb2//b29v9CQkL/8e/w//Hv8P9CQkL/8e/w/0JC
+        Qv/x7/D/QkJC//Hv8P9CQkL/8e/w/0JCQv/x7/D/QkJC//b29v/29vb/QkJC//Hv8P/x7/D/QkJC//Hv
+        8P9CQkL/8e/w/0JCQv/x7/D/QkJC//Hv8P9CQkL/8e/w/0JCQv/29vb/9vb2/0JCQv/x7/D/QkJC/0JC
+        Qv/x7/D/QkJC/0JCQv9CQkL/8e/w/0JCQv9CQkL/QkJC//Hv8P9CQkL/9vb2//b29v9CQkL/8e/w//Hv
+        8P/x7/D/8e/w//Hv8P/x7/D/8e/w//Hv8P/x7/D/8e/w//Hv8P/x7/D/QkJC//b29v/29vb/QkJC/0JC
+        Qv9CQkL/QkJC/0JCQv9CQkL/QkJC/0JCQv9CQkL/QkJC/0JCQv9CQkL/QkJC/0JCQv/29vb/9vb2//b2
+        9v/29vb/9vb2//b29v/29vb/9vb2//b29v/29vb/9vb2//b29v/29vb/9vb2//b29v/29vb/9vb2/w==
+</value>
+  </data>
+  <data name="ZoomInButton" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        Qk02BAAAAAAAADYAAAAoAAAAEAAAABAAAAABACAAAAAAAAAAAADEDgAAxA4AAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD29vYw9vb27/b29v/29vZgAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD29vYw9vb279TU1P96enr/6+vr//b2
+        9mAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD29vYw9vb279TU1P9NTU3/QkJC/2Rk
+        ZP/29vb/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD29vYw9vb279TU1P9NTU3/QkJC/0JC
+        Qv+zs7P/9vb2/wAAAAAAAAAAAAAAAPb29kD29va/9vb2//b29v/29vb/9vb2/9TU1P9NTU3/QkJC/0JC
+        Qv+zs7P/9vb2//b29mAAAAAAAAAAAPb29mDg4OD/enp6/0JCQv9CQkL/QkJC/4aGhv9NTU3/QkJC/0JC
+        Qv+zs7P/9vb2//b29mAAAAAAAAAAAPb29jDg4OD/TU1N/6SjpP/x7/D/8e/w//Hv8P+ko6T/QkJC/0JC
+        Qv+zs7P/9vb2//b29mAAAAAAAAAAAAAAAAD29vafenp6/6SjpP/x7/D/8e/w/5xTAP/x7/D/8e/w/6Sj
+        pP96enr/9vb2//b29mAAAAAAAAAAAAAAAAAAAAAA9vb270JCQv/x7/D/8e/w//Hv8P+cUwD/8e/w//Hv
+        8P/x7/D/QkJC//b29v/29vYwAAAAAAAAAAAAAAAAAAAAAPb29v9CQkL/8e/w/5xTAP+cUwD/nFMA/5xT
+        AP+cUwD/8e/w/1hYWP/g4OD/9vb2QAAAAAAAAAAAAAAAAAAAAAD29vbvQkJC//Hv8P/x7/D/8e/w/5xT
+        AP/x7/D/8e/w//Hv8P9CQkL/9vb2//b29jAAAAAAAAAAAAAAAAAAAAAA9vb2n3p6ev+ko6T/8e/w//Hv
+        8P+cUwD/8e/w//Hv8P+ko6T/enp6//b29t8AAAAAAAAAAAAAAAAAAAAAAAAAAPb29jDg4OD/TU1N/6Sj
+        pP/x7/D/8e/w//Hv8P+ko6T/TU1N/+Dg4P/29vZwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA9vb2YODg
+        4P96enr/QkJC/0JCQv9CQkL/b29v/9TU1P/29vafAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAD29vZA9vb2v/b29v/29vb/9vb2//b29t/29vZgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==
+</value>
+  </data>
+  <data name="ZoomOutButton" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        Qk02BAAAAAAAADYAAAAoAAAAEAAAABAAAAABACAAAAAAAAAAAADEDgAAxA4AAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD29vYw9vb27/b29v/29vZgAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD29vYw9vb279TU1P96enr/6+vr//b2
+        9mAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD29vYw9vb279TU1P9NTU3/QkJC/2Rk
+        ZP/29vb/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD29vYw9vb279TU1P9NTU3/QkJC/0JC
+        Qv+zs7P/9vb2/wAAAAAAAAAAAAAAAPb29kD29va/9vb2//b29v/29vb/9vb2/9TU1P9NTU3/QkJC/0JC
+        Qv+zs7P/9vb2//b29mAAAAAAAAAAAPb29mDg4OD/enp6/0JCQv9CQkL/QkJC/4aGhv9NTU3/QkJC/0JC
+        Qv+zs7P/9vb2//b29mAAAAAAAAAAAPb29jDg4OD/TU1N/6SjpP/x7/D/8e/w//Hv8P+ko6T/QkJC/0JC
+        Qv+zs7P/9vb2//b29mAAAAAAAAAAAAAAAAD29vafenp6/6SjpP/x7/D/8e/w//Hv8P/x7/D/8e/w/6Sj
+        pP96enr/9vb2//b29mAAAAAAAAAAAAAAAAAAAAAA9vb270JCQv/x7/D/8e/w//Hv8P/x7/D/8e/w//Hv
+        8P/x7/D/QkJC//b29v/29vYwAAAAAAAAAAAAAAAAAAAAAPb29v9CQkL/8e/w/5xTAP+cUwD/nFMA/5xT
+        AP+cUwD/8e/w/0JCQv/29vb/9vb2QAAAAAAAAAAAAAAAAAAAAAD29vbvQkJC//Hv8P/x7/D/8e/w//Hv
+        8P/x7/D/8e/w//Hv8P9CQkL/9vb2//b29jAAAAAAAAAAAAAAAAAAAAAA9vb2n3p6ev+ko6T/8e/w//Hv
+        8P/x7/D/8e/w//Hv8P+ko6T/enp6//b29t8AAAAAAAAAAAAAAAAAAAAAAAAAAPb29jDg4OD/TU1N/6Sj
+        pP/x7/D/8e/w//Hv8P+ko6T/TU1N/+Dg4P/29vZwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA9vb2YODg
+        4P96enr/QkJC/0JCQv9CQkL/b29v/9TU1P/29vafAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAD29vZA9vb2v/b29v/29vb/9vb2//b29t/29vZgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==
+</value>
   </data>
 </root>

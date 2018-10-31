@@ -23,7 +23,7 @@ namespace CQRSAzure.CQRSdsl.Dsl
 	/// <summary>
 	/// This class implements the VS package that integrates this DSL into Visual Studio.
 	/// </summary>
-	[VSShell::DefaultRegistryRoot("Software\\Microsoft\\VisualStudio\\14.0")]
+	[VSShell::DefaultRegistryRoot("Software\\Microsoft\\VisualStudio\\15.0")]
 	[VSShell::PackageRegistration(RegisterUsing = VSShell::RegistrationMethod.Assembly, UseManagedResourcesOnly = true)]
 	[VSShell::ProvideToolWindow(typeof(CQRSdslExplorerToolWindow), MultiInstances = false, Style = VSShell::VsDockStyle.Tabbed, Orientation = VSShell::ToolWindowOrientation.Right, Window = "{3AE79031-E1BC-11D0-8F78-00A0C9110057}")]
 	[VSShell::ProvideToolWindowVisibility(typeof(CQRSdslExplorerToolWindow), Constants.CQRSdslEditorFactoryId)]
@@ -108,6 +108,14 @@ namespace CQRSAzure.CQRSdsl.Dsl
 					"@ClassifierEventConnectionToolToolboxBitmap;CQRSAzure.CQRSdsl.Dsl.dll", 
 					0xff00ff,
 					Index = 9)]
+	[VSShell::ProvideStaticToolboxItem("CQRSAzure.CQRSdsl.Dsl.CQRS DesignerToolboxTab",
+					"@ClassifierProjectionConnectionToolToolboxItem;CQRSAzure.CQRSdsl.Dsl.dll", 
+					"CQRSAzure.CQRSdsl.Dsl.ClassifierProjectionConnectionToolToolboxItem", 
+					"CF_TOOLBOXITEMCONTAINER,CF_TOOLBOXITEMCONTAINER_HASH,CF_TOOLBOXITEMCONTAINER_CONTENTS", 
+					"ClassifierProjectionConnectionTool", 
+					"@ClassifierProjectionConnectionToolToolboxBitmap;CQRSAzure.CQRSdsl.Dsl.dll", 
+					0xff00ff,
+					Index = 10)]
 	[VSShell::ProvideEditorFactory(typeof(CQRSdslEditorFactory), 103, TrustLevel = VSShellInterop::__VSEDITORTRUSTLEVEL.ETL_AlwaysTrusted)]
 	[VSShell::ProvideEditorExtension(typeof(CQRSdslEditorFactory), "." + Constants.DesignerFileExtension, 50)]
 	[VSShell::ProvideEditorLogicalView(typeof(CQRSdslEditorFactory), "{7651A702-06E5-11D1-8EBD-00A0C90F26EA}")] // Designer logical view GUID i.e. VSConstants.LOGVIEWID_Designer

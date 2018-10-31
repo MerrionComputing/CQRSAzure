@@ -21,10 +21,10 @@ End Interface
 ''' <summary>
 ''' A typed interface to set the key to use to identify an aggregation
 ''' </summary>
-''' <typeparam name="TAggregationKey">
+''' <typeparam name="TAggregateKey">
 ''' The base type that uniquely identifies an individual of the aggregation
 ''' </typeparam>
-Public Interface IAggregationIdentifier(Of TAggregationKey)
+Public Interface IAggregationIdentifier(Of TAggregateKey)
     Inherits IAggregationIdentifier
 
     ''' <summary>
@@ -32,11 +32,11 @@ Public Interface IAggregationIdentifier(Of TAggregationKey)
     ''' </summary>
     ''' <param name="key"></param>
     ''' <remarks></remarks>
-    Sub SetKey(ByVal key As TAggregationKey)
+    Sub SetKey(ByVal key As TAggregateKey)
 
     ''' <summary>
     ''' Get the key used to uniquely identify the aggregate
     ''' </summary>
-    Function GetKey() As TAggregationKey
+    Function GetKey() As TAggregateKey
 
 End Interface

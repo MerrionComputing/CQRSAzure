@@ -71,8 +71,6 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Definitions\UserAggregationidentifier.vb" />
-    <Compile Include="Interfaces\IUserAggregationIdentifier.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -116,6 +114,10 @@
       <Project>{551fbd94-8ce5-4e33-818a-9c3fc171f1ce}</Project>
       <Name>CQRSAzure.EventSourcing</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Definitions\" />
+    <Folder Include="Interfaces\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

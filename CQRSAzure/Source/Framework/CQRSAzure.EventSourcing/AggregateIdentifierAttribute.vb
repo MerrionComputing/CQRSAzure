@@ -19,4 +19,26 @@ Public NotInheritable Class AggregateIdentifierAttribute
         m_attributeType = attributeTypeLink
     End Sub
 
+    Public Shared Function GetAggregateName(type As Type) As String
+
+        'if the type has a linked attribute return its name
+        For Each aggregateAttribute As AggregateIdentifierAttribute In type.GetCustomAttributes(GetType(AggregateIdentifierAttribute), True)
+            If (aggregateAttribute.LinkedAttributeIdentifier IsNot Nothing) Then
+#Region "Tracing"
+                EventSourcing.LogVerboseInfo(type.ToString() & " has the aggregate identifier attribute " & aggregateAttribute.LinkedAttributeIdentifier.Name)
+#End Region
+                Return aggregateAttribute.LinkedAttributeIdentifier.Name
+            End If
+        Next
+
+#Region "Tracing"
+        EventSourcing.LogVerboseInfo(type.ToString() & " has no aggregate identifier attribute")
+#End Region
+
+        'otherwise return the type name
+        Return type.Name
+
+    End Function
+
+
 End Class

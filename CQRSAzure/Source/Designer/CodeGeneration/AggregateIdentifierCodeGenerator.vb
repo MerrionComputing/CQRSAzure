@@ -1,6 +1,7 @@
 ﻿Imports System.CodeDom
 Imports System.CodeDom.Compiler
 Imports CQRSAzure.CQRSdsl.CodeGeneration
+Imports CQRSAzure.CQRSdsl.CustomCode.Interfaces
 Imports CQRSAzure.CQRSdsl.Dsl
 
 Public Class AggregateIdentifierCodeGenerator
@@ -23,12 +24,8 @@ Public Class AggregateIdentifierCodeGenerator
     Public ReadOnly Property RequiredNamespaces As IEnumerable(Of CodeNamespaceImport) Implements IEntityCodeGenerator.RequiredNamespaces
         Get
             Return {
-                New CodeNamespaceImport("CQRSAzure"),
-                New CodeNamespaceImport("CQRSAzure.EventSourcing"),
-                New CodeNamespaceImport("CQRSAzure.Aggregation"),
-                CodeGenerationUtilities.CreateNamespaceImport({m_aggregate.CQRSModel.Name,
-                    m_aggregate.Name,
-                    EventCodeGenerator.EVENT_FILENAME_IDENTIFIER})
+                New CodeNamespaceImport("System"),
+                New CodeNamespaceImport("CQRSAzure.EventSourcing")
                 }
         End Get
     End Property
@@ -71,9 +68,6 @@ Public Class AggregateIdentifierCodeGenerator
         Dim implementsGeneric As CodeTypeReference = InterfaceCodeGeneration.ImplementsGenericInterfaceReference("CQRSAzure.EventSourcing.IAggregationIdentifier", {ToMemberType(m_aggregate.KeyDataType)})
         interfaceDeclaration.BaseTypes.Add(implementsGeneric)
 
-        'and also inherit IEventStream(Of TAggregate As IAggregationIdentifier)
-        Dim implementsEventStreamGeneric As CodeTypeReference = InterfaceCodeGeneration.ImplementsGenericInterfaceReference("CQRSAzure.EventSourcing.IEventStream", {implementsGeneric})
-        interfaceDeclaration.BaseTypes.Add(implementsEventStreamGeneric)
 
         aggregateNamespace.Types.Add(interfaceDeclaration)
 
@@ -111,7 +105,7 @@ Public Class AggregateIdentifierCodeGenerator
         'Add the model name (DomainNameAttribute)
         If Not String.IsNullOrWhiteSpace(m_aggregate.CQRSModel.Name) Then
             Dim params As New List(Of CodeAttributeArgument)
-            params.Add(New CodeAttributeArgument("domainNameIn", New CodePrimitiveExpression(m_aggregate.CQRSModel.Name)))
+            params.Add(New CodeAttributeArgument(New CodePrimitiveExpression(m_aggregate.CQRSModel.Name)))
             classDeclaration.CustomAttributes.Add(
                 AttributeCodeGenerator.ParameterisedAttribute("CQRSAzure.EventSourcing.DomainNameAttribute",
                                                               params))
@@ -139,11 +133,31 @@ Public Class AggregateIdentifierCodeGenerator
             classDeclaration.Members.Add(getAggregeateIdentifierFunction)
         End If
 
+        'Public Function GetKey() As Integer Implements CQRSAzure.EventSourcing.IAggregationIdentifier(Of Integer).GetKey
+        Dim getKeySub As CodeMemberMethod = MethodCodeGenerator.PublicParameterisedFunction("GetKey",
+                                                                                       ToMemberType(m_aggregate.KeyDataType),
+                                                                                            Nothing)
+
+        If (getKeySub IsNot Nothing) Then
+            getKeySub.Comments.AddRange(CommentGeneration.SummaryCommentSection({"Returns the unique identifier of this " & m_aggregate.Name}))
+            'make it implement the interface  CQRSAzure.EventSourcing.IAggregationIdentifier(Of T).SetKey
+            Dim implementsGeneric As CodeTypeReference = InterfaceCodeGeneration.ImplementsGenericInterfaceReference("CQRSAzure.EventSourcing.IAggregationIdentifier", {ToMemberType(m_aggregate.KeyDataType)})
+            If (implementsGeneric IsNot Nothing) Then
+                getKeySub.ImplementationTypes.Add(implementsGeneric)
+            End If
+            getKeySub.Statements.Add(New CodeMethodReturnStatement(New CodeArgumentReferenceExpression(EventCodeGenerator.ToMemberName(KeyPropertyName, True))))
+            ' Add this function to the implementation class
+            classDeclaration.Members.Add(getKeySub)
+        End If
+
         'Public Sub SetKey(key As Integer) Implements CQRSAzure.EventSourcing.IAggregationIdentifier(Of Integer).SetKey 
         Dim setKeySub As CodeMemberMethod = MethodCodeGenerator.PublicParameterisedSub("SetKey",
                                                                                        {New CodeParameterDeclarationExpression(ToMemberType(m_aggregate.KeyDataType),
                                                                                                                                EventCodeGenerator.ToMemberName(KeyPropertyName, False, True))})
+
+
         If (setKeySub IsNot Nothing) Then
+            setKeySub.Comments.AddRange(CommentGeneration.SummaryCommentSection({"Sets the unique identifier of this " & m_aggregate.Name}))
             'make it implement the interface  CQRSAzure.EventSourcing.IAggregationIdentifier(Of T).SetKey
             Dim implementsGeneric As CodeTypeReference = InterfaceCodeGeneration.ImplementsGenericInterfaceReference("CQRSAzure.EventSourcing.IAggregationIdentifier", {ToMemberType(m_aggregate.KeyDataType)})
             If (implementsGeneric IsNot Nothing) Then
@@ -159,72 +173,6 @@ Public Class AggregateIdentifierCodeGenerator
             classDeclaration.Members.Add(setKeySub)
         End If
 
-
-
-        Dim parentAggregateInterface As CodeTypeReference = InterfaceCodeGeneration.ImplementsInterfaceReference(m_aggregate.Name)
-        Dim genericEventInterface As CodeTypeReference = InterfaceCodeGeneration.ImplementsGenericInterfaceReference("IEvent", {parentAggregateInterface})
-        Dim genericEventStreamInterface As CodeTypeReference = InterfaceCodeGeneration.ImplementsGenericInterfaceReference("IEventStream", {parentAggregateInterface})
-
-        Dim m_eventStreamMember As CodeMemberField = New CodeMemberField(genericEventStreamInterface, EventCodeGenerator.ToMemberName("eventStream", True))
-
-        'm_eventStream private member
-        If (genericEventStreamInterface IsNot Nothing) Then
-            classDeclaration.Members.Add(m_eventStreamMember)
-        End If
-
-        'Public Sub AddEvent(ByVal eventToAdd As IEvent(Of TAggregate)) Implements IEventStream(Of TAggregate As IAggregationIdentifier)
-        Dim addEventSub As CodeMemberMethod = MethodCodeGenerator.PrivateParameterisedSub("AddEvent",
-                                                                                         {New CodeParameterDeclarationExpression(genericEventInterface,
-                                                                                                                                 "eventToAdd")})
-
-        Dim m_eventStreamReference As New CodeFieldReferenceExpression()
-        m_eventStreamReference.FieldName = EventCodeGenerator.ToMemberName("eventStream", True)
-
-        If (addEventSub IsNot Nothing) Then
-            'make it implement the interface IEventStream(Of TAggregate As IAggregationIdentifier)
-            If (genericEventStreamInterface IsNot Nothing) Then
-                addEventSub.ImplementationTypes.Add(genericEventStreamInterface)
-            End If
-
-            'eventToAdd 
-            Dim eventToAddReference As New CodeFieldReferenceExpression()
-            eventToAddReference.FieldName = "eventToAdd"
-
-            'call m_eventStream.Add(eventToAdd)
-
-            Dim addMethod As New CodeMethodReferenceExpression(m_eventStreamReference, "Add")
-            addEventSub.Statements.Add(New CodeMethodInvokeExpression(addMethod, {eventToAddReference}))
-
-            ' Add this sub to the implementation class
-            classDeclaration.Members.Add(addEventSub)
-        End If
-
-        'Add the specific event subs for each event in this aggregate
-        If (m_aggregate.EventDefinitions IsNot Nothing) Then
-            For Each evt As EventDefinition In m_aggregate.EventDefinitions
-                'Get a reference to the event's interface type
-                Dim parameterType As CodeTypeReference = New CodeTypeReference(ModelCodeGenerator.MakeInterfaceName(evt.Name))
-                Dim onEventSub As CodeMemberMethod = MethodCodeGenerator.PublicParameterisedSub(ModelCodeGenerator.MakeValidCodeName(evt.Name),
-                                                                                         {New CodeParameterDeclarationExpression(parameterType,
-                                                                                                                                 "eventToAdd")})
-                If (onEventSub IsNot Nothing) Then
-                    If (Not String.IsNullOrEmpty(evt.Description)) Then
-                        ' Add the comment
-                        onEventSub.Comments.AddRange(CommentGeneration.SummaryCommentSection({evt.Description}))
-                    End If
-                    ' Pass the event to add 
-                    Dim addMethod As New CodeMethodReferenceExpression(m_eventStreamReference, "Add")
-                    Dim eventToAddReference As New CodeFieldReferenceExpression()
-                    eventToAddReference.FieldName = "eventToAdd"
-                    Dim addMethodInvoke = New CodeMethodInvokeExpression(addMethod, {eventToAddReference})
-
-                    onEventSub.Statements.Add(addMethodInvoke)
-
-                    ' Add this sub to the implementation class
-                    classDeclaration.Members.Add(onEventSub)
-                End If
-            Next
-        End If
 
         'Add constructors
         Dim emptyConstructor As New CodeConstructor()
@@ -249,8 +197,8 @@ Public Class AggregateIdentifierCodeGenerator
 
     End Function
 
-    Private m_options As ModelCodeGenerationOptions = ModelCodeGenerationOptions.DefaultOptions()
-    Public Sub SetCodeGenerationOptions(options As ModelCodeGenerationOptions) Implements IEntityCodeGenerator.SetCodeGenerationOptions
+    Private m_options As IModelCodeGenerationOptions = ModelCodeGenerationOptions.Default()
+    Public Sub SetCodeGenerationOptions(options As IModelCodeGenerationOptions) Implements IEntityCodeGenerator.SetCodeGenerationOptions
         m_options = options
     End Sub
 

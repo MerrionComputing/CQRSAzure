@@ -1,6 +1,7 @@
 ﻿Imports System.CodeDom
 Imports System.CodeDom.Compiler
 Imports Microsoft.CodeDom.Providers.DotNetCompilerPlatform
+Imports Microsoft.CSharp
 
 ''' <summary>
 ''' General utility functions for making code generatio easier
@@ -18,7 +19,7 @@ Public Class CodeGenerationUtilities
 
         Using provider As New VBCodeProvider
             'Visual Basic specific initialisation
-            Dim vbNetOptions As New CodeDom.Compiler.CodeGeneratorOptions() 
+            Dim vbNetOptions As New CodeDom.Compiler.CodeGeneratorOptions()
             vbNetOptions.BlankLinesBetweenMembers = True
 
             Dim sbRet As New System.Text.StringBuilder
@@ -41,7 +42,7 @@ Public Class CodeGenerationUtilities
     ''' </param>
     Public Shared Function ToCSharpCodeString(ByVal codeUnitToShow As CodeCompileUnit) As String
 
-        Using provider As New CSharpCodeProvider
+        Using provider As New Microsoft.CodeDom.Providers.DotNetCompilerPlatform.CSharpCodeProvider
             Dim cSharpOptions As New CodeDom.Compiler.CodeGeneratorOptions()
             cSharpOptions.BlankLinesBetweenMembers = True
             cSharpOptions.BracingStyle = "C" ' Change this to "Block" to have the open brace on the current line (freak)

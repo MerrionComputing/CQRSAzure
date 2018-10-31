@@ -34,6 +34,11 @@
         /// Should each aggregate be put in its own code subdirectory?
         /// </summary>
         bool SeparateFolderPerAggregate { get; }
+
+        /// <summary>
+        /// For database backed CQRS classes, should we generate entity framework classes?
+        /// </summary>
+        bool GenerateEntityFrameworkClasses { get;  }
     }
 
 

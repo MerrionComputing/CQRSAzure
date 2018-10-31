@@ -109,4 +109,32 @@ Public Class CQRSAzureEventSourcingImplementationSettingsElement
         End Set
     End Property
 
+    ''' <summary>
+    ''' The settings specific to a local file system backed event stream
+    ''' </summary>
+    <ConfigurationProperty(NameOf(LocalFileSettings),
+                           DefaultValue:=Nothing,
+                           IsRequired:=False)>
+    Public Property LocalFileSettings As CQRSAzureEventSourcingLocalFileSettingsElement
+        Get
+            Return Me(NameOf(LocalFileSettings))
+        End Get
+        Set(value As CQRSAzureEventSourcingLocalFileSettingsElement)
+            Me(NameOf(LocalFileSettings)) = value
+        End Set
+    End Property
+
+    Public Shared Function DefaultImplementation() As CQRSAzureEventSourcingImplementationSettingsElement
+        'Create a system-wide default implementation to use
+
+        Return New CQRSAzureEventSourcingImplementationSettingsElement With
+            {.Name = NameOf(DefaultImplementation),
+            .ImplementationType = SupportedEventStreamImplementations.InMemory,
+            .InMemorySettings = New CQRSAzureEventSourcingInMemorySettingsElement() With {
+            .DebugMessages = True}
+        }
+
+    End Function
+
+
 End Class

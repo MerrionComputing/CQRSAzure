@@ -1,0 +1,7 @@
+﻿Implementation
+==============
+
+There are a very large number of different ways that event stream data can be stored - both on the local machine and on
+a cloud provider.
+
+I have separated the implementations into separate folders so that you can choose (and use) only the one that works best for you

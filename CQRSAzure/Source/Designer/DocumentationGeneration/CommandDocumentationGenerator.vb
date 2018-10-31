@@ -47,7 +47,7 @@ Public Class CommandDocumentationGenerator
     End Sub
 
     Public Sub New(ByVal cmdDef As CommandDefinition,
-                   Optional ByVal options As ModelDocumentationGeneratorOptions = Nothing,
+                   Optional ByVal options As IDocumentationGenerationOptions = Nothing,
                    Optional ByVal documentWriter As IDocumentationWriter = Nothing)
         MyBase.New(options, documentWriter)
         m_cmdDef = cmdDef

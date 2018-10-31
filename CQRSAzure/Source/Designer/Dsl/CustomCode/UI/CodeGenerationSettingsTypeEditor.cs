@@ -10,9 +10,6 @@ namespace CQRSAzure.CQRSdsl.CustomCode.UI
     public class CodeGenerationSettingsTypeEditor : UITypeEditor
     {
 
-        #region Members
-        private IWindowsFormsEditorService formsEditorService;
-        #endregion
 
         public override UITypeEditorEditStyle GetEditStyle
         (ITypeDescriptorContext context)

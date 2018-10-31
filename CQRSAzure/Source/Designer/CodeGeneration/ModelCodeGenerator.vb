@@ -1,11 +1,12 @@
-﻿Imports System.Linq
-Imports System.CodeDom
+﻿Imports System.CodeDom
 Imports System.CodeDom.Compiler
 Imports CQRSAzure.CQRSdsl.Dsl
-Imports Microsoft.CodeDom.Providers.DotNetCompilerPlatform
-Imports Microsoft.VisualStudio.Modeling
 Imports CQRSAzure.CQRSdsl.CustomCode.Interfaces
-Imports CQRSAzure.CQRSdsl.CodeGeneration.ModelCodeGenerationOptions
+Imports Microsoft.CSharp
+Imports Microsoft.VisualBasic
+Imports Microsoft.VisualStudio.Modeling
+Imports CQRSAzure.CQRSdsl.CustomCode.Interfaces.ModelCodegenerationOptionsBase
+Imports CQRSAzure.CQRSdsl.CodeGeneration
 
 ''' <summary>
 ''' A class to perform the code generation for a complete CQRS model from it's XML
@@ -17,15 +18,18 @@ Imports CQRSAzure.CQRSdsl.CodeGeneration.ModelCodeGenerationOptions
 Public Class ModelCodeGenerator
 
     Private ReadOnly m_model As CQRSModel
-    Private m_options As ModelCodeGenerationOptions = ModelCodeGenerationOptions.DefaultOptions()
+    Private m_options As IModelCodeGenerationOptions = ModelCodeGenerationOptions.Default()
+
+    Private m_modelProjects As New Dictionary(Of String, CodeProjectFile)
+
 
     ''' <summary>
     ''' The code generation options to use when generating the source code for this model
     ''' </summary>
-    Public ReadOnly Property Options As ModelCodeGenerationOptions
+    Public ReadOnly Property Options As IModelCodeGenerationOptions
         Get
             If (m_options Is Nothing) Then
-                m_options = ModelCodeGenerationOptions.DefaultOptions()
+                m_options = ModelCodeGenerationOptions.Default()
             End If
             Return m_options
         End Get
@@ -41,8 +45,10 @@ Public Class ModelCodeGenerator
 
             GenerateModelCode(provider, cSharpOptions)
 
+
         End Using
     End Sub
+
 
     Public Sub GenerateVBNetCode()
 
@@ -60,16 +66,154 @@ Public Class ModelCodeGenerator
     ''' </summary>
     Public Sub GenerateCode()
 
+        'clear any previous filename lists
+
+
         'perform any pre-generation operations
         If (m_options.SeparateFolderPerModel) Then
 
         End If
 
-        If (m_options.CodeLanguage = ModelCodeGenerationOptions.SupportedLanguages.CSharp) Then
+        If (m_options.CodeLanguage = SupportedLanguages.CSharp) Then
             GenerateCSharpCode()
         Else
             GenerateVBNetCode()
         End If
+
+        'Generate the model project files
+        For Each modelProject In m_modelProjects.Values
+            GenerateModelProject(modelProject, m_options)
+        Next
+
+        'Generate any model solutions files (TBD if this makes sense)
+
+    End Sub
+
+    ''' <summary>
+    ''' Create a project file (.csproj or .vbproj) for the code files linked to the given project
+    ''' </summary>
+    ''' <param name="modelProject">
+    ''' The project template with the code files and references it will use
+    ''' </param>
+    ''' <param name="options">
+    ''' Additional options on how the code should be generated
+    ''' </param>
+    ''' <remarks>
+    ''' A code file may be included in multiple projects if that makes sense
+    ''' </remarks>
+    Private Sub GenerateModelProject(modelProject As CodeProjectFile,
+                                     ByVal options As ModelCodeGenerationOptions)
+
+        Dim filenameBase As String = modelProject.ProjectName
+        If (options.CodeLanguage = SupportedLanguages.CSharp) Then
+            filenameBase = filenameBase.Trim() & ".csproj"
+        Else
+            filenameBase = filenameBase.Trim() & ".vbproj"
+        End If
+
+        Using fWrite As IO.FileStream = System.IO.File.Create(System.IO.Path.Combine(options.DirectoryRoot.FullName, filenameBase))
+            If (fWrite.CanWrite) Then
+                Using sw As System.Xml.XmlWriter = System.Xml.XmlWriter.Create(fWrite)
+                    'Make the XML indented for easier reading
+                    sw.WriteStartDocument()
+
+                    'write element <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+                    sw.WriteStartElement("Project", "http://schemas.microsoft.com/developer/msbuild/2003")
+                    sw.WriteAttributeString("ToolsVersion", "14.0")
+                    sw.WriteAttributeString("DefaultTargets", "Build")
+
+                    '<Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+                    sw.WriteStartElement(CodeProjectFile.ITEMGROUPMEMBER_IMPORT)
+                    sw.WriteAttributeString("Project", "$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props")
+                    sw.WriteAttributeString("Condition", "Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')")
+                    sw.WriteEndElement()
+
+                    '
+                    sw.WriteStartElement("PropertyGroup")
+                    sw.WriteElementString("ProjectGuid", modelProject.ProjectGuid.ToString("B"))
+                    sw.WriteElementString("OutputType", "Library")
+                    sw.WriteElementString("RootNamespace", m_model.Name)
+                    sw.WriteElementString("AssemblyName", modelProject.ProjectName)
+                    sw.WriteElementString("SchemaVersion", "2.0")
+                    '<>v4.6</TargetFrameworkVersion>
+                    sw.WriteElementString("TargetFrameworkVersion", "4.6")
+                    sw.WriteEndElement()
+
+                    'Build
+                    sw.WriteStartElement("PropertyGroup")
+                    sw.WriteAttributeString("Condition", " '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ")
+                    sw.WriteElementString("DebugSymbols", "true")
+                    sw.WriteElementString("DebugType", "full")
+                    sw.WriteElementString("Optimize", "false")
+                    sw.WriteElementString("OutputPath", "bin\Debug\")
+                    sw.WriteElementString("DefineConstants", "DEBUG;TRACE")
+                    sw.WriteElementString("ErrorReport", "prompt")
+                    sw.WriteElementString("WarningLevel", "4")
+                    sw.WriteEndElement()
+
+
+                    'Release
+                    sw.WriteStartElement("PropertyGroup")
+                    sw.WriteAttributeString("Condition", " '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ")
+                    sw.WriteElementString("DebugType", "pdbonly")
+                    sw.WriteElementString("Optimize", "true")
+                    sw.WriteElementString("OutputPath", "bin\Release\")
+                    sw.WriteElementString("DefineConstants", "TRACE")
+                    sw.WriteElementString("ErrorReport", "prompt")
+                    sw.WriteElementString("WarningLevel", "4")
+                    sw.WriteEndElement()
+
+                    If modelProject.IncludedReferences.Count > 0 Then
+                        'make a section for all the references
+                        sw.WriteStartElement("ItemGroup")
+                        For Each reference In modelProject.IncludedReferences
+                            sw.WriteStartElement(CodeProjectFile.ITEMGROUPMEMBER_REFERENCE)
+                            sw.WriteAttributeString("Include", reference)
+                            If Not String.IsNullOrWhiteSpace(CodeProjectFile.GetHintPath(reference)) Then
+                                sw.WriteElementString("HintPath", CodeProjectFile.GetHintPath(reference))
+                            End If
+                            sw.WriteEndElement()
+                        Next
+                        sw.WriteEndElement() 'ItemGroup
+                        'make a section for all the imports
+                        sw.WriteStartElement("ItemGroup")
+                        For Each reference In modelProject.IncludedReferences
+                            sw.WriteStartElement(CodeProjectFile.ITEMGROUPMEMBER_IMPORT)
+                            sw.WriteAttributeString("Include", reference)
+                            sw.WriteEndElement()
+                        Next
+                        sw.WriteEndElement() 'ItemGroup
+                    End If
+
+                    If modelProject.IncludedSourceFilenames.Count > 0 Then
+                        'make a section for all the included files
+                        sw.WriteStartElement("ItemGroup")
+                        For Each sourceFile In modelProject.IncludedSourceFilenames
+                            sw.WriteStartElement(CodeProjectFile.ITEMGROUPMEMBER_COMPILE)
+                            sw.WriteAttributeString("Include", sourceFile)
+                            sw.WriteEndElement()
+                        Next
+                        sw.WriteEndElement() 'ItemGroup
+                    End If
+
+                    sw.WriteStartElement("Import")
+                    If (options.CodeLanguage = SupportedLanguages.CSharp) Then
+                        sw.WriteAttributeString("Project", "$(MSBuildToolsPath)\Microsoft.CSharp.targets")
+                    End If
+
+                    If (options.CodeLanguage = SupportedLanguages.VBNet) Then
+                        sw.WriteAttributeString("Project", "$(MSBuildToolsPath)\Microsoft.VisualBasic.targets")
+                    End If
+                    sw.WriteEndElement()
+
+                    'close the <Project> element
+                    sw.WriteEndElement()
+
+                    'Close the XML writer
+                    sw.WriteEndDocument()
+                End Using
+            End If
+        End Using
 
     End Sub
 
@@ -85,88 +229,149 @@ Public Class ModelCodeGenerator
     Private Sub GenerateModelCode(ByVal provider As CodeDomProvider, ByVal codeGenOptions As CodeGeneratorOptions)
 
 
+        'Create each of the projects that will hold the source code...
+        m_modelProjects.Add(CodeProjectFile.PROJECTNAME_QUERY_DEFINITION, New CodeProjectFile(MakeValidCodeName(m_model.Name) & "." & CodeProjectFile.PROJECTNAME_QUERY_DEFINITION))
+        m_modelProjects(CodeProjectFile.PROJECTNAME_QUERY_DEFINITION).AddReference(CodeProjectFile.REFERENCE_QUERY_DEFINITION)
+        m_modelProjects(CodeProjectFile.PROJECTNAME_QUERY_DEFINITION).AddReference(CodeProjectFile.REFERENCE_EVENTSOURCING_INTERFACES)
+        m_modelProjects(CodeProjectFile.PROJECTNAME_QUERY_DEFINITION).AddReference(CodeProjectFile.REFERENCE_SYSTEM)
+
+        m_modelProjects.Add(CodeProjectFile.PROJECTNAME_QUERY_HANDLER, New CodeProjectFile(MakeValidCodeName(m_model.Name) & "." & CodeProjectFile.PROJECTNAME_QUERY_HANDLER))
+        m_modelProjects(CodeProjectFile.PROJECTNAME_QUERY_HANDLER).AddReference(CodeProjectFile.REFERENCE_QUERY_DEFINITION)
+        m_modelProjects(CodeProjectFile.PROJECTNAME_QUERY_HANDLER).AddReference(CodeProjectFile.REFERENCE_QUERY_HANDLER)
+        m_modelProjects(CodeProjectFile.PROJECTNAME_QUERY_HANDLER).AddReference(CodeProjectFile.REFERENCE_IDENTITYGROUP)
+        m_modelProjects(CodeProjectFile.PROJECTNAME_QUERY_HANDLER).AddReference(CodeProjectFile.REFERENCE_EVENTSOURCING_INTERFACES)
+        m_modelProjects(CodeProjectFile.PROJECTNAME_QUERY_HANDLER).AddReference(CodeProjectFile.REFERENCE_SYSTEM)
+
+        m_modelProjects.Add(CodeProjectFile.PROJECTNAME_COMMAND_DEFINITION, New CodeProjectFile(MakeValidCodeName(m_model.Name) & "." & CodeProjectFile.PROJECTNAME_COMMAND_DEFINITION))
+        m_modelProjects(CodeProjectFile.PROJECTNAME_COMMAND_DEFINITION).AddReference(CodeProjectFile.REFERENCE_COMMAND_DEFINITION)
+        m_modelProjects(CodeProjectFile.PROJECTNAME_COMMAND_DEFINITION).AddReference(CodeProjectFile.REFERENCE_EVENTSOURCING_INTERFACES)
+        m_modelProjects(CodeProjectFile.PROJECTNAME_COMMAND_DEFINITION).AddReference(CodeProjectFile.REFERENCE_SYSTEM)
+
+        m_modelProjects.Add(CodeProjectFile.PROJECTNAME_COMMAND_HANDLER, New CodeProjectFile(MakeValidCodeName(m_model.Name) & "." & CodeProjectFile.PROJECTNAME_COMMAND_HANDLER))
+        m_modelProjects(CodeProjectFile.PROJECTNAME_COMMAND_HANDLER).AddReference(CodeProjectFile.REFERENCE_COMMAND_DEFINITION)
+        m_modelProjects(CodeProjectFile.PROJECTNAME_COMMAND_HANDLER).AddReference(CodeProjectFile.REFERENCE_COMMAND_HANDLER)
+        m_modelProjects(CodeProjectFile.PROJECTNAME_COMMAND_HANDLER).AddReference(CodeProjectFile.REFERENCE_IDENTITYGROUP)
+        m_modelProjects(CodeProjectFile.PROJECTNAME_COMMAND_HANDLER).AddReference(CodeProjectFile.REFERENCE_EVENTSOURCING_INTERFACES)
+        m_modelProjects(CodeProjectFile.PROJECTNAME_COMMAND_HANDLER).AddReference(CodeProjectFile.REFERENCE_SYSTEM)
+
+        m_modelProjects.Add(CodeProjectFile.PROJECTNAME_IDENTITY_GROUP, New CodeProjectFile(MakeValidCodeName(m_model.Name) & "." & CodeProjectFile.PROJECTNAME_IDENTITY_GROUP))
+        m_modelProjects(CodeProjectFile.PROJECTNAME_IDENTITY_GROUP).AddReference(CodeProjectFile.REFERENCE_IDENTITYGROUP)
+        m_modelProjects(CodeProjectFile.PROJECTNAME_IDENTITY_GROUP).AddReference(CodeProjectFile.REFERENCE_EVENTSOURCING_INTERFACES)
+        m_modelProjects(CodeProjectFile.PROJECTNAME_IDENTITY_GROUP).AddReference(CodeProjectFile.REFERENCE_SYSTEM)
+
+        m_modelProjects.Add(CodeProjectFile.PROJECTNAME_EVENT_SOURCING, New CodeProjectFile(MakeValidCodeName(m_model.Name) & "." & CodeProjectFile.PROJECTNAME_EVENT_SOURCING))
+        m_modelProjects(CodeProjectFile.PROJECTNAME_EVENT_SOURCING).AddReference(CodeProjectFile.REFERENCE_EVENTSOURCING_INTERFACES)
+        m_modelProjects(CodeProjectFile.PROJECTNAME_EVENT_SOURCING).AddReference(CodeProjectFile.REFERENCE_IDENTITYGROUP)
+        m_modelProjects(CodeProjectFile.PROJECTNAME_EVENT_SOURCING).AddReference(CodeProjectFile.REFERENCE_SYSTEM)
+        m_modelProjects(CodeProjectFile.PROJECTNAME_EVENT_SOURCING).AddReference(CodeProjectFile.REFERENCE_SYSTEM_REFLECTION)
 
         'Compile the model contents...
         For Each aggregate As AggregateIdentifier In m_model.AggregateIdentifiers
             Dim aggregateCodeGen As New AggregateIdentifierCodeGenerator(aggregate)
             aggregateCodeGen.SetCodeGenerationOptions(m_options)
             'Make the interface for the aggregate identifier
-            CreateSourceCodeFile(MakeInterfaceName(aggregate.Name), aggregateCodeGen.GenerateInterface(), m_options, m_model.Name)
+            CreateSourceCodeFile(MakeInterfaceName(aggregate.Name), aggregateCodeGen.GenerateInterface(), m_options, m_model.Name, ModelSourceFileType.AggregateIdentifierInterface)
             'Make the class for the aggregate identifier
-            CreateSourceCodeFile(MakeImplementationClassName(aggregate.Name), aggregateCodeGen.GenerateImplementation(), m_options, m_model.Name)
+            CreateSourceCodeFile(MakeImplementationClassName(aggregate.Name), aggregateCodeGen.GenerateImplementation(), m_options, m_model.Name, ModelSourceFileType.AggregateIdentifier)
 
             'Walk the tree and create the code required for each element
             For Each eventDef As EventDefinition In aggregate.EventDefinitions
                 Dim eventCodeGen As New EventCodeGenerator(eventDef)
                 eventCodeGen.SetCodeGenerationOptions(m_options)
                 'Make the interface for the event definition
-                CreateSourceCodeFile(MakeInterfaceName(eventCodeGen.FilenameBase), eventCodeGen.GenerateInterface(), m_options, m_model.Name)
+                CreateSourceCodeFile(MakeInterfaceName(eventCodeGen.FilenameBase), eventCodeGen.GenerateInterface(), m_options, m_model.Name, ModelSourceFileType.EventDefinitionInterface)
                 'Make the class for the event definition
-                CreateSourceCodeFile(MakeImplementationClassName(eventCodeGen.FilenameBase), eventCodeGen.GenerateImplementation(), m_options, m_model.Name)
+                CreateSourceCodeFile(MakeImplementationClassName(eventCodeGen.FilenameBase), eventCodeGen.GenerateImplementation(), m_options, m_model.Name, ModelSourceFileType.EventDefinition)
                 'Make the class for serialising the event definition
                 Dim eventSerialisationCodeGen As New EventSerialisationCodeGenerator(eventDef)
-                CreateSourceCodeFile(MakeImplementationClassName(eventSerialisationCodeGen.FilenameBase), eventSerialisationCodeGen.GenerateImplementation(), m_options, m_model.Name)
+                CreateSourceCodeFile(MakeImplementationClassName(eventSerialisationCodeGen.FilenameBase), eventSerialisationCodeGen.GenerateImplementation(), m_options, m_model.Name, ModelSourceFileType.EventDefinition)
             Next
 
             For Each projDef As ProjectionDefinition In aggregate.ProjectionDefinitions
                 Dim projCodeGen As New ProjectionCodeGenerator(projDef)
                 projCodeGen.SetCodeGenerationOptions(m_options)
                 'Make the interface for the projection definition
-                CreateSourceCodeFile(MakeInterfaceName(projCodeGen.FilenameBase), projCodeGen.GenerateInterface(), m_options, m_model.Name)
+                CreateSourceCodeFile(MakeInterfaceName(projCodeGen.FilenameBase), projCodeGen.GenerateInterface(), m_options, m_model.Name, ModelSourceFileType.ProjectionInterface)
                 'Make the class for the projection definition
-                CreateSourceCodeFile(MakeImplementationClassName(projCodeGen.FilenameBase), projCodeGen.GenerateImplementation(), m_options, m_model.Name)
+                CreateSourceCodeFile(MakeImplementationClassName(projCodeGen.FilenameBase), projCodeGen.GenerateImplementation(), m_options, m_model.Name, ModelSourceFileType.Projection)
             Next
 
             For Each cmdDef As CommandDefinition In aggregate.CommandDefinitions
                 Dim cmdCodeGen As New CommandDefinitionCodeGenerator(cmdDef)
                 cmdCodeGen.SetCodeGenerationOptions(m_options)
                 'Make the interface for the command definition
-                CreateSourceCodeFile(MakeInterfaceName(cmdCodeGen.FilenameBase), cmdCodeGen.GenerateInterface(), m_options, m_model.Name)
+                CreateSourceCodeFile(MakeInterfaceName(cmdCodeGen.FilenameBase), cmdCodeGen.GenerateInterface(), m_options, m_model.Name, ModelSourceFileType.CommandDefinitionInterface)
                 'Make the class for the command definition
-                CreateSourceCodeFile(MakeImplementationClassName(cmdCodeGen.FilenameBase), cmdCodeGen.GenerateImplementation(), m_options, m_model.Name)
+                CreateSourceCodeFile(MakeImplementationClassName(cmdCodeGen.FilenameBase), cmdCodeGen.GenerateImplementation(), m_options, m_model.Name, ModelSourceFileType.CommandDefinition)
 
                 Dim cmdHandleCodeGen As New CommandHandlerCodeGenerator(cmdDef)
                 cmdHandleCodeGen.SetCodeGenerationOptions(m_options)
                 'Make the interface for the command handler
-                CreateSourceCodeFile(MakeInterfaceName(cmdHandleCodeGen.FilenameBase), cmdHandleCodeGen.GenerateInterface(), m_options, m_model.Name)
+                CreateSourceCodeFile(MakeInterfaceName(cmdHandleCodeGen.FilenameBase), cmdHandleCodeGen.GenerateInterface(), m_options, m_model.Name, ModelSourceFileType.CommandImplementationInterface)
                 'Make the class for the command handler
-                CreateSourceCodeFile(MakeImplementationClassName(cmdHandleCodeGen.FilenameBase), cmdHandleCodeGen.GenerateImplementation(), m_options, m_model.Name)
+                CreateSourceCodeFile(MakeImplementationClassName(cmdHandleCodeGen.FilenameBase), cmdHandleCodeGen.GenerateImplementation(), m_options, m_model.Name, ModelSourceFileType.CommandImplementation)
             Next
 
             For Each qryDef As QueryDefinition In aggregate.QueryDefinitions
                 Dim qryCodeGen As New QueryDefinitionCodeGenerator(qryDef)
                 qryCodeGen.SetCodeGenerationOptions(m_options)
                 'Make the interface for the query handler
-                CreateSourceCodeFile(MakeInterfaceName(qryCodeGen.FilenameBase), qryCodeGen.GenerateInterface(), m_options, m_model.Name)
+                CreateSourceCodeFile(MakeInterfaceName(qryCodeGen.FilenameBase), qryCodeGen.GenerateInterface(), m_options, m_model.Name, ModelSourceFileType.QueryDefinitionInterface)
                 'Make the class for the query handler
-                CreateSourceCodeFile(MakeImplementationClassName(qryCodeGen.FilenameBase), qryCodeGen.GenerateImplementation(), m_options, m_model.Name)
+                CreateSourceCodeFile(MakeImplementationClassName(qryCodeGen.FilenameBase), qryCodeGen.GenerateImplementation(), m_options, m_model.Name, ModelSourceFileType.QueryDefinition)
                 Dim qryHandleCodeGen As New QueryHandlerCodeGenerator(qryDef)
                 qryHandleCodeGen.SetCodeGenerationOptions(m_options)
                 'Make the interface for the query handler
-                CreateSourceCodeFile(MakeInterfaceName(qryHandleCodeGen.FilenameBase), qryHandleCodeGen.GenerateInterface(), m_options, m_model.Name)
+                CreateSourceCodeFile(MakeInterfaceName(qryHandleCodeGen.FilenameBase), qryHandleCodeGen.GenerateInterface(), m_options, m_model.Name, ModelSourceFileType.QueryImplementationInterface)
                 'Make the class for the query handler
-                CreateSourceCodeFile(MakeImplementationClassName(qryHandleCodeGen.FilenameBase), qryHandleCodeGen.GenerateImplementation(), m_options, m_model.Name)
+                CreateSourceCodeFile(MakeImplementationClassName(qryHandleCodeGen.FilenameBase), qryHandleCodeGen.GenerateImplementation(), m_options, m_model.Name, ModelSourceFileType.QueryImplementation)
             Next
 
             For Each idGrpDef As IdentityGroup In aggregate.IdentityGrouped
                 Dim idGrpGen As New IdentityGroupCodeGenerator(idGrpDef)
                 idGrpGen.SetCodeGenerationOptions(m_options)
                 'Make the interface for the identity group 
-                CreateSourceCodeFile(MakeInterfaceName(idGrpGen.FilenameBase), idGrpGen.GenerateInterface(), m_options, m_model.Name)
+                CreateSourceCodeFile(MakeInterfaceName(idGrpGen.FilenameBase), idGrpGen.GenerateInterface(), m_options, m_model.Name, ModelSourceFileType.IdentityGroupInterface)
                 'Make the class for the identity group 
-                CreateSourceCodeFile(MakeImplementationClassName(idGrpGen.FilenameBase), idGrpGen.GenerateImplementation(), m_options, m_model.Name)
+                CreateSourceCodeFile(MakeImplementationClassName(idGrpGen.FilenameBase), idGrpGen.GenerateImplementation(), m_options, m_model.Name, ModelSourceFileType.IdentityGroup)
             Next
 
             For Each classInst As Classifier In aggregate.Classifiers
                 Dim classGen As New ClassifierCodeGenerator(classInst)
                 classGen.SetCodeGenerationOptions(m_options)
                 'Make the interface for the identity group 
-                CreateSourceCodeFile(MakeInterfaceName(classGen.FilenameBase), classGen.GenerateInterface(), m_options, m_model.Name)
+                CreateSourceCodeFile(MakeInterfaceName(classGen.FilenameBase), classGen.GenerateInterface(), m_options, m_model.Name, ModelSourceFileType.ClassifierInterface)
                 'Make the class for the identity group 
-                CreateSourceCodeFile(MakeImplementationClassName(classGen.FilenameBase), classGen.GenerateImplementation(), m_options, m_model.Name)
+                CreateSourceCodeFile(MakeImplementationClassName(classGen.FilenameBase), classGen.GenerateImplementation(), m_options, m_model.Name, ModelSourceFileType.ClassifierInterface)
             Next
 
         Next
+
+        'Do we need to create the .SQL code as well?
+        If (m_options.GenerateEntityFrameworkClasses) Then
+            'make the model-level DBSet<> DBContect container class
+            Dim modelSQLGen As New SQLCodeGenerator(m_model)
+            If (modelSQLGen IsNot Nothing) Then
+                modelSQLGen.SetCodeGenerationOptions(m_options)
+                CreateSourceCodeFile(MakeImplementationClassName(modelSQLGen.FilenameBase), modelSQLGen.GenerateImplementation(), m_options, m_model.Name)
+
+                'Then make the aggregate instance classes
+                For Each aggregate As AggregateIdentifier In m_model.AggregateIdentifiers
+                    Dim aggSQLGen As New AggregateInstanceSQLCodeGenerator(aggregate)
+                    If (aggSQLGen IsNot Nothing) Then
+                        aggSQLGen.SetCodeGenerationOptions(m_options)
+                        CreateSourceCodeFile(MakeImplementationClassName(aggSQLGen.FilenameBase), aggSQLGen.GenerateImplementation(), m_options, m_model.Name)
+
+                        'And make the event details classes
+                        For Each eventDef As EventDefinition In aggregate.EventDefinitions
+
+
+                        Next
+                    End If
+                Next
+            End If
+        End If
+
     End Sub
 
 #Region "Constructors"
@@ -178,7 +383,7 @@ Public Class ModelCodeGenerator
     ''' </param>
     Public Sub New(ByVal modelToGenerate As CQRSModel)
         m_model = modelToGenerate
-        m_options = ModelCodeGenerationOptions.DefaultOptions
+        m_options = ModelCodeGenerationOptions.Default
     End Sub
 
     ''' <summary>
@@ -187,7 +392,7 @@ Public Class ModelCodeGenerator
     ''' <param name="modelToGenerate">
     ''' The CQRS model that will be turned into code
     ''' </param>
-    Public Sub New(ByVal modelToGenerate As CQRSModel, ByVal codeGenOptions As ModelCodeGenerationOptions)
+    Public Sub New(ByVal modelToGenerate As CQRSModel, ByVal codeGenOptions As IModelCodeGenerationOptions)
         m_model = modelToGenerate
         m_options = codeGenOptions
     End Sub
@@ -213,7 +418,7 @@ Public Class ModelCodeGenerator
     End Function
 
     Public Shared Function MakeValidCodeName(ByVal nameIn As String) As String
-        Dim invalidCharacters As Char() = " -!,.;':@£$%^&*()-+=/\#~"
+        Dim invalidCharacters As Char() = " -!, .;':@£$%^&*()-+=/\#~"
         Return String.Join("_", nameIn.Split(invalidCharacters))
     End Function
 
@@ -242,11 +447,111 @@ Public Class ModelCodeGenerator
 
     End Function
 
+    ''' <summary>
+    ''' The different types of source code that can be code generated by this library from the CQRS model
+    ''' </summary>
+    Public Enum ModelSourceFileType
+        ''' <summary>
+        ''' Unknown or not set file type
+        ''' </summary>
+        NotSet = 0
+        ''' <summary>
+        ''' An interface for an aggregate in the model
+        ''' </summary>
+        AggregateIdentifierInterface = 1
+        ''' <summary>
+        ''' The implementation code of an aggregate in the model
+        ''' </summary>
+        AggregateIdentifier = 2
+        ''' <summary>
+        ''' Interface file for a query definition
+        ''' </summary>
+        QueryDefinitionInterface = 3
+        ''' <summary>
+        ''' Implementation for a query definition
+        ''' </summary>
+        QueryDefinition = 4
+        ''' <summary>
+        ''' Interface for a query implementation 
+        ''' </summary>
+        QueryImplementationInterface = 5
+        ''' <summary>
+        ''' Implementation code for a query implementation
+        ''' </summary>
+        QueryImplementation = 6
+        ''' <summary>
+        ''' Interface defining a command definition
+        ''' </summary>
+        CommandDefinitionInterface = 7
+        ''' <summary>
+        ''' Implementation code of a command definition
+        ''' </summary>
+        CommandDefinition = 8
+        ''' <summary>
+        ''' Interface of a command execution implementation
+        ''' </summary>
+        CommandImplementationInterface = 9
+        ''' <summary>
+        ''' Implementation code for a command execution
+        ''' </summary>
+        CommandImplementation = 10
+        ''' <summary>
+        ''' Interface defining an event
+        ''' </summary>
+        EventDefinitionInterface = 11
+        ''' <summary>
+        ''' Implementation of the definition of an event
+        ''' </summary>
+        EventDefinition = 12
+        ''' <summary>
+        ''' Interface defining a projection
+        ''' </summary>
+        ProjectionInterface = 13
+        ''' <summary>
+        ''' Implementation code of a projection
+        ''' </summary>
+        Projection = 14
+        ''' <summary>
+        ''' Interface defining an identity group
+        ''' </summary>
+        IdentityGroupInterface = 15
+        ''' <summary>
+        ''' Concrete implementation of an identity group
+        ''' </summary>
+        IdentityGroup = 16
+        ''' <summary>
+        ''' Interface for an identity group classifier
+        ''' </summary>
+        ClassifierInterface = 17
+        ''' <summary>
+        ''' Concrete implementation of an identity group classifier
+        ''' </summary>
+        Classifier = 18
+    End Enum
 
-    Public Shared Sub CreateSourceCodeFile(ByVal filenameBase As String,
+    ''' <summary>
+    ''' Creates a source code file to hold the source code for a particular part of the CQRS domain model
+    ''' </summary>
+    ''' <param name="filenameBase">
+    ''' The filename (without language suffix) tpo store the code in
+    ''' </param>
+    ''' <param name="codeUnit">
+    ''' The Roslyn code compile unit that makes up the source code to write to the file
+    ''' </param>
+    ''' <param name="options">
+    ''' Additional code generation options that affect how source code files are generated
+    ''' </param>
+    ''' <param name="modelName">
+    ''' The root name of the CQRS model to which this new source file belongs
+    ''' </param>
+    ''' <param name="sourceFileType">
+    ''' The type of file this is 
+    ''' </param>
+    Public Sub CreateSourceCodeFile(ByVal filenameBase As String,
                                            ByVal codeUnit As CodeCompileUnit,
                                            ByVal options As ModelCodeGenerationOptions,
-                                           Optional ByVal modelName As String = "")
+                                           Optional ByVal modelName As String = "",
+                                           Optional ByVal sourceFileType As ModelSourceFileType = ModelSourceFileType.NotSet)
 
         Dim CodeLanguage As SupportedLanguages = options.CodeLanguage
         If (CodeLanguage = SupportedLanguages.CSharp) Then
@@ -270,7 +575,7 @@ Public Class ModelCodeGenerator
             End If
         End If
 
-        Using fWrite As IO.FileStream = System.IO.File.OpenWrite(System.IO.Path.Combine(targetDirectoryName, filenameBase))
+        Using fWrite As IO.FileStream = System.IO.File.Create(System.IO.Path.Combine(targetDirectoryName, filenameBase))
             If (fWrite.CanWrite) Then
                 Using sw As New System.IO.StreamWriter(fWrite)
                     If (CodeLanguage = SupportedLanguages.CSharp) Then
@@ -282,10 +587,163 @@ Public Class ModelCodeGenerator
             End If
         End Using
 
+        'add the file to the appropriate projects
+        AddSourceFileToProjects(filenameBase, sourceFileType)
+
+
     End Sub
 
+    ''' <summary>
+    ''' Depending on the type of the file decide which project(s) to add it to and do so
+    ''' </summary>
+    ''' <param name="filenameBase">
+    ''' The filename of the generated code
+    ''' </param>
+    ''' <param name="sourceFileType">
+    ''' The defined type of file this code file is for
+    ''' </param>
+    Private Sub AddSourceFileToProjects(filenameBase As String, sourceFileType As ModelSourceFileType)
 
+        Select Case sourceFileType
+            Case ModelSourceFileType.NotSet
+                'Not known so cannot add it to any file
 
+            Case ModelSourceFileType.QueryDefinitionInterface
+                'add to query def and query handler projects
+                If (m_modelProjects.ContainsKey(CodeProjectFile.PROJECTNAME_QUERY_DEFINITION)) Then
+                    m_modelProjects(CodeProjectFile.PROJECTNAME_QUERY_DEFINITION).AddSourceFile(filenameBase)
+                End If
+                If (m_modelProjects.ContainsKey(CodeProjectFile.PROJECTNAME_QUERY_HANDLER)) Then
+                    m_modelProjects(CodeProjectFile.PROJECTNAME_QUERY_HANDLER).AddSourceFile(filenameBase)
+                End If
+            Case ModelSourceFileType.QueryDefinition
+                'add to query def and query handler projects
+                If (m_modelProjects.ContainsKey(CodeProjectFile.PROJECTNAME_QUERY_DEFINITION)) Then
+                    m_modelProjects(CodeProjectFile.PROJECTNAME_QUERY_DEFINITION).AddSourceFile(filenameBase)
+                End If
+            Case ModelSourceFileType.QueryImplementationInterface
+                If (m_modelProjects.ContainsKey(CodeProjectFile.PROJECTNAME_QUERY_HANDLER)) Then
+                    m_modelProjects(CodeProjectFile.PROJECTNAME_QUERY_HANDLER).AddSourceFile(filenameBase)
+                End If
+            Case ModelSourceFileType.QueryImplementation
+                If (m_modelProjects.ContainsKey(CodeProjectFile.PROJECTNAME_QUERY_HANDLER)) Then
+                    m_modelProjects(CodeProjectFile.PROJECTNAME_QUERY_HANDLER).AddSourceFile(filenameBase)
+                End If
+
+            Case ModelSourceFileType.CommandDefinitionInterface
+                'add to query def and query handler projects
+                If (m_modelProjects.ContainsKey(CodeProjectFile.PROJECTNAME_COMMAND_DEFINITION)) Then
+                    m_modelProjects(CodeProjectFile.PROJECTNAME_COMMAND_DEFINITION).AddSourceFile(filenameBase)
+                End If
+                If (m_modelProjects.ContainsKey(CodeProjectFile.PROJECTNAME_COMMAND_HANDLER)) Then
+                    m_modelProjects(CodeProjectFile.PROJECTNAME_COMMAND_HANDLER).AddSourceFile(filenameBase)
+                End If
+            Case ModelSourceFileType.CommandDefinition
+                If (m_modelProjects.ContainsKey(CodeProjectFile.PROJECTNAME_COMMAND_HANDLER)) Then
+                    m_modelProjects(CodeProjectFile.PROJECTNAME_COMMAND_HANDLER).AddSourceFile(filenameBase)
+                End If
+            Case ModelSourceFileType.CommandImplementationInterface
+                If (m_modelProjects.ContainsKey(CodeProjectFile.PROJECTNAME_COMMAND_HANDLER)) Then
+                    m_modelProjects(CodeProjectFile.PROJECTNAME_COMMAND_HANDLER).AddSourceFile(filenameBase)
+                End If
+            Case ModelSourceFileType.CommandImplementation
+                If (m_modelProjects.ContainsKey(CodeProjectFile.PROJECTNAME_COMMAND_HANDLER)) Then
+                    m_modelProjects(CodeProjectFile.PROJECTNAME_COMMAND_HANDLER).AddSourceFile(filenameBase)
+                End If
+
+            Case ModelSourceFileType.ProjectionInterface
+                If (m_modelProjects.ContainsKey(CodeProjectFile.PROJECTNAME_QUERY_HANDLER)) Then
+                    m_modelProjects(CodeProjectFile.PROJECTNAME_QUERY_HANDLER).AddSourceFile(filenameBase)
+                End If
+                If (m_modelProjects.ContainsKey(CodeProjectFile.PROJECTNAME_COMMAND_HANDLER)) Then
+                    m_modelProjects(CodeProjectFile.PROJECTNAME_COMMAND_HANDLER).AddSourceFile(filenameBase)
+                End If
+                If (m_modelProjects.ContainsKey(CodeProjectFile.PROJECTNAME_EVENT_SOURCING)) Then
+                    m_modelProjects(CodeProjectFile.PROJECTNAME_EVENT_SOURCING).AddSourceFile(filenameBase)
+                End If
+            Case ModelSourceFileType.Projection
+                If (m_modelProjects.ContainsKey(CodeProjectFile.PROJECTNAME_EVENT_SOURCING)) Then
+                    m_modelProjects(CodeProjectFile.PROJECTNAME_EVENT_SOURCING).AddSourceFile(filenameBase)
+                End If
+
+            Case ModelSourceFileType.EventDefinitionInterface
+                If (m_modelProjects.ContainsKey(CodeProjectFile.PROJECTNAME_EVENT_SOURCING)) Then
+                    m_modelProjects(CodeProjectFile.PROJECTNAME_EVENT_SOURCING).AddSourceFile(filenameBase)
+                End If
+            Case ModelSourceFileType.EventDefinition
+                If (m_modelProjects.ContainsKey(CodeProjectFile.PROJECTNAME_EVENT_SOURCING)) Then
+                    m_modelProjects(CodeProjectFile.PROJECTNAME_EVENT_SOURCING).AddSourceFile(filenameBase)
+                End If
+
+            Case ModelSourceFileType.IdentityGroupInterface
+                If (m_modelProjects.ContainsKey(CodeProjectFile.PROJECTNAME_IDENTITY_GROUP)) Then
+                    m_modelProjects(CodeProjectFile.PROJECTNAME_IDENTITY_GROUP).AddSourceFile(filenameBase)
+                End If
+                If (m_modelProjects.ContainsKey(CodeProjectFile.PROJECTNAME_COMMAND_DEFINITION)) Then
+                    m_modelProjects(CodeProjectFile.PROJECTNAME_COMMAND_DEFINITION).AddSourceFile(filenameBase)
+                End If
+                If (m_modelProjects.ContainsKey(CodeProjectFile.PROJECTNAME_COMMAND_HANDLER)) Then
+                    m_modelProjects(CodeProjectFile.PROJECTNAME_COMMAND_HANDLER).AddSourceFile(filenameBase)
+                End If
+                If (m_modelProjects.ContainsKey(CodeProjectFile.PROJECTNAME_QUERY_DEFINITION)) Then
+                    m_modelProjects(CodeProjectFile.PROJECTNAME_QUERY_DEFINITION).AddSourceFile(filenameBase)
+                End If
+                If (m_modelProjects.ContainsKey(CodeProjectFile.PROJECTNAME_QUERY_HANDLER)) Then
+                    m_modelProjects(CodeProjectFile.PROJECTNAME_QUERY_HANDLER).AddSourceFile(filenameBase)
+                End If
+                If (m_modelProjects.ContainsKey(CodeProjectFile.PROJECTNAME_IDENTITY_GROUP)) Then
+                    m_modelProjects(CodeProjectFile.PROJECTNAME_IDENTITY_GROUP).AddSourceFile(filenameBase)
+                End If
+                If (m_modelProjects.ContainsKey(CodeProjectFile.PROJECTNAME_EVENT_SOURCING)) Then
+                    m_modelProjects(CodeProjectFile.PROJECTNAME_EVENT_SOURCING).AddSourceFile(filenameBase)
+                End If
+            Case ModelSourceFileType.IdentityGroup
+                If (m_modelProjects.ContainsKey(CodeProjectFile.PROJECTNAME_IDENTITY_GROUP)) Then
+                    m_modelProjects(CodeProjectFile.PROJECTNAME_IDENTITY_GROUP).AddSourceFile(filenameBase)
+                End If
+
+            Case ModelSourceFileType.AggregateIdentifier
+                If (m_modelProjects.ContainsKey(CodeProjectFile.PROJECTNAME_EVENT_SOURCING)) Then
+                    m_modelProjects(CodeProjectFile.PROJECTNAME_EVENT_SOURCING).AddSourceFile(filenameBase)
+                End If
+            Case ModelSourceFileType.AggregateIdentifierInterface
+                If (m_modelProjects.ContainsKey(CodeProjectFile.PROJECTNAME_IDENTITY_GROUP)) Then
+                    m_modelProjects(CodeProjectFile.PROJECTNAME_IDENTITY_GROUP).AddSourceFile(filenameBase)
+                End If
+                If (m_modelProjects.ContainsKey(CodeProjectFile.PROJECTNAME_COMMAND_DEFINITION)) Then
+                    m_modelProjects(CodeProjectFile.PROJECTNAME_COMMAND_DEFINITION).AddSourceFile(filenameBase)
+                End If
+                If (m_modelProjects.ContainsKey(CodeProjectFile.PROJECTNAME_COMMAND_HANDLER)) Then
+                    m_modelProjects(CodeProjectFile.PROJECTNAME_COMMAND_HANDLER).AddSourceFile(filenameBase)
+                End If
+                If (m_modelProjects.ContainsKey(CodeProjectFile.PROJECTNAME_QUERY_DEFINITION)) Then
+                    m_modelProjects(CodeProjectFile.PROJECTNAME_QUERY_DEFINITION).AddSourceFile(filenameBase)
+                End If
+                If (m_modelProjects.ContainsKey(CodeProjectFile.PROJECTNAME_QUERY_HANDLER)) Then
+                    m_modelProjects(CodeProjectFile.PROJECTNAME_QUERY_HANDLER).AddSourceFile(filenameBase)
+                End If
+                If (m_modelProjects.ContainsKey(CodeProjectFile.PROJECTNAME_IDENTITY_GROUP)) Then
+                    m_modelProjects(CodeProjectFile.PROJECTNAME_IDENTITY_GROUP).AddSourceFile(filenameBase)
+                End If
+                If (m_modelProjects.ContainsKey(CodeProjectFile.PROJECTNAME_EVENT_SOURCING)) Then
+                    m_modelProjects(CodeProjectFile.PROJECTNAME_EVENT_SOURCING).AddSourceFile(filenameBase)
+                End If
+
+            Case ModelSourceFileType.ClassifierInterface
+                If (m_modelProjects.ContainsKey(CodeProjectFile.PROJECTNAME_IDENTITY_GROUP)) Then
+                    m_modelProjects(CodeProjectFile.PROJECTNAME_IDENTITY_GROUP).AddSourceFile(filenameBase)
+                End If
+                If (m_modelProjects.ContainsKey(CodeProjectFile.PROJECTNAME_EVENT_SOURCING)) Then
+                    m_modelProjects(CodeProjectFile.PROJECTNAME_EVENT_SOURCING).AddSourceFile(filenameBase)
+                End If
+            Case ModelSourceFileType.Classifier
+                If (m_modelProjects.ContainsKey(CodeProjectFile.PROJECTNAME_IDENTITY_GROUP)) Then
+                    m_modelProjects(CodeProjectFile.PROJECTNAME_IDENTITY_GROUP).AddSourceFile(filenameBase)
+                End If
+
+        End Select
+
+    End Sub
 End Class
 
 ''' <summary>
@@ -416,34 +874,48 @@ Public Class InterfaceCodeGeneration
 
     Public Shared Function SimplePropertyDeclaration(ByVal readOnlyFlag As Boolean,
                                                      ByVal propertyName As String,
-                                                     ByVal propertyType As PropertyDataType) As CodeMemberProperty
+                                                     ByVal propertyType As PropertyDataType,
+                                                     Optional ByVal publicMember As Boolean = False) As CodeMemberProperty
 
         Dim ret As New CodeMemberProperty()
         ret.Name = ModelCodeGenerator.MakeValidCodeName(propertyName)
+        ret.HasGet = True
         If (readOnlyFlag) Then
             ret.HasSet = False
         Else
             ret.HasSet = True
         End If
 
-        Select Case propertyType
-            Case PropertyDataType.Boolean
-                ret.Type = New CodeTypeReference(GetType(Boolean))
-            Case PropertyDataType.Date
-                ret.Type = New CodeTypeReference(GetType(DateTime))
-            Case PropertyDataType.Decimal
-                ret.Type = New CodeTypeReference(GetType(Decimal))
-            Case PropertyDataType.FloatingPointNumber
-                ret.Type = New CodeTypeReference(GetType(Double))
-            Case PropertyDataType.Image
-                ret.Type = New CodeTypeReference(GetType(Byte()))
-            Case PropertyDataType.Integer
-                ret.Type = New CodeTypeReference(GetType(Integer))
-            Case PropertyDataType.String
-                ret.Type = New CodeTypeReference(GetType(String))
-        End Select
+        If (publicMember) Then
+            ret.Attributes = (ret.Attributes And (Not MemberAttributes.AccessMask)) Or MemberAttributes.Public
+        End If
+
+        ret.Type = ToPropertyTypeReference(propertyType)
 
         Return ret
+
+    End Function
+
+    Public Shared Function ToPropertyTypeReference(ByVal propertyType As PropertyDataType) As CodeTypeReference
+
+        Select Case propertyType
+            Case PropertyDataType.Boolean
+                Return New CodeTypeReference(GetType(Boolean))
+            Case PropertyDataType.Date
+                Return New CodeTypeReference(GetType(DateTime))
+            Case PropertyDataType.Decimal
+                Return New CodeTypeReference(GetType(Decimal))
+            Case PropertyDataType.FloatingPointNumber
+                Return New CodeTypeReference(GetType(Double))
+            Case PropertyDataType.Image
+                Return New CodeTypeReference(GetType(Byte()))
+            Case PropertyDataType.Integer
+                Return New CodeTypeReference(GetType(Integer))
+            Case PropertyDataType.String
+                Return New CodeTypeReference(GetType(String))
+            Case Else
+                Return New CodeTypeReference(GetType(Object))
+        End Select
 
     End Function
 
@@ -624,6 +1096,44 @@ Public Class PropertyCodeGeneration
         Return ret
 
     End Function
+
+    Public Shared Function PublicMember(propertyName As String,
+                                        dataType As PropertyDataType,
+                                        Optional ByVal interfaceName As String = "",
+                                        Optional ByVal backingProperty As String = "",
+                                        Optional ByVal omitBackingProperty As Boolean = False) As CodeMemberProperty
+
+        Dim ret As New CodeMemberProperty()
+        ret.Name = EventCodeGenerator.ToMemberName(propertyName, False)
+        ret.Type = EventCodeGenerator.ToMemberType(dataType)
+
+        ' Make it final
+        ret.Attributes = (ret.Attributes And (Not MemberAttributes.ScopeMask)) Or MemberAttributes.Final
+        ' Make it public accessible outside the class
+        ret.Attributes = (ret.Attributes And (Not MemberAttributes.AccessMask)) Or MemberAttributes.Public
+
+        'Make it implement the interface if one is passed in...
+        If (Not String.IsNullOrWhiteSpace(interfaceName)) Then
+            ret.ImplementationTypes.Add(New CodeTypeReference(interfaceName))
+        End If
+
+        'add the getter
+        Dim memberReference As New CodeFieldReferenceExpression()
+
+        If (Not omitBackingProperty) Then
+            If (String.IsNullOrWhiteSpace(backingProperty)) Then
+                memberReference.FieldName = EventCodeGenerator.ToMemberName(propertyName, True)
+            Else
+                memberReference.FieldName = backingProperty
+            End If
+
+            ret.GetStatements.Add((New CodeMethodReturnStatement(memberReference)))
+        End If
+
+
+        Return ret
+    End Function
+
 End Class
 
 Public Class RegionCodeGeneration
@@ -648,7 +1158,7 @@ Public Class ConstructorCodeGenerator
     Public Shared Function ParameterisedConstructor(eventProperties As IList(Of IEventPropertyEntity)) As CodeConstructor
 
         Dim fromParametersConstructor As New CodeConstructor()
-        fromParametersConstructor.Attributes += MemberAttributes.Public
+        fromParametersConstructor.Attributes = (fromParametersConstructor.Attributes And (Not MemberAttributes.AccessMask)) Or MemberAttributes.Public
 
         If (eventProperties IsNot Nothing) Then
             For Each eventProperty As IEventPropertyEntity In eventProperties
@@ -669,7 +1179,7 @@ Public Class ConstructorCodeGenerator
     Public Shared Function InterfaceBasedConstructor(eventProperties As IList(Of IEventPropertyEntity), ByVal interfaceTypeName As String, ByVal interfaceName As String) As CodeConstructor
 
         Dim fromInterfaceConstructor As New CodeConstructor()
-        fromInterfaceConstructor.Attributes += MemberAttributes.Public
+        fromInterfaceConstructor.Attributes = (fromInterfaceConstructor.Attributes And (Not MemberAttributes.AccessMask)) Or MemberAttributes.Public
 
         'add a Init parameter..
         fromInterfaceConstructor.Parameters.Add(New CodeParameterDeclarationExpression(interfaceTypeName, interfaceName))
@@ -712,6 +1222,74 @@ Public Class ConstructorCodeGenerator
 
     End Function
 
+    ''' <summary>
+    ''' Create a serialization constructor that fills all the properties from the serialisation context
+    ''' </summary>
+    ''' <param name="eventProperties">
+    ''' The list of properties in the event definition to be read from the serialization info 
+    ''' </param>
+    ''' <returns>
+    ''' Protected Sub New(ByVal info As SerializationInfo, ByVal context As StreamingContext)
+    ''' </returns>
+    Public Shared Function SerializationConstructor(eventProperties As IEnumerable(Of IEventPropertyEntity)) As CodeConstructor
+
+        Dim serialiseConstructor As New CodeConstructor()
+        serialiseConstructor.Attributes += MemberAttributes.Public
+
+        'add a info parameter..
+        serialiseConstructor.Parameters.Add(New CodeParameterDeclarationExpression("SerializationInfo", "info"))
+        'add a context parameter..
+        serialiseConstructor.Parameters.Add(New CodeParameterDeclarationExpression("StreamingContext", "context"))
+
+        'populate the properties
+        For Each evtProperty In eventProperties
+            'Define the assignment target e.g. m_eventOneStringProperty 
+            Dim targetField As New CodeFieldReferenceExpression()
+            targetField.FieldName = EventCodeGenerator.ToMemberName(evtProperty.Name, True)
+
+            Dim sourceField As CodeMethodInvokeExpression
+
+            Select Case evtProperty.DataType
+                Case PropertyDataType.Boolean
+                    sourceField = New CodeMethodInvokeExpression(
+                      New CodeMethodReferenceExpression(New CodeArgumentReferenceExpression("info"), "GetBoolean"),
+                      {New CodePrimitiveExpression(EventCodeGenerator.ToMemberName(evtProperty.Name, False))})
+                Case PropertyDataType.Decimal
+                    sourceField = New CodeMethodInvokeExpression(
+                      New CodeMethodReferenceExpression(New CodeArgumentReferenceExpression("info"), "GetDecimal"),
+                      {New CodePrimitiveExpression(EventCodeGenerator.ToMemberName(evtProperty.Name, False))})
+                Case PropertyDataType.Date
+                    sourceField = New CodeMethodInvokeExpression(
+                      New CodeMethodReferenceExpression(New CodeArgumentReferenceExpression("info"), "GetDateTime"),
+                      {New CodePrimitiveExpression(EventCodeGenerator.ToMemberName(evtProperty.Name, False))})
+                Case PropertyDataType.String
+                    sourceField = New CodeMethodInvokeExpression(
+                      New CodeMethodReferenceExpression(New CodeArgumentReferenceExpression("info"), "GetString"),
+                      {New CodePrimitiveExpression(EventCodeGenerator.ToMemberName(evtProperty.Name, False))})
+                Case PropertyDataType.Integer
+                    sourceField = New CodeMethodInvokeExpression(
+                      New CodeMethodReferenceExpression(New CodeArgumentReferenceExpression("info"), "GetInt32"),
+                      {New CodePrimitiveExpression(EventCodeGenerator.ToMemberName(evtProperty.Name, False))})
+                Case Else
+                    'Define the assignment source e.g. info.GetValue("EventOneStringProperty", GetType(String))
+                    sourceField = New CodeMethodInvokeExpression(
+                        New CodeMethodReferenceExpression(New CodeArgumentReferenceExpression("info"), "GetValue"),
+                        {New CodePrimitiveExpression(EventCodeGenerator.ToMemberName(evtProperty.Name, False)),
+                        New CodeMethodInvokeExpression(New CodeMethodReferenceExpression(Nothing, "GetType"), {
+                         New CodeTypeReferenceExpression(EventCodeGenerator.ToMemberType(evtProperty.DataType))
+                        })
+                        })
+            End Select
+
+
+
+            'Add the assigmnemt to the constructor body
+            serialiseConstructor.Statements.Add(New CodeAssignStatement(targetField, sourceField))
+        Next
+
+        Return serialiseConstructor
+
+    End Function
 End Class
 
 Public Class MethodCodeGenerator
@@ -759,16 +1337,36 @@ Public Class MethodCodeGenerator
     ''' </param>
     Public Shared Function PublicParameterisedSub(ByVal functionName As String,
                                                   ByVal parameters As IList(Of CodeParameterDeclarationExpression),
-                                                  Optional ByVal makeStatic As Boolean = False) As CodeMemberMethod
+                                                  Optional ByVal makeStatic As Boolean = False,
+                                                  Optional ByVal genericTypeRestrictions As CodeTypeParameterCollection = Nothing) As CodeMemberMethod
 
-        Return PublicParameterisedFunction(functionName, parameters, makeStatic:=makeStatic)
+        Return PublicParameterisedFunction(functionName, parameters, makeStatic:=makeStatic, genericTypeRestrictions:=genericTypeRestrictions)
 
     End Function
 
+    ''' <summary>
+    ''' Create a public function with the given name and properties
+    ''' </summary>
+    ''' <param name="functionName">
+    ''' The name of the function
+    ''' </param>
+    ''' <param name="parameters">
+    ''' The parameters to apply
+    ''' </param>
+    ''' <param name="returnType">
+    ''' The data type the function returns (if not set this will return void and thereby be a subroutine)
+    ''' </param>
+    ''' <param name="makeStatic">
+    ''' If set make this a static function
+    ''' </param>
+    ''' <param name="genericTypeRestrictions">
+    ''' If set, apply these generic type restrictions to the function
+    ''' </param>
     Public Shared Function PublicParameterisedFunction(ByVal functionName As String,
                                               ByVal parameters As IList(Of CodeParameterDeclarationExpression),
                                               Optional ByVal returnType As CodeTypeReference = Nothing,
-                                              Optional ByVal makeStatic As Boolean = False) As CodeMemberMethod
+                                              Optional ByVal makeStatic As Boolean = False,
+                                              Optional ByVal genericTypeRestrictions As CodeTypeParameterCollection = Nothing) As CodeMemberMethod
 
         Dim ret As New CodeMemberMethod()
         ret.Name = functionName
@@ -784,7 +1382,9 @@ Public Class MethodCodeGenerator
                 ret.Parameters.AddRange(parameters.ToArray)
             End If
         End If
-
+        If (genericTypeRestrictions IsNot Nothing) Then
+            ret.TypeParameters.AddRange(genericTypeRestrictions)
+        End If
 
         Return ret
 
@@ -823,9 +1423,40 @@ Public Class MethodCodeGenerator
 
     End Function
 
+    Public Shared Sub MakeOverrides(ByRef methodToMakeOverride As CodeMemberMethod)
+
+        methodToMakeOverride.Attributes = (methodToMakeOverride.Attributes And (Not MemberAttributes.ScopeMask)) Or MemberAttributes.Override
+
+    End Sub
+
+    Public Shared Sub MakeOverrides(ByRef propertyToMakeOverride As CodeMemberProperty)
+
+        propertyToMakeOverride.Attributes = (propertyToMakeOverride.Attributes And (Not MemberAttributes.ScopeMask)) Or MemberAttributes.Override
+
+    End Sub
+
+    Public Shared Function MakeTypeParameter(ByVal name As String,
+                                             Optional ByVal constraints As IList(Of CodeTypeReference) = Nothing) As CodeTypeParameter
+
+        Dim ret As New CodeTypeParameter(name)
+        If (constraints IsNot Nothing) Then
+            ret.Constraints.AddRange(constraints.ToArray())
+        End If
+        Return ret
+
+    End Function
+
 End Class
 
 Public Class AttributeCodeGenerator
+
+
+#Region "Defined attributes"
+    Public Const ATTRIBUTENAME_DOMAIN As String = "CQRSAzure.EventSourcing.DomainNameAttribute"
+    Public Const ATTRIBUTENAME_CATEGORY As String = "CQRSAzure.EventSourcing.Category"
+    Public Const ATTRIBUTENAME_AGGREGATE_KEY As String = "CQRSAzure.EventSourcing.AggregagteKey"
+    Public Const ATTRIBUTENAME_IDENTITY_GROUP As String = "CQRSAzure.EventSourcing.IdentityGroup"
+#End Region
 
     ''' <summary>
     ''' Create a parameterised attribute to tag a class or property
@@ -841,20 +1472,23 @@ Public Class AttributeCodeGenerator
                                                   ByVal parameters As IList(Of CodeAttributeArgument)
                                                   ) As CodeAttributeDeclaration
 
-        Dim ret As New CodeAttributeDeclaration(AttributeName)
+
 
         If parameters IsNot Nothing Then
-            If parameters.Count > 0 Then
-                For Each param As CodeAttributeArgument In parameters
-                    ret.Arguments.Add(param)
-                Next
-            End If
+            Return New CodeAttributeDeclaration(AttributeName, parameters.ToArray())
+        Else
+            Return New CodeAttributeDeclaration(AttributeName)
         End If
 
-        Return ret
 
     End Function
 
+
+    Public Shared Function SerializableAttribute() As CodeAttributeDeclaration
+
+        Return New CodeAttributeDeclaration("Serializable")
+
+    End Function
 End Class
 
 Public Class ParameterPropertyDefinition
@@ -905,6 +1539,16 @@ Public Class ParameterPropertyDefinition
         Get
             Return ""
         End Get
+    End Property
+
+    Private m_isEffectiveDate As Boolean
+    Public Property IsEffectiveDate As Boolean Implements IEventPropertyEntity.IsEffectiveDate
+        Get
+            Return m_isEffectiveDate
+        End Get
+        Set(value As Boolean)
+            m_isEffectiveDate = value
+        End Set
     End Property
 
     Public Sub New(ByVal nameIn As String, ByVal dataTypeIn As PropertyDataType)

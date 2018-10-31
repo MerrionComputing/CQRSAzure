@@ -27,8 +27,15 @@ Public Class EventNameAttribute
     Public Shared Function GetEventName(ByVal eventObjectType As Type) As String
 
         For Each eventNameAttr As EventNameAttribute In eventObjectType.GetCustomAttributes(GetType(EventNameAttribute), True)
+#Region "Tracing"
+            EventSourcing.LogVerboseInfo(eventObjectType.ToString() & " has the event name attribute set to " & eventNameAttr.EventName)
+#End Region
             Return eventNameAttr.EventName
         Next
+
+#Region "Tracing"
+        EventSourcing.LogVerboseInfo(eventObjectType.ToString() & " has no event name attribute set - defaulting to class name")
+#End Region
 
         ' No attribute - return the class name
         Return eventObjectType.Name

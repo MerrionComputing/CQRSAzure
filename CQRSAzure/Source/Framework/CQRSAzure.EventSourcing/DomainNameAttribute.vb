@@ -19,7 +19,7 @@ Public NotInheritable Class DomainNameAttribute
     End Property
 
 #Region "Constructors"
-    Public Sub New(ByVal domainNameIn As String)
+    Public Sub New(Optional ByVal domainNameIn As String = UNKNOWN_DOMAIN)
         m_domain = domainNameIn
     End Sub
 #End Region
@@ -28,11 +28,24 @@ Public NotInheritable Class DomainNameAttribute
     Public Shared Function GetDomainName(ByVal domainedObjectType As Type) As String
 
         For Each domainNameAttr As DomainNameAttribute In domainedObjectType.GetCustomAttributes(GetType(DomainNameAttribute), True)
+#Region "Tracing"
+            EventSourcing.LogVerboseInfo(domainedObjectType.ToString() & " has the domain name attribute set to " & domainNameAttr.Domain)
+#End Region
             Return domainNameAttr.Domain
         Next
 
+#Region "Tracing"
+        EventSourcing.LogVerboseInfo(domainedObjectType.ToString() & " has no domain name attribute - defaulting to " & UNKNOWN_DOMAIN)
+#End Region
+
         ' No attribute - return an UNKNOWN domain
         Return UNKNOWN_DOMAIN
+
+    End Function
+
+    Public Shared Function GetAggregateDomainQualifiedName(ByVal domainedObjectType As Type) As String
+
+        Return GetDomainName(domainedObjectType) & "." & AggregateNameAttribute.GetAggregateName(domainedObjectType)
 
     End Function
 

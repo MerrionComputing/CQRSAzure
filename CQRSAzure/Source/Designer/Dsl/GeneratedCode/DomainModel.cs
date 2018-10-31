@@ -79,10 +79,10 @@ namespace CQRSAzure.CQRSdsl.Dsl
 				typeof(QueryInputParameter),
 				typeof(ProjectionEventPropertyOperation),
 				typeof(QueryReturnParameter),
-				typeof(ModelSetting),
 				typeof(IdentityGroup),
 				typeof(Classifier),
 				typeof(ClassifierEventEvaluation),
+				typeof(ClassifierProjectionPropertyEvaluation),
 				typeof(CQRSModelHasAggregateIdentifiers),
 				typeof(AggregateIdentifierHasEventDefinitions),
 				typeof(AggregateIdentifierHasProjectionDefinitions),
@@ -96,7 +96,6 @@ namespace CQRSAzure.CQRSdsl.Dsl
 				typeof(ProjectionDefinitionHandlesEventDefinitions),
 				typeof(ProjectionDefinitionHasEventPropertyOperations),
 				typeof(QueryDefinitionHasQueryReturnParameters),
-				typeof(CQRSModelHasModelSet),
 				typeof(QueryDefinitionReferencesIdentityGroup),
 				typeof(AggregateIdentifierHasIdentityGrouped),
 				typeof(AggregateIdentifierHasClassifiers),
@@ -105,6 +104,8 @@ namespace CQRSAzure.CQRSdsl.Dsl
 				typeof(ClassifierHasEventEvaluations),
 				typeof(CommandDefinitionReferencesIdentityGroup),
 				typeof(QueryDefinitionReferencesProjectionDefinition),
+				typeof(ClassifierReferencesProjectionDefinition),
+				typeof(ClassifierHasClassifierProjectionPropertyEvaluations),
 				typeof(CQRSdslDiagram),
 				typeof(AggregateParenthoodConnector),
 				typeof(AggregateEventConnector),
@@ -115,6 +116,7 @@ namespace CQRSAzure.CQRSdsl.Dsl
 				typeof(AggregateIdentityGroupConnector),
 				typeof(IdentityGroupClassifierConnector),
 				typeof(ClassifierEventConnector),
+				typeof(ClassifierProjectionConnector),
 				typeof(AggregateGeometryShape),
 				typeof(IdentityGroupGeometryShape),
 				typeof(QueryDefinitionShape),
@@ -144,6 +146,15 @@ namespace CQRSAzure.CQRSdsl.Dsl
 				new DomainMemberInfo(typeof(CQRSModel), "Name", CQRSModel.NameDomainPropertyId, typeof(CQRSModel.NamePropertyHandler)),
 				new DomainMemberInfo(typeof(CQRSModel), "Notes", CQRSModel.NotesDomainPropertyId, typeof(CQRSModel.NotesPropertyHandler)),
 				new DomainMemberInfo(typeof(CQRSModel), "Description", CQRSModel.DescriptionDomainPropertyId, typeof(CQRSModel.DescriptionPropertyHandler)),
+				new DomainMemberInfo(typeof(CQRSModel), "DefaultCodeGenerationLanguage", CQRSModel.DefaultCodeGenerationLanguageDomainPropertyId, typeof(CQRSModel.DefaultCodeGenerationLanguagePropertyHandler)),
+				new DomainMemberInfo(typeof(CQRSModel), "SubfolderPerDomain", CQRSModel.SubfolderPerDomainDomainPropertyId, typeof(CQRSModel.SubfolderPerDomainPropertyHandler)),
+				new DomainMemberInfo(typeof(CQRSModel), "SubfolderPerAggregate", CQRSModel.SubfolderPerAggregateDomainPropertyId, typeof(CQRSModel.SubfolderPerAggregatePropertyHandler)),
+				new DomainMemberInfo(typeof(CQRSModel), "MajorVersion", CQRSModel.MajorVersionDomainPropertyId, typeof(CQRSModel.MajorVersionPropertyHandler)),
+				new DomainMemberInfo(typeof(CQRSModel), "MinorVersion", CQRSModel.MinorVersionDomainPropertyId, typeof(CQRSModel.MinorVersionPropertyHandler)),
+				new DomainMemberInfo(typeof(CQRSModel), "CodeRootFolder", CQRSModel.CodeRootFolderDomainPropertyId, typeof(CQRSModel.CodeRootFolderPropertyHandler)),
+				new DomainMemberInfo(typeof(CQRSModel), "DocumentationRootFolder", CQRSModel.DocumentationRootFolderDomainPropertyId, typeof(CQRSModel.DocumentationRootFolderPropertyHandler)),
+				new DomainMemberInfo(typeof(CQRSModel), "GenerateEntityFrameworkClasses", CQRSModel.GenerateEntityFrameworkClassesDomainPropertyId, typeof(CQRSModel.GenerateEntityFrameworkClassesPropertyHandler)),
+				new DomainMemberInfo(typeof(CQRSModel), "Framework", CQRSModel.FrameworkDomainPropertyId, typeof(CQRSModel.FrameworkPropertyHandler)),
 				new DomainMemberInfo(typeof(AggregateIdentifier), "Name", AggregateIdentifier.NameDomainPropertyId, typeof(AggregateIdentifier.NamePropertyHandler)),
 				new DomainMemberInfo(typeof(AggregateIdentifier), "Description", AggregateIdentifier.DescriptionDomainPropertyId, typeof(AggregateIdentifier.DescriptionPropertyHandler)),
 				new DomainMemberInfo(typeof(AggregateIdentifier), "KeyName", AggregateIdentifier.KeyNameDomainPropertyId, typeof(AggregateIdentifier.KeyNamePropertyHandler)),
@@ -159,6 +170,7 @@ namespace CQRSAzure.CQRSdsl.Dsl
 				new DomainMemberInfo(typeof(ProjectionDefinition), "Description", ProjectionDefinition.DescriptionDomainPropertyId, typeof(ProjectionDefinition.DescriptionPropertyHandler)),
 				new DomainMemberInfo(typeof(ProjectionDefinition), "Notes", ProjectionDefinition.NotesDomainPropertyId, typeof(ProjectionDefinition.NotesPropertyHandler)),
 				new DomainMemberInfo(typeof(ProjectionDefinition), "Category", ProjectionDefinition.CategoryDomainPropertyId, typeof(ProjectionDefinition.CategoryPropertyHandler)),
+				new DomainMemberInfo(typeof(ProjectionDefinition), "CanSnapshot", ProjectionDefinition.CanSnapshotDomainPropertyId, typeof(ProjectionDefinition.CanSnapshotPropertyHandler)),
 				new DomainMemberInfo(typeof(CommandDefinition), "Name", CommandDefinition.NameDomainPropertyId, typeof(CommandDefinition.NamePropertyHandler)),
 				new DomainMemberInfo(typeof(CommandDefinition), "Description", CommandDefinition.DescriptionDomainPropertyId, typeof(CommandDefinition.DescriptionPropertyHandler)),
 				new DomainMemberInfo(typeof(CommandDefinition), "Notes", CommandDefinition.NotesDomainPropertyId, typeof(CommandDefinition.NotesPropertyHandler)),
@@ -167,6 +179,7 @@ namespace CQRSAzure.CQRSdsl.Dsl
 				new DomainMemberInfo(typeof(EventProperty), "Description", EventProperty.DescriptionDomainPropertyId, typeof(EventProperty.DescriptionPropertyHandler)),
 				new DomainMemberInfo(typeof(EventProperty), "DataType", EventProperty.DataTypeDomainPropertyId, typeof(EventProperty.DataTypePropertyHandler)),
 				new DomainMemberInfo(typeof(EventProperty), "Notes", EventProperty.NotesDomainPropertyId, typeof(EventProperty.NotesPropertyHandler)),
+				new DomainMemberInfo(typeof(EventProperty), "IsEffectiveDate", EventProperty.IsEffectiveDateDomainPropertyId, typeof(EventProperty.IsEffectiveDatePropertyHandler)),
 				new DomainMemberInfo(typeof(ProjectionProperty), "Name", ProjectionProperty.NameDomainPropertyId, typeof(ProjectionProperty.NamePropertyHandler)),
 				new DomainMemberInfo(typeof(ProjectionProperty), "Description", ProjectionProperty.DescriptionDomainPropertyId, typeof(ProjectionProperty.DescriptionPropertyHandler)),
 				new DomainMemberInfo(typeof(ProjectionProperty), "DataType", ProjectionProperty.DataTypeDomainPropertyId, typeof(ProjectionProperty.DataTypePropertyHandler)),
@@ -176,6 +189,7 @@ namespace CQRSAzure.CQRSdsl.Dsl
 				new DomainMemberInfo(typeof(CommandParameter), "ParameterType", CommandParameter.ParameterTypeDomainPropertyId, typeof(CommandParameter.ParameterTypePropertyHandler)),
 				new DomainMemberInfo(typeof(CommandParameter), "Notes", CommandParameter.NotesDomainPropertyId, typeof(CommandParameter.NotesPropertyHandler)),
 				new DomainMemberInfo(typeof(CommandParameter), "IsAggregateKey", CommandParameter.IsAggregateKeyDomainPropertyId, typeof(CommandParameter.IsAggregateKeyPropertyHandler)),
+				new DomainMemberInfo(typeof(CommandParameter), "IsIdentityGroupName", CommandParameter.IsIdentityGroupNameDomainPropertyId, typeof(CommandParameter.IsIdentityGroupNamePropertyHandler)),
 				new DomainMemberInfo(typeof(QueryDefinition), "Name", QueryDefinition.NameDomainPropertyId, typeof(QueryDefinition.NamePropertyHandler)),
 				new DomainMemberInfo(typeof(QueryDefinition), "Description", QueryDefinition.DescriptionDomainPropertyId, typeof(QueryDefinition.DescriptionPropertyHandler)),
 				new DomainMemberInfo(typeof(QueryDefinition), "MultiRowResults", QueryDefinition.MultiRowResultsDomainPropertyId, typeof(QueryDefinition.MultiRowResultsPropertyHandler)),
@@ -187,6 +201,7 @@ namespace CQRSAzure.CQRSdsl.Dsl
 				new DomainMemberInfo(typeof(QueryInputParameter), "IsAggregateKey", QueryInputParameter.IsAggregateKeyDomainPropertyId, typeof(QueryInputParameter.IsAggregateKeyPropertyHandler)),
 				new DomainMemberInfo(typeof(QueryInputParameter), "Notes", QueryInputParameter.NotesDomainPropertyId, typeof(QueryInputParameter.NotesPropertyHandler)),
 				new DomainMemberInfo(typeof(QueryInputParameter), "IsEffectiveDate", QueryInputParameter.IsEffectiveDateDomainPropertyId, typeof(QueryInputParameter.IsEffectiveDatePropertyHandler)),
+				new DomainMemberInfo(typeof(QueryInputParameter), "IsIdentityGroupName", QueryInputParameter.IsIdentityGroupNameDomainPropertyId, typeof(QueryInputParameter.IsIdentityGroupNamePropertyHandler)),
 				new DomainMemberInfo(typeof(ProjectionEventPropertyOperation), "EventName", ProjectionEventPropertyOperation.EventNameDomainPropertyId, typeof(ProjectionEventPropertyOperation.EventNamePropertyHandler)),
 				new DomainMemberInfo(typeof(ProjectionEventPropertyOperation), "SourceEventPropertyName", ProjectionEventPropertyOperation.SourceEventPropertyNameDomainPropertyId, typeof(ProjectionEventPropertyOperation.SourceEventPropertyNamePropertyHandler)),
 				new DomainMemberInfo(typeof(ProjectionEventPropertyOperation), "TargetPropertyName", ProjectionEventPropertyOperation.TargetPropertyNameDomainPropertyId, typeof(ProjectionEventPropertyOperation.TargetPropertyNamePropertyHandler)),
@@ -197,18 +212,20 @@ namespace CQRSAzure.CQRSdsl.Dsl
 				new DomainMemberInfo(typeof(QueryReturnParameter), "Description", QueryReturnParameter.DescriptionDomainPropertyId, typeof(QueryReturnParameter.DescriptionPropertyHandler)),
 				new DomainMemberInfo(typeof(QueryReturnParameter), "DataType", QueryReturnParameter.DataTypeDomainPropertyId, typeof(QueryReturnParameter.DataTypePropertyHandler)),
 				new DomainMemberInfo(typeof(QueryReturnParameter), "Notes", QueryReturnParameter.NotesDomainPropertyId, typeof(QueryReturnParameter.NotesPropertyHandler)),
-				new DomainMemberInfo(typeof(ModelSetting), "Name", ModelSetting.NameDomainPropertyId, typeof(ModelSetting.NamePropertyHandler)),
-				new DomainMemberInfo(typeof(ModelSetting), "Value", ModelSetting.ValueDomainPropertyId, typeof(ModelSetting.ValuePropertyHandler)),
 				new DomainMemberInfo(typeof(IdentityGroup), "IsInstance", IdentityGroup.IsInstanceDomainPropertyId, typeof(IdentityGroup.IsInstancePropertyHandler)),
 				new DomainMemberInfo(typeof(IdentityGroup), "IsGlobal", IdentityGroup.IsGlobalDomainPropertyId, typeof(IdentityGroup.IsGlobalPropertyHandler)),
 				new DomainMemberInfo(typeof(IdentityGroup), "Name", IdentityGroup.NameDomainPropertyId, typeof(IdentityGroup.NamePropertyHandler)),
 				new DomainMemberInfo(typeof(IdentityGroup), "Description", IdentityGroup.DescriptionDomainPropertyId, typeof(IdentityGroup.DescriptionPropertyHandler)),
 				new DomainMemberInfo(typeof(IdentityGroup), "Notes", IdentityGroup.NotesDomainPropertyId, typeof(IdentityGroup.NotesPropertyHandler)),
 				new DomainMemberInfo(typeof(IdentityGroup), "Category", IdentityGroup.CategoryDomainPropertyId, typeof(IdentityGroup.CategoryPropertyHandler)),
+				new DomainMemberInfo(typeof(IdentityGroup), "ParentName", IdentityGroup.ParentNameDomainPropertyId, typeof(IdentityGroup.ParentNamePropertyHandler)),
+				new DomainMemberInfo(typeof(IdentityGroup), "CanSnapshot", IdentityGroup.CanSnapshotDomainPropertyId, typeof(IdentityGroup.CanSnapshotPropertyHandler)),
 				new DomainMemberInfo(typeof(Classifier), "Name", Classifier.NameDomainPropertyId, typeof(Classifier.NamePropertyHandler)),
 				new DomainMemberInfo(typeof(Classifier), "Description", Classifier.DescriptionDomainPropertyId, typeof(Classifier.DescriptionPropertyHandler)),
 				new DomainMemberInfo(typeof(Classifier), "Notes", Classifier.NotesDomainPropertyId, typeof(Classifier.NotesPropertyHandler)),
 				new DomainMemberInfo(typeof(Classifier), "Category", Classifier.CategoryDomainPropertyId, typeof(Classifier.CategoryPropertyHandler)),
+				new DomainMemberInfo(typeof(Classifier), "CanSnapshot", Classifier.CanSnapshotDomainPropertyId, typeof(Classifier.CanSnapshotPropertyHandler)),
+				new DomainMemberInfo(typeof(Classifier), "DataSourceType", Classifier.DataSourceTypeDomainPropertyId, typeof(Classifier.DataSourceTypePropertyHandler)),
 				new DomainMemberInfo(typeof(ClassifierEventEvaluation), "EventName", ClassifierEventEvaluation.EventNameDomainPropertyId, typeof(ClassifierEventEvaluation.EventNamePropertyHandler)),
 				new DomainMemberInfo(typeof(ClassifierEventEvaluation), "SourceEventPropertyName", ClassifierEventEvaluation.SourceEventPropertyNameDomainPropertyId, typeof(ClassifierEventEvaluation.SourceEventPropertyNamePropertyHandler)),
 				new DomainMemberInfo(typeof(ClassifierEventEvaluation), "Notes", ClassifierEventEvaluation.NotesDomainPropertyId, typeof(ClassifierEventEvaluation.NotesPropertyHandler)),
@@ -218,6 +235,14 @@ namespace CQRSAzure.CQRSdsl.Dsl
 				new DomainMemberInfo(typeof(ClassifierEventEvaluation), "OnFalse", ClassifierEventEvaluation.OnFalseDomainPropertyId, typeof(ClassifierEventEvaluation.OnFalsePropertyHandler)),
 				new DomainMemberInfo(typeof(ClassifierEventEvaluation), "Target", ClassifierEventEvaluation.TargetDomainPropertyId, typeof(ClassifierEventEvaluation.TargetPropertyHandler)),
 				new DomainMemberInfo(typeof(ClassifierEventEvaluation), "TargetType", ClassifierEventEvaluation.TargetTypeDomainPropertyId, typeof(ClassifierEventEvaluation.TargetTypePropertyHandler)),
+				new DomainMemberInfo(typeof(ClassifierProjectionPropertyEvaluation), "PropertyName", ClassifierProjectionPropertyEvaluation.PropertyNameDomainPropertyId, typeof(ClassifierProjectionPropertyEvaluation.PropertyNamePropertyHandler)),
+				new DomainMemberInfo(typeof(ClassifierProjectionPropertyEvaluation), "Notes", ClassifierProjectionPropertyEvaluation.NotesDomainPropertyId, typeof(ClassifierProjectionPropertyEvaluation.NotesPropertyHandler)),
+				new DomainMemberInfo(typeof(ClassifierProjectionPropertyEvaluation), "Description", ClassifierProjectionPropertyEvaluation.DescriptionDomainPropertyId, typeof(ClassifierProjectionPropertyEvaluation.DescriptionPropertyHandler)),
+				new DomainMemberInfo(typeof(ClassifierProjectionPropertyEvaluation), "PropertyEvaluationToPerform", ClassifierProjectionPropertyEvaluation.PropertyEvaluationToPerformDomainPropertyId, typeof(ClassifierProjectionPropertyEvaluation.PropertyEvaluationToPerformPropertyHandler)),
+				new DomainMemberInfo(typeof(ClassifierProjectionPropertyEvaluation), "OnTrue", ClassifierProjectionPropertyEvaluation.OnTrueDomainPropertyId, typeof(ClassifierProjectionPropertyEvaluation.OnTruePropertyHandler)),
+				new DomainMemberInfo(typeof(ClassifierProjectionPropertyEvaluation), "OnFalse", ClassifierProjectionPropertyEvaluation.OnFalseDomainPropertyId, typeof(ClassifierProjectionPropertyEvaluation.OnFalsePropertyHandler)),
+				new DomainMemberInfo(typeof(ClassifierProjectionPropertyEvaluation), "Target", ClassifierProjectionPropertyEvaluation.TargetDomainPropertyId, typeof(ClassifierProjectionPropertyEvaluation.TargetPropertyHandler)),
+				new DomainMemberInfo(typeof(ClassifierProjectionPropertyEvaluation), "TargetType", ClassifierProjectionPropertyEvaluation.TargetTypeDomainPropertyId, typeof(ClassifierProjectionPropertyEvaluation.TargetTypePropertyHandler)),
 				new DomainMemberInfo(typeof(AggregateIdentifierHasEventDefinitions), "Name", AggregateIdentifierHasEventDefinitions.NameDomainPropertyId, typeof(AggregateIdentifierHasEventDefinitions.NamePropertyHandler)),
 				new DomainMemberInfo(typeof(AggregateIdentifierHasProjectionDefinitions), "Name", AggregateIdentifierHasProjectionDefinitions.NameDomainPropertyId, typeof(AggregateIdentifierHasProjectionDefinitions.NamePropertyHandler)),
 				new DomainMemberInfo(typeof(AggregateIdentifierIsChildOfTargetAggregateIdentifiers), "Name", AggregateIdentifierIsChildOfTargetAggregateIdentifiers.NameDomainPropertyId, typeof(AggregateIdentifierIsChildOfTargetAggregateIdentifiers.NamePropertyHandler)),
@@ -235,11 +260,8 @@ namespace CQRSAzure.CQRSdsl.Dsl
 				new DomainMemberInfo(typeof(AggregateIdentifierHasIdentityGrouped), "Name", AggregateIdentifierHasIdentityGrouped.NameDomainPropertyId, typeof(AggregateIdentifierHasIdentityGrouped.NamePropertyHandler)),
 				new DomainMemberInfo(typeof(AggregateIdentifierHasClassifiers), "Name", AggregateIdentifierHasClassifiers.NameDomainPropertyId, typeof(AggregateIdentifierHasClassifiers.NamePropertyHandler)),
 				new DomainMemberInfo(typeof(IdentityGroupReferencesClassifier), "Name", IdentityGroupReferencesClassifier.NameDomainPropertyId, typeof(IdentityGroupReferencesClassifier.NamePropertyHandler)),
-				new DomainMemberInfo(typeof(CQRSdslDiagram), "OutputCodeLanguage", CQRSdslDiagram.OutputCodeLanguageDomainPropertyId, typeof(CQRSdslDiagram.OutputCodeLanguagePropertyHandler)),
 				new DomainMemberInfo(typeof(CQRSdslDiagram), "CopyrightNotice", CQRSdslDiagram.CopyrightNoticeDomainPropertyId, typeof(CQRSdslDiagram.CopyrightNoticePropertyHandler)),
 				new DomainMemberInfo(typeof(CQRSdslDiagram), "CompanyName", CQRSdslDiagram.CompanyNameDomainPropertyId, typeof(CQRSdslDiagram.CompanyNamePropertyHandler)),
-				new DomainMemberInfo(typeof(CQRSdslDiagram), "SubfolderPerModel", CQRSdslDiagram.SubfolderPerModelDomainPropertyId, typeof(CQRSdslDiagram.SubfolderPerModelPropertyHandler)),
-				new DomainMemberInfo(typeof(CQRSdslDiagram), "SubfolderPerAggregate", CQRSdslDiagram.SubfolderPerAggregateDomainPropertyId, typeof(CQRSdslDiagram.SubfolderPerAggregatePropertyHandler)),
 				new DomainMemberInfo(typeof(AggregateGeometryShape), "EventsVisible", AggregateGeometryShape.EventsVisibleDomainPropertyId, typeof(AggregateGeometryShape.EventsVisiblePropertyHandler)),
 				new DomainMemberInfo(typeof(AggregateGeometryShape), "ProjectionsVisible", AggregateGeometryShape.ProjectionsVisibleDomainPropertyId, typeof(AggregateGeometryShape.ProjectionsVisiblePropertyHandler)),
 				new DomainMemberInfo(typeof(AggregateGeometryShape), "QueriesVisible", AggregateGeometryShape.QueriesVisibleDomainPropertyId, typeof(AggregateGeometryShape.QueriesVisiblePropertyHandler)),
@@ -281,8 +303,6 @@ namespace CQRSAzure.CQRSdsl.Dsl
 				new DomainRolePlayerInfo(typeof(ProjectionDefinitionHasEventPropertyOperations), "ProjectionEventPropertyOperation", ProjectionDefinitionHasEventPropertyOperations.ProjectionEventPropertyOperationDomainRoleId),
 				new DomainRolePlayerInfo(typeof(QueryDefinitionHasQueryReturnParameters), "QueryDefinition", QueryDefinitionHasQueryReturnParameters.QueryDefinitionDomainRoleId),
 				new DomainRolePlayerInfo(typeof(QueryDefinitionHasQueryReturnParameters), "QueryReturnParameter", QueryDefinitionHasQueryReturnParameters.QueryReturnParameterDomainRoleId),
-				new DomainRolePlayerInfo(typeof(CQRSModelHasModelSet), "CQRSModel", CQRSModelHasModelSet.CQRSModelDomainRoleId),
-				new DomainRolePlayerInfo(typeof(CQRSModelHasModelSet), "ModelSetting", CQRSModelHasModelSet.ModelSettingDomainRoleId),
 				new DomainRolePlayerInfo(typeof(QueryDefinitionReferencesIdentityGroup), "QueryDefinition", QueryDefinitionReferencesIdentityGroup.QueryDefinitionDomainRoleId),
 				new DomainRolePlayerInfo(typeof(QueryDefinitionReferencesIdentityGroup), "IdentityGroup", QueryDefinitionReferencesIdentityGroup.IdentityGroupDomainRoleId),
 				new DomainRolePlayerInfo(typeof(AggregateIdentifierHasIdentityGrouped), "AggregateIdentifier", AggregateIdentifierHasIdentityGrouped.AggregateIdentifierDomainRoleId),
@@ -299,6 +319,10 @@ namespace CQRSAzure.CQRSdsl.Dsl
 				new DomainRolePlayerInfo(typeof(CommandDefinitionReferencesIdentityGroup), "IdentityGroup", CommandDefinitionReferencesIdentityGroup.IdentityGroupDomainRoleId),
 				new DomainRolePlayerInfo(typeof(QueryDefinitionReferencesProjectionDefinition), "QueryDefinition", QueryDefinitionReferencesProjectionDefinition.QueryDefinitionDomainRoleId),
 				new DomainRolePlayerInfo(typeof(QueryDefinitionReferencesProjectionDefinition), "ProjectionDefinition", QueryDefinitionReferencesProjectionDefinition.ProjectionDefinitionDomainRoleId),
+				new DomainRolePlayerInfo(typeof(ClassifierReferencesProjectionDefinition), "Classifier", ClassifierReferencesProjectionDefinition.ClassifierDomainRoleId),
+				new DomainRolePlayerInfo(typeof(ClassifierReferencesProjectionDefinition), "ProjectionDefinition", ClassifierReferencesProjectionDefinition.ProjectionDefinitionDomainRoleId),
+				new DomainRolePlayerInfo(typeof(ClassifierHasClassifierProjectionPropertyEvaluations), "Classifier", ClassifierHasClassifierProjectionPropertyEvaluations.ClassifierDomainRoleId),
+				new DomainRolePlayerInfo(typeof(ClassifierHasClassifierProjectionPropertyEvaluations), "ClassifierProjectionPropertyEvaluation", ClassifierHasClassifierProjectionPropertyEvaluations.ClassifierProjectionPropertyEvaluationDomainRoleId),
 			};
 		}
 		#endregion
@@ -320,7 +344,7 @@ namespace CQRSAzure.CQRSdsl.Dsl
 	
 			if (createElementMap == null)
 			{
-				createElementMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(33);
+				createElementMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(34);
 				createElementMap.Add(typeof(CQRSModel), 0);
 				createElementMap.Add(typeof(AggregateIdentifier), 1);
 				createElementMap.Add(typeof(EventDefinition), 2);
@@ -333,10 +357,10 @@ namespace CQRSAzure.CQRSdsl.Dsl
 				createElementMap.Add(typeof(QueryInputParameter), 9);
 				createElementMap.Add(typeof(ProjectionEventPropertyOperation), 10);
 				createElementMap.Add(typeof(QueryReturnParameter), 11);
-				createElementMap.Add(typeof(ModelSetting), 12);
-				createElementMap.Add(typeof(IdentityGroup), 13);
-				createElementMap.Add(typeof(Classifier), 14);
-				createElementMap.Add(typeof(ClassifierEventEvaluation), 15);
+				createElementMap.Add(typeof(IdentityGroup), 12);
+				createElementMap.Add(typeof(Classifier), 13);
+				createElementMap.Add(typeof(ClassifierEventEvaluation), 14);
+				createElementMap.Add(typeof(ClassifierProjectionPropertyEvaluation), 15);
 				createElementMap.Add(typeof(CQRSdslDiagram), 16);
 				createElementMap.Add(typeof(AggregateParenthoodConnector), 17);
 				createElementMap.Add(typeof(AggregateEventConnector), 18);
@@ -347,13 +371,14 @@ namespace CQRSAzure.CQRSdsl.Dsl
 				createElementMap.Add(typeof(AggregateIdentityGroupConnector), 23);
 				createElementMap.Add(typeof(IdentityGroupClassifierConnector), 24);
 				createElementMap.Add(typeof(ClassifierEventConnector), 25);
-				createElementMap.Add(typeof(AggregateGeometryShape), 26);
-				createElementMap.Add(typeof(IdentityGroupGeometryShape), 27);
-				createElementMap.Add(typeof(QueryDefinitionShape), 28);
-				createElementMap.Add(typeof(EventDefinitionCompartmentShape), 29);
-				createElementMap.Add(typeof(ProjectionDefinitionCompartmentShape), 30);
-				createElementMap.Add(typeof(CommandDefinitionCompartmentShape), 31);
-				createElementMap.Add(typeof(ClassifierCompartmentShape), 32);
+				createElementMap.Add(typeof(ClassifierProjectionConnector), 26);
+				createElementMap.Add(typeof(AggregateGeometryShape), 27);
+				createElementMap.Add(typeof(IdentityGroupGeometryShape), 28);
+				createElementMap.Add(typeof(QueryDefinitionShape), 29);
+				createElementMap.Add(typeof(EventDefinitionCompartmentShape), 30);
+				createElementMap.Add(typeof(ProjectionDefinitionCompartmentShape), 31);
+				createElementMap.Add(typeof(CommandDefinitionCompartmentShape), 32);
+				createElementMap.Add(typeof(ClassifierCompartmentShape), 33);
 			}
 			int index;
 			if (!createElementMap.TryGetValue(elementType, out index))
@@ -381,10 +406,10 @@ namespace CQRSAzure.CQRSdsl.Dsl
 				case 9: return new QueryInputParameter(partition, propertyAssignments);
 				case 10: return new ProjectionEventPropertyOperation(partition, propertyAssignments);
 				case 11: return new QueryReturnParameter(partition, propertyAssignments);
-				case 12: return new ModelSetting(partition, propertyAssignments);
-				case 13: return new IdentityGroup(partition, propertyAssignments);
-				case 14: return new Classifier(partition, propertyAssignments);
-				case 15: return new ClassifierEventEvaluation(partition, propertyAssignments);
+				case 12: return new IdentityGroup(partition, propertyAssignments);
+				case 13: return new Classifier(partition, propertyAssignments);
+				case 14: return new ClassifierEventEvaluation(partition, propertyAssignments);
+				case 15: return new ClassifierProjectionPropertyEvaluation(partition, propertyAssignments);
 				case 16: return new CQRSdslDiagram(partition, propertyAssignments);
 				case 17: return new AggregateParenthoodConnector(partition, propertyAssignments);
 				case 18: return new AggregateEventConnector(partition, propertyAssignments);
@@ -395,13 +420,14 @@ namespace CQRSAzure.CQRSdsl.Dsl
 				case 23: return new AggregateIdentityGroupConnector(partition, propertyAssignments);
 				case 24: return new IdentityGroupClassifierConnector(partition, propertyAssignments);
 				case 25: return new ClassifierEventConnector(partition, propertyAssignments);
-				case 26: return new AggregateGeometryShape(partition, propertyAssignments);
-				case 27: return new IdentityGroupGeometryShape(partition, propertyAssignments);
-				case 28: return new QueryDefinitionShape(partition, propertyAssignments);
-				case 29: return new EventDefinitionCompartmentShape(partition, propertyAssignments);
-				case 30: return new ProjectionDefinitionCompartmentShape(partition, propertyAssignments);
-				case 31: return new CommandDefinitionCompartmentShape(partition, propertyAssignments);
-				case 32: return new ClassifierCompartmentShape(partition, propertyAssignments);
+				case 26: return new ClassifierProjectionConnector(partition, propertyAssignments);
+				case 27: return new AggregateGeometryShape(partition, propertyAssignments);
+				case 28: return new IdentityGroupGeometryShape(partition, propertyAssignments);
+				case 29: return new QueryDefinitionShape(partition, propertyAssignments);
+				case 30: return new EventDefinitionCompartmentShape(partition, propertyAssignments);
+				case 31: return new ProjectionDefinitionCompartmentShape(partition, propertyAssignments);
+				case 32: return new CommandDefinitionCompartmentShape(partition, propertyAssignments);
+				case 33: return new ClassifierCompartmentShape(partition, propertyAssignments);
 				default: return null;
 			}
 		}
@@ -424,7 +450,7 @@ namespace CQRSAzure.CQRSdsl.Dsl
 	
 			if (createElementLinkMap == null)
 			{
-				createElementLinkMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(22);
+				createElementLinkMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(23);
 				createElementLinkMap.Add(typeof(CQRSModelHasAggregateIdentifiers), 0);
 				createElementLinkMap.Add(typeof(AggregateIdentifierHasEventDefinitions), 1);
 				createElementLinkMap.Add(typeof(AggregateIdentifierHasProjectionDefinitions), 2);
@@ -438,15 +464,16 @@ namespace CQRSAzure.CQRSdsl.Dsl
 				createElementLinkMap.Add(typeof(ProjectionDefinitionHandlesEventDefinitions), 10);
 				createElementLinkMap.Add(typeof(ProjectionDefinitionHasEventPropertyOperations), 11);
 				createElementLinkMap.Add(typeof(QueryDefinitionHasQueryReturnParameters), 12);
-				createElementLinkMap.Add(typeof(CQRSModelHasModelSet), 13);
-				createElementLinkMap.Add(typeof(QueryDefinitionReferencesIdentityGroup), 14);
-				createElementLinkMap.Add(typeof(AggregateIdentifierHasIdentityGrouped), 15);
-				createElementLinkMap.Add(typeof(AggregateIdentifierHasClassifiers), 16);
-				createElementLinkMap.Add(typeof(IdentityGroupReferencesClassifier), 17);
-				createElementLinkMap.Add(typeof(ClassifierHandlesEvents), 18);
-				createElementLinkMap.Add(typeof(ClassifierHasEventEvaluations), 19);
-				createElementLinkMap.Add(typeof(CommandDefinitionReferencesIdentityGroup), 20);
-				createElementLinkMap.Add(typeof(QueryDefinitionReferencesProjectionDefinition), 21);
+				createElementLinkMap.Add(typeof(QueryDefinitionReferencesIdentityGroup), 13);
+				createElementLinkMap.Add(typeof(AggregateIdentifierHasIdentityGrouped), 14);
+				createElementLinkMap.Add(typeof(AggregateIdentifierHasClassifiers), 15);
+				createElementLinkMap.Add(typeof(IdentityGroupReferencesClassifier), 16);
+				createElementLinkMap.Add(typeof(ClassifierHandlesEvents), 17);
+				createElementLinkMap.Add(typeof(ClassifierHasEventEvaluations), 18);
+				createElementLinkMap.Add(typeof(CommandDefinitionReferencesIdentityGroup), 19);
+				createElementLinkMap.Add(typeof(QueryDefinitionReferencesProjectionDefinition), 20);
+				createElementLinkMap.Add(typeof(ClassifierReferencesProjectionDefinition), 21);
+				createElementLinkMap.Add(typeof(ClassifierHasClassifierProjectionPropertyEvaluations), 22);
 			}
 			int index;
 			if (!createElementLinkMap.TryGetValue(elementLinkType, out index))
@@ -474,15 +501,16 @@ namespace CQRSAzure.CQRSdsl.Dsl
 				case 10: return new ProjectionDefinitionHandlesEventDefinitions(partition, roleAssignments, propertyAssignments);
 				case 11: return new ProjectionDefinitionHasEventPropertyOperations(partition, roleAssignments, propertyAssignments);
 				case 12: return new QueryDefinitionHasQueryReturnParameters(partition, roleAssignments, propertyAssignments);
-				case 13: return new CQRSModelHasModelSet(partition, roleAssignments, propertyAssignments);
-				case 14: return new QueryDefinitionReferencesIdentityGroup(partition, roleAssignments, propertyAssignments);
-				case 15: return new AggregateIdentifierHasIdentityGrouped(partition, roleAssignments, propertyAssignments);
-				case 16: return new AggregateIdentifierHasClassifiers(partition, roleAssignments, propertyAssignments);
-				case 17: return new IdentityGroupReferencesClassifier(partition, roleAssignments, propertyAssignments);
-				case 18: return new ClassifierHandlesEvents(partition, roleAssignments, propertyAssignments);
-				case 19: return new ClassifierHasEventEvaluations(partition, roleAssignments, propertyAssignments);
-				case 20: return new CommandDefinitionReferencesIdentityGroup(partition, roleAssignments, propertyAssignments);
-				case 21: return new QueryDefinitionReferencesProjectionDefinition(partition, roleAssignments, propertyAssignments);
+				case 13: return new QueryDefinitionReferencesIdentityGroup(partition, roleAssignments, propertyAssignments);
+				case 14: return new AggregateIdentifierHasIdentityGrouped(partition, roleAssignments, propertyAssignments);
+				case 15: return new AggregateIdentifierHasClassifiers(partition, roleAssignments, propertyAssignments);
+				case 16: return new IdentityGroupReferencesClassifier(partition, roleAssignments, propertyAssignments);
+				case 17: return new ClassifierHandlesEvents(partition, roleAssignments, propertyAssignments);
+				case 18: return new ClassifierHasEventEvaluations(partition, roleAssignments, propertyAssignments);
+				case 19: return new CommandDefinitionReferencesIdentityGroup(partition, roleAssignments, propertyAssignments);
+				case 20: return new QueryDefinitionReferencesProjectionDefinition(partition, roleAssignments, propertyAssignments);
+				case 21: return new ClassifierReferencesProjectionDefinition(partition, roleAssignments, propertyAssignments);
+				case 22: return new ClassifierHasClassifierProjectionPropertyEvaluations(partition, roleAssignments, propertyAssignments);
 				default: return null;
 			}
 		}
@@ -674,10 +702,10 @@ namespace CQRSAzure.CQRSdsl.Dsl
 			DomainRoles.Add(global::CQRSAzure.CQRSdsl.Dsl.QueryDefinitionHasQueryInputParameters.QueryInputParameterDomainRoleId, true);
 			DomainRoles.Add(global::CQRSAzure.CQRSdsl.Dsl.ProjectionDefinitionHasEventPropertyOperations.ProjectionEventPropertyOperationDomainRoleId, true);
 			DomainRoles.Add(global::CQRSAzure.CQRSdsl.Dsl.QueryDefinitionHasQueryReturnParameters.QueryReturnParameterDomainRoleId, true);
-			DomainRoles.Add(global::CQRSAzure.CQRSdsl.Dsl.CQRSModelHasModelSet.ModelSettingDomainRoleId, true);
 			DomainRoles.Add(global::CQRSAzure.CQRSdsl.Dsl.AggregateIdentifierHasIdentityGrouped.IdentityGroupDomainRoleId, true);
 			DomainRoles.Add(global::CQRSAzure.CQRSdsl.Dsl.AggregateIdentifierHasClassifiers.ClassifierDomainRoleId, true);
 			DomainRoles.Add(global::CQRSAzure.CQRSdsl.Dsl.ClassifierHasEventEvaluations.ClassifierEventEvaluationDomainRoleId, true);
+			DomainRoles.Add(global::CQRSAzure.CQRSdsl.Dsl.ClassifierHasClassifierProjectionPropertyEvaluations.ClassifierProjectionPropertyEvaluationDomainRoleId, true);
 			#endregion
 		}
 		/// <summary>
@@ -839,6 +867,12 @@ namespace CQRSAzure.CQRSdsl.Dsl
 		/// </summary>
 		[DslDesign::DescriptionResource("CQRSAzure.CQRSdsl.Dsl.PropertyDataType/GUID.Description", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
 		GUID = 7,
+		/// <summary>
+		/// PositiveInteger
+		/// A whole number that is greater than zero
+		/// </summary>
+		[DslDesign::DescriptionResource("CQRSAzure.CQRSdsl.Dsl.PropertyDataType/PositiveInteger.Description", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		PositiveInteger = 9,
 	}
 }
 namespace CQRSAzure.CQRSdsl.Dsl
@@ -1045,6 +1079,58 @@ namespace CQRSAzure.CQRSdsl.Dsl
 		/// </summary>
 		[DslDesign::DescriptionResource("CQRSAzure.CQRSdsl.Dsl.EvaluationTargetType/Variable.Description", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
 		Variable = 1,
+	}
+}
+namespace CQRSAzure.CQRSdsl.Dsl
+{
+	/// <summary>
+	/// DomainEnumeration: ClassifierDataSourceType
+	/// Description for CQRSAzure.CQRSdsl.Dsl.ClassifierDataSourceType
+	/// </summary>
+	[global::System.CLSCompliant(true)]
+	public enum ClassifierDataSourceType
+	{
+		/// <summary>
+		/// EventHandler
+		/// The classifier operates directly on the event stream by handling events
+		/// </summary>
+		[DslDesign::DescriptionResource("CQRSAzure.CQRSdsl.Dsl.ClassifierDataSourceType/EventHandler.Description", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		EventHandler = 0,
+		/// <summary>
+		/// Projection
+		/// The classifier takes its data from a linked projection
+		/// </summary>
+		[DslDesign::DescriptionResource("CQRSAzure.CQRSdsl.Dsl.ClassifierDataSourceType/Projection.Description", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		Projection = 1,
+	}
+}
+namespace CQRSAzure.CQRSdsl.Dsl
+{
+	/// <summary>
+	/// DomainEnumeration: SupportingFramework
+	/// What framework the generated code should target
+	/// </summary>
+	[global::System.CLSCompliant(true)]
+	public enum SupportingFramework
+	{
+		/// <summary>
+		/// CQRSonAzure
+		/// Use CQRS on Azure Framework
+		/// </summary>
+		[DslDesign::DescriptionResource("CQRSAzure.CQRSdsl.Dsl.SupportingFramework/CQRSonAzure.Description", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		CQRSonAzure = 0,
+		/// <summary>
+		/// Orleans
+		/// Use Microsoft Orleans based framework
+		/// </summary>
+		[DslDesign::DescriptionResource("CQRSAzure.CQRSdsl.Dsl.SupportingFramework/Orleans.Description", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		Orleans = 1,
+		/// <summary>
+		/// EventStore
+		/// Generate EventStore code
+		/// </summary>
+		[DslDesign::DescriptionResource("CQRSAzure.CQRSdsl.Dsl.SupportingFramework/EventStore.Description", typeof(global::CQRSAzure.CQRSdsl.Dsl.CQRSdslDomainModel), "CQRSAzure.CQRSdsl.Dsl.GeneratedCode.DomainModelResx")]
+		EventStore,
 	}
 }
 

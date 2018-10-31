@@ -10,7 +10,9 @@ namespace CQRSAzure.CQRSdsl.Dsl
 {
 
     public partial class ClassifierEventEvaluation
+        :IClassifierEventEvaluationEntity
     {
+
 
 
 

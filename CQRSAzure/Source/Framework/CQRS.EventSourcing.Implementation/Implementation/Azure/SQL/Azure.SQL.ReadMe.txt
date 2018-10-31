@@ -1,0 +1,17 @@
+﻿Azure SQL
+=========
+
+Storage of the event stream data in an Azure based SQL database
+
+(Note that using a database will significantly reduce the scalability and parallelism so I would only recommend it for smaller or learning about CQRS scenarios)
+
+The event stream itself is stored in one parent table for the common data and each event type has an additional table for its extra data.
+
+The following properties can be configured in the configuration file for each SQl database backed event stream:-
+
+ AggregateIdentifierField - What is the field name of the unique identifier of the aggregate in the table
+ SequenceField - What is the name of the field holding the sequence number
+ EventTypeField - What is the name of the field holding the event type
+ EventVersionField - What field holds the event version number
+
+ (Note: This implementation is not complete yet - I have left it in to be filled out when time allows)

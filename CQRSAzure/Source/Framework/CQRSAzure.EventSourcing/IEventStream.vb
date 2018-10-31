@@ -5,19 +5,20 @@
 ''' <typeparam name="TAggregate">
 ''' The type of the aggregate against which these events have been recorded
 ''' </typeparam>
-''' <typeparam name="TAggregationKey">
+''' <typeparam name="TAggregateKey">
 ''' The data type that provides the unique identifier of this aggregate
 ''' </typeparam>
 ''' <remarks>
 ''' Ideally the aggregation key type should be a simple data type (integer, GUID etc.) rather than a compound class, 
 ''' to make the lookup process faster
 ''' </remarks>
-Public Interface IEventStream(Of TAggregate As CQRSAzure.EventSourcing.IAggregationIdentifier, TAggregationKey)
+Public Interface IEventStream(Of TAggregate As CQRSAzure.EventSourcing.IAggregationIdentifier, TAggregateKey)
+    Inherits IEventStreamInstanceProvider(Of TAggregate, TAggregateKey)
 
     ''' <summary>
     ''' The unique key of the aggregation record this event stream pertains to
     ''' </summary>
-    ReadOnly Property Key As TAggregationKey
+    Overloads ReadOnly Property Key As TAggregateKey
 
 
     ''' <summary>
