@@ -15,7 +15,7 @@ Public Class AzureTableClassifierUnitTest
     Public Sub Constructor_TestMethod()
 
         Dim testObj As ClassifierProcessor(Of MockAggregate, String, MockClassifierOddNumber)
-        testObj = Azure.File.AzureFileClassifier(Of MockAggregate, String, MockClassifierOddNumber).CreateClassifierProcessor(New MockAggregate(MY_TEST_KEY))
+        testObj = Azure.Table.AzureTableClassifier(Of MockAggregate, String, MockClassifierOddNumber).CreateClassifierProcessor(New MockAggregate(MY_TEST_KEY))
         Assert.IsNotNull(testObj)
 
     End Sub

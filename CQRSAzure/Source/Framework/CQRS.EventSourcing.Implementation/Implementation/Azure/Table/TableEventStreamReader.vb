@@ -1,4 +1,6 @@
-﻿Imports System.Reflection
+﻿Option Strict Off
+
+Imports System.Reflection
 Imports CQRSAzure.EventSourcing
 Imports Microsoft.WindowsAzure.Storage.Table
 
@@ -59,13 +61,23 @@ Namespace Azure.Table
 
             If (MyBase.Table IsNot Nothing) Then
                 Dim ret As New List(Of IEvent(Of TAggregate))()
-                For Each dte As DynamicTableEntity In MyBase.Table.ExecuteQuery(CreateQuery(StartingSequenceNumber), MyBase.RequestOptions)
+                For Each dte As DynamicTableEntity In MyBase.Table.ExecuteQuery(CreateQuery(m_key.ToString(), StartingSequenceNumber), MyBase.RequestOptions)
                     Dim eventType As Type = GetDynamicTableEntityEventType(dte)
                     If IsEventValid(eventType) Then
+                        Dim evt As IEvent(Of TAggregate) = Nothing
+                        Dim deserialiser As IEventSerializer = EventSerializerFactory.GetSerialiserByType(eventType)
+                        If (deserialiser IsNot Nothing) Then
+                            'Use the event serialiser... 
+                            evt = deserialiser.FromNameValuePairs(DynamicTableEntryToNameValuePairs(dte))
+                        Else
+                            evt = CType(Activator.CreateInstance(eventType),
+                                IEvent(Of TAggregate))
+                            PopulateDynamicTableEntityEvent(dte, evt)
+                        End If
                         'if so, add it to the returned list 
-                        Dim evt As IEvent(Of TAggregate) = Activator.CreateInstance(eventType)
-                        PopulateDynamicTableEntityEvent(dte, evt)
-                        ret.Add(evt)
+                        If (evt IsNot Nothing) Then
+                            ret.Add(evt)
+                        End If
                     End If
                 Next
                 Return ret
@@ -75,19 +87,29 @@ Namespace Azure.Table
 
         End Function
 
+
+
         Public Function GetEventsWithContext(Optional ByVal StartingSequenceNumber As UInteger = 0,
                                              Optional ByVal effectiveDateTime As Nullable(Of DateTime) = Nothing) As IEnumerable(Of IEventContext) Implements IEventStreamReader(Of TAggregate, TAggregateKey).GetEventsWithContext
 
             If (MyBase.Table IsNot Nothing) Then
                 Dim ret As New List(Of IEventContext)
-                For Each dte As DynamicTableEntity In MyBase.Table.ExecuteQuery(CreateQuery(StartingSequenceNumber))
+                For Each dte As DynamicTableEntity In MyBase.Table.ExecuteQuery(CreateQuery(m_key.ToString(), StartingSequenceNumber))
                     Dim eventType As Type = GetDynamicTableEntityEventType(dte)
                     'see if the event type is valid...
                     If IsEventValid(eventType) Then
-                        'if so, add it to the returned list 
-                        Dim evt As IEvent(Of TAggregate) = Activator.CreateInstance(eventType)
-                        PopulateDynamicTableEntityEvent(dte, evt)
-                        'Wrap it with context from the table row
+                        Dim evt As IEvent(Of TAggregate)
+                        Dim deserialiser As IEventSerializer = EventSerializerFactory.GetSerialiserByType(eventType)
+                        If (deserialiser IsNot Nothing) Then
+                            'Use the event serialiser... 
+                            evt = deserialiser.FromNameValuePairs(DynamicTableEntryToNameValuePairs(dte))
+                        Else
+                            'if so, add it to the returned list 
+                            evt = CType(Activator.CreateInstance(eventType),
+                                IEvent(Of TAggregate))
+                            PopulateDynamicTableEntityEvent(dte, evt)
+                            'Wrap it with context from the table row
+                        End If
                         ret.Add(WrapDynamicTableEntityEvent(dte, evt))
                     End If
                 Next
@@ -103,10 +125,10 @@ Namespace Azure.Table
             Dim eventVersion As Integer = 0
 
             If dte.Properties.ContainsKey(FIELDNAME_VERSION) Then
-                eventVersion = dte.Properties(FIELDNAME_VERSION).Int64Value.GetValueOrDefault()
+                eventVersion = CInt(dte.Properties(FIELDNAME_VERSION).Int64Value.GetValueOrDefault())
             End If
 
-            Dim eventInst = InstanceWrappedEvent(Of TAggregateKey).Wrap(m_key, evt, eventVersion)
+            Dim eventInst = InstanceWrappedEvent(Of TAggregateKey).Wrap(m_key, evt, CUInt(eventVersion))
 
             'get the context properties of the event
             Dim sequence As Long = RowKeyToSequenceNumber(dte.RowKey)
@@ -128,7 +150,13 @@ Namespace Azure.Table
 
             Dim timestamp As DateTime = dte.Timestamp.UtcDateTime
 
-            Return ContextWrappedEvent(Of TAggregateKey).Wrap(eventInst, sequence, comments, source, timestamp, eventVersion, who)
+            Return ContextWrappedEvent(Of TAggregateKey).Wrap(eventInst,
+                                                              sequence,
+                                                              comments,
+                                                              source,
+                                                              timestamp,
+                                                              CUInt(eventVersion),
+                                                              who)
 
         End Function
 
@@ -143,28 +171,17 @@ Namespace Azure.Table
         ''' There is no concept of order-by but this does not matter as we explicitly use the sequence number as the row key, and results are 
         ''' always in row key order
         ''' </remarks>
-        Private Function CreateQuery(Optional ByVal StartingSequenceNumber As Long = 0) As TableQuery
+        Private Function CreateQuery(ByVal key As String, Optional ByVal StartingSequenceNumber As Long = 0) As TableQuery
 
             Return New TableQuery().Where(
             TableQuery.CombineFilters(
-                    TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, m_key.ToString()),
+                    TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, key),
                     TableOperators.And,
                     TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.GreaterThanOrEqual, SequenceNumberToRowkey(StartingSequenceNumber))))
 
         End Function
 
-        Private Function GetDynamicTableEntityEventType(ByVal tableEntityRow As DynamicTableEntity) As Type
 
-            If (tableEntityRow IsNot Nothing) Then
-                If tableEntityRow.Properties(FIELDNAME_EVENTTYPE) IsNot Nothing Then
-                    Dim typeName As String = tableEntityRow.Properties(FIELDNAME_EVENTTYPE).StringValue()
-                    Return Type.GetType(typeName, False)
-                End If
-            End If
-
-            Return Nothing
-
-        End Function
 
         Private Sub PopulateDynamicTableEntityEvent(Of TEvent As IEvent(Of TAggregate))(ByVal tableEntityRow As DynamicTableEntity, ByRef eventData As TEvent)
 
@@ -186,30 +203,10 @@ Namespace Azure.Table
 
         End Sub
 
-        Private Function IsEntityPropertyValueSet(pi As PropertyInfo, propertyAsObject As Object) As Boolean
-
-            If (pi.PropertyType IsNot GetType(String)) Then
-                If String.IsNullOrEmpty(propertyAsObject.ToString()) Then
-                    Return False
-                End If
-            End If
-
-            Return True
-
-        End Function
-
-        Private Function GetEntityPropertyValue(pi As PropertyInfo, propertyAsObject As Object) As Object
 
 
-            If (pi.PropertyType Is GetType(Decimal)) Then
-                'have to convert from double
-                Dim dblValue As Double = propertyAsObject
-                Return Convert.ToDecimal(dblValue)
-            Else
-                Return propertyAsObject
-            End If
 
-        End Function
+
 
         ''' <summary>
         ''' Create a new windows azure tables stream reader to read events from the file
@@ -319,13 +316,15 @@ Namespace Azure.Table
                                       Optional ByVal settings As ITableSettings = Nothing,
                                       Optional ByVal eventFilter As IEnumerable(Of Type) = Nothing) As IEventStreamReader(Of TAggregate, TAggregateKey)
 
-            Return TableEventStreamReader(Of TAggregate, TAggregateKey).Create(instance, settings, eventFilter)
+            Return TableEventStreamReader(Of TAggregate, TAggregateKey).Create(CType(instance, IAggregationIdentifier(Of TAggregateKey)),
+                                                                               settings,
+                                                                               eventFilter)
 
         End Function
 
 
         ''' <summary>
-        ''' Create a projection processor that works off an SQL server backed event stream
+        ''' Create a projection processor that works off an Azure tables backed event stream
         ''' </summary>
         ''' <param name="instance">
         ''' The instance of the aggregate for which we want to run projections
@@ -338,7 +337,9 @@ Namespace Azure.Table
                                                          Optional ByVal settings As ITableSettings = Nothing,
                                                          Optional ByVal eventFilter As IEnumerable(Of Type) = Nothing) As ProjectionProcessor(Of TAggregate, TAggregateKey)
 
-            Return TableEventStreamReader(Of TAggregate, TAggregateKey).CreateProjectionProcessor(instance, settings, eventFilter)
+            Return TableEventStreamReader(Of TAggregate, TAggregateKey).CreateProjectionProcessor(CType(instance, IAggregationIdentifier(Of TAggregateKey)),
+                                                                                                  settings,
+                                                                                                  eventFilter)
 
         End Function
 
@@ -357,7 +358,8 @@ Namespace Azure.Table
 
 
             'Make delegate for this module Create() function....
-            Return New IAggregateImplementationMap.ReaderCreationFunction(Of TAggregate, TAggregateKey)(AddressOf Create(Of TAggregate, TAggregateKey))
+            Return New IAggregateImplementationMap.ReaderCreationFunction(Of TAggregate, TAggregateKey) _
+                (AddressOf Create(Of TAggregate, TAggregateKey))
 
         End Function
 

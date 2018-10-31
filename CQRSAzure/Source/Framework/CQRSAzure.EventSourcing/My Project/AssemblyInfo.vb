@@ -8,8 +8,8 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("CQRSAzure.EventSourcing")> 
-<Assembly: AssemblyDescription("")> 
+<Assembly: AssemblyTitle("CQRSAzure.EventSourcing")>
+<Assembly: AssemblyDescription("Main library for eventsourcing as part of CQRS on Azure")>
 <Assembly: AssemblyCompany("")> 
 <Assembly: AssemblyProduct("CQRSAzure.EventSourcing")>
 <Assembly: AssemblyCopyright("Copyright - Duncan Jones ©  2014-2016")>

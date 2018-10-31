@@ -4,10 +4,8 @@ Imports CQRSAzure.IdentifierGroup
 ''' Base class to be implemented by any class that supplies an identity group for an aggregate identifier
 ''' </summary>
 Public MustInherit Class IdentityGroupBase(Of TAggregateIdentifier As IAggregationIdentifier, TAggregateKey)
+    Inherits IdentityGroupBase
     Implements IIdentifierGroup(Of TAggregateIdentifier, TAggregateKey)
-
-    Public Const GROUPNAME_INSTANCE As String = "Instance"
-    Public Const GROUPNAME_ALL As String = "All"
 
 
     Private ReadOnly m_classifier As IClassifier(Of TAggregateIdentifier, TAggregateKey)
@@ -16,16 +14,12 @@ Public MustInherit Class IdentityGroupBase(Of TAggregateIdentifier As IAggregati
     ' Members can be pre-loaded from a parent group and then classified in parrallel
     Private ReadOnly m_members As New System.Collections.Concurrent.ConcurrentDictionary(Of TAggregateKey, IClassifierDataSourceHandler.EvaluationResult)
 
-    ''' <summary>
-    ''' The class implementing the identity group must provide its name
-    ''' </summary>
-    Public MustOverride ReadOnly Property Name As String Implements IIdentifierGroup.Name
 
     ''' <summary>
     ''' The name of the outer parent group of which all members must be members of to be checked for membership
     ''' of this group
     ''' </summary>
-    Public ReadOnly Property ParentGroupName As String Implements IIdentifierGroup.ParentGroupName
+    Public Overrides ReadOnly Property ParentGroupName As String Implements IIdentifierGroup.ParentGroupName
         Get
             If (m_parentGroup IsNot Nothing) Then
                 Return m_parentGroup.Name
@@ -34,6 +28,7 @@ Public MustInherit Class IdentityGroupBase(Of TAggregateIdentifier As IAggregati
             End If
         End Get
     End Property
+
 
     ''' <summary>
     ''' The classifier to run to (re)generate this identity group
@@ -90,5 +85,67 @@ Public MustInherit Class IdentityGroupBase(Of TAggregateIdentifier As IAggregati
             m_parentGroup = parentGroup
         End If
     End Sub
+
+End Class
+
+''' <summary>
+''' Base class to be implemented by any class that supplies an identity group for an aggregate identifier
+''' using an untyped aggregate event stream
+''' </summary>
+Public MustInherit Class IdentityGroupBaseUntyped
+    Inherits IdentityGroupBase
+    Implements IIdentifierGroup
+
+
+    Private ReadOnly m_parentGroupName As String
+
+    ''' <summary>
+    ''' Get all the members of the identity group using the classifier
+    ''' </summary>
+    ''' <param name="AsOfDate">
+    ''' Date/time up until which to run the classifiers
+    ''' </param>
+    Public MustOverride Function GetMembers(Optional ByVal AsOfDate As DateTime = Nothing) As IEnumerable(Of String)
+
+
+
+    ''' <summary>
+    ''' The name of the outer parent group of which all members must be members of to be checked for membership
+    ''' of this group
+    ''' </summary>
+    Public Overrides ReadOnly Property ParentGroupName As String Implements IIdentifierGroup.ParentGroupName
+        Get
+            If Not (String.IsNullOrWhiteSpace(m_parentGroupName)) Then
+                Return m_parentGroupName
+            Else
+                Return GROUPNAME_ALL
+            End If
+        End Get
+    End Property
+
+
+    Public Shared Function IsInGroup(ByVal pair As KeyValuePair(Of String, IClassifierDataSourceHandler.EvaluationResult)) As Boolean
+        Return (pair.Value = IClassifierDataSourceHandler.EvaluationResult.Include)
+    End Function
+
+End Class
+
+
+Public MustInherit Class IdentityGroupBase
+    Implements IIdentifierGroup
+
+    Public Const GROUPNAME_INSTANCE As String = "Instance"
+    Public Const GROUPNAME_ALL As String = "All"
+
+    ''' <summary>
+    ''' The class implementing the identity group must provide its name
+    ''' </summary>
+    Public MustOverride ReadOnly Property Name As String Implements IIdentifierGroup.Name
+
+    ''' <summary>
+    ''' The name of the outer parent group of which all members must be members of to be checked for membership
+    ''' of this group
+    ''' </summary>
+    Public MustOverride ReadOnly Property ParentGroupName As String Implements IIdentifierGroup.ParentGroupName
 
 End Class

@@ -11,6 +11,15 @@ Public Interface IEvent
 
 End Interface
 
+Public Interface IJsonSerialisedEvent
+    Inherits IEvent
+
+    ReadOnly Property FullClassName As String
+
+    ReadOnly Property EventInstanceAsJson As Newtonsoft.Json.Linq.JObject
+
+End Interface
+
 ''' <summary>
 ''' Marker interface for an event pertaining to an aggregation
 ''' </summary>

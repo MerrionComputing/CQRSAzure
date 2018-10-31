@@ -39,6 +39,11 @@ Public Interface IEventContext
     ''' </summary>
     ReadOnly Property Commentary As String
 
+    ''' <summary>
+    ''' Externally provided identifier for linking together events caused by the same external
+    ''' command
+    ''' </summary>
+    ReadOnly Property CorrelationIdentifier As String
 
 End Interface
 
@@ -62,6 +67,12 @@ Public Interface IWriteContext
     ''' Any additional comments attached to the event for audit purposes for example
     ''' </summary>
     ReadOnly Property Commentary As String
+
+    ''' <summary>
+    ''' An externally provided unique identifier to tie together events comming from the 
+    ''' same command
+    ''' </summary>
+    ReadOnly Property CorrelationIdentifier As String
 
 End Interface
 

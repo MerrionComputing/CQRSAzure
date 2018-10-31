@@ -36,7 +36,7 @@ Public Class BlobBlockWrappedEventUnitTest
         Dim testStream As System.IO.Stream = testObj.ToBinaryStream()
         testStream.Seek(0, IO.SeekOrigin.Begin)
         Dim testObj2 As BlobBlockWrappedEvent = BlobBlockWrappedEvent.FromBinaryStream(testStream)
-        actual = CTypeDynamic(Of MockEventTypeOne)(testObj2.EventInstance).EventOneStringProperty
+        actual = CType(testObj2.EventInstance, MockEventTypeOne).EventOneStringProperty
 
         Assert.AreEqual(expected, actual)
 

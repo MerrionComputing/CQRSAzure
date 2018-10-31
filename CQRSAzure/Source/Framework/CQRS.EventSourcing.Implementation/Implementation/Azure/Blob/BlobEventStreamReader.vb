@@ -81,7 +81,7 @@ Namespace Azure.Blob
                 Dim bf As New BinaryFormatter()
                 Using rawStream As System.IO.Stream = GetUnderlyingStream()
                     While Not (rawStream.Position >= rawStream.Length)
-                        Dim record As BlobBlockWrappedEvent = CTypeDynamic(Of BlobBlockWrappedEvent)(bf.Deserialize(rawStream))
+                        Dim record As BlobBlockWrappedEvent = CType(bf.Deserialize(rawStream), BlobBlockWrappedEvent)
                         If (record IsNot Nothing) Then
                             If (IsEventValid(record.EventInstance.GetType())) Then
                                 ret.Add(record.EventInstance)
@@ -104,7 +104,7 @@ Namespace Azure.Blob
                 Dim bf As New BinaryFormatter()
                 Using rawStream As System.IO.Stream = GetUnderlyingStream()
                     While Not (rawStream.Position >= rawStream.Length)
-                        Dim record As BlobBlockWrappedEvent = CTypeDynamic(Of BlobBlockWrappedEvent)(bf.Deserialize(rawStream))
+                        Dim record As BlobBlockWrappedEvent = CType(bf.Deserialize(rawStream), BlobBlockWrappedEvent)
                         If (record IsNot Nothing) Then
                             If (record.Sequence >= StartingVersion) Then
                                 If (IsEventValid(record.EventInstance.GetType())) Then
@@ -129,7 +129,7 @@ Namespace Azure.Blob
                 Dim bf As New BinaryFormatter()
                 Using rawStream As System.IO.Stream = GetUnderlyingStream()
                     While Not (rawStream.Position >= rawStream.Length)
-                        Dim record As BlobBlockWrappedEvent = CTypeDynamic(Of BlobBlockWrappedEvent)(bf.Deserialize(rawStream))
+                        Dim record As BlobBlockWrappedEvent = CType(bf.Deserialize(rawStream), BlobBlockWrappedEvent)
                         If (record IsNot Nothing) Then
                             If (record.Sequence >= StartingVersion) Then
                                 If (IsEventValid(record.EventInstance.GetType())) Then

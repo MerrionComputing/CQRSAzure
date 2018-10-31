@@ -28,7 +28,7 @@ Namespace Azure.Blob
                 Dim bf As New BinaryFormatter()
                 Using rawStream As System.IO.Stream = GetUnderlyingStream()
                     While Not (rawStream.Position >= rawStream.Length)
-                        Dim record As BlobBlockWrappedProjectionSnapshot = CTypeDynamic(Of BlobBlockWrappedProjectionSnapshot)(bf.Deserialize(rawStream))
+                        Dim record As BlobBlockWrappedProjectionSnapshot = CType(bf.Deserialize(rawStream), BlobBlockWrappedProjectionSnapshot)
                         If (record IsNot Nothing) Then
                             If ((OnOrBeforeSequence = 0) OrElse (record.Sequence <= OnOrBeforeSequence)) Then
                                 lastMatch = record.Unwrap(Of TAggregate, TAggregateKey)

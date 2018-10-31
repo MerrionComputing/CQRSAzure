@@ -100,7 +100,7 @@ Namespace Azure.File
                         m_formatter = New BinaryFormatter()
                     End If
                     Using memStream As New System.IO.MemoryStream(m_eventData)
-                        Return CTypeDynamic(m_formatter.Deserialize(memStream), evtType)
+                        Return m_formatter.Deserialize(memStream)
                     End Using
                 End If
 

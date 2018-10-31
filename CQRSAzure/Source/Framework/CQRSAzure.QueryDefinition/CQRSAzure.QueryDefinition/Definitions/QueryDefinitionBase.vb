@@ -101,7 +101,7 @@ Public MustInherit Class QueryDefinitionBase(Of TResult)
     Protected Function GetParameterValue(Of TValueType)(parameterName As String, parameterIndex As Integer) As TValueType Implements IQueryDefinition(Of TResult).GetParameterValue
 
         If (ParameterExists(parameterName, parameterIndex)) Then
-            Return CTypeDynamic(Of TValueType)(m_parameters(MakeKey(parameterName, parameterIndex)).Value)
+            Return CType((m_parameters(MakeKey(parameterName, parameterIndex)).Value), TValueType)
         Else
             Throw New ArgumentException("Query parameter with this name and index does not exist", "Name")
         End If
@@ -122,7 +122,7 @@ Public MustInherit Class QueryDefinitionBase(Of TResult)
     Protected Function TryGetParameter(Of TValueType)(parameterName As String, parameterIndex As Integer, ByRef value As TValueType) As Boolean Implements IQueryDefinition(Of TResult).TryGetParameter
 
         If (ParameterExists(parameterName, parameterIndex)) Then
-            value = CTypeDynamic(Of TValueType)(m_parameters(MakeKey(parameterName, parameterIndex)).Value)
+            value = CType((m_parameters(MakeKey(parameterName, parameterIndex)).Value), TValueType)
             Return True
         Else
             Return False

@@ -36,7 +36,7 @@ Public MustInherit Class ClassifierBase(Of TAggregate As IAggregationIdentifier,
 
     Public MustOverride Function ToSnapshot(Of TClassifier As IClassifier)() As IClassifierSnapshot(Of TAggregate, TAggregateKey, TClassifier) Implements IClassifier(Of TAggregate, TAggregateKey).ToSnapshot
 
-    Public MustOverride Function HandlesEventType(eventType As Type) As Boolean Implements IClassifier.HandlesEventType
+    Public MustOverride Function HandlesEventType(eventType As Type) As Boolean Implements IClassifier(Of TAggregate, TAggregateKey).HandlesEventType
 
     ''' <summary>
     ''' Create a new classifier that can use the given event stream reader to decide if an aggregate is in or out of an identity group

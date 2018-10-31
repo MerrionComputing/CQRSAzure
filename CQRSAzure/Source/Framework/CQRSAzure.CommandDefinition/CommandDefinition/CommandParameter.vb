@@ -62,7 +62,7 @@ Public NotInheritable Class CommandParameter(Of TValue)
     End Property
 
     Public Sub SetValue(value As Object) Implements ICommandParameter.SetValue
-        m_value = CTypeDynamic(Of TValue)(value)
+        m_value = CType(value, TValue)
     End Sub
 
 

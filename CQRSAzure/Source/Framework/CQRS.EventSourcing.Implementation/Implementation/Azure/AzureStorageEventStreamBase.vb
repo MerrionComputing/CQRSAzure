@@ -7,6 +7,7 @@ Imports Microsoft.WindowsAzure.Storage
 ''' Common functionality that both reader and writer use to access any event store based on Azure storage
 ''' </summary>
 Public MustInherit Class AzureStorageEventStreamBase
+    Inherits EventStreamBase
 
 #Region "Private members"
     Private ReadOnly m_domainName As String
@@ -43,6 +44,8 @@ Public MustInherit Class AzureStorageEventStreamBase
                       Optional ByVal connectionStringName As String = "",
                       Optional ByVal settings As IAzureStorageSettings = Nothing)
 
+
+
         m_domainName = AggregateDomainName
 
         If (String.IsNullOrWhiteSpace(connectionStringName)) Then
@@ -71,6 +74,7 @@ Public MustInherit Class AzureStorageEventStreamBase
         End If
 
         m_storageAccount = CloudStorageAccount.Parse(connectionString)
+
 
     End Sub
 

@@ -89,7 +89,7 @@ Namespace Commands
         End Function
 
 
-        Public Function HandlesEventType(eventType As Type) As Boolean Implements IClassifier.HandlesEventType
+        Public Function HandlesEventType(eventType As Type) As Boolean Implements IClassifier(Of CommandAggregateIdentifier, Guid).HandlesEventType
             Return False
         End Function
 #End Region

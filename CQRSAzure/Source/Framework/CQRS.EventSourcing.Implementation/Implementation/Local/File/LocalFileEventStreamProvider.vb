@@ -59,10 +59,10 @@ Namespace Local.File
 
             If (m_setings Is Nothing) OrElse (m_setings.UnderlyingSerialiser = ILocalFileSettings.SerialiserType.Binary) Then
                 Dim bf As New BinaryFormatter
-                Return CTypeDynamic(Of TSerialiseObject)(bf.Deserialize(stream))
+                Return CType(bf.Deserialize(stream), TSerialiseObject)
             Else
                 Dim jf As New Json.DataContractJsonSerializer(GetType(TSerialiseObject))
-                Return CTypeDynamic(Of TSerialiseObject)(jf.ReadObject(stream))
+                Return CType(jf.ReadObject(stream), TSerialiseObject)
             End If
 
         End Function
@@ -98,7 +98,7 @@ Namespace Local.File
                         formatter = New BinaryFormatter()
                     End If
                     fr.Seek(0, SeekOrigin.Begin)
-                    Return CTypeDynamic(Of EventStreamDetailBlock)(formatter.Deserialize(fr))
+                    Return CType(formatter.Deserialize(fr), EventStreamDetailBlock)
                 End Using
             Else
                 Return Nothing

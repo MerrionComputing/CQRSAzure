@@ -29,6 +29,9 @@ Public NotInheritable Class EventAsOfDateAttribute
 
     Public Shared Function GetAsOfDate(ByVal eventInstance As IEvent) As Nullable(Of DateTime)
 
+        If (eventInstance Is Nothing) Then
+            Return Nothing
+        End If
 
         Dim eventType As Type = eventInstance.GetType()
 
@@ -46,7 +49,7 @@ Public NotInheritable Class EventAsOfDateAttribute
 #Region "Tracing"
                             EventSourcing.LogVerboseInfo(" As-Of Date set to " & objValue.ToString())
 #End Region
-                            Return objValue
+                            Return CType(objValue, Date?)
                         End If
                     End If
                 End If

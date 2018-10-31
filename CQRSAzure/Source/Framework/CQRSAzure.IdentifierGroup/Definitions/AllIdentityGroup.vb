@@ -100,12 +100,15 @@ Public NotInheritable Class AllClassifier(Of TAggregateIdentifier As IAggregatio
         Return IClassifierDataSourceHandler.EvaluationResult.Include
     End Function
 
-    Public Function HandlesEventType(eventType As Type) As Boolean Implements IClassifier.HandlesEventType
-        Return True
-    End Function
+
 
     Public Function ToSnapshot(Of TClassifier As IClassifier)() As IClassifierSnapshot(Of TAggregateIdentifier, TAggregateKey, TClassifier) Implements IClassifier(Of TAggregateIdentifier, TAggregateKey).ToSnapshot
         Throw New NotImplementedException()
     End Function
 
+    Public Function HandlesEventType(eventType As Type) As Boolean Implements IClassifier(Of TAggregateIdentifier, TAggregateKey).HandlesEventType
+
+        Return True
+
+    End Function
 End Class

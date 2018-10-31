@@ -1,4 +1,6 @@
-﻿Imports System.Runtime.Serialization.Formatters.Binary
+﻿Option Strict Off
+
+Imports System.Runtime.Serialization.Formatters.Binary
 Imports CQRSAzure.EventSourcing
 Imports Microsoft.WindowsAzure.Storage.File
 
@@ -50,7 +52,7 @@ Namespace Azure.File
                 Using fs As System.IO.Stream = MyBase.File.OpenRead()
                     fs.Seek(0, IO.SeekOrigin.Begin)
                     While Not (fs.Position >= currentLength)
-                        Dim record As FileBlockWrappedEvent = CTypeDynamic(Of FileBlockWrappedEvent)(bf.Deserialize(fs))
+                        Dim record As FileBlockWrappedEvent = CType(bf.Deserialize(fs), FileBlockWrappedEvent)
                         If (record IsNot Nothing) Then
                             If (IsEventValid(record.EventInstance.GetType())) Then
                                 ret.Add(record.EventInstance)
@@ -76,7 +78,7 @@ Namespace Azure.File
                     'Go to the starting 
                     fs.Seek(StartingVersion, IO.SeekOrigin.Begin)
                     While Not (fs.Position >= currentLength)
-                        Dim record As FileBlockWrappedEvent = CTypeDynamic(Of FileBlockWrappedEvent)(bf.Deserialize(fs))
+                        Dim record As FileBlockWrappedEvent = CType(bf.Deserialize(fs), FileBlockWrappedEvent)
                         If (record IsNot Nothing) Then
                             If (IsEventValid(record.EventInstance.GetType())) Then
                                 ret.Add(record.EventInstance)
@@ -101,7 +103,7 @@ Namespace Azure.File
                 Using fs As System.IO.Stream = MyBase.File.OpenRead()
                     fs.Seek(StartingVersion, IO.SeekOrigin.Begin)
                     While Not (fs.Position >= currentLength)
-                        Dim record As FileBlockWrappedEvent = CTypeDynamic(Of FileBlockWrappedEvent)(bf.Deserialize(fs))
+                        Dim record As FileBlockWrappedEvent = CType(bf.Deserialize(fs), FileBlockWrappedEvent)
                         If (record IsNot Nothing) Then
                             If (IsEventValid(record.EventInstance.GetType())) Then
                                 Dim instance = InstanceWrappedEvent(Of TAggregateKey).Wrap(m_key, record.EventInstance, record.Version)

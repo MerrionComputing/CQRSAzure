@@ -26,14 +26,14 @@
 		  <requireLicenseAcceptance>false</requireLicenseAcceptance>
 
 		  <!-- Any details about this particular release -->
-		  <releaseNotes>1.0 First stable release</releaseNotes>
+		  <releaseNotes>1.0 Stable release</releaseNotes>
 
 		  <!-- The description can be used in package manager UI. Note that the
 				  nuget.org gallery uses information you add in the portal. -->
 		  <description>Framework for hosting a CQRS and Event Sourcing architecture on Azure</description>
 
 		  <!-- Copyright information -->
-		  <copyright>Copyright ©2017 Duncan Jones</copyright>
+		  <copyright>Copyright ©2017-2018 Duncan Jones</copyright>
 
 		  <!-- Tags appear in the gallery and can be used for tag searches -->
 		  <tags>CQRS Azure EventSourcing Command Query</tags>

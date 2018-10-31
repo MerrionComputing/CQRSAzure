@@ -96,43 +96,48 @@ Namespace Local.File
 
                 Dim evtType As Type = Type.GetType(m_eventClassName, True, True)
                 If (evtType IsNot Nothing) Then
+
+                    'Is there an already known serialiser set for this event type?
+
+                    'If not - try and make one
+
+
                     If evtType.GetInterface(NameOf(IEventSerializer)) IsNot Nothing Then
                         '1 Instantiate the event
                         Dim evtInstance = Activator.CreateInstance(evtType)
-                        Dim serialiser = TryCast(evtInstance, IEventSerializer)
+                        Dim serialiser = EventSerializerFactory.GetSerialiserByType(evtType)
                         If (serialiser IsNot Nothing) Then
                             '2 Now do we know what serialiser..?
                             If (m_serialiserUsed = IEventSerializer.SerialiserCapability.NameValuePairs) Then
                                 'populate the name/value pairs
                                 Dim nvprops As New Dictionary(Of String, Object)
-
-                                serialiser.FromNameValuePairs(nvprops)
+                                evtInstance = serialiser.FromNameValuePairs(nvprops)
                             Else
                                 Using memStream As New System.IO.MemoryStream(m_eventData)
-                                    serialiser.FromStream(memStream)
+                                    evtInstance = serialiser.FromStream(memStream)
                                 End Using
                             End If
-                            Return evtInstance
+                            Return CType(evtInstance, IEvent)
                         Else
                             Throw New EventStreamReadException(DomainNameAttribute.GetAggregateDomainQualifiedName(evtType), evtInstance.ToString(), "", Sequence, "Serialiser not set")
                         End If
                     Else
-                            'Try and use its serialised
-                            Using memStream As New System.IO.MemoryStream(m_eventData)
+                        'Try and use its serialised
+                        Using memStream As New System.IO.MemoryStream(m_eventData)
                             If (m_formatter = ILocalFileSettings.SerialiserType.Binary) Then
                                 Dim bf As New BinaryFormatter
-                                Return CTypeDynamic(bf.Deserialize(memStream), evtType)
+                                Return CType(bf.Deserialize(memStream), IEvent)
                             Else
                                 'Try with JSON
                                 Dim jf As New Json.DataContractJsonSerializer(evtType)
-                                Return CTypeDynamic(jf.ReadObject(memStream), evtType)
+                                Return CType(jf.ReadObject(memStream), IEvent)
                             End If
                         End Using
                     End If
                 End If
 
 
-                    Return Nothing
+                Return Nothing
             End Get
         End Property
 
@@ -151,12 +156,12 @@ Namespace Local.File
 
 
             Using memStream As New System.IO.MemoryStream()
-                Dim serialiser = TryCast(eventInstanceInit, IEventSerializer)
+                Dim serialiser = EventSerializerFactory.GetSerialiserByType(eventInstanceInit.GetType)
 
                 If (formatter = ILocalFileSettings.SerialiserType.Binary) Then
                     m_serialiserUsed = IEventSerializer.SerialiserCapability.Stream
                     If (serialiser IsNot Nothing) Then
-                        serialiser.SaveToStream(memStream)
+                        serialiser.SaveToStream(memStream, eventInstanceInit)
                     Else
                         'Fall back on the standard binary serialiser
                         Dim bf As New BinaryFormatter
@@ -165,9 +170,11 @@ Namespace Local.File
                 Else
                     m_serialiserUsed = IEventSerializer.SerialiserCapability.NameValuePairs
                     If (serialiser IsNot Nothing) Then
-                        For Each pair In serialiser.ToNameValuePairs()
-
-                        Next
+                        Using writer As New System.IO.StreamWriter(memStream)
+                            For Each pair As KeyValuePair(Of String, Object) In serialiser.ToNameValuePairs(eventInstanceInit)
+                                writer.WriteLine("[[" & pair.Key & "::" & pair.Value.ToString() & "]]")
+                            Next
+                        End Using
                     Else
                         'Fall back on JSON
                         Dim js As New Json.DataContractJsonSerializer(eventInstanceInit.GetType())
@@ -176,7 +183,7 @@ Namespace Local.File
                 End If
 
                 m_eventData = memStream.ToArray()
-                m_eventSize = m_eventData.LongLength
+                m_eventSize = CUInt(m_eventData.LongLength)
             End Using
             m_eventClassName = eventInstanceInit.GetType().AssemblyQualifiedName
 
@@ -195,6 +202,9 @@ Namespace Local.File
             End If
 
         End Sub
+
+
+
 
     End Class
 End Namespace

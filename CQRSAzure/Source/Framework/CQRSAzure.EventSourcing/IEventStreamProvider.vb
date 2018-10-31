@@ -46,3 +46,20 @@ Public Interface IEventStreamProvider(Of TAggregate As CQRSAzure.EventSourcing.I
     Function GetAllStreamKeys(Optional ByVal asOfDate As Nullable(Of DateTime) = Nothing) As IEnumerable(Of TaggregateKey)
 
 End Interface
+
+Public Interface IEventStreamProviderUntyped
+
+    ''' <summary>
+    ''' The name of the class providing the event stream(s) over which this provider operates
+    ''' </summary>
+    ReadOnly Property AggregateClassName As String
+
+    ''' <summary>
+    ''' Get all the known event streams' unique identifiers (as string) as at the given point in time (or currently)
+    ''' </summary>
+    ''' <param name="asOfDate">
+    ''' if supplied, the point in time for which we want to know all the members (otherwise assumed to be as of now)
+    ''' </param>
+    Function GetAllStreamKeys(Optional ByVal asOfDate As Nullable(Of DateTime) = Nothing) As IEnumerable(Of String)
+
+End Interface

@@ -26,6 +26,16 @@ Public Interface IClassifierSnapshot(Of TAggregate As IAggregationIdentifier,
 End Interface
 
 
+Public Interface IClassifierSnapshotUntyped
+    Inherits IClassifierSnapshot
+
+    ''' <summary>
+    ''' The unique identifier by which the aggregate identifier is known
+    ''' </summary>
+    ReadOnly Property Key As String
+
+End Interface
+
 Public Interface IClassifierSnapshot
 
     ''' <summary>

@@ -19,3 +19,19 @@ Public Interface IClassifierSnapshotReader(Of TAggregate As IAggregationIdentifi
 
 
 End Interface
+
+Public Interface IClassifierSnapshotReaderUntyped
+
+    ''' <summary>
+    ''' Load the snapshot data from the backing storage technology
+    ''' </summary>
+    ''' <param name="key">
+    ''' The unique key of the aggregate we are retrieving an identity group snapshot for
+    ''' </param>
+    ''' <param name="OnOrBeforeTimestamp">
+    ''' if specified, get the latest snapshot prior to the given timestamp
+    ''' </param>
+    Function GetSnapshot(ByVal key As String, Optional ByVal OnOrBeforeTimestamp As Nullable(Of DateTime) = Nothing) As IClassifierSnapshotUntyped
+
+
+End Interface

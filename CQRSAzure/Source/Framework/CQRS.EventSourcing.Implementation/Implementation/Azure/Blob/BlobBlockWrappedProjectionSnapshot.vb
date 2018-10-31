@@ -44,6 +44,14 @@ Namespace Azure.Blob
             End Get
         End Property
 
+        Private ReadOnly m_RowCount As Integer
+        Public ReadOnly Property RowCount As Integer Implements IProjectionSnapshot.RowCount
+
+            Get
+                Return m_RowCount
+            End Get
+        End Property
+
         Public Function ToBinaryStream() As System.IO.Stream
 
             Dim ms As New System.IO.MemoryStream()
@@ -59,7 +67,7 @@ Namespace Azure.Blob
         Public Shared Function FromBinaryStream(ByVal binaryStream As System.IO.Stream) As BlobBlockWrappedProjectionSnapshot
 
             Dim bf As BinaryFormatter = New BinaryFormatter()
-            Return CTypeDynamic(Of BlobBlockWrappedProjectionSnapshot)(bf.Deserialize(binaryStream))
+            Return CType(bf.Deserialize(binaryStream), BlobBlockWrappedProjectionSnapshot)
 
         End Function
 
@@ -69,10 +77,15 @@ Namespace Azure.Blob
 
         End Function
 
+        Public Function UnwrapUntyped() As IProjectionSnapshot
+            Return Me
+        End Function
+
         Public Sub New(ByVal projectionToWrap As IProjectionSnapshot)
 
             m_Sequence = projectionToWrap.Sequence
             m_AsOfDate = projectionToWrap.AsOfDate
+            m_RowCount = projectionToWrap.RowCount
 
             'wrap the projectionToWrap.Values
             For Each projectionValue In projectionToWrap.Values

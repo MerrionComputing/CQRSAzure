@@ -206,6 +206,16 @@ Public Class AggregateMapBuilderUnitTest
     <TestMethod>
     Public Sub UseImplementationMap_BankAccountAggregate_TestMethod()
 
+        'load the serialisers
+        EventSerializerFactory.AddOrSetSerialiser(Of Accounts.Account.eventDefinition.Opened) _
+            (OpenedEventSerialiser.Create())
+        EventSerializerFactory.AddOrSetSerialiser(Of Accounts.Account.eventDefinition.Closed) _
+            (ClosedEventSerialiser.Create())
+        EventSerializerFactory.AddOrSetSerialiser(Of Accounts.Account.eventDefinition.Money_Deposited) _
+            (DepositedEventSerialiser.Create())
+        EventSerializerFactory.AddOrSetSerialiser(Of Accounts.Account.eventDefinition.Money_Withdrawn) _
+            (WithdrawnEventSerialiser.Create())
+
         Const MY_ACCOUNT_NUMBER As String = "1185888"
         Dim testSettings As CQRSAzureEventSourcingConfigurationSection
 

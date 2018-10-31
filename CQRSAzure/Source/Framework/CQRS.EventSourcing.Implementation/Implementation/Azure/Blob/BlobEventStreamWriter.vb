@@ -85,7 +85,8 @@ Namespace Azure.Blob
             MyBase.New(AggregateDomainName, AggregateKey, writeAccess:=True, connectionStringName:=GetWriteConnectionStringName("", settings), settings:=settings)
 
             'Get the event stream current record count
-            m_recordCount = Me.RecordCount
+            m_recordCount = MyBase.GetRecordCount()
+
         End Sub
 
         ''' <summary>

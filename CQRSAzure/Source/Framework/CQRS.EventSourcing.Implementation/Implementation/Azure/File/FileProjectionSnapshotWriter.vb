@@ -47,7 +47,7 @@ Namespace Azure.File
                 If (MyBase.SnapshotsDirectory.Exists) Then
                     For Each f As IListFileItem In MyBase.ListSnapshotFiles()
                         If (f Is GetType(CloudFile)) Then
-                            CTypeDynamic(Of CloudFile)(f).Delete()
+                            CType(f, CloudFile).Delete()
                         End If
                     Next
                 Else

@@ -1,4 +1,6 @@
-﻿Imports CQRSAzure.EventSourcing
+﻿Option Strict Off
+
+Imports CQRSAzure.EventSourcing
 
 ''' <summary>
 ''' A mapping between an aggregate identifier and the event stream techniology used as backing to it
@@ -8,12 +10,14 @@
 ''' <remarks>
 ''' This allows different aggregate types to have different backing store technologies
 ''' </remarks>
-Public Class AggregateEventStreamImplementationMap(Of TAggregate As IAggregationIdentifier, TAggregateKey)
+Partial Public Class AggregateEventStreamImplementationMap(Of TAggregate As IAggregationIdentifier, TAggregateKey)
     Implements IAggregateImplementationMap(Of TAggregate, TAggregateKey)
 
     Private ReadOnly m_settings As IEventStreamSettings
     Private ReadOnly m_readerCreator As IAggregateImplementationMap.ReaderCreationFunction(Of TAggregate, TAggregateKey)
     Private ReadOnly m_writerCreator As IAggregateImplementationMap.WriterCreationFunction(Of TAggregate, TAggregateKey)
+
+
 
     Public Function CreateReader(ByVal aggregate As TAggregate, key As TAggregateKey) As IEventStreamReader(Of TAggregate, TAggregateKey) Implements IAggregateImplementationMap(Of TAggregate, TAggregateKey).CreateReader
 

@@ -35,6 +35,7 @@ Public Interface IIdentifierGroup(Of TAggregateIdentifier As IAggregationIdentif
     Inherits IIdentifierGroup
 
 End Interface
+
 ''' <summary>
 ''' A collection of zero or more aggregate identifiers over which the projection underlying a query
 ''' definition is to be run
@@ -45,5 +46,10 @@ End Interface
 ''' </remarks>
 Public Interface IIdentifierGroup(Of TAggregateIdentifier As IAggregationIdentifier, TAggregateKey)
     Inherits IIdentifierGroup(Of TAggregateIdentifier)
+
+End Interface
+
+Public Interface IIdentifierGroupUntyped
+    Inherits IIdentifierGroup
 
 End Interface

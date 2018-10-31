@@ -29,13 +29,22 @@ Namespace Mocking
             End Get
         End Property
 
+        Private ReadOnly m_correlationIdentifier As String
+        Public ReadOnly Property CorrelationIdentifier As String Implements IWriteContext.CorrelationIdentifier
+            Get
+                Return m_correlationIdentifier
+            End Get
+        End Property
+
         Public Sub New(ByVal CommentaryIn As String,
                    ByVal SourceIn As String,
-                   ByVal whoIn As String)
+                   ByVal whoIn As String,
+                   ByVal correlationIdentifierIn As String)
 
             m_commentary = CommentaryIn
             m_source = SourceIn
             m_who = whoIn
+            m_correlationIdentifier = correlationIdentifierIn
 
         End Sub
 

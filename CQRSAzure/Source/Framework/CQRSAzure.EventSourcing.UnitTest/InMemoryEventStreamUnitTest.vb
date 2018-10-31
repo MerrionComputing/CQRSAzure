@@ -197,7 +197,7 @@ Public Class InMemoryEventStreamUnitTest
         Dim testReadObj As InMemoryEventStreamReader(Of MockAggregate, String) = InMemoryEventStreamReader(Of MockAggregate, String).Create(New MockAggregate("9992"))
         Dim readObj = testReadObj.GetEventsWithContext().LastOrDefault()
 
-        actual = CTypeDynamic(Of MockEventTypeOne)(readObj.EventInstance).EventOneIntegerProperty
+        actual = CType(readObj.EventInstance, MockEventTypeOne).EventOneIntegerProperty
 
         Assert.AreEqual(expected, actual)
 

@@ -19,3 +19,20 @@ Public Interface IClassifierSnapshotWriter(Of TAggregate As IAggregationIdentifi
 
 
 End Interface
+
+Public Interface IClassifierSnapshotWriterUntyped
+
+    ''' <summary>
+    ''' Save the snapshot data to the backing storage technology
+    ''' </summary>
+    ''' <param name="key">
+    ''' The unique key of the aggregate we are storing a classifier snapshot for
+    ''' </param>
+    ''' <param name="snapshotToSave">
+    ''' The specific classifier snapshot to save
+    ''' </param>
+    Sub SaveSnapshot(ByVal key As String, ByVal snapshotToSave As IClassifierSnapshotUntyped)
+
+
+
+End Interface

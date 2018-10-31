@@ -6,13 +6,7 @@ Namespace Azure.Table
     Public MustInherit Class TableEventStreamBase(Of TAggregate As CQRSAzure.EventSourcing.IAggregationIdentifier, TAggregateKey)
         Inherits TableEventStreamBase
 
-#Region "Field names"
-        Public Const FIELDNAME_EVENTTYPE As String = "EventType"
-        Public Const FIELDNAME_VERSION As String = "Version"
-        Public Const FIELDNAME_COMMENTS As String = "Commentary"
-        Public Const FIELDNAME_WHO As String = "Who"
-        Public Const FIELDNAME_SOURCE As String = "Source"
-#End Region
+
 
 
 
@@ -30,53 +24,11 @@ Namespace Azure.Table
             End Get
         End Property
 
-        Private ReadOnly m_aggregateClassName As String
-        Protected ReadOnly Property AggregateClassName As String
-            Get
-                Return m_aggregateClassName
-            End Get
-        End Property
 
-        Private ReadOnly m_tableName As String
-        ''' <summary>
-        ''' The name of the table in which the event stream for this aggregate type is stored
-        ''' </summary>
-        Public ReadOnly Property TableName As String
-            Get
-                Return m_tableName
-            End Get
-        End Property
 
-        Private ReadOnly m_table As CloudTable
 
-        ''' <summary>
-        ''' The table reference to use when accessing the underlying event stream
-        ''' </summary>
-        Protected ReadOnly Property Table As CloudTable
-            Get
-                Return m_table
-            End Get
-        End Property
 
-        Private ReadOnly m_aggregatekeyTable As CloudTable
-        ''' <summary>
-        ''' The table reference to use when accessing the aggregate key details
-        ''' </summary>
-        ''' <remarks>
-        ''' This can also be used to give a secondary key lookup if an aggregate has different candidates for unqiue
-        ''' identifier (e.g. CUSIP/ISIN/SEDOL etc for stocks, Chassis No/Veh Reg for vehicle etc..)
-        ''' </remarks>
-        Protected ReadOnly Property AggregateKeyTable As CloudTable
-            Get
-                Return m_aggregatekeyTable
-            End Get
-        End Property
 
-        Protected ReadOnly Property RequestOptions As TableRequestOptions
-            Get
-                Return New TableRequestOptions() With {.RetryPolicy = New Microsoft.WindowsAzure.Storage.RetryPolicies.ExponentialRetry()}
-            End Get
-        End Property
 
         ''' <summary>
         ''' Turn an event and its data load into a row to save in an Azure table
@@ -125,6 +77,9 @@ Namespace Azure.Table
             ret.Timestamp = eventToSave.Timestamp
 
             'Now add in the different properties of the payload
+
+            'TODO - Use the event serialiser's "ToNameValuePairs" not reflection
+
             Dim propertiesCount As Integer = 0
             For Each pi As System.Reflection.PropertyInfo In eventToSave.EventInstance.GetType().GetProperties()
                 If (pi.CanRead) Then
@@ -145,7 +100,87 @@ Namespace Azure.Table
             Return ret
         End Function
 
-        Private Function IsPropertyEmpty(pi As PropertyInfo, eventInstance As IEvent) As Boolean
+
+
+
+
+
+
+        ''' <summary>
+        ''' Create a new base for a reader or writer class in the given domain
+        ''' </summary>
+        ''' <param name="AggregateDomainName">
+        ''' The name of the domain to store/retrieve the event streams under
+        ''' </param>
+        Protected Sub New(ByVal AggregateDomainName As String,
+                          ByVal AggregateKey As TAggregateKey,
+                          Optional ByVal writeAccess As Boolean = False,
+                          Optional ByVal connectionStringName As String = "",
+                          Optional ByVal settings As ITableSettings = Nothing)
+
+            MyBase.New(AggregateDomainName,
+                       GetType(TAggregate).Name,
+                       writeAccess,
+                       connectionStringName,
+                       settings)
+
+            'Get the aggregation instance key to use when creating a blob file name
+            m_key = AggregateKey
+
+            If (settings IsNot Nothing) Then
+                m_settings = settings
+            End If
+
+            Dim typeName As String = GetType(TAggregate).Name
+
+
+
+            m_converter = KeyConverterFactory.CreateKeyConverter(Of TAggregateKey)
+
+        End Sub
+
+        Protected Function GetAllStreamKeysBase(asOfDate As Date?) As IEnumerable(Of TAggregateKey)
+
+            Dim ret As New List(Of TAggregateKey)
+            If (MyBase.AggregateKeyTable IsNot Nothing) Then
+                Dim qryKeys = New TableQuery(Of TableAggregateKeyRecord)().Where(
+                    TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, MyBase.AggregateClassName))
+
+                For Each aggKey As TableAggregateKeyRecord In MyBase.AggregateKeyTable.ExecuteQuery(Of TableAggregateKeyRecord)(qryKeys)
+                    If Not asOfDate.HasValue OrElse (asOfDate.Value < aggKey.CreatedDateTime) Then
+                        ret.Add(m_converter.FromString(aggKey.RowKey))
+                    End If
+                Next
+
+            End If
+            Return ret
+
+        End Function
+    End Class
+
+
+    Public MustInherit Class TableEventStreamBase
+        Inherits AzureStorageEventStreamBase
+
+#Region "Field names"
+        Public Const FIELDNAME_EVENTTYPE As String = "EventType"
+        Public Const FIELDNAME_VERSION As String = "Version"
+        Public Const FIELDNAME_COMMENTS As String = "Commentary"
+        Public Const FIELDNAME_WHO As String = "Who"
+        Public Const FIELDNAME_SOURCE As String = "Source"
+        Public Const FIELDNAME_CORRELATION_IDENTIFIER As String = "CorrelationIdentifier"
+#End Region
+
+        Public Const MAX_FREE_DATA_FIELDS = 248
+        Public Const TABLENAME_SUFFIX_KEYS = "Aggregates"
+
+#Region "private members"
+        Private ReadOnly m_domainName As String
+        Protected ReadOnly m_cloudTableClient As CloudTableClient
+#End Region
+
+
+        Protected Function IsPropertyEmpty(pi As PropertyInfo, eventInstance As IEvent) As Boolean
 
             Dim oVal = pi.GetValue(eventInstance, Nothing)
 
@@ -180,117 +215,144 @@ Namespace Azure.Table
 
         End Function
 
+        Protected Friend Function DynamicTableEntryToNameValuePairs(dte As DynamicTableEntity) As IDictionary(Of String, Object)
 
-        Protected Function GetCurrentHighestSequence() As Long
+            Return dte.Properties.ToDictionary(Of String, Object)(Function(dt As KeyValuePair(Of String, EntityProperty)) dt.Key,
+                                                                 Function(dt As KeyValuePair(Of String, EntityProperty)) dt.Value.PropertyAsObject)
 
-            If (m_aggregatekeyTable IsNot Nothing) Then
+        End Function
+
+
+        Protected Friend Function IsEntityPropertyValueSet(pi As PropertyInfo, propertyAsObject As Object) As Boolean
+
+            If (pi.PropertyType IsNot GetType(String)) Then
+                If String.IsNullOrEmpty(propertyAsObject.ToString()) Then
+                    Return False
+                End If
+            End If
+
+            Return True
+
+        End Function
+
+
+        Protected Friend Function GetEntityPropertyValue(pi As PropertyInfo, propertyAsObject As Object) As Object
+
+
+            If (pi.PropertyType Is GetType(Decimal)) Then
+                'have to convert from double
+                Dim dblValue As Double = CDbl(propertyAsObject)
+                Return Convert.ToDecimal(dblValue)
+            Else
+                Return propertyAsObject
+            End If
+
+        End Function
+
+
+        Protected Friend Function GetDynamicTableEntityEventType(ByVal tableEntityRow As DynamicTableEntity) As Type
+
+            If (tableEntityRow IsNot Nothing) Then
+                If tableEntityRow.Properties(FIELDNAME_EVENTTYPE) IsNot Nothing Then
+                    Dim typeName As String = tableEntityRow.Properties(FIELDNAME_EVENTTYPE).StringValue()
+                    Return Type.GetType(typeName, False)
+                End If
+            End If
+
+            Return Nothing
+
+        End Function
+
+        Private ReadOnly m_table As CloudTable
+
+        ''' <summary>
+        ''' The table reference to use when accessing the underlying event stream
+        ''' </summary>
+        Protected ReadOnly Property Table As CloudTable
+            Get
+                Return m_table
+            End Get
+        End Property
+
+        Private ReadOnly m_aggregatekeyTable As CloudTable
+        ''' <summary>
+        ''' The table reference to use when accessing the aggregate key details
+        ''' </summary>
+        ''' <remarks>
+        ''' This can also be used to give a secondary key lookup if an aggregate has different candidates for unqiue
+        ''' identifier (e.g. CUSIP/ISIN/SEDOL etc for stocks, Chassis No/Veh Reg for vehicle etc..)
+        ''' </remarks>
+        Protected ReadOnly Property AggregateKeyTable As CloudTable
+            Get
+                Return m_aggregatekeyTable
+            End Get
+        End Property
+
+        Private ReadOnly m_aggregateClassName As String
+        Protected ReadOnly Property AggregateClassName As String
+            Get
+                Return m_aggregateClassName
+            End Get
+        End Property
+
+        Private ReadOnly m_tableName As String
+        ''' <summary>
+        ''' The name of the table in which the event stream for this aggregate type is stored
+        ''' </summary>
+        Public ReadOnly Property TableName As String
+            Get
+                Return m_tableName
+            End Get
+        End Property
+
+
+        Protected Friend Function GetCurrentHighestSequence(ByVal aggregateInstanceKey As String) As Long
+
+            If (AggregateKeyTable IsNot Nothing) Then
                 'get the TableAggregateKeyRecord
                 Dim qryKeyRecord = New TableQuery(Of TableAggregateKeyRecord)().Where(
                     TableQuery.CombineFilters(
-                    TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, m_aggregateClassName),
+                    TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, AggregateClassName),
                     TableOperators.And,
-                    TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, m_converter.ToUniqueString(m_key))
+                    TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, aggregateInstanceKey)
                      )
                    )
-                Dim currentRecord As TableAggregateKeyRecord = m_aggregatekeyTable.ExecuteQuery(Of TableAggregateKeyRecord)(qryKeyRecord).FirstOrDefault()
+                Dim currentRecord As TableAggregateKeyRecord = AggregateKeyTable.ExecuteQuery(Of TableAggregateKeyRecord)(qryKeyRecord).FirstOrDefault()
                 If (currentRecord Is Nothing) Then
-                    currentRecord = New TableAggregateKeyRecord(m_aggregateClassName, m_converter.ToUniqueString(m_key))
+                    currentRecord = New TableAggregateKeyRecord(AggregateClassName, aggregateInstanceKey)
                     currentRecord.LastSequence = 0
-                    m_aggregatekeyTable.Execute(TableOperation.Insert(currentRecord))
+                    AggregateKeyTable.Execute(TableOperation.Insert(currentRecord))
                 End If
                 Return currentRecord.LastSequence
             End If
 
-            Throw New EventStreamReadException(DomainName, AggregateClassName, m_key.ToString, 0, "Unable to determine current highest sequence number")
+            Throw New EventStreamReadException(DomainName, AggregateClassName, aggregateInstanceKey, 0, "Unable to determine current highest sequence number")
 
         End Function
 
-        ''' <summary>
-        ''' Create a new base for a reader or writer class in the given domain
-        ''' </summary>
-        ''' <param name="AggregateDomainName">
-        ''' The name of the domain to store/retrieve the event streams under
-        ''' </param>
-        Protected Sub New(ByVal AggregateDomainName As String,
-                          ByVal AggregateKey As TAggregateKey,
-                          Optional ByVal writeAccess As Boolean = False,
-                          Optional ByVal connectionStringName As String = "",
-                          Optional ByVal settings As ITableSettings = Nothing)
+        Protected Friend Sub UpdateSequenceNumber(nextSequence As Long, ByVal aggregateInstanceKey As String)
 
-            MyBase.New(AggregateDomainName, writeAccess, connectionStringName, settings)
-
-            'Get the aggregation instance key to use when creating a blob file name
-            m_key = AggregateKey
-
-            If (settings IsNot Nothing) Then
-                m_settings = settings
+            If AggregateKeyTable IsNot Nothing Then
+                'update the sequence number
+                Dim recordToSave As New DynamicTableEntity()
+                recordToSave.PartitionKey = AggregateClassName
+                recordToSave.RowKey = aggregateInstanceKey
+                recordToSave.ETag = "*" 'need to set an e-tag to do a merge..maybe this should be loaded by the class itself..?
+                recordToSave.Properties.Add(NameOf(TableAggregateKeyRecord.LastSequence), New EntityProperty(nextSequence))
+                'merge this new record into the fray
+                AggregateKeyTable.Execute(TableOperation.InsertOrMerge(recordToSave), RequestOptions)
             End If
-
-            Dim typeName As String = GetType(TAggregate).Name
-            m_aggregateClassName = MakeValidStorageTableName(typeName)
-            If Not String.IsNullOrWhiteSpace(AggregateDomainName) Then
-                Dim includeDomain As Boolean = False
-                If (settings IsNot Nothing) Then
-                    includeDomain = settings.IncludeDomainInTableName
-                End If
-                If (includeDomain) Then
-                    m_tableName = MakeValidStorageTableName(AggregateDomainName & typeName)
-                Else
-                    m_tableName = m_aggregateClassName
-                End If
-            Else
-                m_tableName = m_aggregateClassName
-            End If
-
-            If (m_cloudTableClient IsNot Nothing) Then
-                m_table = m_cloudTableClient.GetTableReference(m_tableName)
-                If (m_table IsNot Nothing) Then
-                    m_table.CreateIfNotExists()
-                End If
-                m_aggregatekeyTable = m_cloudTableClient.GetTableReference(MakeValidStorageTableName(AggregateDomainName & " " & TABLENAME_SUFFIX_KEYS))
-                If (m_aggregatekeyTable IsNot Nothing) Then
-                    m_aggregatekeyTable.CreateIfNotExists()
-                End If
-            End If
-
-            m_converter = KeyConverterFactory.CreateKeyConverter(Of TAggregateKey)
 
         End Sub
 
-        Protected Function GetAllStreamKeysBase(asOfDate As Date?) As IEnumerable(Of TAggregateKey)
-
-            Dim ret As New List(Of TAggregateKey)
-            If (m_aggregatekeyTable IsNot Nothing) Then
-                Dim qryKeys = New TableQuery(Of TableAggregateKeyRecord)().Where(
-                    TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, m_aggregateClassName))
-
-                For Each aggKey As TableAggregateKeyRecord In m_aggregatekeyTable.ExecuteQuery(Of TableAggregateKeyRecord)(qryKeys)
-                    If Not asOfDate.HasValue OrElse (asOfDate.Value < aggKey.CreatedDateTime) Then
-                        ret.Add(m_converter.FromString(aggKey.RowKey))
-                    End If
-                Next
-
-            End If
-            Return ret
-
-        End Function
-    End Class
-
-
-    Public MustInherit Class TableEventStreamBase
-        Inherits AzureStorageEventStreamBase
-
-        Public Const MAX_FREE_DATA_FIELDS = 248
-        Public Const TABLENAME_SUFFIX_KEYS = "Aggregates"
-
-#Region "private members"
-        Private ReadOnly m_domainName As String
-        Protected ReadOnly m_cloudTableClient As CloudTableClient
-#End Region
-
-
+        Protected ReadOnly Property RequestOptions As TableRequestOptions
+            Get
+                Return New TableRequestOptions() With {.RetryPolicy = New Microsoft.WindowsAzure.Storage.RetryPolicies.ExponentialRetry()}
+            End Get
+        End Property
 
         Protected Sub New(ByVal AggregateDomainName As String,
+                          ByVal AggregateClassName As String,
                           Optional ByVal writeAccess As Boolean = False,
                           Optional ByVal connectionStringName As String = "",
                           Optional ByVal settings As ITableSettings = Nothing)
@@ -307,6 +369,32 @@ Namespace Azure.Table
                 m_cloudTableClient = m_storageAccount.CreateCloudTableClient()
             End If
 
+            m_aggregateClassName = MakeValidStorageTableName(AggregateClassName)
+            If Not String.IsNullOrWhiteSpace(AggregateDomainName) Then
+                Dim includeDomain As Boolean = False
+                If (settings IsNot Nothing) Then
+                    includeDomain = settings.IncludeDomainInTableName
+                End If
+                If (includeDomain) Then
+                    m_tableName = MakeValidStorageTableName(AggregateDomainName & AggregateClassName)
+                Else
+                    m_tableName = m_aggregateClassName
+                End If
+            Else
+                m_tableName = m_aggregateClassName
+            End If
+
+
+            If (m_cloudTableClient IsNot Nothing) Then
+                m_table = m_cloudTableClient.GetTableReference(m_tableName)
+                If (m_table IsNot Nothing) Then
+                    m_table.CreateIfNotExists()
+                End If
+                m_aggregatekeyTable = m_cloudTableClient.GetTableReference(MakeValidStorageTableName(AggregateDomainName & " " & TABLENAME_SUFFIX_KEYS))
+                If (m_aggregatekeyTable IsNot Nothing) Then
+                    m_aggregatekeyTable.CreateIfNotExists()
+                End If
+            End If
         End Sub
 
 #Region "Shared methods"
