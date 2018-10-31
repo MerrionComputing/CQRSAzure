@@ -5,7 +5,7 @@
 ''' This is useful if we want to use event names that are not valid .NET class names
 ''' </remarks>
 <AttributeUsage(AttributeTargets.Class, AllowMultiple:=False, Inherited:=True)>
-Public Class EventNameAttribute
+Public NotInheritable Class EventNameAttribute
     Inherits Attribute
 
     Private ReadOnly m_eventName As String
@@ -44,7 +44,11 @@ Public Class EventNameAttribute
 
     Public Shared Function GetEventName(ByVal eventObject As Object) As String
 
-        Return GetEventName(eventObject.GetType())
+        If (eventObject IsNot Nothing) Then
+            Return GetEventName(eventObject.GetType())
+        Else
+            Return String.Empty
+        End If
 
     End Function
 

@@ -4,13 +4,7 @@
 Public Interface IProjectionSnapshot(Of TAggregate As IAggregationIdentifier, TAggregateKey)
     Inherits IProjectionSnapshot
 
-    ''' <summary>
-    ''' The number of rows of values in this snapshot
-    ''' </summary>
-    ''' <returns>
-    ''' This will be 1 if this is a signle-row data set
-    ''' </returns>
-    ReadOnly Property RowCount As Integer
+
 
 End Interface
 
@@ -40,6 +34,14 @@ Public Interface IProjectionSnapshot
     ''' The projection values as at this snapshot
     ''' </summary>
     ReadOnly Property Values As IEnumerable(Of IProjectionSnapshotProperty)
+
+    ''' <summary>
+    ''' The number of rows of values in this snapshot
+    ''' </summary>
+    ''' <returns>
+    ''' This will be 1 if this is a signle-row data set
+    ''' </returns>
+    ReadOnly Property RowCount As Integer
 
 End Interface
 

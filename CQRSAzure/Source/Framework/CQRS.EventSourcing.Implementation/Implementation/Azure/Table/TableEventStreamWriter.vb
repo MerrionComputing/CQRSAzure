@@ -34,7 +34,7 @@ Namespace Azure.Table
                                Optional ByVal ExpectedTopSequence As Long = 0) Implements IEventStreamWriter(Of TAggregate, TAggregateKey).AppendEvent
 
             'Set the next highest sequence (in case another writer has appended events)
-            nextSequence = 1 + GetCurrentHighestSequence()
+            nextSequence = 1 + GetCurrentHighestSequence(m_converter.ToUniqueString(m_key))
 
             'Update the current highest event number
             UpdateSequenceNumber(nextSequence)
@@ -88,7 +88,7 @@ Namespace Azure.Table
         Public Sub AppendEvents(StartingSequence As Long, Events As IEnumerable(Of IEvent(Of TAggregate))) Implements IEventStreamWriter(Of TAggregate, TAggregateKey).AppendEvents
 
             'Set the next highest sequence (in case another writer has appended events)
-            nextSequence = 1 + GetCurrentHighestSequence()
+            nextSequence = 1 + GetCurrentHighestSequence(m_converter.ToUniqueString(m_key))
 
             If (Events IsNot Nothing) Then
                 If (Events.Count > 0) Then
@@ -107,18 +107,9 @@ Namespace Azure.Table
 
         End Sub
 
-        Private Sub UpdateSequenceNumber(nextSequence As Long)
+        Private Overloads Sub UpdateSequenceNumber(nextSequence As Long)
 
-            If MyBase.AggregateKeyTable IsNot Nothing Then
-                'update the sequence number
-                Dim recordToSave As New DynamicTableEntity
-                recordToSave.PartitionKey = AggregateClassName
-                recordToSave.RowKey = m_converter.ToUniqueString(m_key)
-                recordToSave.ETag = "*" 'need to set an e-tag to do a merge..maybe this should be loaded by the class itself..?
-                recordToSave.Properties.Add(NameOf(TableAggregateKeyRecord.LastSequence), New EntityProperty(nextSequence))
-                'merge this new record into the fray
-                MyBase.AggregateKeyTable.Execute(TableOperation.Merge(recordToSave), MyBase.RequestOptions)
-            End If
+            MyBase.UpdateSequenceNumber(nextSequence, m_converter.ToUniqueString(m_key))
 
         End Sub
 
@@ -161,7 +152,7 @@ Namespace Azure.Table
             MyBase.New(AggregateDomainName, AggregateKey, writeAccess:=True, connectionStringName:=GetWriteConnectionStringName("", settings), settings:=settings)
 
             'Get the current highest sequnce number (this is the only querying the writer should be allowed to do)
-            nextSequence = 1 + GetCurrentHighestSequence()
+            nextSequence = 1 + GetCurrentHighestSequence(m_converter.ToUniqueString(m_key))
 
         End Sub
 

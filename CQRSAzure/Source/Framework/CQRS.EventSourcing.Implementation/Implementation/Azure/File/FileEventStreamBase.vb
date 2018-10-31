@@ -171,12 +171,8 @@ Namespace Azure.File
                             Dim keyString As String = streamFile.Metadata(METADATA_AGGREGATE_KEY)
                             If Not String.IsNullOrWhiteSpace(keyString) Then
                                 'Try and turn it to the TAggregateKey
-                                If (GetType(TAggregateKey) Is GetType(String)) Then
-                                    ret.Add(CTypeDynamic(Of TAggregateKey)(keyString))
-                                Else
-                                    'need to convert the key as we had to store it as a string
-                                    ret.Add(m_converter.FromString(keyString))
-                                End If
+                                'need to convert the key as we had to store it as a string
+                                ret.Add(m_converter.FromString(keyString))
                             End If
                         End If
                     End If

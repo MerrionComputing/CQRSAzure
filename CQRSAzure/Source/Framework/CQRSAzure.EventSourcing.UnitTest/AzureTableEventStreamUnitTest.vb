@@ -94,11 +94,11 @@ Public Class AzureTableEventStreamUnitTest
 
         Dim testAgg As New MockAggregate(TEST_AGGREGATE_IDENTIFIER)
         Dim testObj As TableEventStreamWriter(Of MockAggregate, String) = TableEventStreamWriter(Of MockAggregate, String).Create(testAgg)
-        testObj.SetContext(New MockContext("First event", "Unit testing", "Duncan"))
+        testObj.SetContext(New MockContext("First event", "Unit testing", "Duncan", "Correlation.123"))
         testObj.AppendEvent(New MockEventTypeOne() With {.EventOneStringProperty = "My test 2", .EventOneIntegerProperty = 132})
         testObj.AppendEvent(New MockEventTypeOne() With {.EventOneStringProperty = "My test 3", .EventOneIntegerProperty = 133})
         testObj.AppendEvent(New MockEventTypeOne() With {.EventOneStringProperty = "My test 4", .EventOneIntegerProperty = 134})
-        testObj.SetContext(New MockContext("Last event", "Unit testing", "Christina"))
+        testObj.SetContext(New MockContext("Last event", "Unit testing", "Christina", "Correlation.456"))
         testObj.AppendEvent(New MockEventTypeOne() With {.EventOneStringProperty = "My test 5", .EventOneIntegerProperty = 135})
 
         Assert.IsTrue(testObj.RecordCount > 3)

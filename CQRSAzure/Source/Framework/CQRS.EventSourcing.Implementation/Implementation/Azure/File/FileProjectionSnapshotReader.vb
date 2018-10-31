@@ -20,13 +20,13 @@ Namespace Azure.File
                 If (MyBase.SnapshotsDirectory IsNot Nothing) Then
                     For Each f In MyBase.ListSnapshotFiles()
                         If (f.GetType() Is GetType(CloudFile)) Then
-                            Dim filename As String = CTypeDynamic(Of CloudFile)(f).Name
+                            Dim filename As String = CType(f, CloudFile).Name
                             Dim thisSequence As UInteger = FileProjectionSnapshotBase.FilenameToSequenceNumber(filename)
                             If (thisSequence = actualSequenceToGet) Then
                                 Dim fileToRead As CloudFile = MyBase.SnapshotsDirectory.GetFileReference(filename)
                                 Using fs As System.IO.Stream = fileToRead.OpenRead()
                                     Dim bf As New BinaryFormatter()
-                                    Dim record As FileBlockWrappedProjectionSnapshot = CTypeDynamic(Of FileBlockWrappedProjectionSnapshot)(bf.Deserialize(fs))
+                                    Dim record As FileBlockWrappedProjectionSnapshot = CType(bf.Deserialize(fs), FileBlockWrappedProjectionSnapshot)
                                     Return record.Unwrap(Of TAggregate, TAggregateKey)
                                 End Using
                             End If
@@ -49,7 +49,7 @@ Namespace Azure.File
             'list all the files in the snapshots directory
             For Each f As IListFileItem In MyBase.ListSnapshotFiles()
                 If (f.GetType() Is GetType(CloudFile)) Then
-                    Dim filename As String = CTypeDynamic(Of CloudFile)(f).Name
+                    Dim filename As String = CType(f, CloudFile).Name
                     Dim thisSequence As UInteger = FileProjectionSnapshotBase.FilenameToSequenceNumber(filename)
                     If ((thisSequence > currentMax) AndAlso (thisSequence <= OnOrBeforeSequence)) Then
                         currentMax = thisSequence

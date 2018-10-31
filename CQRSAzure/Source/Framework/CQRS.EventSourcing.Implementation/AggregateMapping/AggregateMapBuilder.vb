@@ -21,78 +21,6 @@ Partial Public NotInheritable Class AggregateMapBuilder
 
 
 
-#Region "Outputs methods"
-
-    ''' <summary>
-    ''' Get the appropriate event stream reader to use to process the event stream for the given aggregate
-    ''' </summary>
-    ''' <typeparam name="TAggregate">
-    ''' The aggregate type for which we want to get the event stream
-    ''' </typeparam>
-    ''' <typeparam name="TAggregateKey">
-    ''' The type which uniquely identifies an instance of that aggregate (ideally this should be a simple type - string, int, guid etc.)
-    ''' </typeparam>
-    ''' <param name="aggregateInstance">
-    ''' The specific instance of the aggregate we are getting the event stream for
-    ''' </param>
-    ''' <param name="key">
-    ''' The key which uniquely identifies the aggregate instance whose event stream we are getting
-    ''' </param>
-    ''' <remarks>
-    ''' Although this functions is available directly, in practice it will be called when creating a class such as a Projection Processor or Classifier Processor
-    ''' that needs read access to an event stream
-    ''' </remarks>
-    Public Function GetEventStreamReader(Of TAggregate As IAggregationIdentifier, TAggregateKey)(ByVal aggregateInstance As TAggregate, ByVal key As TAggregateKey) As IEventStreamReader(Of TAggregate, TAggregateKey)
-
-        Throw New NotImplementedException("Not yet coded")
-
-    End Function
-
-    ''' <summary>
-    ''' Get the appropriate event stream writer to use to process the event stream for the given aggregate
-    ''' </summary>
-    ''' <typeparam name="TAggregate">
-    ''' The aggregate type for which we want to get the event stream
-    ''' </typeparam>
-    ''' <typeparam name="TAggregateKey">
-    ''' The type which uniquely identifies an instance of that aggregate (ideally this should be a simple type - string, int, guid etc.)
-    ''' </typeparam>
-    ''' <param name="aggregateInstance">
-    ''' The specific instance of the aggregate we are getting the event stream to write to for
-    ''' </param>
-    ''' <param name="key">
-    ''' The key which uniquely identifies the aggregate instance whose event stream we are getting
-    ''' </param>
-    Public Function GetEventStreamWriter(Of TAggregate As IAggregationIdentifier, TAggregateKey)(ByVal aggregateInstance As TAggregate, ByVal key As TAggregateKey) As IEventStreamWriter(Of TAggregate, TAggregateKey)
-
-        Throw New NotImplementedException("Not yet coded")
-
-    End Function
-
-    ''' <summary>
-    ''' Get a projection processor set up to run a projection over the given aggregate's event stream
-    ''' </summary>
-    ''' <typeparam name="TAggregate">
-    ''' The aggregate type for which we want to get the event stream
-    ''' </typeparam>
-    ''' <typeparam name="TAggregateKey">
-    ''' The type which uniquely identifies an instance of that aggregate (ideally this should be a simple type - string, int, guid etc.)
-    ''' </typeparam>
-    ''' <param name="aggregateInstance">
-    ''' The specific instance of the aggregate we are getting the event stream to write to for
-    ''' </param>
-    ''' <param name="key">
-    ''' The key which uniquely identifies the aggregate instance whose event stream we are getting
-    ''' </param>
-    Public Function GetProjectionProcessor(Of TAggregate As IAggregationIdentifier, TAggregateKey)(ByVal aggregateInstance As TAggregate, ByVal key As TAggregateKey) As ProjectionProcessor(Of TAggregate, TAggregateKey)
-
-        Throw New NotImplementedException("Not yet coded")
-
-    End Function
-
-#End Region
-
-
     ''' <summary>
     ''' Add an entry to the internal map such that the class can be used to find an appropriate persistence 
     ''' class instance to read or write to its back end storage mechanism
@@ -215,12 +143,12 @@ Partial Public NotInheritable Class AggregateMapBuilder
                 Dim sectionConfig As CQRSAzure.EventSourcing.CQRSAzureEventSourcingConfigurationSection = Nothing
 
                 If (objSection IsNot Nothing) Then
-                    sectionConfig = CTypeDynamic(Of CQRSAzure.EventSourcing.CQRSAzureEventSourcingConfigurationSection)(objSection)
+                    sectionConfig = CType(objSection, CQRSAzure.EventSourcing.CQRSAzureEventSourcingConfigurationSection)
                 Else
                     'Get the first section of type : type="CQRSAzure.EventSourcing.CQRSAzureEventSourcingConfigurationSection,CQRSAzure.EventSourcing"
                     For Each objSection In config.Sections
                         If (objSection.GetType() Is GetType(CQRSAzureEventSourcingConfigurationSection)) Then
-                            sectionConfig = CTypeDynamic(Of CQRSAzureEventSourcingConfigurationSection)(objSection)
+                            sectionConfig = CType(objSection, CQRSAzureEventSourcingConfigurationSection)
                             If (sectionConfig IsNot Nothing) Then
                                 Exit For
                             End If
@@ -324,12 +252,12 @@ Public Class AggregateMapBuilderCore
                 Dim sectionConfig As CQRSAzure.EventSourcing.CQRSAzureEventSourcingConfigurationSection = Nothing
 
                 If (objSection IsNot Nothing) Then
-                    sectionConfig = CTypeDynamic(Of CQRSAzure.EventSourcing.CQRSAzureEventSourcingConfigurationSection)(objSection)
+                    sectionConfig = CType(objSection, CQRSAzure.EventSourcing.CQRSAzureEventSourcingConfigurationSection)
                 Else
                     'Get the first section of type : type="CQRSAzure.EventSourcing.CQRSAzureEventSourcingConfigurationSection,CQRSAzure.EventSourcing"
                     For Each objSection In config.Sections
                         If (objSection.GetType() Is GetType(CQRSAzureEventSourcingConfigurationSection)) Then
-                            sectionConfig = CTypeDynamic(Of CQRSAzureEventSourcingConfigurationSection)(objSection)
+                            sectionConfig = CType(objSection, CQRSAzureEventSourcingConfigurationSection)
                             If (sectionConfig IsNot Nothing) Then
                                 Exit For
                             End If

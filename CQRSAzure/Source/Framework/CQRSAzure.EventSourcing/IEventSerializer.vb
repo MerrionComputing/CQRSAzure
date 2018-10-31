@@ -37,7 +37,7 @@ Public Interface IEventSerializer
     ''' <summary>
     ''' Turn the event into a dictionary of name/value pairs describing its properties
     ''' </summary>
-    Function ToNameValuePairs() As IDictionary(Of String, Object)
+    Function ToNameValuePairs(ByVal eventToSerialise As Object) As IDictionary(Of String, Object)
 
     ''' <summary>
     ''' Populate the properties of the event from a dictionary of name/value pairs
@@ -45,7 +45,7 @@ Public Interface IEventSerializer
     ''' <param name="valueDictionary">
     ''' A dictionary of name/value pairs describing the properties of the event
     ''' </param>
-    Sub FromNameValuePairs(ByVal valueDictionary As IDictionary(Of String, Object))
+    Function FromNameValuePairs(ByVal valueDictionary As IDictionary(Of String, Object)) As Object
 
     ''' <summary>
     ''' Save the properties of this event instance into the given stream
@@ -53,7 +53,7 @@ Public Interface IEventSerializer
     ''' <param name="streamToWriteTo">
     ''' The stream into which to write the properties of this event
     ''' </param>
-    Function SaveToStream(ByVal streamToWriteTo As System.IO.Stream) As Long
+    Function SaveToStream(ByVal streamToWriteTo As System.IO.Stream, ByVal eventToSerialise As Object) As Long
 
     ''' <summary>
     ''' Read the event properties from the stream into this instance
@@ -61,6 +61,40 @@ Public Interface IEventSerializer
     ''' <param name="streamToRead">
     ''' The stream from which to read the properties of the event
     ''' </param>
-    Sub FromStream(ByVal streamToRead As System.IO.Stream)
+    Function FromStream(ByVal streamToRead As System.IO.Stream) As Object
+
+End Interface
+
+Public Interface IEventSerializer(Of TEvent)
+    Inherits IEventSerializer
+
+    ''' <summary>
+    ''' Turn the event into a dictionary of name/value pairs describing its properties
+    ''' </summary>
+    Shadows Function ToNameValuePairs(ByVal eventToSerialise As TEvent) As IDictionary(Of String, Object)
+
+    ''' <summary>
+    ''' Populate the properties of the event from a dictionary of name/value pairs
+    ''' </summary>
+    ''' <param name="valueDictionary">
+    ''' A dictionary of name/value pairs describing the properties of the event
+    ''' </param>
+    Shadows Function FromNameValuePairs(ByVal valueDictionary As IDictionary(Of String, Object)) As TEvent
+
+    ''' <summary>
+    ''' Save the properties of this event instance into the given stream
+    ''' </summary>
+    ''' <param name="streamToWriteTo">
+    ''' The stream into which to write the properties of this event
+    ''' </param>
+    Shadows Function SaveToStream(ByVal streamToWriteTo As System.IO.Stream, ByVal eventToSerialise As TEvent) As Long
+
+    ''' <summary>
+    ''' Read the event properties from the stream into this instance
+    ''' </summary>
+    ''' <param name="streamToRead">
+    ''' The stream from which to read the properties of the event
+    ''' </param>
+    Shadows Function FromStream(ByVal streamToRead As System.IO.Stream) As TEvent
 
 End Interface

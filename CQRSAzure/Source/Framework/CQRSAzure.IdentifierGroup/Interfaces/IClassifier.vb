@@ -10,7 +10,16 @@ Imports CQRSAzure.IdentifierGroup
 Public Interface IClassifier(Of TAggregate As IAggregationIdentifier, TAggregateKey)
     Inherits IClassifier
 
-
+    ''' <summary>
+    ''' Does the projection handle the data for the given event type
+    ''' </summary>
+    ''' <param name="eventType">
+    ''' The type of the event containing the data that may or may not be handled
+    ''' </param>
+    ''' <returns>
+    ''' True if this event type should get processed
+    ''' </returns>
+    Function HandlesEventType(ByVal eventType As Type) As Boolean
 
     ''' <summary>
     ''' Perform whatever evaluation is required to handle the specific event
@@ -41,6 +50,58 @@ Public Interface IClassifier(Of TAggregate As IAggregationIdentifier, TAggregate
 
 End Interface
 
+
+Public Interface IClassifierUntyped
+    Inherits IClassifier
+
+    ''' <summary>
+    ''' Does the projection handle the data for the given event type
+    ''' </summary>
+    ''' <param name="eventTypeName">
+    ''' The name of the type of the event containing the data that may or may not be handled
+    ''' </param>
+    ''' <returns>
+    ''' True if this event type should get processed
+    ''' </returns>
+    Function HandlesEventType(ByVal eventTypeName As String) As Boolean
+
+    ''' <summary>
+    ''' Perform whatever evaluation is required to handle the specific event
+    ''' </summary>
+    ''' <param name="eventClassName">
+    ''' The class name of the event stored as JSON
+    ''' </param>
+    ''' <param name="eventToHandle">
+    ''' The specific event to handle and perform whatever processing is required in order to 
+    ''' evaluate the status of the aggregate instance in relation to the identity group
+    ''' </param>
+    Function EvaluateEvent(ByVal eventClassName As String,
+                           ByVal eventToHandle As Newtonsoft.Json.Linq.JObject) As IClassifierDataSourceHandler.EvaluationResult
+
+    ''' <summary>
+    ''' Use a projection to decide if an aggregate instance is in or outside an identifier group
+    ''' </summary>
+    ''' <param name="projection">
+    ''' The projection which can be used to decide if the instance is in or not
+    ''' </param>
+    Function EvaluateProjection(Of TProjection As IProjectionUntyped)(ByVal projection As TProjection) As IClassifierDataSourceHandler.EvaluationResult
+
+
+    ''' <summary>
+    ''' Load the starting point of this classifier from the given classifier snapshot
+    ''' </summary>
+    ''' <param name="latestSnapshot">
+    ''' The classifier snapshot saved away by an earlier evaluation
+    ''' </param>
+    Sub LoadFromSnapshot(latestSnapshot As IClassifierSnapshotUntyped)
+
+    ''' <summary>
+    ''' Turn the current state of this projection to a snapshot
+    ''' </summary>
+    Function ToSnapshot() As IClassifierSnapshotUntyped
+
+End Interface
+
 Public Interface IClassifier
 
     ''' <summary>
@@ -66,16 +127,7 @@ Public Interface IClassifier
     ''' </returns>
     ReadOnly Property SupportsSnapshots As Boolean
 
-    ''' <summary>
-    ''' Does the projection handle the data for the given event type
-    ''' </summary>
-    ''' <param name="eventType">
-    ''' The type of the event containing the data that may or may not be handled
-    ''' </param>
-    ''' <returns>
-    ''' True if this event type should get processed
-    ''' </returns>
-    Function HandlesEventType(ByVal eventType As Type) As Boolean
+
 
     ''' <summary>
     ''' How does the classifier get the data it uses to perform a classification

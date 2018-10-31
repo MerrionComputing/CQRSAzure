@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <ProjectGuid>{D49F1FEE-96C0-40EE-8E1D-F3AAEB883143}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Accounts</RootNamespace>
+    <AssemblyName>Accounts</AssemblyName>
+    <SchemaVersion>2.0</SchemaVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.ApplicationInsights, Version=2.7.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.ApplicationInsights.2.7.2\lib\net46\Microsoft.ApplicationInsights.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Diagnostics.DiagnosticSource.4.5.0\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Reflection" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="CQRSAzure.EventSourcing" />
+    <Import Include="CQRSAzure.IdentifierGroup" />
+    <Import Include="System" />
+    <Import Include="System.Reflection" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="IAccount.cs" />
+    <Compile Include="Account.cs" />
+    <Compile Include="IOpened_eventDefinition.cs" />
+    <Compile Include="Opened_eventDefinition.cs" />
+    <Compile Include="Opened_0_eventSerialisation.cs" />
+    <Compile Include="IClosed_eventDefinition.cs" />
+    <Compile Include="Closed_eventDefinition.cs" />
+    <Compile Include="Closed_0_eventSerialisation.cs" />
+    <Compile Include="IMoney_Deposited_eventDefinition.cs" />
+    <Compile Include="Money_Deposited_eventDefinition.cs" />
+    <Compile Include="Money_Deposited_0_eventSerialisation.cs" />
+    <Compile Include="IMoney_Withdrawn_eventDefinition.cs" />
+    <Compile Include="Money_Withdrawn_eventDefinition.cs" />
+    <Compile Include="Money_Withdrawn_0_eventSerialisation.cs" />
+    <Compile Include="IRunning_Balance_projection.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Running_Balance_projection.cs" />
+    <Compile Include="IOpen_Accounts_identitygroup.cs" />
+    <Compile Include="IAccounts_In_Credit_identitygroup.cs" />
+    <Compile Include="IAccount_Open_Classifier_classifier.cs" />
+    <Compile Include="Account_Open_Classifier_classifier.cs" />
+    <Compile Include="IAccounts_In_Credit_Classifier_classifier.cs" />
+    <Compile Include="Accounts_In_Credit_Classifier_classifier.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\CQRS.EventSourcing.Implementation\CQRSAzure.EventSourcing.Implementation.vbproj">
+      <Project>{dfb8e469-c9b7-4ae5-b238-330fa64490af}</Project>
+      <Name>CQRSAzure.EventSourcing.Implementation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\CQRSAzure.EventSourcing\CQRSAzure.EventSourcing.vbproj">
+      <Project>{551fbd94-8ce5-4e33-818a-9c3fc171f1ce}</Project>
+      <Name>CQRSAzure.EventSourcing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\CQRSAzure.IdentifierGroup\CQRSAzure.IdentifierGroup.vbproj">
+      <Project>{6659932d-cf44-4d06-8830-f4ff6191cd43}</Project>
+      <Name>CQRSAzure.IdentifierGroup</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

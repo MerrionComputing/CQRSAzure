@@ -1,6 +1,8 @@
 ﻿Imports System.Text
 Imports Microsoft.VisualStudio.TestTools.UnitTesting
 Imports CQRSAzure.EventSourcing.Azure.Blob
+Imports System.Configuration
+Imports CQRSAzure.EventSourcing
 
 <TestClass()> Public Class BlobClassifierUnitTest
 
@@ -267,4 +269,7 @@ Imports CQRSAzure.EventSourcing.Azure.Blob
         Assert.AreEqual(expected, actual)
 
     End Sub
+
+
+
 End Class

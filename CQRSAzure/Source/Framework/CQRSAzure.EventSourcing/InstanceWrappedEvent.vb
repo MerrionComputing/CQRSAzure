@@ -1,4 +1,5 @@
-﻿''' <summary>
+﻿Imports CQRSAzure.EventSourcing
+''' <summary>
 ''' An event wrapped in the information to connect it with an aggregation identifier
 ''' </summary>
 ''' <typeparam name="TAggregateKey">
@@ -46,7 +47,9 @@ Public Class InstanceWrappedEvent(Of TAggregateKey)
                     ByVal version As UInteger) As IEventInstance(Of TAggregateKey)
 
 #Region "Tracing"
-        EventSourcing.LogVerboseInfo("Wrapping event instance of " & EventInstance.GetType().ToString() & " - key = " & Key.ToString())
+        If (EventInstance IsNot Nothing) Then
+            EventSourcing.LogVerboseInfo("Wrapping event instance of " & EventInstance.GetType().ToString() & " - key = " & Key.ToString())
+        End If
 #End Region
 
         Return New InstanceWrappedEvent(Of TAggregateKey)(
@@ -58,4 +61,63 @@ Public Class InstanceWrappedEvent(Of TAggregateKey)
 
 #End Region
 
+End Class
+
+
+Public Class InstanceWrappedEventUntyped
+    Implements IEventInstance
+
+
+    Private ReadOnly m_AggregateKey As String
+    Public ReadOnly Property AggregateKey As String
+        Get
+            Return m_AggregateKey
+        End Get
+    End Property
+
+    Private ReadOnly m_Version As UInteger
+    Public ReadOnly Property Version As UInteger Implements IEventInstance.Version
+        Get
+            Throw New NotImplementedException()
+        End Get
+    End Property
+
+    Private ReadOnly m_EventInstance As IEvent
+    Public ReadOnly Property EventInstance As IEvent Implements IEventInstance.EventInstance
+        Get
+            Throw New NotImplementedException()
+        End Get
+    End Property
+
+    Private Sub New(ByVal Key_init As String,
+                ByVal EventInstance_init As IEvent,
+                ByVal version_init As UInteger)
+
+        m_AggregateKey = Key_init
+        m_EventInstance = EventInstance_init
+        m_Version = version_init
+
+    End Sub
+
+
+#Region "Factory methods"
+
+    Public Shared Function Wrap(ByVal Key As String,
+                    ByVal EventInstance As IEvent,
+                    ByVal version As UInteger) As IEventInstance
+
+#Region "Tracing"
+        If (EventInstance IsNot Nothing) Then
+            EventSourcing.LogVerboseInfo("Wrapping event instance of " & EventInstance.GetType().ToString() & " - key = " & Key.ToString())
+        End If
+#End Region
+
+        Return New InstanceWrappedEventUntyped(
+            Key,
+            EventInstance,
+            version)
+
+    End Function
+
+#End Region
 End Class

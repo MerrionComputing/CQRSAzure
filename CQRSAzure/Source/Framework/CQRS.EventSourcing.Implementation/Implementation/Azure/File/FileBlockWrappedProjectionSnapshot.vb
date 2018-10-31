@@ -50,6 +50,14 @@ Namespace Azure.File
             End Get
         End Property
 
+        Private ReadOnly m_RowCount As Integer
+        Public ReadOnly Property RowCount As Integer Implements IProjectionSnapshot.RowCount
+
+            Get
+                Return m_RowCount
+            End Get
+        End Property
+
         Public Function ToBinaryStream() As System.IO.Stream
 
             Dim ms As New System.IO.MemoryStream()
@@ -83,7 +91,7 @@ Namespace Azure.File
             If (formatter Is Nothing) Then
                 formatter = New BinaryFormatter()
             End If
-            Return CTypeDynamic(Of FileBlockWrappedProjectionSnapshot)(formatter.Deserialize(binaryStream))
+            Return CType(formatter.Deserialize(binaryStream), FileBlockWrappedProjectionSnapshot)
 
         End Function
 
@@ -97,6 +105,7 @@ Namespace Azure.File
 
             m_Sequence = projectionToWrap.Sequence
             m_AsOfDate = projectionToWrap.AsOfDate
+            m_RowCount = projectionToWrap.RowCount
 
             'wrap the projectionToWrap.Values
             For Each projectionValue In projectionToWrap.Values

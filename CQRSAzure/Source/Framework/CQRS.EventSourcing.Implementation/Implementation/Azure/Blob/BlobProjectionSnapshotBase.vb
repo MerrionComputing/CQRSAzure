@@ -12,11 +12,7 @@ Namespace Azure.Blob
         Protected ReadOnly m_key As TAggregateKey
 
 
-        Protected Const METATDATA_DOMAIN As String = "DOMAIN"
-        Protected Const METADATA_AGGREGATE_CLASS As String = "AGGREGATECLASS"
-        Protected Const METADATA_PROJECTION_CLASS As String = "PROJECTIONCLASS"
-        Protected Const METADATA_SEQUENCE As String = "SEQUENCE"
-        Protected Const METADATA_AGGREGATE_KEY As String = "AGGREGATEKEY"
+
 
         Protected ReadOnly Property AggregateClassName As String
             Get
@@ -36,7 +32,7 @@ Namespace Azure.Blob
         ''' The storage location that the event streams for this event stream are located
         ''' </summary>
         ''' <returns>
-        ''' /eventstreams/[aggregate-class-name]/[projection-name]/
+        ''' /snapshots/[aggregate-class-name]/[projection-name]/
         ''' </returns>
         ''' <remarks>
         ''' This is a virtual path that is added to the blob name to create a traversable path
@@ -48,12 +44,12 @@ Namespace Azure.Blob
         End Property
 
         ''' <summary>
-        ''' The filename that this specific event stream will be written to
+        ''' The filename that this specific projection snapshot stream will be written to
         ''' </summary>
         ''' <returns>
-        ''' e.g. /eventstreams/car/olj565m.events 
+        ''' e.g. /snapshots/car/olj565m.snapshots 
         ''' </returns>
-        Protected ReadOnly Property EventStreamBlobFilename As String
+        Protected ReadOnly Property ProjectionSnapshotBlobFilename As String
             Get
                 Return ContainerBasePath & MakeValidStorageFolderName(m_key.ToString) & ".snapshots"
             End Get
@@ -128,7 +124,7 @@ Namespace Azure.Blob
             m_key = AggregateKey
 
             If (BlobContainer IsNot Nothing) Then
-                m_blob = BlobContainer.GetAppendBlobReference(EventStreamBlobFilename)
+                m_blob = BlobContainer.GetAppendBlobReference(ProjectionSnapshotBlobFilename)
             End If
             Call ResetBlob()
 
@@ -165,6 +161,11 @@ Namespace Azure.Blob
         Private ReadOnly m_blobBasePath As CloudBlobContainer
 #End Region
 
+        Protected Const METATDATA_DOMAIN As String = "DOMAIN"
+        Protected Const METADATA_AGGREGATE_CLASS As String = "AGGREGATECLASS"
+        Protected Const METADATA_PROJECTION_CLASS As String = "PROJECTIONCLASS"
+        Protected Const METADATA_SEQUENCE As String = "SEQUENCE"
+        Protected Const METADATA_AGGREGATE_KEY As String = "AGGREGATEKEY"
 
         Protected ReadOnly Property BlobContainer As CloudBlobContainer
             Get

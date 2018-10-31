@@ -90,7 +90,7 @@ Namespace Azure.Blob
         Public Shared Function FromBinaryStream(ByVal binaryStream As System.IO.Stream) As BlobBlockWrappedEvent
 
             Dim bf As New BinaryFormatter()
-            Return CTypeDynamic(Of BlobBlockWrappedEvent)(bf.Deserialize(binaryStream))
+            Return CType(bf.Deserialize(binaryStream), BlobBlockWrappedEvent)
 
         End Function
 

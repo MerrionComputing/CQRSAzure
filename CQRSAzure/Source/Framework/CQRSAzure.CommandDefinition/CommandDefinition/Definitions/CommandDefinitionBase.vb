@@ -63,7 +63,7 @@ Public MustInherit Class CommandDefinitionBase
     Public Function GetParameterValue(Of TParam)(ParameterName As String, ParameterIndex As Integer) As TParam Implements ICommandDefinition.GetParameterValue
 
         If (ParameterExists(ParameterName, ParameterIndex)) Then
-            Return CTypeDynamic(Of TParam)(m_parameters(MakeKey(ParameterName, ParameterIndex)).Value)
+            Return CType((m_parameters(MakeKey(ParameterName, ParameterIndex)).Value), TParam)
         Else
             Throw New ArgumentException("Command parameter with this name and index does not exist", "Name")
         End If
@@ -83,7 +83,7 @@ Public MustInherit Class CommandDefinitionBase
     Public Function TryGetParameterValue(Of TParam)(ParameterName As String, ParameterIndex As Integer, ByRef Value As TParam) As Boolean Implements ICommandDefinition.TryGetParameterValue
 
         If (ParameterExists(ParameterName, ParameterIndex)) Then
-            Value = CTypeDynamic(Of TParam)(m_parameters(MakeKey(ParameterName, ParameterIndex)).Value)
+            Value = CType((m_parameters(MakeKey(ParameterName, ParameterIndex)).Value), TParam)
             Return True
         Else
             Return False

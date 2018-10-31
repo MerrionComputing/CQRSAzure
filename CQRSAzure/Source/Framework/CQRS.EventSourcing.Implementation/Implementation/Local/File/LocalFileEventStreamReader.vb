@@ -67,7 +67,7 @@ Namespace Local.File
                         fr.Seek(m_streamstart, IO.SeekOrigin.Begin)
                     End If
                     While Not fr.Position >= m_file.Length
-                        Dim record As LocalFileWrappedEvent = CTypeDynamic(Of LocalFileWrappedEvent)(bf.Deserialize(fr))
+                        Dim record As LocalFileWrappedEvent = CType(bf.Deserialize(fr), LocalFileWrappedEvent)
                         If (record IsNot Nothing) Then
                             Dim instance = InstanceWrappedEvent(Of TAggregateKey).Wrap(m_key, record.EventInstance, record.Version)
                             ret.Add(ContextWrappedEvent(Of TAggregateKey).Wrap(instance, record.Sequence, "", "", record.Timestamp, record.Version, ""))

@@ -66,12 +66,8 @@ Namespace Azure.Blob
                             Dim keyString As String = blobFile.Metadata(BlobEventStreamBase.METADATA_AGGREGATE_KEY)
                             If Not String.IsNullOrWhiteSpace(keyString) Then
                                 'Try and turn it to the TAggregateKey
-                                If (GetType(TaggregateKey) Is GetType(String)) Then
-                                    ret.Add(CTypeDynamic(Of TaggregateKey)(keyString))
-                                Else
-                                    'need to convert the key as we had to store it as a string
-                                    ret.Add(m_converter.FromString(keyString))
-                                End If
+                                'need to convert the key as we had to store it as a string
+                                ret.Add(m_converter.FromString(keyString))
                             End If
                         End If
                     End If
@@ -84,9 +80,10 @@ Namespace Azure.Blob
 
         Private Sub New(ByVal AggregateDomainName As String,
                         Optional ByVal connectionStringName As String = "",
-        Optional ByVal settings As IBlobStreamSettings = Nothing)
+                        Optional ByVal settings As IBlobStreamSettings = Nothing)
 
-            MyBase.New(AggregateDomainName, False, connectionStringName, settings)
+            MyBase.New(AggregateDomainName, False, connectionStringName,
+                       settings)
 
             m_domainName = AggregateDomainName
 
@@ -104,19 +101,25 @@ Namespace Azure.Blob
                     domainName = settings.DomainName
                 End If
             End If
-            Return New BlobEventStreamProvider(Of TAggregate, TaggregateKey)(domainName, settings:=settings)
+            Return Create(domainName,
+                          settings:=settings)
 
         End Function
 
         Public Shared Function Create(Optional domainName As String = "",
                       Optional ByVal settings As IBlobStreamSettings = Nothing) As IEventStreamProvider(Of TAggregate, TaggregateKey)
 
+            'If there are settings passed in their domain name attribute takes preference
             If settings IsNot Nothing Then
                 If Not String.IsNullOrWhiteSpace(settings.DomainName) Then
                     domainName = settings.DomainName
                 End If
             End If
-            Return New BlobEventStreamProvider(Of TAggregate, TaggregateKey)(domainName, settings:=settings)
+
+
+
+            Return New BlobEventStreamProvider(Of TAggregate, TaggregateKey)(domainName,
+                                                                             settings:=settings)
 
         End Function
 
@@ -137,10 +140,11 @@ Namespace Azure.Blob
         End Function
 
         Public Function Create(Of TAggregate As CQRSAzure.EventSourcing.IAggregationIdentifier, TaggregateKey)(Optional domainName As String = "",
-    Optional ByVal settings As IBlobStreamSettings = Nothing) _
-    As IEventStreamProvider(Of TAggregate, TaggregateKey)
+                                                                                                               Optional ByVal settings As IBlobStreamSettings = Nothing) _
+                                                                                                               As IEventStreamProvider(Of TAggregate, TaggregateKey)
 
-            Return BlobEventStreamProvider(Of TAggregate, TaggregateKey).Create(domainName, settings)
+            Return BlobEventStreamProvider(Of TAggregate, TaggregateKey).Create(domainName,
+                                                                                settings)
 
         End Function
 

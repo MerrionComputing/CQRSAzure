@@ -49,6 +49,15 @@ Namespace Local.File
             End Get
         End Property
 
+
+        Private ReadOnly m_RowCount As Integer
+        Public ReadOnly Property RowCount As Integer Implements IProjectionSnapshot.RowCount
+
+            Get
+                Return m_RowCount
+            End Get
+        End Property
+
         Public Function ToBinaryStream(Optional formatter As IFormatter = Nothing) As System.IO.Stream
 
             Dim ms As New System.IO.MemoryStream()
@@ -94,7 +103,7 @@ Namespace Local.File
                 Throw New NotImplementedException()
             Else
                 Dim formatter As New BinaryFormatter()
-                Return CTypeDynamic(Of LocalFileWrappedProjectionSnapshot)(formatter.Deserialize(binaryStream))
+                Return CType(formatter.Deserialize(binaryStream), LocalFileWrappedProjectionSnapshot)
             End If
 
 
@@ -114,6 +123,7 @@ Namespace Local.File
 
             m_Sequence = projectionToWrap.Sequence
             m_AsOfDate = projectionToWrap.AsOfDate
+            m_RowCount = projectionToWrap.RowCount
 
             'wrap the projectionToWrap.Values
             For Each projectionValue In projectionToWrap.Values

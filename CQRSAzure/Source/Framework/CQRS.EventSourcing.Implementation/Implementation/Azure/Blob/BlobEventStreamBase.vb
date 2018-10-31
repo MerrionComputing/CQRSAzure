@@ -117,10 +117,10 @@ Namespace Azure.Blob
                     End If
 
                 Catch exBlob As Microsoft.WindowsAzure.Storage.StorageException
-                    Throw New EventStreamReadException(DomainName, AggregateClassName, m_key.ToString(), 0, "Unable to get the record countr for this event stream", exBlob)
+                    Throw New EventStreamReadException(DomainName, AggregateClassName, m_key.ToString(), 0, "Unable to get the record count for this event stream", exBlob)
                 End Try
             Else
-                Throw New EventStreamReadException(DomainName, AggregateClassName, m_key.ToString(), 0, "Unable to get the record countr for this event stream")
+                Throw New EventStreamReadException(DomainName, AggregateClassName, m_key.ToString(), 0, "Unable to get the record count for this event stream")
             End If
 
             Return 0
@@ -138,6 +138,7 @@ Namespace Azure.Blob
                           Optional ByVal writeAccess As Boolean = False,
                           Optional ByVal connectionStringName As String = "",
                           Optional ByVal settings As IBlobStreamSettings = Nothing)
+
             MyBase.New(AggregateDomainName, writeAccess, connectionStringName, settings)
 
             'Get the aggregation instance key to use when creating a blob file name
@@ -203,12 +204,8 @@ Namespace Azure.Blob
                             Dim keyString As String = blobFile.Metadata(METADATA_AGGREGATE_KEY)
                             If Not String.IsNullOrWhiteSpace(keyString) Then
                                 'Try and turn it to the TAggregateKey
-                                If (GetType(TAggregateKey) Is GetType(String)) Then
-                                    ret.Add(CTypeDynamic(Of TAggregateKey)(keyString))
-                                Else
-                                    'need to convert the key as we had to store it as a string
-                                    ret.Add(m_converter.FromString(keyString))
-                                End If
+                                'need to convert the key as we had to store it as a string
+                                ret.Add(m_converter.FromString(keyString))
                             End If
                         End If
                     End If
@@ -314,7 +311,11 @@ Namespace Azure.Blob
                           Optional ByVal writeAccess As Boolean = False,
                           Optional ByVal connectionStringName As String = "",
                           Optional ByVal settings As IBlobStreamSettings = Nothing)
-            MyBase.New(AggregateDomainName, writeAccess:=writeAccess, connectionStringName:=connectionStringName, settings:=settings)
+
+            MyBase.New(AggregateDomainName,
+                       writeAccess:=writeAccess,
+                       connectionStringName:=connectionStringName,
+                       settings:=settings)
 
             If (m_storageAccount IsNot Nothing) Then
                 m_blobClient = m_storageAccount.CreateCloudBlobClient()
@@ -325,6 +326,7 @@ Namespace Azure.Blob
                     If (m_blobBasePath IsNot Nothing) Then
                         m_blobBasePath.CreateIfNotExists()
                     End If
+
                 End If
             End If
         End Sub

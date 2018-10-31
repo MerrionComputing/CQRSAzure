@@ -337,6 +337,39 @@ Public Class ProjectionProcessorUnitTest
 
     End Sub
 
+    ''' <summary>
+    ''' Check that running a projection that causes a state change is reflected as such
+    ''' </summary>
+    <TestMethod()>
+    Public Sub AzureBlobProjection_SomeEvents_StateChanged_UnitTest()
+
+        Dim expected As Integer = 0
+        Dim actual As Integer = 0
+
+
+        Dim testAgg = New MockAggregate(AzureBlobEventStreamUnitTest.TEST_AGGREGATE_IDENTIFIER)
+
+        Dim testWriter As BlobEventStreamWriter(Of MockAggregate, String) = BlobEventStreamWriter(Of MockAggregate, String).Create(testAgg)
+        testWriter.Reset()
+        'add a dummy event
+        testWriter.AppendEvent(New MockEventTypeTwo() With {.EventTwoNullableDateProperty = DateTime.UtcNow, .EventTwoStringProperty = "My test two", .EventTwoDecimalProperty = 123.45})
+        testWriter.AppendEvent(New MockEventTypeTwo() With {.EventTwoNullableDateProperty = DateTime.UtcNow, .EventTwoStringProperty = "My test three", .EventTwoDecimalProperty = 223.45})
+        'MockEventTypeOne
+        testWriter.AppendEvent(New MockEventTypeOne() With {.EventOneIntegerProperty = 73, .EventOneStringProperty = "Event 1 test"})
+
+        Dim testObj = Azure.Blob.BlobEventStreamReader(Of MockAggregate, String).CreateProjectionProcessor(testAgg)
+        Assert.IsNotNull(testObj)
+
+        Dim myProjection As New MockProjectionMultipleEventsNoSnapshots
+
+        testObj.Process(myProjection)
+
+        actual = myProjection.StateChanges.Count()
+
+        Assert.AreNotEqual(expected, actual)
+
+    End Sub
+
     <TestMethod()>
     Public Sub AzureFileProjection_Constructor_Unittest()
 
@@ -630,5 +663,73 @@ Public Class ProjectionProcessorUnitTest
     End Sub
 
 #End If
+
+    <TestMethod()>
+    Public Sub IncrementAssistant_Double_Test()
+
+        Dim expected As Double = 20
+        Dim actual As Double = 15
+
+        actual = IncrementAssistant.Increment(actual, 5)
+
+
+        Assert.AreEqual(expected, actual)
+
+    End Sub
+
+    <TestMethod()>
+    Public Sub IncrementAssistant_NullableDouble_Test()
+
+        Dim expected As Nullable(Of Double) = 20
+        Dim actual As Nullable(Of Double) = 15
+
+        actual = IncrementAssistant.Increment(Of Nullable(Of Double))(actual, 5)
+
+
+        Assert.AreEqual(expected, actual)
+
+    End Sub
+
+
+    <TestMethod()>
+    Public Sub IncrementAssistant_Integer_Test()
+
+        Dim expected As Integer = 20
+        Dim actual As Integer = 15
+
+        actual = IncrementAssistant.Increment(actual, 5)
+
+
+        Assert.AreEqual(expected, actual)
+
+    End Sub
+
+    <TestMethod()>
+    Public Sub IncrementAssistant_NullableInteger_Test()
+
+        Dim expected As Nullable(Of Integer) = 20
+        Dim actual As Nullable(Of Integer) = 15
+
+        actual = IncrementAssistant.Increment(Of Nullable(Of Integer))(actual, 5)
+
+
+        Assert.AreEqual(expected, actual)
+
+    End Sub
+
+
+    <TestMethod()>
+    Public Sub IncrementAssistant_String_Test()
+
+        Dim expected As String = "abcdef"
+        Dim actual As String = "abc"
+
+        actual = IncrementAssistant.Increment(actual, "def")
+
+
+        Assert.AreEqual(expected, actual)
+
+    End Sub
+
 
 End Class

@@ -61,7 +61,7 @@ Public NotInheritable Class QueryParameter(Of TValue)
     End Property
 
     Public Sub SetValue(value As Object) Implements IQueryParameter.SetValue
-        m_value = CTypeDynamic(Of TValue)(value)
+        m_value = CType(value, TValue)
     End Sub
 
     ''' <summary>

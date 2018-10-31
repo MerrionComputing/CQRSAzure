@@ -10,25 +10,6 @@ Public Interface IProjection(Of TAggregate As IAggregationIdentifier, TAggregate
     Inherits IProjection
 
     ''' <summary>
-    ''' Perform whatever processing is required to handle the specific event
-    ''' </summary>
-    ''' <param name="eventToHandle">
-    ''' The specific event to handle and perform whatever processing is required
-    ''' </param>
-    Sub HandleEvent(Of TEvent As IEvent)(ByVal eventToHandle As TEvent)
-
-    ''' <summary>
-    ''' An event was read by the underlying event reader (whether it is handled or not)
-    ''' </summary>
-    ''' <param name="sequenceNumber">
-    ''' The sequence number of the event read
-    ''' </param>
-    ''' <param name="asOfDate">
-    ''' If the event has an "effective date" this is 
-    ''' </param>
-    Sub OnEventRead(ByVal sequenceNumber As UInteger, Optional ByVal asOfDate As Nullable(Of Date) = Nothing)
-
-    ''' <summary>
     ''' Load the state of this projection from a saved snapshot
     ''' </summary>
     ''' <param name="snapshotToLoad">
@@ -43,10 +24,43 @@ Public Interface IProjection(Of TAggregate As IAggregationIdentifier, TAggregate
 
 End Interface
 
+
+Public Interface IProjectionUntyped
+    Inherits IProjection
+
+    ''' <summary>
+    ''' Does the projection handle the data for the given event type
+    ''' </summary>
+    ''' <param name="eventTypeFullName">
+    ''' The full name of the event containing the data that may or may not be handled
+    ''' </param>
+    ''' <returns>
+    ''' True if this event type should get processed
+    ''' </returns>
+    Function HandlesEventTypeByName(ByVal eventTypeFullName As String) As Boolean
+
+    Sub HandleEventJSon(ByVal EventTypeFullName As String, ByVal eventToHandle As Newtonsoft.Json.Linq.JObject)
+
+    ''' <summary>
+    ''' Load the state of this projection from a saved snapshot
+    ''' </summary>
+    ''' <param name="snapshotToLoad">
+    ''' The snapshot to load the projection state from
+    ''' </param>
+    Sub LoadFromSnapshot(ByVal snapshotToLoad As IProjectionSnapshot)
+
+    ''' <summary>
+    ''' Turn the current state of this projection to a snapshot
+    ''' </summary>
+    Function ToSnapshot() As IProjectionSnapshot
+
+End Interface
+
 ''' <summary>
 ''' Marker interface to denote anything as being a projection
 ''' </summary>
 Public Interface IProjection
+    Inherits IStateChangeTracking
 
     ''' <summary>
     ''' Does this projection use snapshots to save the latest state or does it need to rebuild the entire 
@@ -84,6 +98,25 @@ Public Interface IProjection
     Sub MarkEventHandled(ByVal handledEventSequenceNumber As UInteger)
 
     ''' <summary>
+    ''' Perform whatever processing is required to handle the specific event
+    ''' </summary>
+    ''' <param name="eventToHandle">
+    ''' The specific event to handle and perform whatever processing is required
+    ''' </param>
+    Sub HandleEvent(Of TEvent As IEvent)(ByVal eventToHandle As TEvent)
+
+    ''' <summary>
+    ''' An event was read by the underlying event reader (whether it is handled or not)
+    ''' </summary>
+    ''' <param name="sequenceNumber">
+    ''' The sequence number of the event read
+    ''' </param>
+    ''' <param name="asOfDate">
+    ''' If the event has an "effective date" this is 
+    ''' </param>
+    Sub OnEventRead(ByVal sequenceNumber As UInteger, Optional ByVal asOfDate As Nullable(Of Date) = Nothing)
+
+    ''' <summary>
     ''' The current as-of date for this projection
     ''' </summary>
     ''' <remarks>
@@ -97,6 +130,6 @@ Public Interface IProjection
     ''' <remarks>
     ''' These are the business-meaningful properties of the projection
     ''' </remarks>
-    ReadOnly Property CurrentValues As IEnumerable(Of IProjectionSnapshotProperty)
+    ReadOnly Property CurrentValues As IEnumerable(Of ProjectionSnapshotProperty)
 
 End Interface

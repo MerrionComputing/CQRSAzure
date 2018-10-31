@@ -18,3 +18,15 @@ Public Interface IProjectionProcessor(Of TAggregate As IAggregationIdentifier, T
     Sub Process(ByVal projectionToProcess As IProjection(Of TAggregate, TAggregateKey))
 
 End Interface
+
+Public Interface IProjectionProcessorUntyped
+
+    ''' <summary>
+    ''' Process the given projection using the event stream reader we have set up
+    ''' </summary>
+    ''' <param name="projectionToProcess">
+    ''' The class that defines the projection operation we are going to process
+    ''' </param>
+    Sub Process(ByVal projectionToProcess As IProjectionUntyped)
+
+End Interface

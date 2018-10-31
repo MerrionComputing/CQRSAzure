@@ -1,6 +1,6 @@
 ﻿
 
-Public Interface IAggregateImplementationMap(Of TAggregate As IAggregationIdentifier, TAggregateKey)
+partial Public Interface IAggregateImplementationMap(Of TAggregate As IAggregationIdentifier, TAggregateKey)
     Inherits IAggregateImplementationMap
 
 #Region "Functions"
@@ -171,7 +171,6 @@ Public Interface IAggregateImplementationMap
                                                                                                                                          ByVal settings As IEventStreamSettings) As IProjectionSnapshotWriter(Of TAggregate, TAggregateKey, TProjection)
 
 #End Region
-
 
 
 

@@ -1,5 +1,6 @@
 ﻿Imports CQRSAzure.EventSourcing
 Imports CQRSAzure.EventSourcing.UnitTest
+Imports Newtonsoft.Json.Linq
 
 Namespace Mocking
     ''' <summary>
@@ -84,6 +85,114 @@ Namespace Mocking
 
 
     ''' <summary>
+    ''' Simplest mock projection - just updates a total property
+    ''' </summary>
+    <DomainName("UnitTest")>
+    Public Class MockProjection_Untyped_Simple
+        Inherits ProjectionBaseUntyped
+        Implements IProjectionUntyped
+
+
+
+        Public Overrides ReadOnly Property CurrentAsOfDate As Date Implements IProjection.CurrentAsOfDate
+            Get
+                Throw New NotImplementedException()
+            End Get
+        End Property
+
+        Public Overrides ReadOnly Property SupportsSnapshots As Boolean Implements IProjection.SupportsSnapshots
+            Get
+                Return False
+            End Get
+        End Property
+
+        ''' <summary>
+        ''' This mock projection only handles events of type MockEventTypeOne
+        ''' </summary>
+        ''' <param name="eventType">
+        ''' The type of event we want to know if this projection cares about
+        ''' </param>
+        Public Overrides Function HandlesEventType(eventType As Type) As Boolean Implements IProjection.HandlesEventType
+
+            If eventType Is GetType(MockEventTypeOne) Then
+                Return True
+            End If
+
+            Return False
+
+        End Function
+
+        ''' <summary>
+        ''' Handle an individual event from an event stream
+        ''' </summary>
+        ''' <typeparam name="TEvent">
+        ''' The type of event this is
+        ''' </typeparam>
+        ''' <param name="eventToHandle">
+        ''' The specific event to handle
+        ''' </param>
+        Public Overrides Sub HandleEvent(Of TEvent As IEvent)(eventToHandle As TEvent) Implements IProjectionUntyped.HandleEvent
+
+            Select Case eventToHandle.GetType()
+                Case GetType(MockEventTypeOne)
+                    HandleMockEventOne(CTypeDynamic(Of MockEventTypeOne)(eventToHandle))
+                Case Else
+                    'Nothing to do with this event type
+                    Throw New ArgumentException("Unexpected event type - " & eventToHandle.GetType().Name)
+            End Select
+
+        End Sub
+
+        Private Sub HandleMockEventOne(ByVal eventToHandle As MockEventTypeOne)
+
+            AddOrUpdateValue(Of Integer)(NameOf(Total), ProjectionSnapshotProperty.NO_ROW_NUMBER, Total + eventToHandle.EventOneIntegerProperty)
+
+        End Sub
+
+        Public Overrides Sub HandleEventJSon(eventFullName As String, eventToHandle As JObject)
+
+            If eventFullName.Equals(GetType(MockEventTypeOne).FullName) Then
+                Dim evt As MockEventTypeOne = eventToHandle.ToObject(Of MockEventTypeOne)
+                HandleMockEventOne(evt)
+            End If
+
+        End Sub
+
+        Public Overrides Function HandlesEventTypeByName(eventTypeFullName As String) As Boolean
+
+            If eventTypeFullName.Equals(GetType(MockEventTypeOne).FullName) Then
+                Return True
+            End If
+
+            Return False
+
+        End Function
+
+#Region "Output"
+
+        ''' <summary>
+        ''' The total number of the numbers in this event stream
+        ''' </summary>
+        Public ReadOnly Property Total As Integer
+            Get
+                Return GetPropertyValue(Of Integer)(NameOf(Total))
+            End Get
+        End Property
+
+
+
+#End Region
+
+
+        Public Sub New()
+            CreateProperty(Of Integer)(NameOf(Total))
+        End Sub
+
+
+    End Class
+
+
+    ''' <summary>
     ''' Simplest mock projection with snapshots
     ''' </summary>
     <DomainName("UnitTest")>
@@ -160,6 +269,105 @@ Namespace Mocking
         Public Sub New()
             CreateProperty(Of Integer)(NameOf(Total))
         End Sub
+
+    End Class
+
+    ''' <summary>
+    ''' Simplest mock projection with snapshots
+    ''' </summary>
+    <DomainName("UnitTest")>
+    Public Class MockProjection_Untyped_Snapshots
+        Inherits ProjectionBaseUntyped
+        Implements IProjectionUntyped
+
+        Private m_totalOut As Integer
+
+
+        Public Overrides ReadOnly Property CurrentAsOfDate As Date Implements IProjection.CurrentAsOfDate
+            Get
+                Throw New NotImplementedException()
+            End Get
+        End Property
+
+        Public Overrides ReadOnly Property SupportsSnapshots As Boolean Implements IProjection.SupportsSnapshots
+            Get
+                Return True
+            End Get
+        End Property
+
+        Public Overrides Sub HandleEvent(Of TEvent As IEvent)(eventToHandle As TEvent) Implements IProjection.HandleEvent
+
+            Select Case eventToHandle.GetType()
+                Case GetType(MockEventTypeOne)
+                    HandleMockEventOne(CTypeDynamic(Of MockEventTypeOne)(eventToHandle))
+                Case Else
+                    'Nothing to do with this event type
+                    Throw New ArgumentException("Unexpected event type - " & eventToHandle.GetType().Name)
+            End Select
+
+        End Sub
+
+        Private Sub HandleMockEventOne(ByVal eventToHandle As MockEventTypeOne)
+
+            AddOrUpdateValue(Of Integer)(NameOf(Total), ProjectionSnapshotProperty.NO_ROW_NUMBER, Total + eventToHandle.EventOneIntegerProperty)
+
+        End Sub
+
+
+#Region "Output"
+
+        ''' <summary>
+        ''' The total number of the numbers in this event stream
+        ''' </summary>
+        Public ReadOnly Property Total As Integer
+            Get
+                Return GetPropertyValue(Of Integer)(NameOf(Total))
+            End Get
+        End Property
+
+
+
+#End Region
+
+
+
+        ''' <summary>
+        ''' This mock projection only handles events of type MockEventTypeOne
+        ''' </summary>
+        ''' <param name="eventType"></param>
+        ''' <returns></returns>
+        Public Overrides Function HandlesEventType(eventType As Type) As Boolean Implements IProjection.HandlesEventType
+
+            If eventType Is GetType(MockEventTypeOne) Then
+                Return True
+            End If
+
+            Return False
+
+        End Function
+
+        Public Sub New()
+            CreateProperty(Of Integer)(NameOf(Total))
+        End Sub
+
+        Public Overrides Sub HandleEventJSon(eventFullName As String, eventToHandle As JObject)
+
+            If eventFullName.Equals(GetType(MockEventTypeOne).FullName) Then
+                Dim evt As MockEventTypeOne = eventToHandle.ToObject(Of MockEventTypeOne)
+                HandleMockEventOne(evt)
+            End If
+
+        End Sub
+
+        Public Overrides Function HandlesEventTypeByName(eventTypeFullName As String) As Boolean
+
+            If eventTypeFullName.Equals(GetType(MockEventTypeOne).FullName) Then
+                Return True
+            End If
+
+            Return False
+
+        End Function
 
     End Class
 
@@ -252,7 +460,6 @@ Namespace Mocking
         Implements IProjection(Of MockAggregate, String)
 
         Private m_totalOut As Integer
-        Private m_lastString As String
 
         Public Overrides ReadOnly Property SupportsSnapshots As Boolean Implements IProjection.SupportsSnapshots
             Get
@@ -282,14 +489,15 @@ Namespace Mocking
 
         Private Sub HandleMockEventTwo(mockEventTypeTwo As MockEventTypeTwo)
 
-            m_lastString = mockEventTypeTwo.EventTwoStringProperty
+            MyBase.AddOrUpdateValue(Of String)(NameOf(LastString), 0, mockEventTypeTwo.EventTwoStringProperty)
 
         End Sub
 
         Private Sub HandleMockEventOne(ByVal eventToHandle As MockEventTypeOne)
 
             m_totalOut += eventToHandle.EventOneIntegerProperty
-            m_lastString = eventToHandle.EventOneStringProperty
+            MyBase.AddOrUpdateValue(Of Integer)(NameOf(Total), 0, m_totalOut)
+            MyBase.AddOrUpdateValue(Of String)(NameOf(LastString), 0, eventToHandle.EventOneStringProperty)
 
         End Sub
 
@@ -301,7 +509,7 @@ Namespace Mocking
         ''' </summary>
         Public ReadOnly Property LastString As String
             Get
-                Return m_lastString
+                Return MyBase.GetPropertyValue(Of String)(NameOf(LastString))
             End Get
         End Property
 
@@ -310,7 +518,7 @@ Namespace Mocking
         ''' </summary>
         Public ReadOnly Property Total As Integer
             Get
-                Return m_totalOut
+                Return MyBase.GetPropertyValue(Of Integer)(NameOf(Total))
             End Get
         End Property
 

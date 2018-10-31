@@ -71,7 +71,7 @@ Namespace Commands
             Return IClassifierDataSourceHandler.EvaluationResult.Unchanged
         End Function
 
-        Public Function HandlesEventType(eventType As Type) As Boolean Implements IClassifier.HandlesEventType
+        Public Function HandlesEventType(eventType As Type) As Boolean Implements IClassifier(Of CommandAggregateIdentifier, Guid).HandlesEventType
 
 
             If (eventType Is GetType(CommandFatalErrorOccuredEvent)) Then

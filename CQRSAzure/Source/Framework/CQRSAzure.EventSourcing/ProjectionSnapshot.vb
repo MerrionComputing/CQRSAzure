@@ -6,41 +6,75 @@
 ''' <typeparam name="TAggregate"></typeparam>
 ''' <typeparam name="TAggregateKey"></typeparam>
 Public Class ProjectionSnapshot(Of TAggregate As IAggregationIdentifier, TAggregateKey)
-    Inherits ProjectionSnapshot
+    Inherits ProjectionSnapshotUntyped
     Implements IProjectionSnapshot(Of TAggregate, TAggregateKey)
 
+
+
+
+
+
+    Protected Friend Sub New(ByVal projectionToSnapshot As IProjection(Of TAggregate, TAggregateKey))
+        Me.New(projectionToSnapshot.CurrentSequenceNumber,
+               projectionToSnapshot.CurrentAsOfDate,
+               projectionToSnapshot.CurrentValues)
+    End Sub
+
+    Protected Friend Sub New(ByVal projectionToSnapshot As IProjection)
+        Me.New(projectionToSnapshot.CurrentSequenceNumber,
+               projectionToSnapshot.CurrentAsOfDate,
+               projectionToSnapshot.CurrentValues)
+    End Sub
+
+    Protected Friend Sub New(ByVal SequenceNumebrInit As UInteger,
+                    ByVal AsOfDateInit As Date,
+                    ByRef ValuesInit As IEnumerable(Of IProjectionSnapshotProperty))
+
+        MyBase.New(SequenceNumebrInit,
+           AsOfDateInit,
+           ValuesInit)
+
+
+    End Sub
+
+End Class
+
+
+Public Class ProjectionSnapshotUntyped
+    Inherits ProjectionSnapshot
+    Implements IProjectionSnapshot
+
     Private ReadOnly m_AsOfDate As Date
-    Public ReadOnly Property AsOfDate As Date Implements IProjectionSnapshot(Of TAggregate, TAggregateKey).AsOfDate
+    Public ReadOnly Property AsOfDate As Date Implements IProjectionSnapshot.AsOfDate
         Get
             Return m_AsOfDate
         End Get
     End Property
 
     Private ReadOnly m_Sequence As UInteger
-    Public ReadOnly Property Sequence As UInteger Implements IProjectionSnapshot(Of TAggregate, TAggregateKey).Sequence
+    Public ReadOnly Property Sequence As UInteger Implements IProjectionSnapshot.Sequence
         Get
             Return m_Sequence
         End Get
     End Property
 
     Private ReadOnly m_values As New List(Of IProjectionSnapshotProperty)
-    Public ReadOnly Property Values As IEnumerable(Of IProjectionSnapshotProperty) Implements IProjectionSnapshot(Of TAggregate, TAggregateKey).Values
+    Public ReadOnly Property Values As IEnumerable(Of IProjectionSnapshotProperty) Implements IProjectionSnapshot.Values
         Get
             Return m_values.AsEnumerable()
         End Get
     End Property
 
-
     Private ReadOnly m_maxRow As Integer
-    Public ReadOnly Property RowCount As Integer Implements IProjectionSnapshot(Of TAggregate, TAggregateKey).RowCount
+    Public ReadOnly Property RowCount As Integer Implements IProjectionSnapshot.RowCount
         Get
             Return m_maxRow + 1
         End Get
     End Property
 
     Public Sub AddValue(Of TValue)(ByVal rowNumber As Integer,
-                        ByVal fieldName As String,
-                        ByVal value As TValue)
+                    ByVal fieldName As String,
+                    ByVal value As TValue)
 
 #Region "Tracing"
         EventSourcing.LogVerboseInfo("Added snapshot value " & fieldName & "(" & rowNumber.ToString() & ") -" & value.ToString())
@@ -50,15 +84,16 @@ Public Class ProjectionSnapshot(Of TAggregate As IAggregationIdentifier, TAggreg
 
     End Sub
 
-    Protected Friend Sub New(ByVal projectionToSnapshot As IProjection(Of TAggregate, TAggregateKey))
+
+    Protected Friend Sub New(ByVal projectionToSnapshot As IProjection)
         Me.New(projectionToSnapshot.CurrentSequenceNumber,
                projectionToSnapshot.CurrentAsOfDate,
                projectionToSnapshot.CurrentValues)
     End Sub
 
     Protected Friend Sub New(ByVal SequenceNumebrInit As UInteger,
-                    ByVal AsOfDateInit As Date,
-                    ByRef ValuesInit As IEnumerable(Of IProjectionSnapshotProperty))
+                ByVal AsOfDateInit As Date,
+                ByRef ValuesInit As IEnumerable(Of IProjectionSnapshotProperty))
 
 #Region "Tracing"
         EventSourcing.LogVerboseInfo("New snapshot created at sequence number " & SequenceNumebrInit.ToString())
@@ -80,8 +115,13 @@ Public Class ProjectionSnapshot(Of TAggregate As IAggregationIdentifier, TAggreg
 
 End Class
 
-
 Public MustInherit Class ProjectionSnapshot
+
+    Public Shared Function Create(ByVal projectionToSnapshot As IProjectionUntyped) As IProjectionSnapshot
+
+        Return New ProjectionSnapshotUntyped(projectionToSnapshot)
+
+    End Function
 
     Public Shared Function Create(Of TAggregate As IAggregationIdentifier, TAggregateKey)(ByVal projectionToSnapshot As IProjection(Of TAggregate, TAggregateKey)) As IProjectionSnapshot(Of TAggregate, TAggregateKey)
 

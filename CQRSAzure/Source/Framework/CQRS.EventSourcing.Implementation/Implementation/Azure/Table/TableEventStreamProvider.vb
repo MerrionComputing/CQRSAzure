@@ -62,7 +62,7 @@ Namespace Azure.Table
                         Optional ByVal connectionStringName As String = "",
                         Optional ByVal settings As ITableSettings = Nothing)
 
-            MyBase.New(AggregateDomainName, False, connectionStringName, settings)
+            MyBase.New(AggregateDomainName, GetType(TAggregate).Name, False, connectionStringName, settings)
 
             m_converter = KeyConverterFactory.CreateKeyConverter(Of TaggregateKey)
 

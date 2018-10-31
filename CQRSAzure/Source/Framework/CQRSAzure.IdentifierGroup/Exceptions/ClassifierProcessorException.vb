@@ -4,12 +4,12 @@ Imports System.Runtime.Serialization
 Namespace Exceptions
 
     ''' <summary>
-    ''' 
+    ''' There was a problem starting the classifier process factory
     ''' </summary>
     Public Class ClassifierProcessorFactoryMissingException
         Inherits ClassifierProcessorException
 
-
+        Public Const EXCEPTION_MISSING_FACTORY As String = "Missing classifier processor factory"
 
 
         Public Sub New(message As String, innerException As Exception)
@@ -21,7 +21,13 @@ Namespace Exceptions
 
         End Sub
 
+        Public Sub New()
+            MyBase.New(EXCEPTION_MISSING_FACTORY)
+        End Sub
+
     End Class
+
+
 
     ''' <summary>
     ''' Base class for all classifier related exceptions
