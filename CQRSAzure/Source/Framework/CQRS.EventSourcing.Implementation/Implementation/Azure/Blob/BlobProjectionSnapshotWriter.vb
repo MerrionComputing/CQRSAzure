@@ -1,4 +1,5 @@
 ﻿Imports CQRSAzure.EventSourcing
+Imports CQRSAzure.EventSourcing.Azure.Blob
 Imports Microsoft.WindowsAzure.Storage.Blob
 
 Namespace Azure.Blob
@@ -10,7 +11,7 @@ Namespace Azure.Blob
 
         Public Sub SaveSnapshot(key As TAggregateKey, snapshotToSave As IProjectionSnapshot(Of TAggregate, TAggregateKey)) Implements IProjectionSnapshotWriter(Of TAggregate, TAggregateKey, TProjection).SaveSnapshot
 
-            If (snapshotToSave.Sequence > MyBase.GetHighestSequence()) Then
+            If (snapshotToSave.Sequence > MyBase.GetHighestSequence().Result) Then
                 If (MyBase.AppendBlob IsNot Nothing) Then
 
                     Dim snapshotToWrite As New BlobBlockWrappedProjectionSnapshot(snapshotToSave)
@@ -20,7 +21,7 @@ Namespace Azure.Blob
                     Try
                         Using es As System.IO.Stream = snapshotToWrite.ToBinaryStream()
 
-                            Dim offset As Long = AppendBlob.AppendBlock(es)
+                            Dim offset As Long = AppendBlob.AppendBlockAsync(es).Result
                         End Using
                         recordWritten = True
                     Catch exBlob As Microsoft.WindowsAzure.Storage.StorageException
@@ -33,7 +34,9 @@ Namespace Azure.Blob
                 End If
             Else
                 'Attempt to save an out-of sequence snapshot
-                Throw New OutOfSequenceSnapshotException(DomainName, AggregateClassName, key.ToString(), snapshotToSave.Sequence, MyBase.GetHighestSequence())
+                Throw New OutOfSequenceSnapshotException(DomainName, AggregateClassName, key.ToString(),
+                                                         snapshotToSave.Sequence,
+                                                         MyBase.GetHighestSequence().Result)
             End If
 
         End Sub
@@ -42,7 +45,7 @@ Namespace Azure.Blob
 
             If (MyBase.AppendBlob IsNot Nothing) Then
                 MyBase.AppendBlob.Metadata(METADATA_SEQUENCE) = sequence.ToString() 'Sequence started at zero
-                MyBase.AppendBlob.SetMetadata()
+                MyBase.AppendBlob.SetMetadataAsync()
             End If
 
         End Sub
@@ -54,14 +57,16 @@ Namespace Azure.Blob
         ''' This will delete existing snapshots so should not be done in any production environment therefore this is not
         ''' part of the IProjectionSnapshotWriter interface
         ''' </remarks>
-        Public Sub Reset()
+        Public Async Function Reset() As Task
 
             If (AppendBlob IsNot Nothing) Then
-                AppendBlob.Delete(DeleteSnapshotsOption.IncludeSnapshots)
+                Await AppendBlob.DeleteAsync(DeleteSnapshotsOption.IncludeSnapshots, Nothing,
+                                             New BlobRequestOptions(),
+                                             New Microsoft.WindowsAzure.Storage.OperationContext())
                 'Recreate the blob file that was deleted
-                MyBase.ResetBlob()
+                Await MyBase.ResetBlob()
             End If
-        End Sub
+        End Function
 
         Private Sub New(ByVal AggregateDomainName As String,
                 ByVal AggregateKey As TAggregateKey,

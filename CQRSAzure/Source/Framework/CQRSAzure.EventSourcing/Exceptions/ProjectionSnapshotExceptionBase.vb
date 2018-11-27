@@ -1,5 +1,6 @@
 ﻿Imports System.Security.Permissions
 Imports System.Runtime.Serialization
+Imports System
 
 ''' <summary>
 ''' Common function shread by all projection snapshot exceptions

@@ -1,7 +1,9 @@
 ﻿Imports System.Configuration
 Imports CQRSAzure.EventSourcing.Azure
-Imports Microsoft.Azure
 Imports Microsoft.WindowsAzure.Storage
+
+Imports Microsoft.Extensions.Configuration
+Imports System.IO
 
 ''' <summary>
 ''' Common functionality that both reader and writer use to access any event store based on Azure storage
@@ -53,7 +55,18 @@ Public MustInherit Class AzureStorageEventStreamBase
         End If
 
         'Create a connection to the cloud storage account to use
-        Dim connectionString As String = CloudConfigurationManager.GetSetting(connectionStringName)
+        Dim builder As New ConfigurationBuilder()
+        builder.SetBasePath(Directory.GetCurrentDirectory())
+        builder.AddJsonFile("appsettings.json", True)
+        builder.AddJsonFile("config.local.json", True)
+        builder.AddJsonFile("config.json", True)
+        builder.AddJsonFile("connectionstrings.json", True)
+
+
+        Dim connectionString As String = builder.Build().GetConnectionString(connectionStringName)
+        If String.IsNullOrWhiteSpace(connectionString) Then
+            connectionString = builder.Build().Item(connectionStringName)
+        End If
         If (String.IsNullOrWhiteSpace(connectionString)) Then
             If Not String.IsNullOrWhiteSpace(connectionStringName) Then
                 If (ConfigurationManager.ConnectionStrings IsNot Nothing) Then
@@ -62,18 +75,30 @@ Public MustInherit Class AzureStorageEventStreamBase
                     If (settingsInUse IsNot Nothing) Then
                         connectionString = settingsInUse.ConnectionString
                     Else
-                        Throw New EventStreamUnderlyingStorageUnavailableException(AggregateDomainName, "All", NameOf(AzureStorageEventStreamBase), "No connection string named " & connectionStringName & " in application config")
+                        Throw New EventStreamUnderlyingStorageUnavailableException(AggregateDomainName, "All",
+                                                                                   NameOf(AzureStorageEventStreamBase),
+                                                                                   "No connection string named " & connectionStringName & " in application config")
                     End If
                 Else
-                    Throw New EventStreamUnderlyingStorageUnavailableException(AggregateDomainName, "All", NameOf(AzureStorageEventStreamBase), "No connection strings in application config")
+                    Throw New EventStreamUnderlyingStorageUnavailableException(AggregateDomainName, "All",
+                                                                               NameOf(AzureStorageEventStreamBase),
+                                                                               "No connection strings in application config")
                 End If
             Else
                 'Indicate that thisreader does not have a valid connection string - throw an error
-                Throw New EventStreamUnderlyingStorageUnavailableException(AggregateDomainName, "All", NameOf(AzureStorageEventStreamBase), "Missing connection String")
+                Throw New EventStreamUnderlyingStorageUnavailableException(AggregateDomainName, "All",
+                                                                           NameOf(AzureStorageEventStreamBase),
+                                                                           "Missing connection String")
             End If
         End If
 
         m_storageAccount = CloudStorageAccount.Parse(connectionString)
+
+        If (m_storageAccount Is Nothing) Then
+            Throw New EventStreamUnderlyingStorageUnavailableException(AggregateDomainName, "All",
+                                                                               NameOf(AzureStorageEventStreamBase),
+                                                                               "Unable to create storage account from " & connectionString)
+        End If
 
 
     End Sub

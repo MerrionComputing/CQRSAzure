@@ -10,7 +10,7 @@ Public NotInheritable Class ProjectionProcessorUntyped
     Private ReadOnly m_streamReader As IEventStreamReaderUntyped
     Private ReadOnly m_snapshotProcessor As ISnapshotProcessorUntyped
 
-    Public Sub Process(projectionToProcess As IProjectionUntyped) Implements IProjectionProcessorUntyped.Process
+    Public Async Function Process(projectionToProcess As IProjectionUntyped) As Task Implements IProjectionProcessorUntyped.Process
 
         If (m_streamReader IsNot Nothing) Then
             If (projectionToProcess IsNot Nothing) Then
@@ -31,7 +31,7 @@ Public NotInheritable Class ProjectionProcessorUntyped
                         'Unable to load snapshots so start from the last record read of the event stream
                     End If
                 End If
-                For Each evt In m_streamReader.GetEventsWithContext(startingSequence)
+                For Each evt In Await m_streamReader.GetEventsWithContext(startingSequence)
                     projectionToProcess.OnEventRead(evt.SequenceNumber, EventAsOfDateAttribute.GetAsOfDate(evt.EventInstance))
 
                     'is it a JSON wrapped event
@@ -63,7 +63,7 @@ Public NotInheritable Class ProjectionProcessorUntyped
             End If
         End If
 
-    End Sub
+    End Function
 
     ''' <summary>
     ''' Create a new projection processor that will use the given event stream reader to do its processing

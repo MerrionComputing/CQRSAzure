@@ -1,10 +1,11 @@
 ﻿Imports System.Text
 Imports CQRSAzure.EventSourcing.Queries
-Imports Microsoft.VisualStudio.TestTools.UnitTesting
+Imports NUnit.Framework
 
-<TestClass()> Public Class QueryStatusProjection_UnitTest
+<TestFixture()>
+Public Class QueryStatusProjection_UnitTest
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub QueryAggregate_Constructor_TestMethod()
 
         Dim testObj As New QueryAggregate(Guid.Empty)
@@ -12,7 +13,7 @@ Imports Microsoft.VisualStudio.TestTools.UnitTesting
 
     End Sub
 
-    <TestMethod>
+    <TestCase()>
     Public Sub QueryCreatedEvent_Constructor_TestMethod()
 
         Dim testObj As QueryCreatedEvent = QueryCreatedEvent.Create(Guid.Empty,

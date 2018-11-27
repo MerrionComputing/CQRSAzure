@@ -1,14 +1,14 @@
-﻿Imports System.Text
-Imports Microsoft.VisualStudio.TestTools.UnitTesting
-
-Imports CQRSAzure.IdentifierGroup.Commands
-Imports CQRSAzure.EventSourcing.InMemory
+﻿
 Imports CQRSAzure.EventSourcing.Commands
+Imports CQRSAzure.IdentifierGroup.Commands
 Imports CQRSAzure.EventSourcing
+Imports CQRSAzure.EventSourcing.InMemory
+Imports NUnit.Framework
 
-<TestClass()> Public Class CompletedCommandsIdentityGroupUnitTest
+<TestFixture()>
+Public Class CompletedCommandsIdentityGroupUnitTest
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Constructor_Empty_TestMethod()
 
         Dim testObj As New CompletedCommandsIdentityGroup()
@@ -16,7 +16,7 @@ Imports CQRSAzure.EventSourcing
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub IdentityGroupName_TestMethod()
 
         Dim expected As String = "Commands Completed"
@@ -30,7 +30,7 @@ Imports CQRSAzure.EventSourcing
     End Sub
 
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Classifier_In_WithEvents_TestMethod()
 
         Dim expected As IClassifierDataSourceHandler.EvaluationResult = IClassifierDataSourceHandler.EvaluationResult.Include
@@ -59,7 +59,7 @@ Imports CQRSAzure.EventSourcing
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Classifier_Out_WithEvents_TestMethod()
 
         Dim expected As IClassifierDataSourceHandler.EvaluationResult = IClassifierDataSourceHandler.EvaluationResult.Exclude

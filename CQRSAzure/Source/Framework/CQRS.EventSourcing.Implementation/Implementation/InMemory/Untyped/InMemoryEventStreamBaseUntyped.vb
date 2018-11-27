@@ -1,4 +1,8 @@
-﻿Namespace InMemory.Untyped
+﻿Imports System
+Imports System.Collections.Generic
+Imports CQRSAzure.EventSourcing.InMemory
+
+Namespace InMemory.Untyped
 
 
     Public MustInherit Class InMemoryEventStreamBaseUntyped

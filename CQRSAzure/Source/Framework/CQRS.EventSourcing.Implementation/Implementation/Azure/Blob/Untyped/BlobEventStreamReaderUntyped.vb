@@ -5,6 +5,8 @@ Imports CQRSAzure.EventSourcing.Azure.Blob
 Imports Microsoft.WindowsAzure.Storage
 
 Imports Newtonsoft.Json
+Imports System.Collections.Generic
+Imports System
 
 Namespace Azure.Blob.Untyped
 
@@ -25,20 +27,20 @@ Namespace Azure.Blob.Untyped
         ''' Get a snapshot of the append blob to use when reading this event stream
         ''' </summary>
         ''' <returns></returns>
-        Private Function GetAppendBlobSnapshot() As CloudAppendBlob
+        Private Async Function GetAppendBlobSnapshot() As Task(Of CloudAppendBlob)
             If (AppendBlob IsNot Nothing) Then
-                Return AppendBlob.CreateSnapshot()
+                Return Await AppendBlob.CreateSnapshotAsync()
             Else
                 Return Nothing
             End If
         End Function
 
-        Private Function GetUnderlyingStream() As System.IO.Stream
+        Private Async Function GetUnderlyingStream() As Task(Of System.IO.Stream)
 
             If (AppendBlob IsNot Nothing) Then
                 Dim targetStream As New System.IO.MemoryStream()
                 Try
-                    GetAppendBlobSnapshot().DownloadToStream(targetStream)
+                    Await GetAppendBlobSnapshot().Result.DownloadToStreamAsync(targetStream)
                 Catch exBlob As Microsoft.WindowsAzure.Storage.StorageException
                     Throw New EventStreamReadException(DomainName, AggregateClassName, Me.Key, 0, "Unable to access underlying event stream", exBlob)
                 End Try
@@ -50,16 +52,17 @@ Namespace Azure.Blob.Untyped
 
         End Function
 
-        Public Function GetEvents() As IEnumerable(Of IEvent) Implements IEventStreamReaderUntyped.GetEvents
-            Return GetEvents(StartingSequenceNumber:=0, effectiveDateTime:=Nothing)
+        Public Async Function GetEvents() As Task(Of IEnumerable(Of IEvent)) Implements IEventStreamReaderUntyped.GetEvents
+            Return Await GetEvents(StartingSequenceNumber:=0, effectiveDateTime:=Nothing)
         End Function
 
-        Public Function GetEvents(Optional StartingSequenceNumber As UInteger = 0, Optional effectiveDateTime As Date? = Nothing) As IEnumerable(Of IEvent) Implements IEventStreamReaderUntyped.GetEvents
+        Public Async Function GetEvents(Optional StartingSequenceNumber As UInteger = 0,
+                                        Optional effectiveDateTime As Date? = Nothing) As Task(Of IEnumerable(Of IEvent)) Implements IEventStreamReaderUntyped.GetEvents
 
             If (AppendBlob IsNot Nothing) Then
                 Dim ret As New List(Of IEvent)
 
-                Using rawStream As System.IO.Stream = GetUnderlyingStream()
+                Using rawStream As System.IO.Stream = Await GetUnderlyingStream()
                     If Not (rawStream.Position >= rawStream.Length) Then
                         For Each record As BlobBlockJsonWrappedEvent In BlobBlockJsonWrappedEvent.FromBinaryStream(rawStream)
                             If (record IsNot Nothing) Then
@@ -72,17 +75,21 @@ Namespace Azure.Blob.Untyped
                 End Using
                 Return ret
             Else
-                Throw New EventStreamReadException(DomainName, AggregateClassName, MyBase.InstanceKey, 0, "Unable to read events - Azure blob not initialised")
+                Throw New EventStreamReadException(DomainName,
+                                                   AggregateClassName,
+                                                   MyBase.InstanceKey, 0,
+                                                   "Unable to read events - Azure blob not initialised")
             End If
 
         End Function
 
-        Public Function GetEventsWithContext(Optional StartingSequenceNumber As UInteger = 0, Optional effectiveDateTime As Date? = Nothing) As IEnumerable(Of IEventContext) Implements IEventStreamReaderUntyped.GetEventsWithContext
+        Public Async Function GetEventsWithContext(Optional StartingSequenceNumber As UInteger = 0,
+                                                   Optional effectiveDateTime As Date? = Nothing) As Task(Of IEnumerable(Of IEventContext)) Implements IEventStreamReaderUntyped.GetEventsWithContext
 
             If (AppendBlob IsNot Nothing) Then
                 Dim ret As New List(Of IEventContext)
 
-                Using rawStream As System.IO.Stream = GetUnderlyingStream()
+                Using rawStream As System.IO.Stream = Await GetUnderlyingStream()
                     If Not (rawStream.Position >= rawStream.Length) Then
                         For Each record As BlobBlockJsonWrappedEvent In BlobBlockJsonWrappedEvent.FromBinaryStream(rawStream)
                             If (record IsNot Nothing) Then
@@ -96,7 +103,11 @@ Namespace Azure.Blob.Untyped
                 End Using
                 Return ret
             Else
-                Throw New EventStreamReadException(DomainName, AggregateClassName, Me.Key, 0, "Unable to read events - Azure blob not initialised")
+                Throw New EventStreamReadException(DomainName,
+                                                   AggregateClassName,
+                                                   Me.Key,
+                                                   0,
+                                                   "Unable to read events - Azure blob not initialised")
             End If
         End Function
 

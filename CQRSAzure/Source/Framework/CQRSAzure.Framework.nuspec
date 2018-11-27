@@ -56,7 +56,9 @@
 
     <!-- A readme.txt will be displayed when the package is installed -->
     <files>
-      <file src="lib\*.*" target="lib"/>
-      <file src="content\CQRSAzure.Framework.ReadMe.txt" target="content" />
+      <file src="D:\Source\Workspaces\CQRS on Azure\Packaging\bin\x86\*.dll" target="lib"/>
+      <file src="D:\Source\Workspaces\CQRS on Azure\Packaging\bin\x86\*.xml" target="lib"/>
+      <file src="D:\Source\Workspaces\CQRS on Azure\Packaging\bin\x86\*.pdb" target="lib"/>
+      <file src="D:\Source\Workspaces\CQRS on Azure\Packaging\content\CQRSAzure.Framework.ReadMe.txt" target="content" />
     </files>
 </package>

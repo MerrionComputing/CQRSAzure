@@ -1,4 +1,5 @@
-﻿''' <summary>
+﻿Imports System
+''' <summary>
 ''' An attribute to tag a projection implementation class with a specific name
 ''' </summary>
 ''' <remarks>

@@ -15,7 +15,7 @@ Public Interface IProjectionProcessor(Of TAggregate As IAggregationIdentifier, T
     ''' <param name="projectionToProcess">
     ''' The class that defines the projection operation we are going to process
     ''' </param>
-    Sub Process(ByVal projectionToProcess As IProjection(Of TAggregate, TAggregateKey))
+    Function Process(ByVal projectionToProcess As IProjection(Of TAggregate, TAggregateKey)) As Task
 
 End Interface
 
@@ -27,6 +27,6 @@ Public Interface IProjectionProcessorUntyped
     ''' <param name="projectionToProcess">
     ''' The class that defines the projection operation we are going to process
     ''' </param>
-    Sub Process(ByVal projectionToProcess As IProjectionUntyped)
+    Function Process(ByVal projectionToProcess As IProjectionUntyped) As Task
 
 End Interface

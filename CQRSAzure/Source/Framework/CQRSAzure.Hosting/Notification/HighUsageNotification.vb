@@ -1,4 +1,6 @@
-﻿Namespace Notification
+﻿Imports System
+
+Namespace Notification
     ''' <summary>
     ''' Notify that this host node is currently under high usage and should be left alone for a while
     ''' </summary>

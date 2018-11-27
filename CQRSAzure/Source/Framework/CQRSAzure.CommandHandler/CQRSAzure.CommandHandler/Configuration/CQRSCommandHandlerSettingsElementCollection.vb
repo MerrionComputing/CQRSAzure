@@ -1,4 +1,5 @@
-﻿Imports System.Configuration
+﻿Imports System
+Imports System.Configuration
 
 <ConfigurationCollection(GetType(CQRSCommandHandlerSettingsElement), AddItemName:="CommandHandler")>
 Public Class CQRSCommandHandlerSettingsElementCollection

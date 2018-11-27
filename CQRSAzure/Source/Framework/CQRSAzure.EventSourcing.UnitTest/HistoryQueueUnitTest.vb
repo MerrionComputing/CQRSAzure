@@ -1,10 +1,10 @@
 ﻿Imports System.Text
-Imports Microsoft.VisualStudio.TestTools.UnitTesting
+Imports NUnit.Framework
 
-<TestClass()>
+<TestFixture()>
 Public Class HistoryQueueUnitTest
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Constructor_Zero_TestMethod()
 
         Dim testObj As HistoryQueue(Of String) = New HistoryQueue(Of String)(0)
@@ -12,7 +12,7 @@ Public Class HistoryQueueUnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Constructor_IntMax_TestMethod()
 
         Dim testObj As HistoryQueue(Of String) = New HistoryQueue(Of String)(Integer.MaxValue)
@@ -20,7 +20,7 @@ Public Class HistoryQueueUnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Constructor_Negative_TestMethod()
 
         Dim testObj As HistoryQueue(Of String) = New HistoryQueue(Of String)(-9)
@@ -28,7 +28,7 @@ Public Class HistoryQueueUnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Undercount_TestMethod()
 
         Dim expected As Integer = 3
@@ -44,7 +44,7 @@ Public Class HistoryQueueUnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Undercount_ZeroMax_TestMethod()
 
         Dim expected As Integer = 3
@@ -60,7 +60,7 @@ Public Class HistoryQueueUnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Overcount_TestMethod()
 
         Dim expected As Integer = 3

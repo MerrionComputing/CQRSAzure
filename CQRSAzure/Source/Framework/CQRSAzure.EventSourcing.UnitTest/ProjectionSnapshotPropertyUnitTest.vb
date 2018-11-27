@@ -1,10 +1,10 @@
 ﻿Imports System.Text
-Imports Microsoft.VisualStudio.TestTools.UnitTesting
+Imports NUnit.Framework
 Imports CQRSAzure.EventSourcing
 
-<TestClass()> Public Class ProjectionSnapshotPropertyUnitTest
+<TestFixture()> Public Class ProjectionSnapshotPropertyUnitTest
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Constructor_Integer_TestMethod()
 
         Dim testObj As IProjectionSnapshotProperty = ProjectionSnapshotProperty.Create("Test", 1)
@@ -12,7 +12,7 @@ Imports CQRSAzure.EventSourcing
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Constructor_String_TestMethod()
 
         Dim testObj As IProjectionSnapshotProperty = ProjectionSnapshotProperty.Create("Test", "test")
@@ -20,7 +20,7 @@ Imports CQRSAzure.EventSourcing
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Constructor_Object_Empty_TestMethod()
 
         Dim testObj As IProjectionSnapshotProperty = ProjectionSnapshotProperty.Create(Of Object)("Test", Nothing)
@@ -28,7 +28,7 @@ Imports CQRSAzure.EventSourcing
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Constructor_DateTime_TestMethod()
 
         Dim testObj As IProjectionSnapshotProperty = ProjectionSnapshotProperty.Create("Test", DateTime.MinValue)

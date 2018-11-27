@@ -1,4 +1,5 @@
 ﻿
+Imports System
 ''' <summary>
 ''' An attribute to tag an aggregate or event as belonging to a particular domain
 ''' </summary>

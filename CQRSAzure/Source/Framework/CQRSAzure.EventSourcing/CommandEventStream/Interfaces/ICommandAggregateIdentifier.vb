@@ -1,4 +1,5 @@
-﻿Imports CQRSAzure.EventSourcing
+﻿Imports System
+Imports CQRSAzure.EventSourcing
 
 Namespace Commands
     Public Interface ICommandAggregateIdentifier

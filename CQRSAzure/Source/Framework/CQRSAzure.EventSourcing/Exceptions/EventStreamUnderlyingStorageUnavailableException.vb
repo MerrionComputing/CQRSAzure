@@ -1,5 +1,6 @@
 ﻿Imports System.Security.Permissions
 Imports System.Runtime.Serialization
+Imports System
 
 ''' <summary>
 ''' An exception to indicate an error that occured when trying to get the underlying storage technology 

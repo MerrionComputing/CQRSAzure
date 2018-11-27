@@ -1,4 +1,5 @@
-﻿Imports CQRSAzure.QueryDefinition
+﻿Imports System
+Imports CQRSAzure.QueryDefinition
 
 ''' <summary>
 ''' Factory methods for spinning-up instances of query handlers for given query definitions

@@ -1,5 +1,6 @@
 ﻿Option Strict On
 Option Explicit On
+Imports System
 
 ''' <summary>
 ''' Base class for any communication between hosts

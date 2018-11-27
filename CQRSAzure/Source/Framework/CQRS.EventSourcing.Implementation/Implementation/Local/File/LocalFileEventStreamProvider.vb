@@ -1,7 +1,10 @@
-﻿Imports System.IO
+﻿Imports System
+Imports System.Collections.Generic
+Imports System.IO
 Imports System.Runtime.Serialization
 Imports System.Runtime.Serialization.Formatters.Binary
 Imports CQRSAzure.EventSourcing
+Imports CQRSAzure.EventSourcing.Local.File
 
 Namespace Local.File
 
@@ -25,20 +28,25 @@ Namespace Local.File
             End Get
         End Property
 
-        Public Function GetAllStreamKeys(Optional asOfDate As Date? = Nothing) As IEnumerable(Of TaggregateKey) Implements IEventStreamProvider(Of TAggregate, TaggregateKey).GetAllStreamKeys
-            Dim ret As New List(Of TaggregateKey)
-            If (m_directory IsNot Nothing) Then
-                If (m_directory.Exists) Then
-                    For Each fd In m_directory.GetFiles("*" & EVENTSTREAM_SUFFIX, IO.SearchOption.TopDirectoryOnly)
-                        If (Not asOfDate.HasValue) OrElse (fd.CreationTimeUtc >= asOfDate.Value) Then
-                            Dim infoBlock As EventStreamDetailBlock = GetEventStreamDetailBlock(fd)
-                            ret.Add(m_converter.FromString(infoBlock.KeyAsString))
-                        End If
-                    Next
-                End If
-            End If
+        Public Async Function GetAllStreamKeys(Optional asOfDate As Date? = Nothing) As Task(Of IEnumerable(Of TaggregateKey)) Implements IEventStreamProvider(Of TAggregate, TaggregateKey).GetAllStreamKeys
 
-            Return ret
+            Return Await Task(Of IEnumerable(Of TaggregateKey)).Run(Function()
+                                                                        Dim ret As New List(Of TaggregateKey)
+                                                                        If (m_directory IsNot Nothing) Then
+                                                                            If (m_directory.Exists) Then
+                                                                                For Each fd In m_directory.GetFiles("*" & EVENTSTREAM_SUFFIX, IO.SearchOption.TopDirectoryOnly)
+                                                                                    If (Not asOfDate.HasValue) OrElse (fd.CreationTimeUtc >= asOfDate.Value) Then
+                                                                                        Dim infoBlock As EventStreamDetailBlock = GetEventStreamDetailBlock(fd)
+                                                                                        ret.Add(m_converter.FromString(infoBlock.KeyAsString))
+                                                                                    End If
+                                                                                Next
+                                                                            End If
+                                                                        End If
+
+                                                                        Return ret
+                                                                    End Function
+                )
+
         End Function
 
         Public Sub Serialise(Of TSerialiseObject)(ByVal stream As IO.Stream, ByVal objectToSerialise As TSerialiseObject)

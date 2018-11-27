@@ -1,5 +1,4 @@
-﻿Imports System.Reflection
-Imports CQRSAzure.EventSourcing
+﻿Imports CQRSAzure.EventSourcing.Azure.Table
 Imports Microsoft.WindowsAzure.Storage.Table
 
 Namespace Azure.Table
@@ -22,30 +21,18 @@ Namespace Azure.Table
             End Get
         End Property
 
-        Private ReadOnly m_aggregatekeyTable As CloudTable
-        ''' <summary>
-        ''' The table reference to use when accessing the aggregate key details
-        ''' </summary>
-        ''' <remarks>
-        ''' This can also be used to give a secondary key lookup if an aggregate has different candidates for unqiue
-        ''' identifier (e.g. CUSIP/ISIN/SEDOL etc for stocks, Chassis No/Veh Reg for vehicle etc..)
-        ''' </remarks>
-        Protected ReadOnly Property AggregateKeyTable As CloudTable
-            Get
-                Return m_aggregatekeyTable
-            End Get
-        End Property
 
-
-        Public Function GetAllStreamKeys(Optional asOfDate As Date? = Nothing) As IEnumerable(Of TaggregateKey) Implements IEventStreamProvider(Of TAggregate, TaggregateKey).GetAllStreamKeys
+        Public Async Function GetAllStreamKeys(Optional asOfDate As Date? = Nothing) As Task(Of IEnumerable(Of TaggregateKey)) Implements IEventStreamProvider(Of TAggregate, TaggregateKey).GetAllStreamKeys
 
             Dim ret As New List(Of TaggregateKey)
-            If (m_aggregatekeyTable IsNot Nothing) Then
-                If m_aggregatekeyTable.Exists Then
+            If (MyBase.AggregateKeyTable IsNot Nothing) Then
+                If Await MyBase.AggregateKeyTable.ExistsAsync() Then
                     Dim qryKeys = New TableQuery(Of TableAggregateKeyRecord)().Where(
                     TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, AggregateClassName))
 
-                    For Each aggKey As TableAggregateKeyRecord In m_aggregatekeyTable.ExecuteQuery(Of TableAggregateKeyRecord)(qryKeys)
+                    Dim continueToken As New TableContinuationToken()
+                    Dim records = Await MyBase.AggregateKeyTable.ExecuteQuerySegmentedAsync(Of TableAggregateKeyRecord)(qryKeys, continueToken)
+                    For Each aggKey As TableAggregateKeyRecord In records
                         If Not asOfDate.HasValue OrElse (asOfDate.Value < aggKey.CreatedDateTime) Then
                             ret.Add(m_converter.FromString(aggKey.RowKey))
                         End If
@@ -75,9 +62,7 @@ Namespace Azure.Table
                 End If
             End If
 
-            If (m_cloudTableClient IsNot Nothing) Then
-                m_aggregatekeyTable = m_cloudTableClient.GetTableReference(MakeValidStorageTableName(AggregateDomainName & " " & TABLENAME_SUFFIX_KEYS))
-            End If
+
 
         End Sub
 

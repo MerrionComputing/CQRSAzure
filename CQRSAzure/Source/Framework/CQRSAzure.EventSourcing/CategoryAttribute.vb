@@ -1,4 +1,5 @@
-﻿''' <summary>
+﻿Imports System
+''' <summary>
 ''' An attribute to tag an entity for business role classification
 ''' </summary>
 ''' <remarks>

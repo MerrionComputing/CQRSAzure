@@ -1,4 +1,5 @@
 ﻿
+Imports System
 Imports System.Runtime.Serialization
 
 Namespace IdentityGroups

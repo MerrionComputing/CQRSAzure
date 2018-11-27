@@ -1,5 +1,7 @@
-﻿Imports System.IO
+﻿Imports System
+Imports System.IO
 Imports CQRSAzure.EventSourcing
+Imports CQRSAzure.EventSourcing.Implementation.Local.File
 Imports CQRSAzure.EventSourcing.Local.File
 
 Namespace Local.File

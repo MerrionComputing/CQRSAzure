@@ -1,7 +1,10 @@
 ﻿Option Explicit On
 Option Strict On
+Imports System
 Imports System.Collections.Concurrent
+Imports System.Linq
 Imports CQRSAzure.EventSourcing
+Imports CQRSAzure.EventSourcing.InMemory
 
 Namespace InMemory
     Public MustInherit Class InMemoryEventStreamBase(Of TAggregate As CQRSAzure.EventSourcing.IAggregationIdentifier, TAggregateKey)

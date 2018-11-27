@@ -1,12 +1,11 @@
-﻿Imports System.Text
-Imports Microsoft.VisualStudio.TestTools.UnitTesting
-
+﻿
 Imports CQRSAzure.CommandDefinition
+Imports NUnit.Framework
 
-<TestClass()>
+<TestFixture()>
 Public Class CommandParameterUnitTest
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Constructor_Integer_TestMethod()
 
         Dim cmdObj As CommandParameter(Of Integer) =
@@ -16,7 +15,7 @@ Public Class CommandParameterUnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Constructor_String_TestMethod()
 
         Dim cmdObj As CommandParameter(Of String) =
@@ -26,7 +25,7 @@ Public Class CommandParameterUnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Constructor_Guid_TestMethod()
 
         Dim cmdObj As CommandParameter(Of Guid) =
@@ -36,7 +35,7 @@ Public Class CommandParameterUnitTest
 
     End Sub
 
-    <TestMethod>
+    <TestCase()>
     Public Sub Value_Integer_RoundTrip()
 
         Dim expected As Integer = 3345
@@ -52,7 +51,7 @@ Public Class CommandParameterUnitTest
     End Sub
 
 
-    <TestMethod>
+    <TestCase()>
     Public Sub Value_Guid_RoundTrip()
 
         Dim expected As Guid = New Guid("81b64d0a-a4e5-450d-977e-ab2f3802370c")
@@ -67,7 +66,7 @@ Public Class CommandParameterUnitTest
 
     End Sub
 
-    <TestMethod>
+    <TestCase()>
     Public Sub Value_Guid_Serialisation_RoundTrip()
 
         Dim expected As Guid = New Guid("81b64d0a-a4e5-450d-977e-ab2f3802370c")
@@ -91,7 +90,7 @@ Public Class CommandParameterUnitTest
     End Sub
 
 
-    <TestMethod>
+    <TestCase()>
     Public Sub Name_Guid_Serialisation_RoundTrip()
 
         Dim expected As String = "Expected name"
@@ -115,7 +114,7 @@ Public Class CommandParameterUnitTest
     End Sub
 
 
-    <TestMethod>
+    <TestCase()>
     Public Sub Index_Guid_Serialisation_RoundTrip()
 
         Dim expected As Integer = 33

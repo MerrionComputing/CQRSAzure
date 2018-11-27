@@ -1,4 +1,6 @@
-﻿Imports CQRSAzure.EventSourcing
+﻿Imports System
+Imports CQRSAzure.EventSourcing
+Imports CQRSAzure.EventSourcing.Azure.Table
 Imports Microsoft.WindowsAzure.Storage.Table
 
 Namespace Azure.Table
@@ -11,13 +13,13 @@ Namespace Azure.Table
 
 
 
-        Public Function GetSnapshot(key As TAggregateKey, Optional OnOrBeforeSequence As UInteger = 0) As IProjectionSnapshot(Of TAggregate, TAggregateKey) Implements IProjectionSnapshotReader(Of TAggregate, TAggregateKey, TProjection).GetSnapshot
+        Public Async Function GetSnapshot(key As TAggregateKey, Optional OnOrBeforeSequence As UInteger = 0) As Task(Of IProjectionSnapshot(Of TAggregate, TAggregateKey)) Implements IProjectionSnapshotReader(Of TAggregate, TAggregateKey, TProjection).GetSnapshot
 
             If (OnOrBeforeSequence = 0) Then
                 OnOrBeforeSequence = UInteger.MaxValue
             End If
 
-            OnOrBeforeSequence = GetLatestSnapshotSequence(key, OnOrBeforeSequence)
+            OnOrBeforeSequence = Await GetLatestSnapshotSequence(key, OnOrBeforeSequence)
 
             If (MyBase.Table IsNot Nothing) Then
 
@@ -40,7 +42,10 @@ Namespace Azure.Table
                     )
 
                 Dim ret As ProjectionSnapshot(Of TAggregate, TAggregateKey) = ProjectionSnapshot.Create(Of TAggregate, TAggregateKey)(OnOrBeforeSequence, DateTime.MinValue)
-                For Each e In MyBase.Table.ExecuteQuery(latestSnapshotQuery)
+
+                Dim token As New TableContinuationToken()
+                Dim querySegment = MyBase.Table.ExecuteQuerySegmentedAsync(latestSnapshotQuery, token)
+                For Each e In querySegment.Result
                     'each record is a row of values for the projection
                     Dim rowNumber = RowNumberFromRowKey(e.RowKey)
                     For Each field In e.Properties
@@ -76,15 +81,19 @@ Namespace Azure.Table
 
         End Function
 
-        Public Function GetLatestSnapshotSequence(key As TAggregateKey, Optional OnOrBeforeSequence As UInteger = 0) As UInteger Implements IProjectionSnapshotReader(Of TAggregate, TAggregateKey, TProjection).GetLatestSnapshotSequence
+        Public Function GetLatestSnapshotSequence(key As TAggregateKey, Optional OnOrBeforeSequence As UInteger = 0) As Task(Of UInteger) Implements IProjectionSnapshotReader(Of TAggregate, TAggregateKey, TProjection).GetLatestSnapshotSequence
 
-            If (OnOrBeforeSequence = 0) Then
-                OnOrBeforeSequence = UInteger.MaxValue
-            End If
+            Return Task.Factory.StartNew(Of UInteger)(Function()
 
-            If (MyBase.Table IsNot Nothing) Then
 
-                Dim latestSnapshotQuery = New TableQuery(Of DynamicTableEntity)().Where(
+
+                                                          If (OnOrBeforeSequence = 0) Then
+                                                              OnOrBeforeSequence = UInteger.MaxValue
+                                                          End If
+
+                                                          If (MyBase.Table IsNot Nothing) Then
+
+                                                              Dim latestSnapshotQuery = New TableQuery(Of DynamicTableEntity)().Where(
                     TableQuery.CombineFilters(
                     TableQuery.GenerateFilterCondition("PartitionKey",
                     QueryComparisons.Equal, MyBase.Key),
@@ -95,18 +104,23 @@ Namespace Azure.Table
                     )
                     ).Select({"RowKey"})
 
-                Dim currentHighest As Integer
-                For Each e In MyBase.Table.ExecuteQuery(latestSnapshotQuery)
-                    If SequenceFromRowKey(e.RowKey) > currentHighest Then
-                        currentHighest = SequenceFromRowKey(e.RowKey)
-                    End If
-                Next
-                Return currentHighest
+                                                              Dim currentHighest As Integer
+                                                              Dim token As New TableContinuationToken()
+                                                              Dim querySegment = MyBase.Table.ExecuteQuerySegmentedAsync(latestSnapshotQuery, token)
+                                                              For Each e In querySegment.Result
+                                                                  If SequenceFromRowKey(e.RowKey) > currentHighest Then
+                                                                      currentHighest = SequenceFromRowKey(e.RowKey)
+                                                                  End If
+                                                              Next
+                                                              Return currentHighest
 
-            End If
+                                                          End If
 
-            'if we didn't find any snapshot - return 0
-            Return 0
+                                                          'if we didn't find any snapshot - return 0
+                                                          Return 0
+
+                                                      End Function
+            )
 
         End Function
 

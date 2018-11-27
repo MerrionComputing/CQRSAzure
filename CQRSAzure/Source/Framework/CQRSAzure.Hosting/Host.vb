@@ -1,5 +1,6 @@
 ﻿Option Strict On
-Imports CQRSAzure.Hosting
+Imports System
+Imports System.Collections.Generic
 
 ''' <summary>
 ''' A host is a container responsible for one or more hosted domain.  It is responsible for all interaction 

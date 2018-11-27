@@ -1,4 +1,5 @@
-﻿Imports CQRSAzure.EventSourcing.Azure.File
+﻿Imports System
+Imports CQRSAzure.EventSourcing.Azure.File
 
 Namespace Azure.File
     Public NotInheritable Class AzureFileIdentifierGroupSnapshotWriter(Of TAggregate As CQRSAzure.EventSourcing.IAggregationIdentifier, TAggregateKey)

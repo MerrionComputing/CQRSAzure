@@ -1,4 +1,5 @@
-﻿Imports CQRSAzure.QueryDefinition
+﻿Imports System.Collections.Generic
+Imports CQRSAzure.QueryDefinition
 
 ''' <summary>
 ''' Base class for any specific query handling class that returns a single set of results

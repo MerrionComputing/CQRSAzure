@@ -1,6 +1,7 @@
-﻿Imports System.Runtime.Serialization
+﻿Imports System
+Imports System.Collections.Generic
+Imports System.Runtime.Serialization
 Imports System.Runtime.Serialization.Formatters.Binary
-Imports CQRSAzure.EventSourcing
 
 Namespace Azure.Blob
     ''' <summary>

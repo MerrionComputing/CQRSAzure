@@ -1,12 +1,12 @@
 ﻿Imports System.Text
-Imports Microsoft.VisualStudio.TestTools.UnitTesting
+Imports NUnit.Framework
 
 Imports CQRSAzure.EventSourcing
 Imports CQRSAzure.EventSourcing.Local.File
 
 #If LOCAL_MACHINE Then
 
-<TestClass()>
+<TestFixture()>
 Public Class LocalFileEventStreamUnitTest
 
 
@@ -21,7 +21,7 @@ Public Class LocalFileEventStreamUnitTest
         .EventStreamRootFolder = "D:\Data\CQRS on Azure\Event Streams",
         .SnapshotsRootFolder = "D:\Data\CQRS on Azure\Snapshots"}
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Reader_Constructor_TestMethod()
 
         Dim testAgg As New MockAggregate(TEST_AGGREGATE_IDENTIFIER)
@@ -30,7 +30,7 @@ Public Class LocalFileEventStreamUnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Reader_KeyRoundTrip_TestMethod()
 
         Dim expected As String = TEST_AGGREGATE_IDENTIFIER
@@ -45,7 +45,7 @@ Public Class LocalFileEventStreamUnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Reader_Filename_TestMethod()
 
         Dim actual As String = "not set"
@@ -60,7 +60,7 @@ Public Class LocalFileEventStreamUnitTest
     End Sub
 
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Writer_WriteEvent_TestMethod()
 
         Dim testAgg As New MockAggregate(TEST_AGGREGATE_IDENTIFIER)
@@ -71,7 +71,7 @@ Public Class LocalFileEventStreamUnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Writer_NVP_WriteEvent_TestMethod()
 
         Dim testAgg As New MockAggregate(TEST_AGGREGATE_IDENTIFIER)
@@ -82,7 +82,7 @@ Public Class LocalFileEventStreamUnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Writer_WriteMultipleEvent_TestMethod()
 
         Dim testAgg As New MockAggregate(TEST_AGGREGATE_IDENTIFIER)
@@ -101,7 +101,7 @@ Public Class LocalFileEventStreamUnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Writer_NVP_WriteMultipleEvent_TestMethod()
 
         Dim testAgg As New MockAggregate(TEST_AGGREGATE_IDENTIFIER)
@@ -120,7 +120,7 @@ Public Class LocalFileEventStreamUnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Reader_ReadEvents_TestMethod()
 
         Dim testAgg As New MockAggregate(TEST_AGGREGATE_IDENTIFIER)
@@ -131,7 +131,7 @@ Public Class LocalFileEventStreamUnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Reader_NVP_ReadEvents_TestMethod()
 
         Dim testAgg As New MockAggregate(TEST_AGGREGATE_IDENTIFIER)
@@ -142,7 +142,7 @@ Public Class LocalFileEventStreamUnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Reader_GetAllKeys_TestMethod()
 
         Dim testAgg As New MockAggregate(TEST_AGGREGATE_IDENTIFIER)
@@ -153,7 +153,7 @@ Public Class LocalFileEventStreamUnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Reader_NVP_GetAllKeys_TestMethod()
 
         Dim testAgg As New MockAggregate(TEST_AGGREGATE_IDENTIFIER)
@@ -164,7 +164,7 @@ Public Class LocalFileEventStreamUnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Reader_Writer_RoundTrip_TestMethod()
 
         Dim expected As String = "Mock event test 2"
@@ -187,7 +187,7 @@ Public Class LocalFileEventStreamUnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Reader_NVP_Writer_RoundTrip_TestMethod()
 
         Dim expected As String = "Mock event test 2"
@@ -210,7 +210,7 @@ Public Class LocalFileEventStreamUnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Guid_Allkeys_TestMethod()
 
         Dim expected As Guid = New Guid(TEST_AGGREGATE_GUID)
@@ -229,7 +229,7 @@ Public Class LocalFileEventStreamUnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub LocalFileProjectionSnapshotReader_Constructor_NoSettings_TestMethod()
 
         Dim testAggregate As New MockGuidAggregate(New Guid(TEST_AGGREGATE_GUID))
@@ -242,7 +242,7 @@ Public Class LocalFileEventStreamUnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub LocalFileProjectionSnapshotReader_Constructor_DefaultSettings_TestMethod()
 
         Dim testAggregate As New MockGuidAggregate(New Guid(TEST_AGGREGATE_GUID))
@@ -256,7 +256,7 @@ Public Class LocalFileEventStreamUnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub LocalFileProjectionSnapshotWriter_Constructor_NoSettings_TestMethod()
 
         Dim testAggregate As New MockGuidAggregate(New Guid(TEST_AGGREGATE_GUID))
@@ -269,7 +269,7 @@ Public Class LocalFileEventStreamUnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub LocalFileProjectionSnapshotBase_MakeFilename_TestMethod()
 
         Dim expected As String = "duncan-s.snapshot.1234"

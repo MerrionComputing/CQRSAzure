@@ -1,14 +1,14 @@
 ﻿Imports System.Text
-Imports Microsoft.VisualStudio.TestTools.UnitTesting
+Imports NUnit.Framework
 
 Imports CQRSAzure.EventSourcing
 Imports CQRSAzure.EventSourcing.Azure.File
 Imports CQRSAzure.EventSourcing.UnitTest.Mocking
 
-<TestClass()>
+<TestFixture()>
 Public Class AzureFileProjectionSnapshotUnitTest
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub FileProjectionSnapshotWriter_Constructor_TestMethod()
 
         Const TEST_KEY As String = "1.snt.234"
@@ -24,7 +24,7 @@ Public Class AzureFileProjectionSnapshotUnitTest
 
     End Sub
 
-    <TestMethod>
+    <TestCase()>
     Public Sub FileProjectionSnapshotReader_Constructor_TestMethod()
 
         Const TEST_KEY As String = "1.snt.234"
@@ -41,7 +41,7 @@ Public Class AzureFileProjectionSnapshotUnitTest
     End Sub
 
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub FileProjectionSnapshotWriter_SaveSnapshot_TestMethod()
 
         Const TEST_KEY As String = "1.snt.334"
@@ -60,7 +60,7 @@ Public Class AzureFileProjectionSnapshotUnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub FileProjectionSnapshotWriter_FilenameToSequenceNumber_TestMethod()
 
         Dim expected As UInteger = 17
@@ -75,7 +75,7 @@ Public Class AzureFileProjectionSnapshotUnitTest
     End Sub
 
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub FileProjectionSnapshotWriter_FilenameToAsOfDate_TestMethod()
 
         Dim expected As DateTime? = New DateTime(2016, 1, 17, 9, 30, 0)
@@ -89,7 +89,7 @@ Public Class AzureFileProjectionSnapshotUnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub FileProjectionSnapshotBase_ASOFDATE_FORMAT_TestMethod()
 
         Dim expected As String = "201601170930000000"
@@ -102,8 +102,8 @@ Public Class AzureFileProjectionSnapshotUnitTest
     End Sub
 
 
-    <TestMethod>
-    Public Sub FileProjectionSnapshotReader_NoSnapshots_SequenceIsZero_TestMethod()
+    <TestCase()>
+    Public Async Function FileProjectionSnapshotReader_NoSnapshots_SequenceIsZero_TestMethod() As Task
 
         Dim expected As UInteger = 0
         Dim actual As UInteger = 20
@@ -117,11 +117,11 @@ Public Class AzureFileProjectionSnapshotUnitTest
                                                           TEST_KEY,
                                                           testProjection)
 
-        actual = testObj.GetLatestSnapshotSequence(TEST_KEY)
+        actual = Await testObj.GetLatestSnapshotSequence(TEST_KEY)
 
         Assert.AreEqual(expected, actual)
 
-    End Sub
+    End Function
 
 
 

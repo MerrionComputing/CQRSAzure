@@ -1,9 +1,9 @@
 ﻿Imports System.Text
-Imports Microsoft.VisualStudio.TestTools.UnitTesting
+Imports NUnit.Framework
 
-<TestClass()> Public Class ContextWrappedEvent_UnitTest
+<TestFixture()> Public Class ContextWrappedEvent_UnitTest
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Wrap_NotNull_TestMethod()
 
         Dim evtTest As New Mocking.MockEventTypeTwo() With {.EventTwoStringProperty = "A test"}
@@ -21,7 +21,7 @@ Imports Microsoft.VisualStudio.TestTools.UnitTesting
     End Sub
 
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub WrapOuter_NotNull_TestMethod()
 
         Dim evtTest As New Mocking.MockEventTypeTwo() With {.EventTwoStringProperty = "A test"}
@@ -38,7 +38,7 @@ Imports Microsoft.VisualStudio.TestTools.UnitTesting
 
     End Sub
 
-    <TestMethod>
+    <TestCase()>
     Public Sub WrapOuter_RoundTrip_Name()
 
         Dim expected As String = "Duncan Jones"
@@ -60,7 +60,7 @@ Imports Microsoft.VisualStudio.TestTools.UnitTesting
 
     End Sub
 
-    <TestMethod>
+    <TestCase()>
     Public Sub WrapOuter_RoundTrip_Key()
 
         Dim expected As String = "1234"
@@ -84,10 +84,10 @@ Imports Microsoft.VisualStudio.TestTools.UnitTesting
 
 End Class
 
-<TestClass()>
+<TestFixture()>
 Public Class EventSerialiserFactory_UnitTest
 
-    <TestMethod>
+    <TestCase()>
     Public Sub GetSerialiser_NotNull_TestMethod()
 
         EventSerializerFactory.AddOrSetSerialiser(Of Mocking.MockEventTypeTwo)(EventSerializerFactory.Create(Of Mocking.MockEventTypeTwo)())
@@ -97,7 +97,7 @@ Public Class EventSerialiserFactory_UnitTest
     End Sub
 
 
-    <TestMethod>
+    <TestCase()>
     Public Sub Create_NoParams_TestMethod()
 
         Dim testObj = EventSerializerFactory.Create(Of Mocking.MockEventTypeTwo)
@@ -106,7 +106,7 @@ Public Class EventSerialiserFactory_UnitTest
     End Sub
 
 
-    <TestMethod>
+    <TestCase()>
     Public Sub CreateAndUsetStreamFormatterFunction_TestMethod()
 
         Dim unexpected As Long = 0
@@ -129,7 +129,7 @@ Public Class EventSerialiserFactory_UnitTest
 
 
 
-    <TestMethod>
+    <TestCase()>
     Public Sub CreateDefaultStreamFormatterFunction_TestMethod()
 
         Dim testObj = EventSerializerFactory.CreateDefaultStreamFormatterFunction(Of Mocking.MockEventTypeTwo)()
@@ -137,7 +137,7 @@ Public Class EventSerialiserFactory_UnitTest
 
     End Sub
 
-    <TestMethod>
+    <TestCase()>
     Public Sub RoundTripEvent_StreamFunction_TestMethod()
 
         Dim expected As String = "Expected Output"
@@ -164,7 +164,7 @@ Public Class EventSerialiserFactory_UnitTest
     End Sub
 
 
-    <TestMethod>
+    <TestCase()>
     Public Sub RoundTripEvent_StreamFunction_AttributedSubstitute_TestMethod()
 
         Dim expected As String = "Expected Output"
@@ -189,7 +189,7 @@ Public Class EventSerialiserFactory_UnitTest
 
     End Sub
 
-    <TestMethod>
+    <TestCase()>
     Public Sub CreateDefaultSaveNameValuePairsFunction_TestMethod()
 
         Dim testObj = EventSerializerFactory.CreateDefaultSaveNameValuePairsFunction(Of Mocking.MockEventTypeTwo)()
@@ -197,7 +197,7 @@ Public Class EventSerialiserFactory_UnitTest
 
     End Sub
 
-    <TestMethod>
+    <TestCase()>
     Public Sub CreateAndUseDefaultSaveNameValuePairsFunction_TestMethod()
 
         Dim testObj = EventSerializerFactory.CreateDefaultSaveNameValuePairsFunction(Of Mocking.MockEventTypeTwo)()
@@ -210,7 +210,7 @@ Public Class EventSerialiserFactory_UnitTest
 
     End Sub
 
-    <TestMethod>
+    <TestCase()>
     Public Sub CreateAndUseDefaultSaveNameValuePairsFunction_AttributedSubstitute_TestMethod()
 
         Dim testObj = EventSerializerFactory.CreateDefaultSaveNameValuePairsFunction(Of Mocking.MockEventTypeTwoWithSerialser)()
@@ -223,7 +223,7 @@ Public Class EventSerialiserFactory_UnitTest
 
     End Sub
 
-    <TestMethod>
+    <TestCase()>
     Public Sub RoundTripEvent_NameValuePairsFunction_AttributedSubstitute_TestMethod()
 
         Dim expected As String = "Expected Output"
@@ -243,7 +243,7 @@ Public Class EventSerialiserFactory_UnitTest
 
     End Sub
 
-    <TestMethod>
+    <TestCase()>
     Public Sub CreateDefaultReadNameValuePairsFunction_TestMethod()
 
         Dim testObj = EventSerializerFactory.CreateDefaultReadNameValuePairsFunction(Of Mocking.MockEventTypeTwo)()
@@ -251,7 +251,7 @@ Public Class EventSerialiserFactory_UnitTest
 
     End Sub
 
-    <TestMethod>
+    <TestCase()>
     Public Sub CreateAnduseDefaultReadNameValuePairsFunction_TestMethod()
 
         Dim testObj = EventSerializerFactory.CreateDefaultReadNameValuePairsFunction(Of Mocking.MockEventTypeTwo)()
@@ -265,7 +265,7 @@ Public Class EventSerialiserFactory_UnitTest
 
     End Sub
 
-    <TestMethod>
+    <TestCase()>
     Public Sub RoundTrip_SerialiserFactory_UnitTest()
 
         'load the serialisers
@@ -286,7 +286,7 @@ Public Class EventSerialiserFactory_UnitTest
     End Sub
 
 
-    <TestMethod>
+    <TestCase()>
     Public Sub SerialiserFactory_Untyped_Get_UnitTest()
 
         'load the serialisers

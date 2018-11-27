@@ -1,5 +1,6 @@
 ﻿Imports System.Security.Permissions
 Imports System.Runtime.Serialization
+Imports System
 
 ''' <summary>
 ''' An attempt was made to perform an operation on a named domain that was not found

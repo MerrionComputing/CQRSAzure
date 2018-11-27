@@ -1,4 +1,5 @@
-﻿Imports CQRSAzure.EventSourcing
+﻿Imports System
+Imports System.Collections.Generic
 Imports Microsoft.WindowsAzure.Storage
 Imports Microsoft.WindowsAzure.Storage.Table
 
@@ -97,6 +98,8 @@ Namespace Azure.Table
             End If
 
         End Sub
+
+
 
         Public Function WriteEntity(operationContext As OperationContext) As IDictionary(Of String, EntityProperty) Implements ITableEntity.WriteEntity
 

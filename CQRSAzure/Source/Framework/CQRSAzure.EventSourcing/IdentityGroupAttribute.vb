@@ -1,4 +1,6 @@
-﻿Public NotInheritable Class IdentityGroupAttribute
+﻿Imports System
+
+Public NotInheritable Class IdentityGroupAttribute
     Inherits Attribute
 
     Public Const IDENTITYGROUPNAME_INSTANCE As String = "Instance"

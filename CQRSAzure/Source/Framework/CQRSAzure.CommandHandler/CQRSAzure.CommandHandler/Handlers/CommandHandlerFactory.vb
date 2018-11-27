@@ -1,4 +1,5 @@
-﻿Imports CQRSAzure.CommandDefinition
+﻿Imports System
+Imports CQRSAzure.CommandDefinition
 
 ''' <summary>
 ''' Factory methods for spinning-up instances of command handlers for given command definitions

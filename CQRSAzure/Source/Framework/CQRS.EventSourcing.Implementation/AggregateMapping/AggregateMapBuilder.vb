@@ -1,4 +1,6 @@
-﻿Imports System.Configuration
+﻿Imports System
+Imports System.Collections.Generic
+Imports System.Configuration
 Imports System.Linq
 Imports CQRSAzure.EventSourcing
 

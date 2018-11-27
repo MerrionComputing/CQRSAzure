@@ -1,4 +1,7 @@
-﻿Namespace Azure.Blob
+﻿Imports System
+Imports System.Collections.Generic
+
+Namespace Azure.Blob
 
     ''' <summary>
     ''' A wrapper for a snapshot of the aggregate identifiers in a given group as at a given date/time

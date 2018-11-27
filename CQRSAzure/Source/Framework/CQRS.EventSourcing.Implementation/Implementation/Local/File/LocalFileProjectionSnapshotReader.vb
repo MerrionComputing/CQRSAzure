@@ -1,4 +1,7 @@
-﻿Imports CQRSAzure.EventSourcing
+﻿Imports System
+Imports System.Linq
+Imports CQRSAzure.EventSourcing
+Imports CQRSAzure.EventSourcing.Local.File
 
 Namespace Local.File
 
@@ -9,25 +12,30 @@ Namespace Local.File
         Implements IProjectionSnapshotReader(Of TAggregate, TAggregateKey, TProjection)
 
 
-        Public Function GetLatestSnapshotSequence(key As TAggregateKey, Optional OnOrBeforeSequence As UInteger = 0) As UInteger Implements IProjectionSnapshotReader(Of TAggregate, TAggregateKey, TProjection).GetLatestSnapshotSequence
+        Public Function GetLatestSnapshotSequence(key As TAggregateKey, Optional OnOrBeforeSequence As UInteger = 0) As Task(Of UInteger) Implements IProjectionSnapshotReader(Of TAggregate, TAggregateKey, TProjection).GetLatestSnapshotSequence
 
-            Dim ret As UInteger = 0
-            If (MyBase.m_directory IsNot Nothing) Then
-                For Each fi As System.IO.FileInfo In m_directory.GetFiles(MyBase.MakeFilenameBase() & "*", IO.SearchOption.TopDirectoryOnly)
-                    Dim val As UInteger = GetSequenceNumberFromFilename(fi.Name)
-                    If (val > ret) Then
-                        ret = val
+            'if we didn't return anything then there is no latest snapshot
+            Return Task.Factory.StartNew(Of UInteger)(
+                Function()
+                    Dim ret As UInteger = 0
+                    If (MyBase.m_directory IsNot Nothing) Then
+                        For Each fi As System.IO.FileInfo In m_directory.GetFiles(MyBase.MakeFilenameBase() & "*", IO.SearchOption.TopDirectoryOnly)
+                            Dim val As UInteger = GetSequenceNumberFromFilename(fi.Name)
+                            If (val > ret) Then
+                                ret = val
+                            End If
+                        Next
                     End If
-                Next
-            End If
 
-            Return ret
+                    Return ret
+                End Function
+                )
 
         End Function
 
 
 
-        Public Function GetSnapshot(key As TAggregateKey, Optional OnOrBeforeSequence As UInteger = 0) As IProjectionSnapshot(Of TAggregate, TAggregateKey) Implements IProjectionSnapshotReader(Of TAggregate, TAggregateKey, TProjection).GetSnapshot
+        Public Function GetSnapshot(key As TAggregateKey, Optional OnOrBeforeSequence As UInteger = 0) As Task(Of IProjectionSnapshot(Of TAggregate, TAggregateKey)) Implements IProjectionSnapshotReader(Of TAggregate, TAggregateKey, TProjection).GetSnapshot
 
             'Find the snapshot file
             Dim highestSnapshot As String = ""

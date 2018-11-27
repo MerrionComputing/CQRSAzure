@@ -1,12 +1,12 @@
 ﻿Imports System.Text
-Imports Microsoft.VisualStudio.TestTools.UnitTesting
+Imports NUnit.Framework
 
 Imports CQRSAzure.QueryDefinition
 
-<TestClass()>
+<TestFixture()>
 Public Class QueryParameterUnitTest
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Constructor_Integer_TestMethod()
 
         Dim paramObj As QueryParameter(Of Integer) =
@@ -16,7 +16,7 @@ Public Class QueryParameterUnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Constructor_String_TestMethod()
 
         Dim paramObj As QueryParameter(Of String) =
@@ -26,7 +26,7 @@ Public Class QueryParameterUnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Constructor_Guid_TestMethod()
 
         Dim paramObj As QueryParameter(Of Guid) =
@@ -36,7 +36,7 @@ Public Class QueryParameterUnitTest
 
     End Sub
 
-    <TestMethod>
+    <TestCase>
     Public Sub Value_Integer_RoundTrip()
 
         Dim expected As Integer = 123
@@ -51,7 +51,7 @@ Public Class QueryParameterUnitTest
 
     End Sub
 
-    <TestMethod>
+    <TestCase>
     Public Sub Value_String_RoundTrip()
 
         Dim expected As String = "This is a test"
@@ -66,7 +66,7 @@ Public Class QueryParameterUnitTest
 
     End Sub
 
-    <TestMethod>
+    <TestCase>
     Public Sub Value_String_Serialisation_RoundTrip()
 
         Dim expected As String = "This is a test"
@@ -90,7 +90,7 @@ Public Class QueryParameterUnitTest
     End Sub
 
 
-    <TestMethod>
+    <TestCase>
     Public Sub Name_String_Serialisation_RoundTrip()
 
         Dim expected As String = "expected name"
@@ -113,7 +113,7 @@ Public Class QueryParameterUnitTest
 
     End Sub
 
-    <TestMethod>
+    <TestCase>
     Public Sub Value_Integer_Serialisation_RoundTrip()
 
         Dim expected As Integer = 123
@@ -136,7 +136,7 @@ Public Class QueryParameterUnitTest
 
     End Sub
 
-    <TestMethod>
+    <TestCase>
     Public Sub Index_Integer_Serialisation_RoundTrip()
 
         Dim expected As Integer = 123

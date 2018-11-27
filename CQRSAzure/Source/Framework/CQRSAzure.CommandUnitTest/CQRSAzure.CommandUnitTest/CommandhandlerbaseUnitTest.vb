@@ -1,13 +1,11 @@
-﻿Imports System.Text
-Imports Microsoft.VisualStudio.TestTools.UnitTesting
-
+﻿
 Imports CQRSAzure.CommandDefinition
-Imports CQRSAzure.CommandHandler
+Imports NUnit.Framework
 
-<TestClass()>
+<TestFixture()>
 Public Class CommandhandlerbaseUnitTest
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Constructor_TestMethod()
 
         Dim testObj As New MockCommandDefinitionClass()
@@ -16,7 +14,7 @@ Public Class CommandhandlerbaseUnitTest
     End Sub
 
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub AddParameterOfString_RoundTrip_TestMethod()
 
         Dim expected As String = "Expected"
@@ -30,7 +28,7 @@ Public Class CommandhandlerbaseUnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub AddParameterOfInteger_RoundTrip_TestMethod()
 
         Dim expected As Integer = 112
@@ -45,7 +43,7 @@ Public Class CommandhandlerbaseUnitTest
     End Sub
 
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub AddParameterOfDecimalRoundTrip_TestMethod()
 
         Dim expected As Decimal = 112.98
@@ -59,23 +57,26 @@ Public Class CommandhandlerbaseUnitTest
 
     End Sub
 
-    <TestMethod()>
-    <ExpectedException(GetType(ArgumentException))>
+    <TestCase()>
     Public Sub GetBeforeSet_ThrowsError_TestMethod()
 
-        Dim expected As String = "Expected"
-        Dim actual As String = "Actual"
 
-        Dim testObj As New MockCommandDefinitionClass()
-        'testObj.MyParameter = expected ..if the parameter is not set it should throw a not found...
-        actual = testObj.MyParameter
+        Assert.Throws(Of ArgumentException)(Sub()
+                                                Dim expected As String = "Expected"
+                                                Dim actual As String = "Actual"
 
-        Assert.IsNotNull(testObj)
+                                                Dim testObj As New MockCommandDefinitionClass()
+                                                'testObj.MyParameter = expected ..if the parameter is not set it should throw a not found...
+                                                actual = testObj.MyParameter
 
+                                                Assert.IsNotNull(testObj)
+
+                                            End Sub
+            )
     End Sub
 
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub MockCommandHandlerOne_Constructor_TestMethod()
 
         Dim testObj As New MockCommandHandlerOne()
@@ -84,7 +85,7 @@ Public Class CommandhandlerbaseUnitTest
     End Sub
 
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub MockCommandhandler_HandleEvent_UnitTest()
 
         Dim expected As String = "Duncan Jones"

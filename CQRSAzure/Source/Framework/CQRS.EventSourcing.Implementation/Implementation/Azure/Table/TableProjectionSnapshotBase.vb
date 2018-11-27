@@ -1,4 +1,5 @@
 ﻿Imports CQRSAzure.EventSourcing
+Imports CQRSAzure.EventSourcing.Azure.Table
 Imports Microsoft.WindowsAzure.Storage.Table
 
 Namespace Azure.Table
@@ -90,7 +91,7 @@ Namespace Azure.Table
             If (m_cloudTableClient IsNot Nothing) Then
                 m_table = m_cloudTableClient.GetTableReference(m_tableName)
                 If (m_table IsNot Nothing) Then
-                    m_table.CreateIfNotExists()
+                    m_table.CreateIfNotExistsAsync()
                 End If
             End If
 

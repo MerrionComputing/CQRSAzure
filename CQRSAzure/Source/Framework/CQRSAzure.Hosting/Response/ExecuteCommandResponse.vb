@@ -1,7 +1,7 @@
 ﻿Option Strict On
 Option Explicit On
 
-Imports CQRSAzure.Hosting
+Imports System
 
 Namespace Response
     ''' <summary>

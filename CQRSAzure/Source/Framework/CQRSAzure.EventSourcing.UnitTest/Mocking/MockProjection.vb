@@ -1,5 +1,5 @@
-﻿Imports CQRSAzure.EventSourcing
-Imports CQRSAzure.EventSourcing.UnitTest
+﻿Option Infer On
+
 Imports Newtonsoft.Json.Linq
 
 Namespace Mocking
@@ -10,8 +10,6 @@ Namespace Mocking
     Public Class MockProjection_Simple
         Inherits ProjectionBase(Of MockAggregate, String)
         Implements IProjection(Of MockAggregate, String)
-
-        Private m_totalOut As Integer
 
 
         Public Overrides ReadOnly Property CurrentAsOfDate As Date Implements IProjection.CurrentAsOfDate
@@ -30,7 +28,7 @@ Namespace Mocking
 
             Select Case eventToHandle.GetType()
                 Case GetType(MockEventTypeOne)
-                    HandleMockEventOne(CTypeDynamic(Of MockEventTypeOne)(eventToHandle))
+                    HandleMockEventOne(Convert.ChangeType(eventToHandle, GetType(MockEventTypeOne)))
                 Case Else
                     'Nothing to do with this event type
                     Throw New ArgumentException("Unexpected event type - " & eventToHandle.GetType().Name)
@@ -135,7 +133,7 @@ Namespace Mocking
 
             Select Case eventToHandle.GetType()
                 Case GetType(MockEventTypeOne)
-                    HandleMockEventOne(CTypeDynamic(Of MockEventTypeOne)(eventToHandle))
+                    HandleMockEventOne(Convert.ChangeType(eventToHandle, GetType(MockEventTypeOne)))
                 Case Else
                     'Nothing to do with this event type
                     Throw New ArgumentException("Unexpected event type - " & eventToHandle.GetType().Name)
@@ -219,7 +217,7 @@ Namespace Mocking
 
             Select Case eventToHandle.GetType()
                 Case GetType(MockEventTypeOne)
-                    HandleMockEventOne(CTypeDynamic(Of MockEventTypeOne)(eventToHandle))
+                    HandleMockEventOne(Convert.ChangeType(eventToHandle, GetType(MockEventTypeOne)))
                 Case Else
                     'Nothing to do with this event type
                     Throw New ArgumentException("Unexpected event type - " & eventToHandle.GetType().Name)
@@ -299,7 +297,7 @@ Namespace Mocking
 
             Select Case eventToHandle.GetType()
                 Case GetType(MockEventTypeOne)
-                    HandleMockEventOne(CTypeDynamic(Of MockEventTypeOne)(eventToHandle))
+                    HandleMockEventOne(Convert.ChangeType(eventToHandle, GetType(MockEventTypeOne)))
                 Case Else
                     'Nothing to do with this event type
                     Throw New ArgumentException("Unexpected event type - " & eventToHandle.GetType().Name)
@@ -393,7 +391,7 @@ Namespace Mocking
 
             Select Case eventToHandle.GetType()
                 Case GetType(MockEventTypeOne)
-                    HandleMockEventOne(CTypeDynamic(Of MockEventTypeOne)(eventToHandle))
+                    HandleMockEventOne(Convert.ChangeType(eventToHandle, GetType(MockEventTypeOne)))
                 Case Else
                     'Nothing to do with this event type
                     Throw New ArgumentException("Unexpected event type - " & eventToHandle.GetType().Name)
@@ -477,9 +475,9 @@ Namespace Mocking
 
             Select Case eventToHandle.GetType()
                 Case GetType(MockEventTypeOne)
-                    HandleMockEventOne(CTypeDynamic(Of MockEventTypeOne)(eventToHandle))
+                    HandleMockEventOne(Convert.ChangeType(eventToHandle, GetType(MockEventTypeOne)))
                 Case GetType(MockEventTypeTwo)
-                    HandleMockEventTwo(CTypeDynamic(Of MockEventTypeTwo)(eventToHandle))
+                    HandleMockEventTwo(Convert.ChangeType(eventToHandle, GetType(MockEventTypeTwo)))
                 Case Else
                     'Nothing to do with this event type
                     Throw New ArgumentException("Unexpected event type - " & eventToHandle.GetType().Name)
@@ -573,9 +571,9 @@ Namespace Mocking
 
             Select Case eventToHandle.GetType()
                 Case GetType(MockEventTypeOne)
-                    HandleMockEventOne(CTypeDynamic(Of MockEventTypeOne)(eventToHandle))
+                    HandleMockEventOne(Convert.ChangeType(eventToHandle, GetType(MockEventTypeOne)))
                 Case GetType(MockEventTypeTwo)
-                    HandleMockEventTwo(CTypeDynamic(Of MockEventTypeTwo)(eventToHandle))
+                    HandleMockEventTwo(Convert.ChangeType(eventToHandle, GetType(MockEventTypeTwo)))
                 Case Else
                     'Nothing to do with this event type
                     Throw New ArgumentException("Unexpected event type - " & eventToHandle.GetType().Name)

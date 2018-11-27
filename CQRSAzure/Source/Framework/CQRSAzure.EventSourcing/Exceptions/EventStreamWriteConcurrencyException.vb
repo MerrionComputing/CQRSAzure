@@ -1,5 +1,6 @@
 ﻿Imports System.Security.Permissions
 Imports System.Runtime.Serialization
+Imports System
 
 ''' <summary>
 ''' Where an update does not lock an event stream before executing a command over it then it is possible that

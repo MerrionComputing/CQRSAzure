@@ -1,12 +1,12 @@
 ﻿Imports System.Runtime.Serialization
-Imports System.Text
 Imports CQRSAzure.EventSourcing.IdentityGroups
-Imports Microsoft.VisualStudio.TestTools.UnitTesting
+Imports CQRSAzure.EventSourcing.Implementation
+Imports NUnit.Framework
 
-<TestClass()>
+<TestFixture()>
 Public Class IdentityGroupSnapshotWrittenEvent_UnitTest
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Constructor_TestMethod()
 
         Dim testObj As IdentityGroupSnapshotWrittenEvent = IdentityGroupSnapshotWrittenEvent.Create(DateTime.Now,
@@ -19,7 +19,7 @@ Public Class IdentityGroupSnapshotWrittenEvent_UnitTest
     End Sub
 
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub IdentityGroupSnapshotWrittenEvent_RoundTrip_AsOfDate_Serialisation_TestMethod()
 
         Dim expected As Nullable(Of DateTime) = New DateTime(1971, 12, 22)
@@ -48,7 +48,7 @@ Public Class IdentityGroupSnapshotWrittenEvent_UnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub IdentityGroupSnapshotWrittenEvent_RoundTrip_RequestSource_Serialisation_TestMethod()
 
         Dim expected As String = "Unit test source"
@@ -77,7 +77,7 @@ Public Class IdentityGroupSnapshotWrittenEvent_UnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub IdentityGroupSnapshotWrittenEvent_RoundTrip_Location_Serialisation_TestMethod()
 
         Dim expected As String = "Unit test location"
@@ -106,7 +106,7 @@ Public Class IdentityGroupSnapshotWrittenEvent_UnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub IdentityGroupSnapshotWrittenEvent_RoundTrip_Writer_Serialisation_TestMethod()
 
         Dim expected As String = "Unit test writer"
@@ -137,10 +137,10 @@ Public Class IdentityGroupSnapshotWrittenEvent_UnitTest
 
 End Class
 
-<TestClass>
+<TestFixture>
 Public Class IdentityGroupMemberExcludedEvent_UnitTest
 
-    <TestMethod>
+    <TestCase()>
     Public Sub Constructor_OfString_TestMethod()
 
         Dim testObj As IdentityGroupMemberExcludedEvent(Of SerializableMockAggregate) = IdentityGroupMemberExcludedEvent(Of SerializableMockAggregate).Create(New SerializableMockAggregate("My identity"), DateTime.UtcNow)
@@ -148,7 +148,7 @@ Public Class IdentityGroupMemberExcludedEvent_UnitTest
         Assert.IsNotNull(testObj)
     End Sub
 
-    <TestMethod>
+    <TestCase()>
     Public Sub Constructor_MockGuidAggregate_TestMethod()
 
         Dim testObj As IdentityGroupMemberExcludedEvent(Of SerializableMockGuidAggregate) = IdentityGroupMemberExcludedEvent(Of SerializableMockGuidAggregate).Create(New SerializableMockGuidAggregate(Guid.NewGuid), DateTime.UtcNow)
@@ -156,8 +156,8 @@ Public Class IdentityGroupMemberExcludedEvent_UnitTest
         Assert.IsNotNull(testObj)
     End Sub
 
-    <Ignore()>
-    <TestMethod()>
+    <Ignore("Not complete")>
+    <TestCase()>
     Public Sub IdentityGroupMemberExcludedEvent_MockAggregatee_RoundTrip_Member_Serialisation_TestMethod()
 
         Dim expected As SerializableMockAggregate = New SerializableMockAggregate("Expected Id")
@@ -184,7 +184,7 @@ Public Class IdentityGroupMemberExcludedEvent_UnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub IdentityGroupMemberExcludedEvent_MockAggregatee_RoundTrip_AsOfDate_Serialisation_TestMethod()
 
         Dim expected As Nullable(Of DateTime) = New DateTime(2017, 3, 12)
@@ -211,8 +211,8 @@ Public Class IdentityGroupMemberExcludedEvent_UnitTest
 
     End Sub
 
-    <Ignore()>
-    <TestMethod()>
+    <Ignore("Not complete")>
+    <TestCase()>
     Public Sub IdentityGroupMemberExcludedEvent_MockGuidAggregatee_RoundTrip_Member_Serialisation_TestMethod()
 
         Dim expected As SerializableMockGuidAggregate = New SerializableMockGuidAggregate(Guid.NewGuid)
@@ -240,10 +240,10 @@ Public Class IdentityGroupMemberExcludedEvent_UnitTest
     End Sub
 End Class
 
-<TestClass>
+<TestFixture>
 Public Class IdentityGroupMemberIncludedEvent_UnitTest
 
-    <TestMethod>
+    <TestCase()>
     Public Sub Constructor_OfString_TestMethod()
 
         Dim testObj As IdentityGroupMemberIncludedEvent(Of SerializableMockAggregate) = IdentityGroupMemberIncludedEvent(Of SerializableMockAggregate).Create(New SerializableMockAggregate("My identity"), DateTime.UtcNow)
@@ -251,7 +251,7 @@ Public Class IdentityGroupMemberIncludedEvent_UnitTest
         Assert.IsNotNull(testObj)
     End Sub
 
-    <TestMethod>
+    <TestCase()>
     Public Sub Constructor_MockGuidAggregate_TestMethod()
 
         Dim testObj As IdentityGroupMemberIncludedEvent(Of SerializableMockGuidAggregate) = IdentityGroupMemberIncludedEvent(Of SerializableMockGuidAggregate).Create(New SerializableMockGuidAggregate(Guid.NewGuid), DateTime.UtcNow)
@@ -259,8 +259,8 @@ Public Class IdentityGroupMemberIncludedEvent_UnitTest
         Assert.IsNotNull(testObj)
     End Sub
 
-    <Ignore()>
-    <TestMethod()>
+    <Ignore("Not complete")>
+    <TestCase()>
     Public Sub IdentityGroupMemberIncludedEvent_MockAggregatee_RoundTrip_Member_Serialisation_TestMethod()
 
         Dim expected As SerializableMockAggregate = New SerializableMockAggregate("Expected Id")
@@ -287,8 +287,8 @@ Public Class IdentityGroupMemberIncludedEvent_UnitTest
 
     End Sub
 
-    <Ignore()>
-    <TestMethod()>
+    <Ignore("Not complete")>
+    <TestCase()>
     Public Sub IdentityGroupMemberIncludedEvent_MockAggregatee_RoundTrip_AsOfDate_Serialisation_TestMethod()
 
         Dim expected As Nullable(Of DateTime) = New DateTime(2017, 3, 12)
@@ -317,10 +317,10 @@ Public Class IdentityGroupMemberIncludedEvent_UnitTest
 
 End Class
 
-<TestClass()>
+<TestFixture()>
 Public Class IdentityGroupMembersRequestedEvent_UnitTest
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Constructor_TestMethod()
 
         Dim testObj As IdentityGroupMembersRequestedEvent = IdentityGroupMembersRequestedEvent.Create(DateTime.Now,
@@ -330,7 +330,7 @@ Public Class IdentityGroupMembersRequestedEvent_UnitTest
 
     End Sub
 
-    <TestMethod>
+    <TestCase()>
     Public Sub IdentityGroupMembersRequestedEvent_RoundTrip_AsOfDate_TestMethod()
 
         Dim expected As Nullable(Of DateTime) = New DateTime(1971, 12, 22)
@@ -357,7 +357,7 @@ Public Class IdentityGroupMembersRequestedEvent_UnitTest
 
     End Sub
 
-    <TestMethod>
+    <TestCase()>
     Public Sub IdentityGroupMembersRequestedEvent_RoundTrip_RequestSource_TestMethod()
 
         Dim expected As String = "Request Source"
@@ -385,10 +385,10 @@ Public Class IdentityGroupMembersRequestedEvent_UnitTest
 
 End Class
 
-<TestClass()>
+<TestFixture()>
 Public Class IdentityGroupMembersReturnedEvent_UnitTest
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Constructor_TestMethod()
 
         Dim testObj As IIdentityGroupMembersReturnedEvent = IdentityGroupMembersReturnedEvent.Create(DateTime.Now,
@@ -399,7 +399,7 @@ Public Class IdentityGroupMembersReturnedEvent_UnitTest
 
     End Sub
 
-    <TestMethod>
+    <TestCase()>
     Public Sub IIdentityGroupMembersReturnedEventt_RoundTrip_RequestSource_TestMethod()
 
         Dim expected As String = "Request Source"
@@ -425,7 +425,7 @@ Public Class IdentityGroupMembersReturnedEvent_UnitTest
 
     End Sub
 
-    <TestMethod>
+    <TestCase()>
     Public Sub IdentityGroupMembersReturnedEventt_RoundTrip_Location_TestMethod()
 
         Dim expected As String = "Unit test location"

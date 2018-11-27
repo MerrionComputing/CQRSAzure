@@ -1,14 +1,12 @@
 ﻿Imports System.Configuration
-Imports System.Text
 Imports CQRSAzure.EventSourcing
-Imports CQRSAzure.EventSourcing.UnitTest
-Imports Microsoft.VisualStudio.TestTools.UnitTesting
+Imports NUnit.Framework
 
-<TestClass()>
+<TestFixture()>
 Public Class IdentifierGroupMembers_UnitTest
 
-    <Ignore()>
-    <TestMethod()>
+    <Ignore("Not complete")>
+    <TestCase()>
     Public Sub CreateIdentifierGroupProcessor_Constructor_TestMethod()
 
         Dim testIDGProcessor As IIdentifierGroupProcessor(Of Accounts.Account.Account, String) = Nothing

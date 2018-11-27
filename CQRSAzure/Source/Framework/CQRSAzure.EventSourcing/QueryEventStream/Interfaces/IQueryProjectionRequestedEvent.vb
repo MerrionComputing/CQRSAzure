@@ -1,4 +1,6 @@
-﻿Namespace Queries
+﻿Imports System
+
+Namespace Queries
 
     ''' <summary>
     ''' The query requested to run the given projection for the given aggregate instance

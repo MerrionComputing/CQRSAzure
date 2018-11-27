@@ -1,6 +1,8 @@
 ﻿Option Explicit On
 Option Strict On
+Imports System
 Imports System.Collections.Concurrent
+Imports System.Collections.Generic
 Imports CQRSAzure.EventSourcing
 
 Namespace InMemory
@@ -21,19 +23,22 @@ Namespace InMemory
             End Get
         End Property
 
-        Public Function GetAllStreamKeys(Optional asOfDate As Date? = Nothing) As IEnumerable(Of TaggregateKey) Implements IEventStreamProvider(Of TAggregate, TaggregateKey).GetAllStreamKeys
+        Public Async Function GetAllStreamKeys(Optional asOfDate As Date? = Nothing) As Task(Of IEnumerable(Of TaggregateKey)) Implements IEventStreamProvider(Of TAggregate, TaggregateKey).GetAllStreamKeys
 
-            If (asOfDate.HasValue) Then
-                Dim ret As New List(Of TaggregateKey)
-                For Each kvp In m_eventStreamCreation
-                    If (kvp.Value >= asOfDate.GetValueOrDefault()) Then
-                        ret.Add(kvp.Key)
-                    End If
-                Next
-                Return ret
-            Else
-                Return m_eventStreamCreation.Keys
-            End If
+            Return Await Task(Of IEnumerable(Of TaggregateKey)).Run(Function()
+                                                                        If asOfDate.HasValue Then
+                                                                            Dim ret As New List(Of TaggregateKey)
+                                                                            For Each kvp In m_eventStreamCreation
+                                                                                If (kvp.Value >= asOfDate.GetValueOrDefault()) Then
+                                                                                    ret.Add(kvp.Key)
+                                                                                End If
+                                                                            Next
+                                                                            Return ret
+                                                                        Else
+                                                                            Return m_eventStreamCreation.Keys
+                                                                        End If
+                                                                    End Function
+                                                              )
 
         End Function
 

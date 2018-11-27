@@ -1,4 +1,8 @@
-﻿Imports CQRSAzure.EventSourcing
+﻿Imports System
+Imports System.Collections.Generic
+Imports System.Linq
+Imports CQRSAzure.EventSourcing
+Imports CQRSAzure.EventSourcing.Azure.File
 Imports Microsoft.WindowsAzure.Storage.File
 
 Namespace Azure.File
@@ -46,28 +50,28 @@ Namespace Azure.File
 
 #End Region
 
-        Public Sub AppendEvent(EventInstance As IEvent(Of TAggregate),
-                               Optional ByVal ExpectedTopSequence As Long = 0) Implements IEventStreamWriter(Of TAggregate, TAggregateKey).AppendEvent
+        Public Async Function AppendEvent(EventInstance As IEvent(Of TAggregate),
+                               Optional ByVal ExpectedTopSequence As Long = 0) As Task Implements IEventStreamWriter(Of TAggregate, TAggregateKey).AppendEvent
 
             If (MyBase.File IsNot Nothing) Then
                 Dim evtToWrite As New FileBlockWrappedEvent(GetSequence(), EventInstance.Version, DateTime.UtcNow, EventInstance)
                 If (evtToWrite IsNot Nothing) Then
-                    Using fs As CloudFileStream = MyBase.File.OpenWrite(Nothing)
+                    Using fs As CloudFileStream = Await MyBase.File.OpenWriteAsync(Nothing)
                         fs.Seek(GetSequence(), IO.SeekOrigin.Begin)
                         'write the event to the stream here..
                         evtToWrite.WriteToBinaryStream(fs)
                         SetSequence(fs.Position)
                     End Using
-                    IncrementRecordCount()
+                    Await IncrementRecordCount()
                 End If
             End If
 
-        End Sub
+        End Function
 
-        Private Sub IncrementRecordCount()
+        Private Async Function IncrementRecordCount() As Task
 
             If (MyBase.File IsNot Nothing) Then
-                MyBase.File.FetchAttributes()
+                Await MyBase.File.FetchAttributesAsync()
                 Dim m_records As Long = 0
                 If (MyBase.File.Metadata.ContainsKey(METADATA_RECORD_COUNT)) Then
                     If (Long.TryParse(MyBase.File.Metadata(METADATA_RECORD_COUNT), m_records)) Then
@@ -77,12 +81,12 @@ Namespace Azure.File
                     End If
                 End If
                 MyBase.File.Metadata(METADATA_RECORD_COUNT) = m_records.ToString()
-                MyBase.File.SetMetadata()
+                Await MyBase.File.SetMetadataAsync()
             End If
 
-        End Sub
+        End Function
 
-        Public Sub AppendEvents(StartingSequence As Long, Events As IEnumerable(Of IEvent(Of TAggregate))) Implements IEventStreamWriter(Of TAggregate, TAggregateKey).AppendEvents
+        Public Async Function AppendEvents(StartingSequence As Long, Events As IEnumerable(Of IEvent(Of TAggregate))) As Task Implements IEventStreamWriter(Of TAggregate, TAggregateKey).AppendEvents
 
             If (Events IsNot Nothing) Then
                 If (Events.Count > 0) Then
@@ -92,13 +96,13 @@ Namespace Azure.File
                         'Set the current version to StartingVersion
                         SetSequence(StartingSequence)
                         For Each evt In Events
-                            AppendEvent(evt)
+                            Await AppendEvent(evt)
                         Next
                     End If
                 End If
             End If
 
-        End Sub
+        End Function
 
         Private m_context As IWriteContext
         Public Sub SetContext(writerContext As IWriteContext) Implements IEventStreamWriter(Of TAggregate, TAggregateKey).SetContext
@@ -112,14 +116,14 @@ Namespace Azure.File
         ''' This will delete existing events so should not be done in any production environment therefore this is not
         ''' part of the IEventStreamWriter interface
         ''' </remarks>
-        Public Sub Reset()
+        Public Async Function Reset() As Task
 
             If (MyBase.File IsNot Nothing) Then
-                MyBase.File.Delete()
+                Await MyBase.File.DeleteAsync()
                 'Recreate the blob file that was deleted
-                MyBase.ResetFile()
+                Await MyBase.ResetFile()
             End If
-        End Sub
+        End Function
 
 
         ''' <summary>

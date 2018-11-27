@@ -1,4 +1,6 @@
-﻿Namespace Queries
+﻿Imports System
+
+Namespace Queries
 
     ''' <summary>
     ''' A new query instance was created

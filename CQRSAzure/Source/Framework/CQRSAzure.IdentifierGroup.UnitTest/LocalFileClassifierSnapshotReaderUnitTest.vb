@@ -1,11 +1,10 @@
-﻿Imports System.Text
-Imports CQRSAzure.IdentifierGroup.Local.File
-Imports Microsoft.VisualStudio.TestTools.UnitTesting
+﻿Imports CQRSAzure.IdentifierGroup.Local.File
+Imports NUnit.Framework
 
-<TestClass()>
+<TestFixture()>
 Public Class LocalFileClassifierSnapshotReaderUnitTest
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Constructor_TestMethod()
 
         Dim testObj As LocalFileClassifierSnapshotReader(Of MockAggregate, String, MockClassifierOddNumber)

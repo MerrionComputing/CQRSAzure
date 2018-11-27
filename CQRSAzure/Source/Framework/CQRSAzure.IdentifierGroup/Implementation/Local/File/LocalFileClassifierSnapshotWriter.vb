@@ -1,4 +1,5 @@
-﻿Imports CQRSAzure.EventSourcing
+﻿Imports System
+Imports CQRSAzure.EventSourcing
 Imports CQRSAzure.EventSourcing.Local.File
 
 Namespace Local.File

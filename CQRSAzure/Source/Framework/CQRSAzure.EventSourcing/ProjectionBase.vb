@@ -2,6 +2,9 @@
 Imports Newtonsoft.Json.Linq
 Imports Newtonsoft
 Imports System.Linq.Expressions
+Imports System.Collections.Generic
+Imports System.Linq
+Imports System
 
 Public MustInherit Class ProjectionBase(Of TAggregate As IAggregationIdentifier, TAggregateKey)
     Inherits ProjectionBase

@@ -1,4 +1,5 @@
 ﻿
+Imports System
 ''' <summary>
 ''' Interface describing a data transfer object for reporting the status of a command that has been sent for processing
 ''' </summary>

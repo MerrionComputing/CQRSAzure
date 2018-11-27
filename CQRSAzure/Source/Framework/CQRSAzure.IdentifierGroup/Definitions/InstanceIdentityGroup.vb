@@ -1,5 +1,6 @@
 ﻿Option Explicit On
 
+Imports System.Collections.Generic
 Imports CQRSAzure.EventSourcing
 ''' <summary>
 ''' An identity group that represents one (and only one) instance of the aggregate identifier

@@ -1,4 +1,5 @@
-﻿''' <summary>
+﻿Imports System.Collections.Generic
+''' <summary>
 ''' An interface for implementing by any entity types for which we wish to track whether or not the state has changed
 ''' as a result of events processed
 ''' </summary>

@@ -1,16 +1,13 @@
-﻿Imports System.Text
-Imports Microsoft.VisualStudio.TestTools.UnitTesting
-
-Imports CQRSAzure.CommandDefinition
+﻿Imports System.Configuration
 Imports CQRSAzure.CommandHandler
-Imports System.Configuration
+Imports NUnit.Framework
 
-<TestClass()>
+<TestFixture()>
 Public Class CommandHandlerConfigurationSectionUnitTest
 
     Public Const VALID_SECTION_NAME As String = "CQRSAzureCommandHandlerConfiguration"
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Constructor_Empty_TestMethod()
 
         Dim testObj As New CQRSAzureCommandHandlerConfigurationSection()
@@ -19,7 +16,7 @@ Public Class CommandHandlerConfigurationSectionUnitTest
     End Sub
 
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub LoadConfigurationSection_Testmethod()
 
         Dim testObj As CQRSAzureCommandHandlerConfigurationSection
@@ -31,7 +28,7 @@ Public Class CommandHandlerConfigurationSectionUnitTest
 
     End Sub
 
-    <TestMethod>
+    <TestCase()>
     Public Sub QueryHandlerMaps_NonZero_TestMethod()
 
         Dim actual As Integer = 0

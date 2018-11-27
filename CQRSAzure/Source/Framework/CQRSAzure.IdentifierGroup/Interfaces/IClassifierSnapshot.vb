@@ -1,4 +1,5 @@
-﻿Imports CQRSAzure.EventSourcing
+﻿Imports System
+Imports CQRSAzure.EventSourcing
 
 ''' <summary>
 ''' A snapshot of the state of a particular classifier for an aggregate as at a given point in time

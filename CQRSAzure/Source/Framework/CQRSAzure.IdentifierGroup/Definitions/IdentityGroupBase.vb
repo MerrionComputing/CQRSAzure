@@ -1,4 +1,7 @@
-﻿Imports CQRSAzure.EventSourcing
+﻿Imports System
+Imports System.Collections.Generic
+Imports System.Linq
+Imports CQRSAzure.EventSourcing
 Imports CQRSAzure.IdentifierGroup
 ''' <summary>
 ''' Base class to be implemented by any class that supplies an identity group for an aggregate identifier

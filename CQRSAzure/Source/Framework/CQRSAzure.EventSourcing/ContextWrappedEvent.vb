@@ -2,6 +2,8 @@
 Option Strict On
 
 
+Imports System
+Imports System.Collections.Generic
 Imports CQRSAzure.EventSourcing
 ''' <summary>
 ''' An event wrapped with the context information used to provide an audit trail

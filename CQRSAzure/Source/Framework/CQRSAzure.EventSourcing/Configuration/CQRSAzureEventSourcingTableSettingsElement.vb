@@ -1,4 +1,5 @@
 ﻿Imports System.Configuration
+Imports System.Linq
 Imports CQRSAzure.EventSourcing.Azure.Table
 
 ''' <summary>

@@ -1,4 +1,6 @@
-﻿Imports CQRSAzure.EventSourcing
+﻿Imports System
+Imports System.Collections.Generic
+Imports CQRSAzure.EventSourcing
 Imports CQRSAzure.EventSourcing.Azure.Blob
 Imports Microsoft.WindowsAzure.Storage.Blob
 
@@ -36,13 +38,21 @@ Namespace Azure.Blob
             End Get
         End Property
 
-        Public Function GetAllStreamKeys(Optional asOfDate As Date? = Nothing) As IEnumerable(Of TaggregateKey) Implements IEventStreamProvider(Of TAggregate, TaggregateKey).GetAllStreamKeys
+        Public Async Function GetAllStreamKeys(Optional asOfDate As Date? = Nothing) As Task(Of IEnumerable(Of TaggregateKey)) Implements IEventStreamProvider(Of TAggregate, TaggregateKey).GetAllStreamKeys
 
             Dim ret As New List(Of TaggregateKey)
 
             If MyBase.BlobContainer IsNot Nothing Then
                 Dim bd As CloudBlobDirectory = MyBase.BlobContainer.GetDirectoryReference(ContainerBasePath)
-                For Each thisBlob In bd.ListBlobs(blobListingDetails:=BlobListingDetails.Metadata)
+                Dim continueToken As New BlobContinuationToken()
+                Dim allBlobs = Await bd.ListBlobsSegmentedAsync(False,
+                                                                BlobListingDetails.Metadata,
+                                                                Nothing,
+                                                                continueToken,
+                                                                Nothing,
+                                                                Nothing)
+
+                For Each thisBlob In allBlobs.Results
 
                     Dim blobFile As CloudBlob = TryCast(thisBlob, CloudBlob)
                     Dim ignore As Boolean = False

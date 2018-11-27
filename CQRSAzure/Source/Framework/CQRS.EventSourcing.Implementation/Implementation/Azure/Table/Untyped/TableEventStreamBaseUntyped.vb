@@ -1,5 +1,7 @@
-﻿Imports System.Reflection
+﻿Imports System
+Imports System.Reflection
 Imports CQRSAzure.EventSourcing
+Imports CQRSAzure.EventSourcing.Azure.Table
 Imports Microsoft.WindowsAzure.Storage.Table
 
 Namespace Azure.Table.Untyped
@@ -47,12 +49,13 @@ Namespace Azure.Table.Untyped
             End Get
         End Property
 
-        Public Sub AppendEvent(EventInstance As IEvent,
+        Public Async Function AppendEvent(EventInstance As IEvent,
                                Optional ExpectedTopSequence As Long = 0,
-                               Optional Version As UInteger = 1) Implements IEventStreamWriterUntyped.AppendEvent
+                               Optional Version As UInteger = 1) As Task Implements IEventStreamWriterUntyped.AppendEvent
 
             Throw New NotImplementedException()
-        End Sub
+
+        End Function
 
         Private m_context As IWriteContext
         Public Sub SetContext(writerContext As IWriteContext) Implements IEventStreamWriterUntyped.SetContext

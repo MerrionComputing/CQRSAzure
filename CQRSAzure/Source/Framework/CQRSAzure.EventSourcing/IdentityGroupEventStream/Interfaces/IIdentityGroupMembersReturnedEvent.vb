@@ -1,4 +1,6 @@
-﻿Namespace IdentityGroups
+﻿Imports System
+
+Namespace IdentityGroups
 
     ''' <summary>
     ''' The set of members for an identity group were identified as at a given point in time

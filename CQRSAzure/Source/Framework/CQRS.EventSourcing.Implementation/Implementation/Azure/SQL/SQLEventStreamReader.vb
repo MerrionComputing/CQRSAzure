@@ -1,4 +1,5 @@
-﻿Imports CQRSAzure.EventSourcing
+﻿Imports System.Data
+Imports CQRSAzure.EventSourcing.Azure.SQL
 
 Namespace Azure.SQL
     Public Class SQLEventStreamReader(Of TAggregate As CQRSAzure.EventSourcing.IAggregationIdentifier, TAggregateKey)
@@ -19,18 +20,23 @@ Namespace Azure.SQL
             Throw New NotImplementedException()
         End Function
 
-        Public Function GetEvents() As IEnumerable(Of IEvent(Of TAggregate)) Implements IEventStreamReader(Of TAggregate, TAggregateKey).GetEvents
-            Throw New NotImplementedException()
+        Public Async Function GetEvents() As Task(Of IEnumerable(Of IEvent(Of TAggregate))) Implements IEventStreamReader(Of TAggregate, TAggregateKey).GetEvents
+
+            Return Await GetEvents(0)
+
         End Function
 
-        Public Function GetEvents(Optional ByVal StartingVersion As UInteger = 0,
-                                  Optional ByVal effectiveDateTime As Nullable(Of DateTime) = Nothing) As IEnumerable(Of IEvent(Of TAggregate)) Implements IEventStreamReader(Of TAggregate, TAggregateKey).GetEvents
-            Throw New NotImplementedException()
+        Public Async Function GetEvents(Optional ByVal StartingVersion As UInteger = 0,
+                                  Optional ByVal effectiveDateTime As Nullable(Of DateTime) = Nothing) As Task(Of IEnumerable(Of IEvent(Of TAggregate))) Implements IEventStreamReader(Of TAggregate, TAggregateKey).GetEvents
+
+            Return Await Task.FromException(Of IEnumerable(Of IEvent(Of TAggregate)))(New NotImplementedException())
         End Function
 
-        Public Function GetEventsWithContext(Optional ByVal StartingVersion As UInteger = 0,
-                                             Optional ByVal effectiveDateTime As Nullable(Of DateTime) = Nothing) As IEnumerable(Of IEventContext) Implements IEventStreamReader(Of TAggregate, TAggregateKey).GetEventsWithContext
-            Throw New NotImplementedException()
+        Public Async Function GetEventsWithContext(Optional ByVal StartingVersion As UInteger = 0,
+                                             Optional ByVal effectiveDateTime As Nullable(Of DateTime) = Nothing) As Task(Of IEnumerable(Of IEventContext)) Implements IEventStreamReader(Of TAggregate, TAggregateKey).GetEventsWithContext
+
+            Return Await Task.FromException(Of IEnumerable(Of IEventContext))(New NotImplementedException())
+
         End Function
 
 

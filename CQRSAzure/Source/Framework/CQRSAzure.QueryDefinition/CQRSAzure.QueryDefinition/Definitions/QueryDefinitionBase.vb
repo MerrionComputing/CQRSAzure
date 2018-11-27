@@ -1,4 +1,6 @@
-﻿''' <summary>
+﻿Imports System
+Imports System.Collections.Generic
+''' <summary>
 ''' Base class from which the query definitions should be build
 ''' </summary>
 ''' <remarks>

@@ -1,5 +1,6 @@
 ﻿Imports System.Security.Permissions
 Imports System.Runtime.Serialization
+Imports System
 
 ''' <summary>
 ''' An aggregate may not have its key changed once it has been set

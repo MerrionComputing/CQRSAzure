@@ -1,4 +1,6 @@
-﻿Namespace Queries
+﻿Imports System
+
+Namespace Queries
     ''' <summary>
     ''' A query was taken off the queue and processing started on it
     ''' </summary>

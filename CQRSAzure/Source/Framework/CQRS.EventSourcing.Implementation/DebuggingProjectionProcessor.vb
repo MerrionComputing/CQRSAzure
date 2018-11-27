@@ -1,4 +1,6 @@
-﻿Namespace Debugging
+﻿Imports System
+
+Namespace Debugging
 
     ''' <summary>
     ''' A special type of projection processor that emits debug information and allows single-step operations for
@@ -34,7 +36,7 @@
         ''' <param name="projectionToProcess">
         ''' The class that defines the projection operation we are going to process
         ''' </param>
-        Public Sub Process(ByVal projectionToProcess As IProjection(Of TAggregate, TAggregateKey)) Implements IProjectionProcessor(Of TAggregate, TAggregateKey).Process
+        Public Async Function Process(ByVal projectionToProcess As IProjection(Of TAggregate, TAggregateKey)) As Task Implements IProjectionProcessor(Of TAggregate, TAggregateKey).Process
 
             If (m_streamReader IsNot Nothing) Then
                 If (projectionToProcess IsNot Nothing) Then
@@ -52,7 +54,7 @@
                             startingSequence = latestSnapshot.Sequence
                         End If
                     End If
-                    For Each evt In m_streamReader.GetEvents(startingSequence)
+                    For Each evt In Await m_streamReader.GetEvents(startingSequence)
                         If (projectionToProcess.HandlesEventType(evt.GetType())) Then
                             projectionToProcess.HandleEvent(evt)
                             'raise an EventHandled event
@@ -70,7 +72,7 @@
                 Throw New UnmappedAggregateException(GetType(TAggregate), Nothing)
             End If
 
-        End Sub
+        End Function
 
         ''' <summary>
         ''' Run the next event through the projection

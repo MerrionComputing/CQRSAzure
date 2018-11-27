@@ -1,4 +1,5 @@
 ﻿Imports CQRSAzure.EventSourcing
+Imports CQRSAzure.EventSourcing.Azure.Blob
 Imports Microsoft.WindowsAzure.Storage
 Imports Microsoft.WindowsAzure.Storage.Blob
 
@@ -104,7 +105,7 @@ Namespace Azure.Blob.Untyped
 
             If (AppendBlob IsNot Nothing) Then
                 Try
-                    AppendBlob.FetchAttributes()
+                    AppendBlob.FetchAttributesAsync()
                     Dim m_sequence As Long
                     If (Long.TryParse(AppendBlob.Metadata(METADATA_SEQUENCE), m_sequence)) Then
                         Return m_sequence
@@ -121,21 +122,22 @@ Namespace Azure.Blob.Untyped
 
         End Function
 
-        Protected Sub ResetBlob()
+        Protected Async Sub ResetBlob()
 
             If (BlobContainer IsNot Nothing) Then
-                If Not m_blob.Exists() Then
+                Dim exists As Boolean = Await m_blob.ExistsAsync()
+                If Not exists Then
                     'Make the file to append to if it doesn't already exist
-                    m_blob.CreateOrReplace()
+                    Await m_blob.CreateOrReplaceAsync()
                     'Set the initial metadata
                     m_blob.Metadata(METATDATA_DOMAIN) = DomainName
                     m_blob.Metadata(METADATA_AGGREGATE_CLASS) = AggregateClassName
                     m_blob.Metadata(METADATA_PROJECTION_CLASS) = ProjectionClassName
                     m_blob.Metadata(METADATA_AGGREGATE_KEY) = InstanceKey
                     m_blob.Metadata(METADATA_SEQUENCE) = "0" 'Sequence starts at zero
-                    m_blob.SetMetadata()
+                    Await m_blob.SetMetadataAsync()
                 Else
-                    m_blob.FetchAttributes()
+                    Await m_blob.FetchAttributesAsync()
                 End If
             End If
 

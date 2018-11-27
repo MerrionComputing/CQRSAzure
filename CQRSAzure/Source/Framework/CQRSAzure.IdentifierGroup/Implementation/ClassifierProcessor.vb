@@ -1,4 +1,6 @@
-﻿Imports CQRSAzure.EventSourcing
+﻿Imports System
+Imports CQRSAzure.EventSourcing
+Imports CQRSAzure.EventSourcing.Implementation
 Imports CQRSAzure.IdentifierGroup
 
 ''' <summary>
@@ -34,10 +36,10 @@ Public NotInheritable Class ClassifierProcessor(Of TAggregate As IAggregationIde
     ''' If true then if we don't find a reason to include then make this exclude
     ''' </param>
     ''' <returns></returns>
-    Public Function Classify(Optional ByVal classifierToProcess As IClassifier(Of TAggregate, TAggregateKey) = Nothing,
+    Public Async Function Classify(Optional ByVal classifierToProcess As IClassifier(Of TAggregate, TAggregateKey) = Nothing,
                              Optional ByVal effectiveDateTime As Nullable(Of DateTime) = Nothing,
                              Optional ByVal forceExclude As Boolean = False,
-                             Optional ByVal projection As IProjection(Of TAggregate, TAggregateKey) = Nothing) As IClassifierDataSourceHandler.EvaluationResult Implements IClassifierProcessor(Of TAggregate, TAggregateKey, TClassifier).Classify
+                             Optional ByVal projection As IProjection(Of TAggregate, TAggregateKey) = Nothing) As Task(Of IClassifierDataSourceHandler.EvaluationResult) Implements IClassifierProcessor(Of TAggregate, TAggregateKey, TClassifier).Classify
 
         If (classifierToProcess Is Nothing) Then
             If (m_classifier IsNot Nothing) Then
@@ -79,7 +81,7 @@ Public NotInheritable Class ClassifierProcessor(Of TAggregate As IAggregationIde
 
                 Dim retVal As IClassifierDataSourceHandler.EvaluationResult = IClassifierDataSourceHandler.EvaluationResult.Unchanged
                 If (classifierToProcess.ClassifierDataSource = IClassifier.ClassifierDataSourceType.EventHandler) Then
-                    For Each evt In m_streamReader.GetEvents(startingSequence, effectiveDateTime)
+                    For Each evt In Await m_streamReader.GetEvents(startingSequence, effectiveDateTime)
                         If (classifierToProcess.HandlesEventType(evt.GetType())) Then
 #Region "Tracing"
                             IdentifierGroup.LogVerboseInfo("Evaluating event " & evt.ToString())
@@ -179,10 +181,10 @@ Public NotInheritable Class ClassifierProcessorUntyped
     Private ReadOnly m_classifier As IClassifierUntyped
 
 
-    Public Function Classify(Optional classifierToProcess As IClassifierUntyped = Nothing,
+    Public Async Function Classify(Optional classifierToProcess As IClassifierUntyped = Nothing,
                              Optional effectiveDateTime As Date? = Nothing,
                              Optional forceExclude As Boolean = False,
-                             Optional ByVal projection As IProjectionUntyped = Nothing) As IClassifierDataSourceHandler.EvaluationResult Implements IClassifierProcessorUntyped.Classify
+                             Optional ByVal projection As IProjectionUntyped = Nothing) As Task(Of IClassifierDataSourceHandler.EvaluationResult) Implements IClassifierProcessorUntyped.Classify
 
 
         If (classifierToProcess Is Nothing) Then
@@ -223,7 +225,7 @@ Public NotInheritable Class ClassifierProcessorUntyped
                     Dim retVal As IClassifierDataSourceHandler.EvaluationResult = IClassifierDataSourceHandler.EvaluationResult.Unchanged
                     If (classifierToProcess.ClassifierDataSource = IClassifier.ClassifierDataSourceType.EventHandler) Then
 
-                        For Each evt In m_streamReader.GetEvents(startingSequence, effectiveDateTime)
+                        For Each evt In Await m_streamReader.GetEvents(startingSequence, effectiveDateTime)
 
                             Dim jsonEvent As IJsonSerialisedEvent = evt
                             If (jsonEvent IsNot Nothing) Then
@@ -249,7 +251,7 @@ Public NotInheritable Class ClassifierProcessorUntyped
                         If (projection IsNot Nothing) Then
                             If (m_streamReader IsNot Nothing) Then
                                 ' Make a ProjectionProcessorUntyped for it and process it
-                                ProjectionProcessorUntyped.Create(m_streamReader).Process(projection)
+                                Await ProjectionProcessorUntyped.Create(m_streamReader).Process(projection)
                             End If
                             retVal = classifierToProcess.EvaluateProjection(projection)
                         End If
@@ -279,6 +281,8 @@ Public NotInheritable Class ClassifierProcessorUntyped
                 IdentifierGroup.LogError("Attempt to run classifier but no stream reader passed in")
 #End Region
             End If
+
+            Return IClassifierDataSourceHandler.EvaluationResult.Unchanged
 
         End If
     End Function

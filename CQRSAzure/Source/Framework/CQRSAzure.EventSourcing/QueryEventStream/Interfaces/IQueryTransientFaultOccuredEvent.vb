@@ -1,4 +1,6 @@
-﻿Namespace Queries
+﻿Imports System
+
+Namespace Queries
     ''' <summary>
     ''' A transient fault (unavaliable resource etc.) has occured while processing a 
     ''' query.  It may be possible to resume from this fault - or, depending on the 

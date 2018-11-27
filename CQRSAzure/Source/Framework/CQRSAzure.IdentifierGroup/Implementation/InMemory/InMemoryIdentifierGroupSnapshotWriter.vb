@@ -1,4 +1,5 @@
-﻿Imports CQRSAzure.EventSourcing.InMemory
+﻿Imports System
+Imports CQRSAzure.EventSourcing.InMemory
 
 Namespace InMemory
     Public NotInheritable Class InMemoryIdentifierGroupSnapshotWriter(Of TAggregate As CQRSAzure.EventSourcing.IAggregationIdentifier, TAggregateKey)

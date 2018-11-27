@@ -1,4 +1,5 @@
-﻿''' <summary>
+﻿Imports System.Collections.Generic
+''' <summary>
 ''' Interface for any class that appends events to the end of an event stream
 ''' </summary>
 ''' <remarks>
@@ -17,8 +18,8 @@ Public Interface IEventStreamWriter(Of TAggregate As CQRSAzure.EventSourcing.IAg
     ''' The events store must be both immutable and forward-only so to cater for the concept of "delete" a 
     ''' reversal event needs to exist
     ''' </remarks>
-    Sub AppendEvent(ByVal EventInstance As IEvent(Of TAggregate),
-                    Optional ByVal ExpectedTopSequence As Long = 0)
+    Function AppendEvent(ByVal EventInstance As IEvent(Of TAggregate),
+                    Optional ByVal ExpectedTopSequence As Long = 0) As Task
 
     ''' <summary>
     ''' Save a set of events onto the end of the store
@@ -33,7 +34,7 @@ Public Interface IEventStreamWriter(Of TAggregate As CQRSAzure.EventSourcing.IAg
     ''' The events store must be both immutable and forward-only so to cater for the concept of "delete" a 
     ''' reversal event needs to exist
     ''' </remarks>
-    Sub AppendEvents(ByVal StartingSequence As Long, ByVal Events As IEnumerable(Of IEvent(Of TAggregate)))
+    Function AppendEvents(ByVal StartingSequence As Long, ByVal Events As IEnumerable(Of IEvent(Of TAggregate))) As Task
 
 
     ''' <summary>

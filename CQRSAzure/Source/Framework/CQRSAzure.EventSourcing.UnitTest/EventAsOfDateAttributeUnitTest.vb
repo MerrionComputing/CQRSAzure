@@ -1,10 +1,10 @@
 ﻿Imports System.Text
 Imports CQRSAzure.EventSourcing.UnitTest.Mocking
-Imports Microsoft.VisualStudio.TestTools.UnitTesting
+Imports NUnit.Framework
 
-<TestClass()> Public Class EventAsOfDateAttributeUnitTest
+<TestFixture()> Public Class EventAsOfDateAttributeUnitTest
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub NoAttribute_NoDate_TestMethod()
 
         Dim expected As Nullable(Of DateTime) = Nothing
@@ -18,7 +18,7 @@ Imports Microsoft.VisualStudio.TestTools.UnitTesting
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub HasAttribute_NoDate_TestMethod()
 
         Dim expected As Nullable(Of DateTime) = Nothing
@@ -32,7 +32,7 @@ Imports Microsoft.VisualStudio.TestTools.UnitTesting
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub HasAttribute_HasDate_TestMethod()
 
         Dim expected As Nullable(Of DateTime) = New DateTime(2021, 12, 19, 3, 45, 18)

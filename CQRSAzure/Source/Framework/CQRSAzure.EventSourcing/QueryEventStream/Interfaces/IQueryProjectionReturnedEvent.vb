@@ -1,4 +1,6 @@
-﻿Namespace Queries
+﻿Imports System
+
+Namespace Queries
 
     ''' <summary>
     ''' A query requested projection was run and the results returned to the query

@@ -1,4 +1,9 @@
-﻿Namespace InMemory
+﻿Imports System
+Imports System.Collections.Generic
+Imports System.Linq
+Imports CQRSAzure.EventSourcing.InMemory
+
+Namespace InMemory
 
     ''' <summary>
     ''' Class to write events to an in-memory store
@@ -40,34 +45,39 @@
 #End Region
 
 #Region "Event stream functionality"
-        Public Overloads Sub AppendEvent(EventInstance As IEvent(Of TAggregate),
-                                         Optional ByVal ExpectedTopSequence As Long = 0) Implements IEventStreamWriter(Of TAggregate, TAggregateKey).AppendEvent
+        Public Overloads Async Function AppendEvent(EventInstance As IEvent(Of TAggregate),
+                                         Optional ByVal ExpectedTopSequence As Long = 0) As Task Implements IEventStreamWriter(Of TAggregate, TAggregateKey).AppendEvent
 
-            If (m_context Is Nothing) Then
-                MyBase.AppendEvent(EventInstance)
-            Else
-                MyBase.AppendEvent(EventInstance,
+            Await Task.Run(Sub()
+                               If (m_context Is Nothing) Then
+                                   MyBase.AppendEvent(EventInstance)
+                               Else
+                                   MyBase.AppendEvent(EventInstance,
                                   commentary:=m_context.Commentary,
                                    source:=m_context.Source,
                                    who:=m_context.Who)
-            End If
+                               End If
 
-            'and update the last addition date/time
-            m_lastAddition = DateTime.UtcNow
-        End Sub
+                               'and update the last addition date/time
+                               m_lastAddition = DateTime.UtcNow
 
-        Public Sub AppendEvents(StartingVersion As Long, Events As IEnumerable(Of IEvent(Of TAggregate))) Implements IEventStreamWriter(Of TAggregate, TAggregateKey).AppendEvents
+                           End Sub
+            )
+
+        End Function
+
+        Public Async Function AppendEvents(StartingVersion As Long, Events As IEnumerable(Of IEvent(Of TAggregate))) As Task Implements IEventStreamWriter(Of TAggregate, TAggregateKey).AppendEvents
 
             If (StartingVersion < (m_sequence + Events.Count)) Then
                 Throw New ArgumentException("Out of sequence event(s) appended")
             End If
 
             For Each evt In Events
-                AppendEvent(evt)
+                Await AppendEvent(evt)
                 StartingVersion += 1
             Next
 
-        End Sub
+        End Function
 
         Private m_context As IWriteContext
         Public Sub SetContext(writerContext As IWriteContext) Implements IEventStreamWriter(Of TAggregate, TAggregateKey).SetContext

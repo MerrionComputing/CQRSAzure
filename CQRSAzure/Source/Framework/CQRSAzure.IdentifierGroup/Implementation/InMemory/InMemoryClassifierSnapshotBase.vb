@@ -1,7 +1,8 @@
 ﻿Imports CQRSAzure.EventSourcing
 Imports CQRSAzure.EventSourcing.InMemory
-
+Imports System
 Imports System.Collections.Concurrent
+Imports System.Linq
 
 Namespace InMemory
 

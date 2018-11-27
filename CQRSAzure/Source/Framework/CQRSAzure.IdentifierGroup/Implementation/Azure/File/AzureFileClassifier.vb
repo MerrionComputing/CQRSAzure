@@ -1,4 +1,7 @@
-﻿Imports CQRSAzure.EventSourcing.Azure.File
+﻿Imports System
+Imports System.Collections.Generic
+Imports CQRSAzure.EventSourcing.Azure.File
+Imports CQRSAzure.EventSourcing.Implementation.Azure.File
 
 Namespace Azure.File
     Public Class AzureFileClassifier(Of TAggregate As CQRSAzure.EventSourcing.IAggregationIdentifier,

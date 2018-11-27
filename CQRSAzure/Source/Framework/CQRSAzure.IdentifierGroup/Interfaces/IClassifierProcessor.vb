@@ -1,4 +1,5 @@
-﻿Imports CQRSAzure.EventSourcing
+﻿Imports System
+Imports CQRSAzure.EventSourcing
 Imports CQRSAzure.IdentifierGroup
 
 ''' <summary>
@@ -24,7 +25,7 @@ Public Interface IClassifierProcessor(Of TAggregate As IAggregationIdentifier,
     Function Classify(Optional ByVal classifierToProcess As IClassifier(Of TAggregate, TAggregateKey) = Nothing,
                       Optional ByVal effectiveDateTime As Nullable(Of DateTime) = Nothing,
                       Optional ByVal forceExclude As Boolean = False,
-                      Optional ByVal projection As IProjection(Of TAggregate, TAggregateKey) = Nothing) As IClassifierDataSourceHandler.EvaluationResult
+                      Optional ByVal projection As IProjection(Of TAggregate, TAggregateKey) = Nothing) As Task(Of IClassifierDataSourceHandler.EvaluationResult)
 
 End Interface
 
@@ -50,6 +51,6 @@ Public Interface IClassifierProcessorUntyped
     Function Classify(Optional ByVal classifierToProcess As IClassifierUntyped = Nothing,
                       Optional ByVal effectiveDateTime As Nullable(Of DateTime) = Nothing,
                       Optional ByVal forceExclude As Boolean = False,
-                      Optional ByVal projection As IProjectionUntyped = Nothing) As IClassifierDataSourceHandler.EvaluationResult
+                      Optional ByVal projection As IProjectionUntyped = Nothing) As Task(Of IClassifierDataSourceHandler.EvaluationResult)
 
 End Interface

@@ -1,4 +1,5 @@
 ﻿Imports CQRSAzure.EventSourcing
+Imports CQRSAzure.EventSourcing.Azure.Blob
 Imports Microsoft.WindowsAzure.Storage.Blob
 
 Namespace Azure.Blob.Untyped
@@ -18,7 +19,7 @@ Namespace Azure.Blob.Untyped
                     Try
                         Using es As System.IO.Stream = snapshotToWrite.ToBinaryStream()
 
-                            Dim offset As Long = AppendBlob.AppendBlock(es)
+                            Dim offset As Long = AppendBlob.AppendBlockAsync(es).Result
                         End Using
                         recordWritten = True
                     Catch exBlob As Microsoft.WindowsAzure.Storage.StorageException
@@ -39,7 +40,7 @@ Namespace Azure.Blob.Untyped
 
             If (MyBase.AppendBlob IsNot Nothing) Then
                 MyBase.AppendBlob.Metadata(METADATA_SEQUENCE) = sequence.ToString() 'Sequence started at zero
-                MyBase.AppendBlob.SetMetadata()
+                MyBase.AppendBlob.SetMetadataAsync()
             End If
 
         End Sub
@@ -54,7 +55,9 @@ Namespace Azure.Blob.Untyped
         Public Sub Reset()
 
             If (AppendBlob IsNot Nothing) Then
-                AppendBlob.Delete(DeleteSnapshotsOption.IncludeSnapshots)
+                AppendBlob.DeleteAsync(DeleteSnapshotsOption.IncludeSnapshots, Nothing,
+                                             New BlobRequestOptions(),
+                                             New Microsoft.WindowsAzure.Storage.OperationContext())
                 'Recreate the blob file that was deleted
                 MyBase.ResetBlob()
             End If

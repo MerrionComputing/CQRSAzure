@@ -1,4 +1,6 @@
-﻿Namespace Projections
+﻿Imports System
+
+Namespace Projections
 
     ''' <summary>
     ''' The results for a projection were returned to a query or identity group classifier that asked for them

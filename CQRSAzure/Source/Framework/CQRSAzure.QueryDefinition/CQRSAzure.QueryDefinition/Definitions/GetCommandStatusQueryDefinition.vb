@@ -1,4 +1,5 @@
-﻿Imports CQRSAzure.QueryDefinition
+﻿Imports System
+Imports CQRSAzure.QueryDefinition
 ''' <summary>
 ''' A special query used to get the status of a given command that has been sent
 ''' for execution

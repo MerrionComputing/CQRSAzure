@@ -1,5 +1,7 @@
-﻿Public Interface IIdentifierGroupSnapshotReader(Of TAggregate As CQRSAzure.EventSourcing.IAggregationIdentifier,
-                                                    TAggregateKey)
+﻿Imports System
+
+Public Interface IIdentifierGroupSnapshotReader(Of TAggregate As CQRSAzure.EventSourcing.IAggregationIdentifier,
+                                       TAggregateKey)
 
 
     ''' <summary>

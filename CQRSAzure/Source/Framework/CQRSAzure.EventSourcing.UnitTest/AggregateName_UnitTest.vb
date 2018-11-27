@@ -1,10 +1,10 @@
 ﻿Imports System.Text
-Imports Microsoft.VisualStudio.TestTools.UnitTesting
+Imports NUnit.Framework
 
-<TestClass()>
+<TestFixture()>
 Public Class AggregateName_UnitTest
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub NurseAggregate_TestMethod()
 
         Dim expected As String = "Nurse"
@@ -16,7 +16,7 @@ Public Class AggregateName_UnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub PatientAggregate_TestMethod()
 
         Dim expected As String = "Patient"
@@ -28,7 +28,7 @@ Public Class AggregateName_UnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub PatientAggregate_DomainQualifiedName_TestMethod()
 
         Dim expected As String = "HospitalWard.Patient"

@@ -1,4 +1,6 @@
-﻿Imports System.Runtime.Serialization
+﻿Imports System
+Imports System.Collections.Generic
+Imports System.Runtime.Serialization
 
 ''' <summary>
 ''' Specialised class that can serialize an event to or from a backing store either as name:value pairs or 

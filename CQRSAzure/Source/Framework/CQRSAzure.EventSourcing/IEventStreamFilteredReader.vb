@@ -1,4 +1,5 @@
 ﻿
+Imports System
 ''' <summary>
 ''' Definition for any implementation that can read events from an event stream with filtering applied
 ''' </summary>

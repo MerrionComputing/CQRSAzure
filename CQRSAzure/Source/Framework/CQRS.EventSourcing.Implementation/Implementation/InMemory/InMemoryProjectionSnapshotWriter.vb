@@ -1,4 +1,6 @@
-﻿Namespace InMemory
+﻿Imports CQRSAzure.EventSourcing.InMemory
+
+Namespace InMemory
 
     ''' <summary>
     ''' Class to write projection snapshots (cached values) into an in-memory store
@@ -22,7 +24,8 @@
         End Sub
 
 
-        Private Sub New(ByVal aggregateType As TAggregate, ByVal aggregateIdentityKey As TAggregateKey, Optional ByVal settings As IInMemorySettings = Nothing)
+        Private Sub New(ByVal aggregateType As TAggregate, ByVal aggregateIdentityKey As TAggregateKey,
+                        Optional ByVal settings As IInMemorySettings = Nothing)
             MyBase.New(aggregateType, aggregateIdentityKey, settings)
 
         End Sub

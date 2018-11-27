@@ -1,12 +1,9 @@
-﻿Imports System.Text
-Imports Microsoft.VisualStudio.TestTools.UnitTesting
+﻿Imports NUnit.Framework
 
-Imports CQRSAzure.EventSourcing
-
-<TestClass()>
+<TestFixture()>
 Public Class AggregateIdentifierAttributeUnitTest
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Constructor_TestMethod()
 
         Dim testObj As New AggregateIdentifierAttribute(GetType(Mocking.ValidAggregateIdentifier))
@@ -14,12 +11,13 @@ Public Class AggregateIdentifierAttributeUnitTest
 
     End Sub
 
-    <TestMethod>
-    <ExpectedException(GetType(InvalidCastException), AllowDerivedTypes:=False)>
+    <TestCase>
     Public Sub Constructor_InvalidCastException_TestMethod()
 
-        Dim testObj As New AggregateIdentifierAttribute(GetType(Mocking.InvalidAggregateIdentifier))
-        Assert.IsNotNull(testObj)
+        Assert.Throws(Of InvalidCastException)(Sub()
+                                                   Dim testObj As New AggregateIdentifierAttribute(GetType(Mocking.InvalidAggregateIdentifier))
+
+                                               End Sub)
 
     End Sub
 

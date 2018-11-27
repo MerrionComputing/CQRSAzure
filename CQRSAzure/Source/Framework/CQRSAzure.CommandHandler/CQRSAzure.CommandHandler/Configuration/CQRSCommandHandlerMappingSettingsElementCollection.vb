@@ -1,4 +1,5 @@
-﻿Imports System.Configuration
+﻿Imports System
+Imports System.Configuration
 
 ''' <summary>
 ''' The set of configuration setting used to map a command definition type to the handler type that handles it

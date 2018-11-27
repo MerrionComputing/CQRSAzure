@@ -1,4 +1,6 @@
-﻿''' <summary>
+﻿Imports System
+Imports System.Collections.Generic
+''' <summary>
 ''' Interface to be implemented by any class that provides an implementation of an individual event stream - for example anything 
 ''' that is a reader or writer
 ''' </summary>
@@ -43,7 +45,7 @@ Public Interface IEventStreamProvider(Of TAggregate As CQRSAzure.EventSourcing.I
     ''' <param name="asOfDate">
     ''' if supplied, the point in time for which we want to know all the members (otherwise assumed to be as of now)
     ''' </param>
-    Function GetAllStreamKeys(Optional ByVal asOfDate As Nullable(Of DateTime) = Nothing) As IEnumerable(Of TaggregateKey)
+    Function GetAllStreamKeys(Optional ByVal asOfDate As Nullable(Of DateTime) = Nothing) As Task(Of IEnumerable(Of TaggregateKey))
 
 End Interface
 

@@ -1,4 +1,5 @@
-﻿Imports System.Configuration
+﻿Imports System
+Imports System.Configuration
 Imports CQRSAzure.EventSourcing.Azure.SQL
 
 <Obsolete("SQL implementation not supported yet")>

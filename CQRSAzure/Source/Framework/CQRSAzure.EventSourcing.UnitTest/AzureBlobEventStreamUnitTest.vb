@@ -1,13 +1,11 @@
-﻿Imports System.Text
-Imports Microsoft.VisualStudio.TestTools.UnitTesting
-
+﻿Imports System.Configuration
+Imports CQRSAzure.EventSourcing.UnitTest.Mocking
+Imports CQRSAzure.IdentifierGroup
 Imports CQRSAzure.EventSourcing
 Imports CQRSAzure.EventSourcing.Azure.Blob
-Imports CQRSAzure.EventSourcing.UnitTest.Mocking
-Imports System.Configuration
-Imports CQRSAzure.IdentifierGroup
+Imports NUnit.Framework
 
-<TestClass()>
+<TestFixture()>
 Public Class AzureBlobEventStreamUnitTest
 
     Public Const TEST_AGGREGATE_IDENTIFIER As String = "19121971"
@@ -17,7 +15,7 @@ Public Class AzureBlobEventStreamUnitTest
     ''' Note that you will either need to reference an actual Azure account or to start the azure local storage emulator in order
     ''' to run this unit test
     ''' </remarks>
-    <TestMethod()>
+    <TestCase()>
     Public Sub Reader_Constructor_TestMethod()
 
         Dim testAgg As New MockAggregate(TEST_AGGREGATE_IDENTIFIER)
@@ -26,7 +24,7 @@ Public Class AzureBlobEventStreamUnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Writer_Constructor_TestMethod()
 
         Dim testAgg As New MockAggregate(TEST_AGGREGATE_IDENTIFIER)
@@ -35,30 +33,30 @@ Public Class AzureBlobEventStreamUnitTest
 
     End Sub
 
-    <TestMethod()>
-    Public Sub Writer_WriteEvent_TestMethod()
+    <TestCase()>
+    Public Async Function Writer_WriteEvent_TestMethod() As Task
 
         Dim testAgg As New MockAggregate(TEST_AGGREGATE_IDENTIFIER)
         Dim testObj As BlobEventStreamWriter(Of MockAggregate, String) = CType(BlobEventStreamWriter(Of MockAggregate, String).Create(testAgg), BlobEventStreamWriter(Of MockAggregate, String))
-        testObj.AppendEvent(New MockEventTypeOne() With {.EventOneStringProperty = "My test", .EventOneIntegerProperty = 123})
+        Await testObj.AppendEvent(New MockEventTypeOne() With {.EventOneStringProperty = "My test", .EventOneIntegerProperty = 123})
 
         Assert.IsTrue(testObj.RecordCount > 0)
 
-    End Sub
+    End Function
 
-    <TestMethod()>
-    Public Sub Writer_WriteEventTwo_TestMethod()
+    <TestCase()>
+    Public Async Function Writer_WriteEventTwo_TestMethod() As Task
 
         Dim testAgg As New MockAggregate(TEST_AGGREGATE_IDENTIFIER)
         Dim testObj As BlobEventStreamWriter(Of MockAggregate, String) = CType(BlobEventStreamWriter(Of MockAggregate, String).Create(testAgg), BlobEventStreamWriter(Of MockAggregate, String))
-        testObj.Reset()
-        testObj.AppendEvent(New MockEventTypeTwo() With {.EventTwoNullableDateProperty = DateTime.UtcNow, .EventTwoStringProperty = "My test two", .EventTwoDecimalProperty = 123.45D})
+        Await testObj.Reset()
+        Await testObj.AppendEvent(New MockEventTypeTwo() With {.EventTwoNullableDateProperty = DateTime.UtcNow, .EventTwoStringProperty = "My test two", .EventTwoDecimalProperty = 123.45D})
 
         Assert.IsTrue(testObj.RecordCount > 0)
 
-    End Sub
+    End Function
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Reader_ReadEvents_TestMethod()
 
 
@@ -77,7 +75,7 @@ Public Class AzureBlobEventStreamUnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Reader_ReadEventsWithContext_TestMethod()
 
         Dim testAgg As New MockAggregate(TEST_AGGREGATE_IDENTIFIER)
@@ -93,7 +91,7 @@ Public Class AzureBlobEventStreamUnitTest
     End Sub
 
 
-    <TestMethod>
+    <TestCase()>
     Public Sub MakeValidStorageFolderName_Empty_TestMethod()
 
         Dim expected As String = "uncategorised"
@@ -105,7 +103,7 @@ Public Class AzureBlobEventStreamUnitTest
 
     End Sub
 
-    <TestMethod>
+    <TestCase()>
     Public Sub MakeValidStorageFolderName_TooShort_TestMethod()
 
         Dim expected As String = "a-abc"
@@ -117,7 +115,7 @@ Public Class AzureBlobEventStreamUnitTest
 
     End Sub
 
-    <TestMethod>
+    <TestCase()>
     Public Sub MakeValidStorageFolderName_TooShortAfterTrim_TestMethod()
 
         Dim expected As String = "a-abc"
@@ -129,7 +127,7 @@ Public Class AzureBlobEventStreamUnitTest
 
     End Sub
 
-    <TestMethod>
+    <TestCase()>
     Public Sub MakeValidStorageFolderName_FixChars_TestMethod()
 
         Dim expected As String = "duncan-s-model"
@@ -141,7 +139,7 @@ Public Class AzureBlobEventStreamUnitTest
 
     End Sub
 
-    <TestMethod>
+    <TestCase()>
     Public Sub MakeValidStorageFolderName_IsValid_TestMethod()
 
         Dim expected As String = "duncan-s-model"
@@ -153,7 +151,7 @@ Public Class AzureBlobEventStreamUnitTest
 
     End Sub
 
-    <TestMethod>
+    <TestCase()>
     Public Sub MakeValidStorageFolderName_TooLong_TestMethod()
 
         Dim expected As Integer = 63
@@ -166,26 +164,27 @@ Public Class AzureBlobEventStreamUnitTest
     End Sub
 
 
-    <TestMethod()>
-    Public Sub GetAllStreamKeys_NoDate_TestMethod()
+    <TestCase()>
+    Public Async Sub GetAllStreamKeys_NoDate_TestMethod()
 
         Dim expected As Boolean = True
         Dim actual As Boolean = False
 
         Dim instance As New MockAggregate(AzureBlobEventStreamUnitTest.TEST_AGGREGATE_IDENTIFIER)
 
-        Dim testObj = Azure.Blob.BlobEventStreamReader(Of MockAggregate, String).Create(New MockAggregate(AzureBlobEventStreamUnitTest.TEST_AGGREGATE_IDENTIFIER))
+        Dim testObj = BlobEventStreamReader(Of MockAggregate, String).Create(New MockAggregate(AzureBlobEventStreamUnitTest.TEST_AGGREGATE_IDENTIFIER))
         Dim testProvider As IEventStreamProvider(Of MockAggregate, String) = BlobEventStreamProviderFactory.Create(Of MockAggregate, String)(instance, AzureBlobEventStreamUnitTest.TEST_AGGREGATE_IDENTIFIER)
         'TODO : Instantiate the provider instance
 
-        actual = testProvider.GetAllStreamKeys().Contains(AzureBlobEventStreamUnitTest.TEST_AGGREGATE_IDENTIFIER)
+        Dim values As IEnumerable(Of String) = Await testProvider.GetAllStreamKeys()
+        actual = values.Contains(AzureBlobEventStreamUnitTest.TEST_AGGREGATE_IDENTIFIER)
 
         Assert.AreEqual(expected, actual)
 
     End Sub
 
-    <TestMethod()>
-    Public Sub GetAllStreamKeys_GUIDKey_NoDate_TestMethod()
+    <TestCase()>
+    Public Async Function GetAllStreamKeys_GUIDKey_NoDate_TestMethod() As Task
 
         Dim expected As Boolean = True
         Dim actual As Boolean = False
@@ -193,17 +192,18 @@ Public Class AzureBlobEventStreamUnitTest
         Dim key As Guid = New Guid("a73140ce-2204-413a-8beb-604241fd721d")
 
         Dim instance As New MockGuidAggregate(key)
-        Dim testObj = Azure.Blob.BlobEventStreamReader(Of MockGuidAggregate, Guid).Create(instance)
+        Dim testObj = BlobEventStreamReader(Of MockGuidAggregate, Guid).Create(instance)
         Dim testProvider As IEventStreamProvider(Of MockGuidAggregate, Guid) = BlobEventStreamProviderFactory.Create(Of MockGuidAggregate, Guid)(instance, key)
 
-        actual = testProvider.GetAllStreamKeys().Contains(key)
+        Dim values As IEnumerable(Of Guid) = Await testProvider.GetAllStreamKeys()
+        actual = values.Contains(key)
 
         Assert.AreEqual(expected, actual)
 
-    End Sub
+    End Function
 
-    <TestMethod()>
-    Public Sub GetAllStreamKeys_GUIDKey_FutureDate_TestMethod()
+    <TestCase()>
+    Public Async Function GetAllStreamKeys_GUIDKey_FutureDate_TestMethod() As Task
 
         Dim expected As Boolean = False
         Dim actual As Boolean = True
@@ -212,14 +212,15 @@ Public Class AzureBlobEventStreamUnitTest
 
         Dim key As Guid = New Guid("a883fb8a-97ab-4d66-85db-ec7b9ba3b423")
 
-        Dim testObj = Azure.Blob.BlobEventStreamReader(Of MockGuidAggregate, Guid).Create(New MockGuidAggregate(key))
+        Dim testObj = BlobEventStreamReader(Of MockGuidAggregate, Guid).Create(New MockGuidAggregate(key))
         Dim testProvider As IEventStreamProvider(Of MockGuidAggregate, Guid) = BlobEventStreamProviderFactory.Create(Of MockGuidAggregate, Guid)()
 
-        actual = testProvider.GetAllStreamKeys(asOfdate).Contains(key)
+        Dim values As IEnumerable(Of Guid) = Await testProvider.GetAllStreamKeys()
+        actual = values.Contains(key)
 
         Assert.AreEqual(expected, actual)
 
-    End Sub
+    End Function
 
 
 
@@ -227,7 +228,7 @@ Public Class AzureBlobEventStreamUnitTest
 
 #If PERFORMANCE_TESTS Then
     <TestCategory("Performance")>
-    <TestMethod>
+    <TestCase()>
     Public Sub Write_Million_Random_Events()
 
         'load the serialisers
@@ -294,8 +295,8 @@ Public Class AzureBlobEventStreamUnitTest
     End Sub
 #End If
 
-    <TestCategory("Performance")>
-    <TestMethod>
+    '<TestCategory("Performance")>
+    <TestCase()>
     Public Sub Read_Million_Random_Events()
 
         Dim actual As Decimal = 0D
@@ -341,8 +342,8 @@ Public Class AzureBlobEventStreamUnitTest
 
     End Sub
 
-    <TestCategory("Performance")>
-    <TestMethod()>
+    '<TestCategory("Performance")>
+    <TestCase()>
     Public Sub Categorise_Million_Random_Events()
 
         Dim expected As IClassifierDataSourceHandler.EvaluationResult = IClassifierDataSourceHandler.EvaluationResult.Include

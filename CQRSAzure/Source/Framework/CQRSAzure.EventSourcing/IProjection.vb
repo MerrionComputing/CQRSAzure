@@ -1,4 +1,6 @@
 ﻿Option Explicit On
+Imports System
+Imports System.Collections.Generic
 
 ''' <summary>
 ''' Marker interface to denote anything as being a projection over the given aggregate identifier

@@ -1,13 +1,13 @@
 ﻿Imports System.Text
-Imports Microsoft.VisualStudio.TestTools.UnitTesting
+Imports NUnit.Framework
 Imports System.Configuration
 
-<TestClass()>
+<TestFixture()>
 Public Class CQRSAzureHostConfigurationSectionUnitTest
 
     Public Const VALID_SECTION_NAME As String = "CQRSAzureHostConfigurationSection"
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Create_Empty_TestMethod()
 
         Dim testObj As New CQRSAzureHostConfigurationSection()
@@ -15,7 +15,7 @@ Public Class CQRSAzureHostConfigurationSectionUnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub LoadConfigurationSection_Testmethod()
 
         Dim testObj As CQRSAzureHostConfigurationSection
@@ -27,7 +27,7 @@ Public Class CQRSAzureHostConfigurationSectionUnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub LoadConfigurationSection_MatchingName_Testmethod()
 
         Dim expected As String = "Grettel"
@@ -44,7 +44,7 @@ Public Class CQRSAzureHostConfigurationSectionUnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub LoadConfigurationSection_LoadDomains_Testmethod()
 
         Dim expected As Boolean = True

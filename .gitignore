@@ -247,3 +247,4 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+/CQRSAzure/Source/Framework/CQRSAzure.EventSourcing.UnitTest/connectionstrings.json

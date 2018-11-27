@@ -1,4 +1,5 @@
-﻿Imports CQRSAzure.EventSourcing
+﻿Imports System
+Imports CQRSAzure.EventSourcing
 Imports CQRSAzure.IdentifierGroup
 
 Partial Public Class AggregateEventStreamImplementationMap(Of TAggregate As IAggregationIdentifier, TAggregateKey)

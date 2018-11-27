@@ -1,13 +1,11 @@
 ﻿Option Explicit On
+Imports NUnit.Framework
 
-Imports System.Text
-Imports Microsoft.VisualStudio.TestTools.UnitTesting
-
-<TestClass()>
+<TestFixture()>
 Public Class QueryEventStream_UnitTest
 
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub QueryAggregate_Constructor_TestMethod()
 
         Dim testObj As New Queries.QueryAggregate(Guid.NewGuid())
@@ -15,7 +13,7 @@ Public Class QueryEventStream_UnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub QueryCompletedEvent_Constructor_TestMethod()
 
         Dim testObj As Queries.QueryCompletedEvent = Queries.QueryCompletedEvent.Create(DateTime.Now,
@@ -25,7 +23,7 @@ Public Class QueryEventStream_UnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub QueryCompletedEvent_RoundTrip_RecordCount_Serialisation_TestMethod()
 
         Dim expected As Integer = 321
@@ -52,7 +50,7 @@ Public Class QueryEventStream_UnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub QueryCompletedEvent_RoundTrip_SuccessMessage_Serialisation_TestMethod()
 
         Dim expected As String = "Unit test success"
@@ -80,7 +78,7 @@ Public Class QueryEventStream_UnitTest
     End Sub
 
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub QueryCreatedEvent_RoundTrip_QueryName_Serialisation_TestMethod()
 
         Dim expected As String = "Unit test query name"
@@ -111,7 +109,7 @@ Public Class QueryEventStream_UnitTest
         Assert.AreEqual(expected, actual)
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub QueryCreatedEvent_RoundTrip_QueryId_Serialisation_TestMethod()
 
         Dim expected As Guid = Guid.NewGuid()
@@ -145,7 +143,7 @@ Public Class QueryEventStream_UnitTest
 
 
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub QueryCreatedEvent_RoundTrip_Source_Serialisation_TestMethod()
 
         Dim expected As String = "Unit test query source"
@@ -177,7 +175,7 @@ Public Class QueryEventStream_UnitTest
         Assert.AreEqual(expected, actual)
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub QueryCreatedEvent_RoundTrip_Username_Serialisation_TestMethod()
 
         Dim expected As String = "Unit test username"
@@ -209,7 +207,7 @@ Public Class QueryEventStream_UnitTest
         Assert.AreEqual(expected, actual)
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub QueryCreatedEvent_RoundTrip_IdentityGroup_Serialisation_TestMethod()
 
         Dim expected As String = "Unit test identity group"
@@ -241,7 +239,7 @@ Public Class QueryEventStream_UnitTest
         Assert.AreEqual(expected, actual)
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub QueryCreatedEvent_RoundTrip_Parameters_Serialisation_TestMethod()
 
         Dim expected As String = "Unit test query parameters"
@@ -304,7 +302,7 @@ Public Class QueryEventStream_UnitTest
         Assert.AreEqual(expected, actual)
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub QueryFatalErrorOccuredEvent_RoundTrip_Date_Serialisation_TestMethod()
 
         Dim expected As DateTime = New DateTime(2016, 12, 19, 3, 23, 1)
@@ -330,7 +328,7 @@ Public Class QueryEventStream_UnitTest
         Assert.AreEqual(expected, actual)
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub QueryFatalErrorOccuredEvent_RoundTrip_ErrorMessage_Serialisation_TestMethod()
 
         Dim expected As String = "Unit test error message"
@@ -356,7 +354,7 @@ Public Class QueryEventStream_UnitTest
         Assert.AreEqual(expected, actual)
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub QueryIdentityGroupMemberReturnedEvent_String_RoundTrip_GroupName_Serialisation_TestMethod()
 
         Dim expected As String = "Unit test identity group"
@@ -383,7 +381,7 @@ Public Class QueryEventStream_UnitTest
         Assert.AreEqual(expected, actual)
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub QueryIdentityGroupMemberReturnedEvent_String_RoundTrip_Member_Serialisation_TestMethod()
 
         Dim expected As String = "OLJ565M"
@@ -410,7 +408,7 @@ Public Class QueryEventStream_UnitTest
         Assert.AreEqual(expected, actual)
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub QueryIdentityGroupMemberReturnedEvent_Integer_RoundTrip_Member_Serialisation_TestMethod()
 
         Dim expected As Integer = 123
@@ -437,7 +435,7 @@ Public Class QueryEventStream_UnitTest
         Assert.AreEqual(expected, actual)
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub QueryIdentityGroupMemberReturnedEvent_GUID_RoundTrip_Member_Serialisation_TestMethod()
 
         Dim expected As Guid = Guid.NewGuid()
@@ -465,7 +463,7 @@ Public Class QueryEventStream_UnitTest
     End Sub
 
     'QueryIdentityGroupRequestedEvent
-    <TestMethod()>
+    <TestCase()>
     Public Sub QueryIdentityGroupRequestedEvent_RoundTrip_GroupName_Serialisation_TestMethod()
 
         Dim expected As String = "Unit test identity group"
@@ -491,7 +489,7 @@ Public Class QueryEventStream_UnitTest
         Assert.AreEqual(expected, actual)
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub QueryIdentityGroupRequestedEvent_RoundTrip_AsOfDate_Serialisation_TestMethod()
 
         Dim expected As DateTime = New DateTime(1977, 12, 19, 12, 0, 1)
@@ -517,7 +515,7 @@ Public Class QueryEventStream_UnitTest
         Assert.AreEqual(expected, actual)
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub QueryIdentityGroupReturnedEvent_RoundTrip_GroupName_Serialisation_TestMethod()
 
         Dim expected As String = "Unit test identity group"
@@ -543,7 +541,7 @@ Public Class QueryEventStream_UnitTest
         Assert.AreEqual(expected, actual)
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub QueryIdentityGroupReturnedEvent_RoundTrip_AsOfDate_Serialisation_TestMethod()
 
         Dim expected As DateTime = New DateTime(2017, 2, 1, 19, 3, 22)
@@ -569,7 +567,7 @@ Public Class QueryEventStream_UnitTest
         Assert.AreEqual(expected, actual)
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub QueryProjectionRequestedEvent_String_RoundTrip_AsOfDate_Serialisation_TestMethod()
 
         Dim expected As DateTime = New DateTime(2017, 2, 1, 19, 3, 22)
@@ -596,7 +594,7 @@ Public Class QueryEventStream_UnitTest
         Assert.AreEqual(expected, actual)
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub QueryProjectionRequestedEvent_Integer_RoundTrip_AsOfDate_Serialisation_TestMethod()
 
         Dim expected As DateTime = New DateTime(2017, 2, 1, 19, 3, 22)
@@ -623,7 +621,7 @@ Public Class QueryEventStream_UnitTest
         Assert.AreEqual(expected, actual)
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub QueryProjectionRequestedEvent_String_RoundTrip_ProjectionName_Serialisation_TestMethod()
 
         Dim expected As String = "Unit test projection"
@@ -650,7 +648,7 @@ Public Class QueryEventStream_UnitTest
         Assert.AreEqual(expected, actual)
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub QueryProjectionReturnedEvent_String_RoundTrip_ResultsLocation_Serialisation_TestMethod()
 
         Dim expected As String = "Unit test projection"
@@ -678,7 +676,7 @@ Public Class QueryEventStream_UnitTest
         Assert.AreEqual(expected, actual)
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub QueryProjectionReturnedEvent_String_RoundTrip_ProjectionName_Serialisation_TestMethod()
 
         Dim expected As String = "Unit test location"
@@ -706,7 +704,7 @@ Public Class QueryEventStream_UnitTest
         Assert.AreEqual(expected, actual)
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub QueryStartedEvent_RoundTrip_ProcessorName_Serialisation_TestMethod()
 
         Dim expected As String = "Unit test processor"
@@ -731,7 +729,7 @@ Public Class QueryEventStream_UnitTest
         Assert.AreEqual(expected, actual)
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub QueryStartedEvent_RoundTrip_StartDate_Serialisation_TestMethod()
 
         Dim expected As DateTime = New DateTime(2017, 1, 13, 9, 11, 12)
@@ -757,7 +755,7 @@ Public Class QueryEventStream_UnitTest
     End Sub
 
     'QueryTransientFaultOccuredEvent
-    <TestMethod()>
+    <TestCase()>
     Public Sub QueryTransientFaultOccuredEvent_RoundTrip_FaultDate_Serialisation_TestMethod()
 
         Dim expected As DateTime = New DateTime(2017, 1, 13, 9, 11, 12)
@@ -782,7 +780,7 @@ Public Class QueryEventStream_UnitTest
         Assert.AreEqual(expected, actual)
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub QueryTransientFaultOccuredEvent_RoundTrip_FaultMessage_Serialisation_TestMethod()
 
         Dim expected As String = "fault reason"
@@ -808,7 +806,7 @@ Public Class QueryEventStream_UnitTest
     End Sub
 
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub QueryCreatedEvent_Constructor_TestMethod()
 
         Dim testObj As Queries.QueryCreatedEvent = Queries.QueryCreatedEvent.Create(Guid.NewGuid(),

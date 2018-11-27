@@ -1,12 +1,12 @@
 ﻿Imports System.Text
-Imports Microsoft.VisualStudio.TestTools.UnitTesting
+Imports NUnit.Framework
 
 Imports CQRSAzure.QueryDefinition
 
-<TestClass()>
+<TestFixture()>
 Public Class QueryDefinitionBaseUnitTest
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Constructor_String_TestMethod()
 
         Dim testObj As New MockQueryDefinitionClass_String()
@@ -14,7 +14,7 @@ Public Class QueryDefinitionBaseUnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub AddParameterOfString_RoundTrip_TestMethod()
 
         Dim expected As String = "Expected"
@@ -28,7 +28,7 @@ Public Class QueryDefinitionBaseUnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub AddParameterOfInteger_RoundTrip_TestMethod()
 
         Dim expected As Integer = 112
@@ -43,7 +43,7 @@ Public Class QueryDefinitionBaseUnitTest
     End Sub
 
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub AddParameterOfDecimalRoundTrip_TestMethod()
 
         Dim expected As Decimal = 112.98
@@ -57,7 +57,7 @@ Public Class QueryDefinitionBaseUnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub ProjectionNameRoundTrip_TestMethod()
 
         Dim expected As String = "My projection"

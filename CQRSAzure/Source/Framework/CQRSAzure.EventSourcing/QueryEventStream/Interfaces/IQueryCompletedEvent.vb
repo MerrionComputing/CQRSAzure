@@ -1,4 +1,6 @@
-﻿Namespace Queries
+﻿Imports System
+
+Namespace Queries
 
     ''' <summary>
     ''' The query processing completed

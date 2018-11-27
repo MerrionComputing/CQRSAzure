@@ -1,4 +1,5 @@
-﻿Imports CQRSAzure.EventSourcing
+﻿Imports System
+Imports CQRSAzure.EventSourcing
 
 Public Class DecimalKeyConverter
     Implements IKeyConverter(Of Decimal)

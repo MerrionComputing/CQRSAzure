@@ -1,4 +1,6 @@
-﻿''' <summary>
+﻿Imports System
+Imports System.Collections.Generic
+''' <summary>
 ''' Definition for any implementation that can read events from an event stream
 ''' </summary>
 ''' <typeparam name="TAggregate">
@@ -16,7 +18,7 @@ Public Interface IEventStreamReader(Of TAggregate As CQRSAzure.EventSourcing.IAg
     ''' <summary>
     ''' Get the event stream for a given aggregate
     ''' </summary>
-    Function GetEvents() As IEnumerable(Of IEvent(Of TAggregate))
+    Function GetEvents() As Task(Of IEnumerable(Of IEvent(Of TAggregate)))
 
     ''' <summary>
     ''' Gets the event stream for a given aggregate from a given starting version
@@ -28,7 +30,7 @@ Public Interface IEventStreamReader(Of TAggregate As CQRSAzure.EventSourcing.IAg
     ''' This is used in scenario where we are starting from a given snapshot version
     ''' </remarks>
     Function GetEvents(Optional ByVal StartingSequenceNumber As UInteger = 0,
-                       Optional ByVal effectiveDateTime As Nullable(Of DateTime) = Nothing) As IEnumerable(Of IEvent(Of TAggregate))
+                       Optional ByVal effectiveDateTime As Nullable(Of DateTime) = Nothing) As Task(Of IEnumerable(Of IEvent(Of TAggregate)))
 
     ''' <summary>
     ''' Gets the event stream and the context information recorded for each event
@@ -40,7 +42,7 @@ Public Interface IEventStreamReader(Of TAggregate As CQRSAzure.EventSourcing.IAg
     ''' This is typically only used for audit trails as all business functionality should depend on the event data alone
     ''' </remarks>
     Function GetEventsWithContext(Optional ByVal StartingSequenceNumber As UInteger = 0,
-                                  Optional ByVal effectiveDateTime As Nullable(Of DateTime) = Nothing) As IEnumerable(Of IEventContext)
+                                  Optional ByVal effectiveDateTime As Nullable(Of DateTime) = Nothing) As Task(Of IEnumerable(Of IEventContext))
 
 
 End Interface

@@ -1,4 +1,5 @@
-﻿Imports System.Configuration
+﻿Imports System
+Imports System.Configuration
 
 <ConfigurationCollection(GetType(CQRSQueryHandlerMappingElement), AddItemName:="QueryHandlerMapping")>
 Public Class CQRSQueryHandlerMappingElementCollection

@@ -1,4 +1,5 @@
-﻿Imports System.Runtime.Serialization
+﻿Imports System
+Imports System.Runtime.Serialization
 Imports System.Security.Permissions
 
 Namespace Exceptions

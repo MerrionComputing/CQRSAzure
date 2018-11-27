@@ -23,7 +23,7 @@ Public Interface IProjectionSnapshotReader(Of TAggregate As CQRSAzure.EventSourc
     ''' <param name="OnOrBeforeSequence">
     ''' if specified, get the latest snapshot prior to the given sequence number
     ''' </param>
-    Function GetSnapshot(ByVal key As TAggregateKey, Optional ByVal OnOrBeforeSequence As UInteger = 0) As IProjectionSnapshot(Of TAggregate, TAggregateKey)
+    Function GetSnapshot(ByVal key As TAggregateKey, Optional ByVal OnOrBeforeSequence As UInteger = 0) As Task(Of IProjectionSnapshot(Of TAggregate, TAggregateKey))
 
     ''' <summary>
     ''' Gets the sequence number of the latest snapshot held for a given aggregate instance
@@ -37,6 +37,6 @@ Public Interface IProjectionSnapshotReader(Of TAggregate As CQRSAzure.EventSourc
     ''' <returns>
     ''' If zero, there are no snapshots found for this aggregate key
     ''' </returns>
-    Function GetLatestSnapshotSequence(ByVal key As TAggregateKey, Optional ByVal OnOrBeforeSequence As UInteger = 0) As UInteger
+    Function GetLatestSnapshotSequence(ByVal key As TAggregateKey, Optional ByVal OnOrBeforeSequence As UInteger = 0) As Task(Of UInteger)
 
 End Interface

@@ -1,5 +1,5 @@
 ﻿Imports System.Runtime.Serialization
-Imports CQRSAzure.EventSourcing
+Imports CQRSAzure.EventSourcing.Implementation
 
 Namespace Mocking
     <DomainName("UnitTest")>

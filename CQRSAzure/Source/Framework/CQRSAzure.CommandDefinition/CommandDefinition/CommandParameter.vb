@@ -1,6 +1,4 @@
 ﻿Imports System.Runtime.Serialization
-Imports CQRSAzure.CommandDefinition
-
 ''' <summary>
 ''' A single parameter that is used to affect how (and on what) a command operates
 ''' </summary>

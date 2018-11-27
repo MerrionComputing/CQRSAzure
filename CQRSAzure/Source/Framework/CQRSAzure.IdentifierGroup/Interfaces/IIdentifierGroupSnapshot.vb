@@ -1,4 +1,6 @@
-﻿Imports CQRSAzure.EventSourcing
+﻿Imports System
+Imports System.Collections.Generic
+Imports CQRSAzure.EventSourcing
 
 ''' <summary>
 ''' A snapshot of the membership of an identifier group as at a given point in time

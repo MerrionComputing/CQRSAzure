@@ -1,4 +1,6 @@
-﻿''' <summary>
+﻿Imports System
+Imports System.Collections.Generic
+''' <summary>
 ''' A snapshot of a projection as at a particular point in time
 ''' </summary>
 Public Interface IProjectionSnapshot(Of TAggregate As IAggregationIdentifier, TAggregateKey)

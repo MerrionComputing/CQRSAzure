@@ -1,5 +1,5 @@
 ﻿Imports System.Reflection
-Imports CQRSAzure.EventSourcing
+Imports CQRSAzure.EventSourcing.Azure.Table
 Imports Microsoft.WindowsAzure.Storage.Table
 
 Namespace Azure.Table.Untyped
@@ -24,18 +24,19 @@ Namespace Azure.Table.Untyped
         End Property
 
 
-        Public Function GetEvents() As IEnumerable(Of IEvent) Implements IEventStreamReaderUntyped.GetEvents
+        Public Async Function GetEvents() As Task(Of IEnumerable(Of IEvent)) Implements IEventStreamReaderUntyped.GetEvents
 
-            Return GetEvents(0)
+            Return Await GetEvents(0)
 
         End Function
 
-        Public Function GetEvents(Optional StartingSequenceNumber As UInteger = 0, Optional effectiveDateTime As Date? = Nothing) As IEnumerable(Of IEvent) Implements IEventStreamReaderUntyped.GetEvents
+        Public Async Function GetEvents(Optional StartingSequenceNumber As UInteger = 0, Optional effectiveDateTime As Date? = Nothing) As Task(Of IEnumerable(Of IEvent)) Implements IEventStreamReaderUntyped.GetEvents
 
 
             If (MyBase.Table IsNot Nothing) Then
                 Dim ret As New List(Of IEvent)()
-                For Each dte As DynamicTableEntity In MyBase.Table.ExecuteQuery(CreateQuery(StartingSequenceNumber), MyBase.RequestOptions)
+                Dim continueToken As New TableContinuationToken()
+                For Each dte As DynamicTableEntity In Await MyBase.Table.ExecuteQuerySegmentedAsync(CreateQuery(StartingSequenceNumber), continueToken) ', MyBase.RequestOptions)
                     Dim eventType As Type = GetDynamicTableEntityEventType(dte)
                     If IsEventValid(eventType) Then
                         Dim evt As IEvent = Nothing
@@ -49,7 +50,7 @@ Namespace Azure.Table.Untyped
                         End If
                         'if so, add it to the returned list 
                         If (evt IsNot Nothing) Then
-                            ret.Add(New Blob.JSonWrappedEventInstance(evt))
+                            ret.Add(evt)
                         End If
                     End If
                 Next
@@ -118,17 +119,18 @@ Namespace Azure.Table.Untyped
 
         End Function
 
-        Public Function GetEventsWithContext(Optional StartingSequenceNumber As UInteger = 0,
-                                             Optional effectiveDateTime As Date? = Nothing) As IEnumerable(Of IEventContext) Implements IEventStreamReaderUntyped.GetEventsWithContext
+        Public Async Function GetEventsWithContext(Optional StartingSequenceNumber As UInteger = 0,
+                                             Optional effectiveDateTime As Date? = Nothing) As Task(Of IEnumerable(Of IEventContext)) Implements IEventStreamReaderUntyped.GetEventsWithContext
 
 
             If (MyBase.Table IsNot Nothing) Then
                 Dim ret As New List(Of IEventContext)
-                For Each dte As DynamicTableEntity In MyBase.Table.ExecuteQuery(CreateQuery(StartingSequenceNumber))
+                Dim continueToken As New TableContinuationToken()
+                For Each dte As DynamicTableEntity In Await MyBase.Table.ExecuteQuerySegmentedAsync(CreateQuery(StartingSequenceNumber), continueToken)
                     Dim eventType As Type = GetDynamicTableEntityEventType(dte)
                     'see if the event type is valid...
                     If IsEventValid(eventType) Then
-                        Dim evt As IEvent
+                        Dim evt As IJsonSerialisedEvent
                         Dim deserialiser As IEventSerializer = EventSerializerFactory.GetSerialiserByType(eventType)
                         If (deserialiser IsNot Nothing) Then
                             'Use the event serialiser... 
@@ -140,13 +142,16 @@ Namespace Azure.Table.Untyped
                             PopulateDynamicTableEntityEvent(dte, evt)
                             'Wrap it with context from the table row
                         End If
-                        Dim evtJSon As IJsonSerialisedEvent = New Blob.JSonWrappedEventInstance(evt)
-                        ret.Add(WrapDynamicTableEntityEvent(dte, evtJSon))
+                        ret.Add(WrapDynamicTableEntityEvent(dte, evt))
                     End If
                 Next
                 Return ret
             Else
-                Throw New EventStreamReadException(DomainName, AggregateClassName, InstanceKey, 0, "Missing or not initialised table reference")
+                Throw New EventStreamReadException(DomainName,
+                                                   AggregateClassName,
+                                                   InstanceKey,
+                                                   0,
+                                                   "Missing or not initialised table reference")
             End If
 
         End Function

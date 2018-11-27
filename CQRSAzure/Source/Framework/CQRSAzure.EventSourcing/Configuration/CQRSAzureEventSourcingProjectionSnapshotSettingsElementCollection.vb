@@ -1,4 +1,5 @@
-﻿Imports System.Configuration
+﻿Imports System
+Imports System.Configuration
 
 ''' <summary>
 ''' Configuration settings controlling how projection snapshots are persisted to a backing storage mechanism

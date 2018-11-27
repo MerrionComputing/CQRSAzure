@@ -1,7 +1,9 @@
-﻿Imports System.IO
+﻿Imports System
+Imports System.IO
 Imports System.Runtime.Serialization
 Imports System.Runtime.Serialization.Formatters.Binary
 Imports CQRSAzure.EventSourcing
+Imports CQRSAzure.EventSourcing.Local.File
 
 Namespace Local.File
     Public MustInherit Class LocalFileEventStreamBase(Of TAggregate As CQRSAzure.EventSourcing.IAggregationIdentifier, TAggregateKey)

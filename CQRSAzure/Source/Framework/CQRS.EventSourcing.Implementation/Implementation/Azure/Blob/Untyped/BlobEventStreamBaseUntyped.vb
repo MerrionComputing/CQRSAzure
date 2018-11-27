@@ -1,15 +1,10 @@
-﻿Imports Microsoft.WindowsAzure.Storage.Blob
-Imports Microsoft.WindowsAzure.Storage
-Imports Microsoft.WindowsAzure.Storage.Auth
-Imports Microsoft.WindowsAzure
-Imports Microsoft.Azure
-Imports System.Configuration
-Imports CQRSAzure.EventSourcing
+﻿Imports System
 Imports CQRSAzure.EventSourcing.Azure.Blob
+Imports Microsoft.WindowsAzure.Storage.Blob
 
 Namespace Azure.Blob.Untyped
     ''' <summary>
-    ''' Common functionality that both untyped reader and untyped writer use to access the event store on the Azure storage
+    ''' Common functionality that both untyped reader and untyped writer use to access the event store in a Blob on the Azure storage
     ''' </summary>
     ''' <remarks>
     ''' Care must be taken to make sure this remains compatible with the type-safe implementation
@@ -84,16 +79,20 @@ Namespace Azure.Blob.Untyped
         End Property
 
 
-        Public Function GetSequence() As Long
+        Public Async Function GetSequence() As Task(Of Long)
 
             If (AppendBlob IsNot Nothing) Then
                 Try
-                    AppendBlob.FetchAttributes()
-                    Dim m_sequence As Long
-                    If (Long.TryParse(AppendBlob.Metadata(METADATA_SEQUENCE), m_sequence)) Then
-                        Return m_sequence
+                    Dim exists As Boolean = Await AppendBlob.ExistsAsync()
+                    If (exists) Then
+                        Await AppendBlob.FetchAttributesAsync()
+                        Dim m_sequence As Long
+                        If (Long.TryParse(AppendBlob.Metadata(METADATA_SEQUENCE), m_sequence)) Then
+                            Return m_sequence
+                        End If
+                    Else
+                        Return 0
                     End If
-
                 Catch exBlob As Microsoft.WindowsAzure.Storage.StorageException
                     Throw New EventStreamReadException(DomainName, AggregateClassName, InstanceKey, 0, "Unable to get the sequence number for this event stream", exBlob)
                 End Try
@@ -105,11 +104,11 @@ Namespace Azure.Blob.Untyped
 
         End Function
 
-        Public Function GetRecordCount() As Long
+        Public Async Function GetRecordCount() As Task(Of Long)
 
             If (AppendBlob IsNot Nothing) Then
                 Try
-                    AppendBlob.FetchAttributes()
+                    Await AppendBlob.FetchAttributesAsync()
                     Dim m_sequence As Long
                     If (Long.TryParse(AppendBlob.Metadata(METADATA_RECORD_COUNT), m_sequence)) Then
                         Return m_sequence
@@ -148,12 +147,13 @@ Namespace Azure.Blob.Untyped
         ''' <summary>
         ''' Create the Blob or get the reference to an existing one
         ''' </summary>
-        Protected Sub ResetBlob()
+        Protected Async Function ResetBlob() As Task
 
             If (BlobContainer IsNot Nothing) Then
-                If Not m_blob.Exists() Then
+                Dim exists As Boolean = Await m_blob.ExistsAsync()
+                If Not exists Then
                     'Make the file to append to if it doesn't already exist
-                    m_blob.CreateOrReplace()
+                    Await m_blob.CreateOrReplaceAsync()
                     'Set the initial metadata
                     m_blob.Metadata(METATDATA_DOMAIN) = DomainName
                     m_blob.Metadata(METADATA_AGGREGATE_CLASS) = Me.AggregateTypeName
@@ -161,12 +161,12 @@ Namespace Azure.Blob.Untyped
                     m_blob.Metadata(METADATA_SEQUENCE) = "0" 'Sequence starts at zero
                     m_blob.Metadata(METADATA_RECORD_COUNT) = "0" 'Record count starts at zero
                     m_blob.Metadata(METADATA_DATE_CREATED) = DateTime.UtcNow.ToString("O") 'use universal date/time
-                    m_blob.SetMetadata()
+                    Await m_blob.SetMetadataAsync()
                 Else
-                    m_blob.FetchAttributes()
+                    Await m_blob.FetchAttributesAsync()
                 End If
             End If
-        End Sub
+        End Function
 
     End Class
 End Namespace

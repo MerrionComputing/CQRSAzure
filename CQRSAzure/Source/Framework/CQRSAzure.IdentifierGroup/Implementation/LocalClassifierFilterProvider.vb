@@ -1,5 +1,4 @@
 ﻿Imports CQRSAzure.EventSourcing
-Imports CQRSAzure.IdentifierGroup
 
 ''' <summary>
 ''' A class to perform the classifier filter provider functionality locally - i.e. all the classifiers are run in the same process as the 
@@ -16,8 +15,8 @@ Public NotInheritable Class LocalClassifierFilterProvider(Of TAggregate As IAggr
     'Need some factory to create classifier processors...?
     Private ReadOnly m_factory As IClassifierProcessorFactory(Of TAggregate, TAggregateKey, TClassifier)
 
-    Public Function GetMembers(setToFilter As IEnumerable(Of TAggregateKey),
-                               Optional effectiveDateTime As Date? = Nothing) As IEnumerable(Of TAggregateKey) Implements IClassifierFilterProvider(Of TAggregate, TAggregateKey).GetMembers
+    Public Async Function GetMembers(setToFilter As IEnumerable(Of TAggregateKey),
+                               Optional effectiveDateTime As Date? = Nothing) As Task(Of IEnumerable(Of TAggregateKey)) Implements IClassifierFilterProvider(Of TAggregate, TAggregateKey).GetMembers
 
 
         If (m_factory Is Nothing) Then
@@ -27,19 +26,12 @@ Public NotInheritable Class LocalClassifierFilterProvider(Of TAggregate As IAggr
             'Cannot classify the member
             Throw New Exceptions.ClassifierProcessorFactoryMissingException("No factory specified when creating this Local Classifier Filter")
         Else
-
-            Dim filterMemberQuery = setToFilter.AsParallel().Where(Function(ByVal key As TAggregateKey)
-                                                                       Return IsMember(key, effectiveDateTime)
-                                                                   End Function)
-
-            Return filterMemberQuery.AsEnumerable()
-
-
+            Throw New NotImplementedException("Parallel membership to be done")
         End If
     End Function
 
-    Public Function IsMember(identifierToTest As TAggregateKey,
-                             Optional effectiveDateTime As Date? = Nothing) As Boolean Implements IClassifierFilterProvider(Of TAggregate, TAggregateKey).IsMember
+    Public Async Function IsMember(identifierToTest As TAggregateKey,
+                             Optional effectiveDateTime As Date? = Nothing) As Task(Of Boolean) Implements IClassifierFilterProvider(Of TAggregate, TAggregateKey).IsMember
 
 
         If (m_factory Is Nothing) Then
@@ -50,7 +42,7 @@ Public NotInheritable Class LocalClassifierFilterProvider(Of TAggregate As IAggr
             IdentifierGroup.LogVerboseInfo("Checking if " & identifierToTest.ToString() & " is a member of this identifier group ")
 #End Region
             'Use the factory to create a classifier and run it
-            Return m_factory.GetClassifierFilterProvider(identifierToTest).Classify(effectiveDateTime:=effectiveDateTime)
+            Return Await m_factory.GetClassifierFilterProvider(identifierToTest).Classify(effectiveDateTime:=effectiveDateTime)
         End If
 
         Return False

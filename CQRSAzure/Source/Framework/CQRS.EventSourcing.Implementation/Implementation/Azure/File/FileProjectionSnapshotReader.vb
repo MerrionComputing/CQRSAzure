@@ -1,4 +1,5 @@
 ﻿Imports System.Runtime.Serialization.Formatters.Binary
+Imports CQRSAzure.EventSourcing.Azure.File
 Imports Microsoft.WindowsAzure.Storage.File
 
 Namespace Azure.File
@@ -10,21 +11,21 @@ Namespace Azure.File
         Inherits FileProjectionSnapshotBase(Of TAggregate, TAggregateKey, TProjection)
         Implements IProjectionSnapshotReader(Of TAggregate, TAggregateKey, TProjection)
 
-        Public Function GetSnapshot(key As TAggregateKey, Optional OnOrBeforeSequence As UInteger = 0) As IProjectionSnapshot(Of TAggregate, TAggregateKey) Implements IProjectionSnapshotReader(Of TAggregate, TAggregateKey, TProjection).GetSnapshot
+        Public Async Function GetSnapshot(key As TAggregateKey, Optional OnOrBeforeSequence As UInteger = 0) As Task(Of IProjectionSnapshot(Of TAggregate, TAggregateKey)) Implements IProjectionSnapshotReader(Of TAggregate, TAggregateKey, TProjection).GetSnapshot
 
-            Dim actualSequenceToGet As UInteger = GetLatestSnapshotSequence(key, OnOrBeforeSequence)
+            Dim actualSequenceToGet As UInteger = GetLatestSnapshotSequence(key, OnOrBeforeSequence).Result
             If (actualSequenceToGet = 0) Then
                 Return Nothing
             Else
                 'get the filename starting with actualsequencetoget...
                 If (MyBase.SnapshotsDirectory IsNot Nothing) Then
-                    For Each f In MyBase.ListSnapshotFiles()
+                    For Each f In Await MyBase.ListSnapshotFiles()
                         If (f.GetType() Is GetType(CloudFile)) Then
                             Dim filename As String = CType(f, CloudFile).Name
                             Dim thisSequence As UInteger = FileProjectionSnapshotBase.FilenameToSequenceNumber(filename)
                             If (thisSequence = actualSequenceToGet) Then
                                 Dim fileToRead As CloudFile = MyBase.SnapshotsDirectory.GetFileReference(filename)
-                                Using fs As System.IO.Stream = fileToRead.OpenRead()
+                                Using fs As System.IO.Stream = Await fileToRead.OpenReadAsync()
                                     Dim bf As New BinaryFormatter()
                                     Dim record As FileBlockWrappedProjectionSnapshot = CType(bf.Deserialize(fs), FileBlockWrappedProjectionSnapshot)
                                     Return record.Unwrap(Of TAggregate, TAggregateKey)
@@ -38,7 +39,10 @@ Namespace Azure.File
 
         End Function
 
-        Public Function GetLatestSnapshotSequence(key As TAggregateKey, Optional OnOrBeforeSequence As UInteger = 0) As UInteger Implements IProjectionSnapshotReader(Of TAggregate, TAggregateKey, TProjection).GetLatestSnapshotSequence
+        Public Async Function GetLatestSnapshotSequence(key As TAggregateKey,
+                                                  Optional OnOrBeforeSequence As UInteger = 0) As Task(Of UInteger) Implements IProjectionSnapshotReader(Of TAggregate, TAggregateKey, TProjection).GetLatestSnapshotSequence
+
+
 
             Dim currentMax As UInteger = 0
 
@@ -47,7 +51,7 @@ Namespace Azure.File
             End If
 
             'list all the files in the snapshots directory
-            For Each f As IListFileItem In MyBase.ListSnapshotFiles()
+            For Each f As IListFileItem In Await MyBase.ListSnapshotFiles()
                 If (f.GetType() Is GetType(CloudFile)) Then
                     Dim filename As String = CType(f, CloudFile).Name
                     Dim thisSequence As UInteger = FileProjectionSnapshotBase.FilenameToSequenceNumber(filename)
@@ -58,6 +62,7 @@ Namespace Azure.File
             Next
 
             Return currentMax
+
 
         End Function
 

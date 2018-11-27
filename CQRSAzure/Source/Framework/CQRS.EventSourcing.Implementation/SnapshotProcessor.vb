@@ -1,4 +1,5 @@
-﻿''' <summary>
+﻿Imports System
+''' <summary>
 ''' Processor to load or save snapshots for a projection
 ''' </summary>
 Public NotInheritable Class SnapshotProcessor(Of TAggregate As IAggregationIdentifier, TAggregateKey)

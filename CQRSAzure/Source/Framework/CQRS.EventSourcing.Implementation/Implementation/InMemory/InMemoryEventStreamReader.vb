@@ -1,4 +1,8 @@
-﻿Imports CQRSAzure.EventSourcing
+﻿Imports System
+Imports System.Collections.Generic
+Imports System.Linq
+Imports CQRSAzure.EventSourcing
+Imports CQRSAzure.EventSourcing.InMemory
 
 Namespace InMemory
     Public NotInheritable Class InMemoryEventStreamReader(Of TAggregate As CQRSAzure.EventSourcing.IAggregationIdentifier, TAggregateKey)
@@ -45,42 +49,52 @@ Namespace InMemory
         End Function
 
 
-        Public Overloads Function GetEvents(Optional ByVal StartingSequenceNumber As UInteger = 0,
-                                            Optional ByVal effectiveDateTime As Nullable(Of DateTime) = Nothing) As IEnumerable(Of IEvent(Of TAggregate)) Implements IEventStreamReader(Of TAggregate, TAggregateKey).GetEvents
+        Public Overloads Async Function GetEvents(Optional ByVal StartingSequenceNumber As UInteger = 0,
+                                            Optional ByVal effectiveDateTime As Nullable(Of DateTime) = Nothing) As Task(Of IEnumerable(Of IEvent(Of TAggregate))) Implements IEventStreamReader(Of TAggregate, TAggregateKey).GetEvents
 
             ' If we do not yet have an event stream for this aggregagate, create one
             CreateStreamIfNotCreated()
 
-            'Strip all the wrappers off the events
-            Dim dryAllEvents = From x In m_eventStream(AggregationKey)
-                               Where (x.SequenceNumber >= StartingSequenceNumber) AndAlso IsEventValid(x.EventInstance.GetType())
-                               Order By x.SequenceNumber
-                               Select x.EventInstance
+            Return Await Task.Run(Function()
+                                      'Strip all the wrappers off the events
+                                      Dim dryAllEvents = From x In m_eventStream(AggregationKey)
+                                                         Where (x.SequenceNumber >= StartingSequenceNumber) AndAlso IsEventValid(x.EventInstance.GetType())
+                                                         Order By x.SequenceNumber
+                                                         Select x.EventInstance
 
 
-            Return dryAllEvents.AsEnumerable().Cast(Of IEvent(Of TAggregate))
+                                      Return dryAllEvents.AsEnumerable().Cast(Of IEvent(Of TAggregate))
+
+                                  End Function
+                )
 
         End Function
 
-        Public Overloads Function GetEventsWithContext(Optional ByVal StartingSequenceNumber As UInteger = 0,
-                                                       Optional ByVal effectiveDateTime As Nullable(Of DateTime) = Nothing) As IEnumerable(Of IEventContext) Implements IEventStreamReader(Of TAggregate, TAggregateKey).GetEventsWithContext
+        Public Overloads Async Function GetEventsWithContext(Optional ByVal StartingSequenceNumber As UInteger = 0,
+                                                       Optional ByVal effectiveDateTime As Nullable(Of DateTime) = Nothing) As Task(Of IEnumerable(Of IEventContext)) Implements IEventStreamReader(Of TAggregate, TAggregateKey).GetEventsWithContext
 
             ' If we do not yet have an event stream for this aggregagate, create one
             CreateStreamIfNotCreated()
-            Dim dryAllEvents = From x In m_eventStream(AggregationKey)
-                               Where (x.SequenceNumber >= StartingSequenceNumber) AndAlso IsEventValid(x.EventInstance.GetType())
-                               Order By x.SequenceNumber
-                               Select x
+            Return Await Task.Run(Function()
+                                      Dim dryAllEvents = From x In m_eventStream(AggregationKey)
+                                                         Where (x.SequenceNumber >= StartingSequenceNumber) AndAlso IsEventValid(x.EventInstance.GetType())
+                                                         Order By x.SequenceNumber
+                                                         Select x
 
 
-            Return dryAllEvents.AsEnumerable()
+                                      Return dryAllEvents.AsEnumerable()
 
+                                  End Function
+                )
         End Function
 
-        Public Overloads Function GetEvents() As IEnumerable(Of IEvent(Of TAggregate)) Implements IEventStreamReader(Of TAggregate, TAggregateKey).GetEvents
+        Public Overloads Async Function GetEvents() As Task(Of IEnumerable(Of IEvent(Of TAggregate))) Implements IEventStreamReader(Of TAggregate, TAggregateKey).GetEvents
 
             ' Start from the begining sequence number
-            Return GetEvents(0)
+            Return Await Task.Run(Function()
+                                      Return GetEvents(0)
+                                  End Function
+                                      )
 
         End Function
 

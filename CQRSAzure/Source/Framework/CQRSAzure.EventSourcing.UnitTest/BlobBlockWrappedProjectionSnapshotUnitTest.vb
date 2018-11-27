@@ -1,13 +1,13 @@
 ﻿Imports System.Text
-Imports Microsoft.VisualStudio.TestTools.UnitTesting
+Imports NUnit.Framework
 
 Imports CQRSAzure.EventSourcing.Azure.Blob
 Imports CQRSAzure.EventSourcing.UnitTest.Mocking
 
-<TestClass()>
+<TestFixture()>
 Public Class BlobBlockWrappedProjectionSnapshotUnitTest
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Constructor_TestMethod()
 
         Dim testProjection As New MockProjectionWithSnapshots()

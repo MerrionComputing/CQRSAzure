@@ -1,4 +1,7 @@
-﻿Imports CQRSAzure.EventSourcing
+﻿Imports System
+Imports System.Collections.Generic
+Imports CQRSAzure.EventSourcing
+Imports CQRSAzure.EventSourcing.Azure.SQL
 
 Namespace Azure.SQL
 

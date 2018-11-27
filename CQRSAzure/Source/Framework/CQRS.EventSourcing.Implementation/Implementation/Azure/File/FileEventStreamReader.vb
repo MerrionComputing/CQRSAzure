@@ -1,8 +1,10 @@
 ﻿Option Strict Off
 
+Imports System
+Imports System.Collections.Generic
+Imports System.Linq
 Imports System.Runtime.Serialization.Formatters.Binary
-Imports CQRSAzure.EventSourcing
-Imports Microsoft.WindowsAzure.Storage.File
+Imports CQRSAzure.EventSourcing.Azure.File
 
 Namespace Azure.File
 
@@ -43,13 +45,13 @@ Namespace Azure.File
         End Function
 
 
-        Public Function GetEvents() As IEnumerable(Of IEvent(Of TAggregate)) Implements IEventStreamReader(Of TAggregate, TAggregateKey).GetEvents
+        Public Async Function GetEvents() As Task(Of IEnumerable(Of IEvent(Of TAggregate))) Implements IEventStreamReader(Of TAggregate, TAggregateKey).GetEvents
 
             If (MyBase.File IsNot Nothing) Then
                 Dim ret As New List(Of IEvent(Of TAggregate))
                 Dim bf As New BinaryFormatter()
                 Dim currentLength As Long = GetSequence()
-                Using fs As System.IO.Stream = MyBase.File.OpenRead()
+                Using fs As System.IO.Stream = Await MyBase.File.OpenReadAsync()
                     fs.Seek(0, IO.SeekOrigin.Begin)
                     While Not (fs.Position >= currentLength)
                         Dim record As FileBlockWrappedEvent = CType(bf.Deserialize(fs), FileBlockWrappedEvent)
@@ -62,19 +64,21 @@ Namespace Azure.File
                 End Using
                 Return ret
             Else
-                Throw New EventStreamReadException(DomainName, AggregateClassName, MyBase.m_key.ToString(), 0, "Unable to read events - Azure file not initialised")
+                Throw New EventStreamReadException(DomainName, AggregateClassName,
+                                                   MyBase.m_key.ToString(), 0,
+                                                   "Unable to read events - Azure file not initialised")
             End If
 
         End Function
 
-        Public Function GetEvents(Optional ByVal StartingVersion As UInteger = 0,
-                                  Optional ByVal effectiveDateTime As Nullable(Of DateTime) = Nothing) As IEnumerable(Of IEvent(Of TAggregate)) Implements IEventStreamReader(Of TAggregate, TAggregateKey).GetEvents
+        Public Async Function GetEvents(Optional ByVal StartingVersion As UInteger = 0,
+                                  Optional ByVal effectiveDateTime As Nullable(Of DateTime) = Nothing) As Task(Of IEnumerable(Of IEvent(Of TAggregate))) Implements IEventStreamReader(Of TAggregate, TAggregateKey).GetEvents
 
             If (MyBase.File IsNot Nothing) Then
                 Dim ret As New List(Of IEvent(Of TAggregate))
                 Dim bf As New BinaryFormatter()
                 Dim currentLength As Long = GetSequence()
-                Using fs As System.IO.Stream = MyBase.File.OpenRead()
+                Using fs As System.IO.Stream = Await MyBase.File.OpenReadAsync()
                     'Go to the starting 
                     fs.Seek(StartingVersion, IO.SeekOrigin.Begin)
                     While Not (fs.Position >= currentLength)
@@ -93,14 +97,14 @@ Namespace Azure.File
 
         End Function
 
-        Public Function GetEventsWithContext(Optional ByVal StartingVersion As UInteger = 0,
-                                             Optional ByVal effectiveDateTime As Nullable(Of DateTime) = Nothing) As IEnumerable(Of IEventContext) Implements IEventStreamReader(Of TAggregate, TAggregateKey).GetEventsWithContext
+        Public Async Function GetEventsWithContext(Optional ByVal StartingVersion As UInteger = 0,
+                                             Optional ByVal effectiveDateTime As Nullable(Of DateTime) = Nothing) As Task(Of IEnumerable(Of IEventContext)) Implements IEventStreamReader(Of TAggregate, TAggregateKey).GetEventsWithContext
 
             If (MyBase.File IsNot Nothing) Then
                 Dim currentLength As Long = GetSequence()
                 Dim ret As New List(Of IEventContext)
                 Dim bf As New BinaryFormatter()
-                Using fs As System.IO.Stream = MyBase.File.OpenRead()
+                Using fs As System.IO.Stream = Await MyBase.File.OpenReadAsync()
                     fs.Seek(StartingVersion, IO.SeekOrigin.Begin)
                     While Not (fs.Position >= currentLength)
                         Dim record As FileBlockWrappedEvent = CType(bf.Deserialize(fs), FileBlockWrappedEvent)

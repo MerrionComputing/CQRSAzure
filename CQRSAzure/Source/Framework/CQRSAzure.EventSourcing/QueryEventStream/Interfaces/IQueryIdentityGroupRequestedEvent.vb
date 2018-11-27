@@ -1,4 +1,6 @@
-﻿Namespace Queries
+﻿Imports System
+
+Namespace Queries
     ''' <summary>
     ''' A query requested the members of an identity group (to process the underlying 
     ''' projection against)

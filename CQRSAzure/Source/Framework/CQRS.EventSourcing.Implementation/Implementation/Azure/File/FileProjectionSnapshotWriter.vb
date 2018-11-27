@@ -1,5 +1,6 @@
 ﻿Imports Microsoft.WindowsAzure.Storage.File
 Imports CQRSAzure.EventSourcing
+Imports CQRSAzure.EventSourcing.Azure.File
 
 Namespace Azure.File
 
@@ -20,8 +21,8 @@ Namespace Azure.File
                     Dim newSnapshotFile As CloudFile = MyBase.SnapshotsDirectory.GetFileReference(filename)
                     If (newSnapshotFile IsNot Nothing) Then
                         Dim streamToWrite As System.IO.Stream = wrappedSnapshot.ToBinaryStream
-                        newSnapshotFile.Create(streamToWrite.Length)
-                        Using fs As CloudFileStream = newSnapshotFile.OpenWrite(Nothing)
+                        newSnapshotFile.CreateAsync(streamToWrite.Length)
+                        Using fs As CloudFileStream = newSnapshotFile.OpenWriteAsync(Nothing).Result
                             'write the event to the stream here..
                             wrappedSnapshot.WriteToBinaryStream(fs)
                         End Using
@@ -41,21 +42,21 @@ Namespace Azure.File
         ''' This will delete existing snapshot records so should not be done in any production environment therefore this is not
         ''' part of the IProjectionSnapshotWriter interface
         ''' </remarks>
-        Public Sub Reset()
+        Public Async Function Reset() As Task
 
             If (MyBase.SnapshotsDirectory IsNot Nothing) Then
-                If (MyBase.SnapshotsDirectory.Exists) Then
-                    For Each f As IListFileItem In MyBase.ListSnapshotFiles()
+                If (MyBase.SnapshotsDirectory.ExistsAsync().Result) Then
+                    For Each f As IListFileItem In Await MyBase.ListSnapshotFiles()
                         If (f Is GetType(CloudFile)) Then
-                            CType(f, CloudFile).Delete()
+                            Await CType(f, CloudFile).DeleteAsync()
                         End If
                     Next
                 Else
-                    MyBase.SnapshotsDirectory.Create()
+                    Await MyBase.SnapshotsDirectory.CreateAsync()
                 End If
             End If
 
-        End Sub
+        End Function
 
         Private Sub New(ByVal AggregateDomainName As String,
                 ByVal AggregateKey As TAggregateKey,

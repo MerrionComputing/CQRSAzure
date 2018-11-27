@@ -1,5 +1,6 @@
 ﻿Option Strict Off
 
+Imports System
 Imports CQRSAzure.EventSourcing
 
 ''' <summary>
@@ -123,6 +124,7 @@ Partial Public Class AggregateEventStreamImplementationMap(Of TAggregate As IAgg
                     Throw New NotImplementedException("Azure SQL event streams not implemented")
 
                 Case SupportedEventStreamImplementations.AzureTable
+#If AZURE_TABLE Then
                     'use the settings to make a reader/writer for Azure Table (NoSQL) for the event streams
                     If (implementationToUse.TableSettings IsNot Nothing) Then
                         settings = implementationToUse.TableSettings
@@ -132,7 +134,9 @@ Partial Public Class AggregateEventStreamImplementationMap(Of TAggregate As IAgg
                     End If
                     readerCreator = Azure.Table.TableEventStreamReaderFactory.GenerateCreationFunctionDelegate(Of TAggregate, TAggregateKey)
                     writerCreator = Azure.Table.TableEventStreamWriterFactory.GenerateCreationFunctionDelegate(Of TAggregate, TAggregateKey)
-
+#Else
+                    Throw New NotImplementedException("Azure Table event streams not implemented due to CosmosDB conflict")
+#End If
                 Case SupportedEventStreamImplementations.InMemory
                     'use the settinsg to make an in-memory reader/writer for the event streams
                     If (implementationToUse.InMemorySettings IsNot Nothing) Then

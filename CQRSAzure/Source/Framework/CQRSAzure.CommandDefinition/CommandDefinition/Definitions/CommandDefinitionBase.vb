@@ -1,4 +1,6 @@
-﻿Imports CQRSAzure.CommandDefinition
+﻿Imports System
+Imports System.Collections.Generic
+
 ''' <summary>
 ''' Base class from which the command definitions should be build
 ''' </summary>

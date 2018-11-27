@@ -1,4 +1,5 @@
 ﻿Imports CQRSAzure.EventSourcing
+Imports CQRSAzure.EventSourcing.Azure.Blob
 Imports Microsoft.WindowsAzure.Storage
 Imports Microsoft.WindowsAzure.Storage.Blob
 
@@ -86,11 +87,11 @@ Namespace Azure.Blob
         ''' <summary>
         ''' Get the highest sequence number snapshot stored in this append blob
         ''' </summary>
-        Public Function GetHighestSequence() As Long
+        Public Async Function GetHighestSequence() As Task(Of Long)
 
             If (AppendBlob IsNot Nothing) Then
                 Try
-                    AppendBlob.FetchAttributes()
+                    Await AppendBlob.FetchAttributesAsync()
                     Dim m_sequence As Long
                     If (Long.TryParse(AppendBlob.Metadata(METADATA_SEQUENCE), m_sequence)) Then
                         Return m_sequence
@@ -131,25 +132,26 @@ Namespace Azure.Blob
         End Sub
 
 
-        Protected Sub ResetBlob()
+        Protected Async Function ResetBlob() As Task
 
             If (BlobContainer IsNot Nothing) Then
-                If Not m_blob.Exists() Then
+                Dim exists As Boolean = Await m_blob.ExistsAsync()
+                If Not exists Then
                     'Make the file to append to if it doesn't already exist
-                    m_blob.CreateOrReplace()
+                    Await m_blob.CreateOrReplaceAsync()
                     'Set the initial metadata
                     m_blob.Metadata(METATDATA_DOMAIN) = DomainName
                     m_blob.Metadata(METADATA_AGGREGATE_CLASS) = GetType(TAggregate).Name
                     m_blob.Metadata(METADATA_PROJECTION_CLASS) = GetType(TProjection).Name
                     m_blob.Metadata(METADATA_AGGREGATE_KEY) = m_key.ToString()
                     m_blob.Metadata(METADATA_SEQUENCE) = "0" 'Sequence starts at zero
-                    m_blob.SetMetadata()
+                    Await m_blob.SetMetadataAsync()
                 Else
-                    m_blob.FetchAttributes()
+                    Await m_blob.FetchAttributesAsync()
                 End If
             End If
 
-        End Sub
+        End Function
 
     End Class
 
@@ -243,7 +245,7 @@ Namespace Azure.Blob
                     'e.g. /[domain]/
                     m_blobBasePath = m_blobClient.GetContainerReference(MakeValidStorageFolderName(DomainName))
                     If (m_blobBasePath IsNot Nothing) Then
-                        m_blobBasePath.CreateIfNotExists()
+                        m_blobBasePath.CreateIfNotExistsAsync()
                     End If
                 End If
             End If

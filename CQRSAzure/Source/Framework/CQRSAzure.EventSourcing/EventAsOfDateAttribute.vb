@@ -1,4 +1,5 @@
 ﻿
+Imports System
 Imports System.Reflection
 ''' <summary>
 ''' An attribute to mark one property of an event as being the "as-of date" of the event 

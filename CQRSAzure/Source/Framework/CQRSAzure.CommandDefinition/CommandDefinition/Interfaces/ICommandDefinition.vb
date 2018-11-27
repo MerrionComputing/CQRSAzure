@@ -1,4 +1,5 @@
-﻿''' <summary>
+﻿Imports System
+''' <summary>
 ''' Identifies a class as being a command definition that can be handled by the CommandHandler linked to it to perform
 ''' an action
 ''' </summary>

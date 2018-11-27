@@ -1,4 +1,5 @@
 ﻿Imports CQRSAzure.EventSourcing
+Imports CQRSAzure.EventSourcing.Implementation.Local.File
 Imports CQRSAzure.EventSourcing.Local.File
 
 Namespace Local.File
@@ -45,7 +46,7 @@ Namespace Local.File
             End If
 
             If (streamReader Is Nothing) Then
-                streamReader = CQRSAzure.EventSourcing.Local.File.LocalFileEventStreamReader(Of TAggregate, TAggregateKey).Create(instance, settings, eventsFilterFunction)
+                streamReader = LocalFileEventStreamReader(Of TAggregate, TAggregateKey).Create(instance, settings, eventsFilterFunction)
             End If
 
             Return New ClassifierProcessor(Of TAggregate, TAggregateKey, TClassifier)(streamReader,

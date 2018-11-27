@@ -1,5 +1,8 @@
-﻿Imports System.Runtime.Serialization.Formatters.Binary
+﻿Imports System
+Imports System.Collections.Generic
+Imports System.Runtime.Serialization.Formatters.Binary
 Imports CQRSAzure.EventSourcing
+Imports CQRSAzure.EventSourcing.Local.File
 
 Namespace Local.File
     Public NotInheritable Class LocalFileEventStreamReader(Of TAggregate As CQRSAzure.EventSourcing.IAggregationIdentifier, TAggregateKey)
@@ -16,67 +19,74 @@ Namespace Local.File
 
 
 
-        Public Function GetEvents() As IEnumerable(Of IEvent(Of TAggregate)) Implements IEventStreamReader(Of TAggregate, TAggregateKey).GetEvents
+        Public Async Function GetEvents() As Task(Of IEnumerable(Of IEvent(Of TAggregate))) Implements IEventStreamReader(Of TAggregate, TAggregateKey).GetEvents
 
-            Return GetEvents(0)
-
-        End Function
-
-        Public Function GetEvents(Optional StartingSequenceNumber As UInteger = 0,
-                                  Optional ByVal effectiveDateTime As Nullable(Of DateTime) = Nothing) As IEnumerable(Of IEvent(Of TAggregate)) Implements IEventStreamReader(Of TAggregate, TAggregateKey).GetEvents
-
-            Dim ret As New List(Of IEvent(Of TAggregate))
-
-            If (MyBase.m_file IsNot Nothing) Then
-                m_file.Refresh()
-                If (m_file.Exists) Then
-                    Using fr = m_file.OpenRead()
-                        LoadEventStreamDetailBlock(fr)
-                        If (StartingSequenceNumber > 0) Then
-                            fr.Seek(StartingSequenceNumber, IO.SeekOrigin.Begin)
-                        Else
-                            fr.Seek(MyBase.m_streamstart, IO.SeekOrigin.Begin)
-                        End If
-                        While Not fr.Position >= m_file.Length
-                            Dim record As LocalFileWrappedEvent = MyBase.Deserialise(Of LocalFileWrappedEvent)(fr)
-                            If (record IsNot Nothing) Then
-                                ret.Add(record.EventInstance)
-                            End If
-                        End While
-                    End Using
-                End If
-            End If
-
-            Return ret
+            Return Await GetEvents(0)
 
         End Function
 
-        Public Function GetEventsWithContext(Optional StartingSequenceNumber As UInteger = 0,
-                                             Optional ByVal effectiveDateTime As Nullable(Of DateTime) = Nothing) As IEnumerable(Of IEventContext) Implements IEventStreamReader(Of TAggregate, TAggregateKey).GetEventsWithContext
+        Public Async Function GetEvents(Optional StartingSequenceNumber As UInteger = 0,
+                                  Optional ByVal effectiveDateTime As Nullable(Of DateTime) = Nothing) As Task(Of IEnumerable(Of IEvent(Of TAggregate))) Implements IEventStreamReader(Of TAggregate, TAggregateKey).GetEvents
 
-            Dim ret As New List(Of IEventContext)
+            Return Await Task.Run(Function()
+                                      Dim ret As New List(Of IEvent(Of TAggregate))
 
-            If (MyBase.m_file IsNot Nothing) Then
-                'Re-read the file details from the OS
-                MyBase.m_file.Refresh()
-                Using fr = m_file.OpenRead()
-                    Dim bf As New BinaryFormatter()
-                    If (StartingSequenceNumber > 0) Then
-                        fr.Seek(StartingSequenceNumber, IO.SeekOrigin.Begin)
-                    Else
-                        fr.Seek(m_streamstart, IO.SeekOrigin.Begin)
-                    End If
-                    While Not fr.Position >= m_file.Length
-                        Dim record As LocalFileWrappedEvent = CType(bf.Deserialize(fr), LocalFileWrappedEvent)
-                        If (record IsNot Nothing) Then
-                            Dim instance = InstanceWrappedEvent(Of TAggregateKey).Wrap(m_key, record.EventInstance, record.Version)
-                            ret.Add(ContextWrappedEvent(Of TAggregateKey).Wrap(instance, record.Sequence, "", "", record.Timestamp, record.Version, ""))
-                        End If
-                    End While
-                End Using
-            End If
+                                      If (MyBase.m_file IsNot Nothing) Then
+                                          m_file.Refresh()
+                                          If (m_file.Exists) Then
+                                              Using fr = m_file.OpenRead()
+                                                  LoadEventStreamDetailBlock(fr)
+                                                  If (StartingSequenceNumber > 0) Then
+                                                      fr.Seek(StartingSequenceNumber, IO.SeekOrigin.Begin)
+                                                  Else
+                                                      fr.Seek(MyBase.m_streamstart, IO.SeekOrigin.Begin)
+                                                  End If
+                                                  While Not fr.Position >= m_file.Length
+                                                      Dim record As LocalFileWrappedEvent = MyBase.Deserialise(Of LocalFileWrappedEvent)(fr)
+                                                      If (record IsNot Nothing) Then
+                                                          ret.Add(record.EventInstance)
+                                                      End If
+                                                  End While
+                                              End Using
+                                          End If
+                                      End If
 
-            Return ret
+                                      Return ret
+
+                                  End Function
+                )
+
+        End Function
+
+        Public Async Function GetEventsWithContext(Optional StartingSequenceNumber As UInteger = 0,
+                                             Optional ByVal effectiveDateTime As Nullable(Of DateTime) = Nothing) As Task(Of IEnumerable(Of IEventContext)) Implements IEventStreamReader(Of TAggregate, TAggregateKey).GetEventsWithContext
+
+            Return Await Task.Run(Function()
+                                      Dim ret As New List(Of IEventContext)
+
+                                      If (MyBase.m_file IsNot Nothing) Then
+                                          'Re-read the file details from the OS
+                                          MyBase.m_file.Refresh()
+                                          Using fr = m_file.OpenRead()
+                                              Dim bf As New BinaryFormatter()
+                                              If (StartingSequenceNumber > 0) Then
+                                                  fr.Seek(StartingSequenceNumber, IO.SeekOrigin.Begin)
+                                              Else
+                                                  fr.Seek(m_streamstart, IO.SeekOrigin.Begin)
+                                              End If
+                                              While Not fr.Position >= m_file.Length
+                                                  Dim record As LocalFileWrappedEvent = CType(bf.Deserialize(fr), LocalFileWrappedEvent)
+                                                  If (record IsNot Nothing) Then
+                                                      Dim instance = InstanceWrappedEvent(Of TAggregateKey).Wrap(m_key, record.EventInstance, record.Version)
+                                                      ret.Add(ContextWrappedEvent(Of TAggregateKey).Wrap(instance, record.Sequence, "", "", record.Timestamp, record.Version, ""))
+                                                  End If
+                                              End While
+                                          End Using
+                                      End If
+
+                                      Return ret
+                                  End Function
+                )
         End Function
 
 

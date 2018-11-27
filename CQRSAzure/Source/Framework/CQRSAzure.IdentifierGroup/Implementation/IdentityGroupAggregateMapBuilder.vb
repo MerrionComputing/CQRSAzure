@@ -1,4 +1,7 @@
-﻿Imports CQRSAzure.EventSourcing
+﻿Imports System
+Imports System.Collections.Generic
+Imports CQRSAzure.EventSourcing
+Imports CQRSAzure.EventSourcing.Implementation
 
 Partial Public NotInheritable Class IdentityGroupAggregateMapBuilder
     Inherits AggregateMapBuilderCore

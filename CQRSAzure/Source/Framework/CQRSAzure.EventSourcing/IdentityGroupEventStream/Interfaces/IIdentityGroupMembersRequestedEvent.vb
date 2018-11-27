@@ -1,4 +1,6 @@
-﻿Namespace IdentityGroups
+﻿Imports System
+
+Namespace IdentityGroups
 
     ''' <summary>
     ''' A query or command asked to know the membership of a given identity group as at a given 

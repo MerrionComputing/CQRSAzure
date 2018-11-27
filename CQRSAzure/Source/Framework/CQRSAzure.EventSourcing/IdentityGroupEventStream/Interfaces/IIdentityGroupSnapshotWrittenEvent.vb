@@ -1,4 +1,6 @@
-﻿Namespace IdentityGroups
+﻿Imports System
+
+Namespace IdentityGroups
     ''' <summary>
     ''' A point-in-time snapshot of the membership of an identity group was taken
     ''' </summary>

@@ -1,4 +1,6 @@
-﻿Public Module KeyConverterFactory
+﻿Imports System
+
+Public Module KeyConverterFactory
 
     Public Function CreateKeyConverter(Of TAggregateKey)() As IKeyConverter(Of TAggregateKey)
 

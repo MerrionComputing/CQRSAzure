@@ -1,4 +1,5 @@
-﻿Imports CQRSAzure.EventSourcing
+﻿Imports System.Collections.Generic
+Imports CQRSAzure.EventSourcing
 Imports CQRSAzure.IdentifierGroup
 
 

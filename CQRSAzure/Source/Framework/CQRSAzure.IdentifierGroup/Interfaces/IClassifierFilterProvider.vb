@@ -1,4 +1,6 @@
-﻿Imports CQRSAzure.EventSourcing
+﻿Imports System
+Imports System.Collections.Generic
+Imports CQRSAzure.EventSourcing
 ''' <summary>
 ''' An interface for a provider that performs the classifier process for an identifier group processor to decide if the 
 ''' requested members are inside or outside of the identifier group
@@ -27,7 +29,7 @@ Public Interface IClassifierFilterProvider(Of TAggregate As IAggregationIdentifi
     ''' <param name="setToFilter"></param>
     ''' <returns></returns>
     Function GetMembers(ByVal setToFilter As IEnumerable(Of TAggregateKey),
-                        Optional ByVal effectiveDateTime As Nullable(Of DateTime) = Nothing) As IEnumerable(Of TAggregateKey)
+                        Optional ByVal effectiveDateTime As Nullable(Of DateTime) = Nothing) As Task(Of IEnumerable(Of TAggregateKey))
 
 
     ''' <summary>
@@ -37,6 +39,6 @@ Public Interface IClassifierFilterProvider(Of TAggregate As IAggregationIdentifi
     ''' <param name="effectiveDateTime"></param>
     ''' <returns></returns>
     Function IsMember(ByVal identifierToTest As TAggregateKey,
-                      Optional ByVal effectiveDateTime As Nullable(Of DateTime) = Nothing) As Boolean
+                      Optional ByVal effectiveDateTime As Nullable(Of DateTime) = Nothing) As Task(Of Boolean)
 
 End Interface

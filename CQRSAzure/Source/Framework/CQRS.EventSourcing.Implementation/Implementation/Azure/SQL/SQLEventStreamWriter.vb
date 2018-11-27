@@ -1,4 +1,7 @@
-﻿Imports CQRSAzure.EventSourcing
+﻿Imports System
+Imports System.Collections.Generic
+Imports CQRSAzure.EventSourcing
+Imports CQRSAzure.EventSourcing.Azure.SQL
 
 Namespace Azure.SQL
     Public Class SQLEventStreamWriter(Of TAggregate As CQRSAzure.EventSourcing.IAggregationIdentifier, TAggregateKey)
@@ -27,14 +30,15 @@ Namespace Azure.SQL
 
 #End Region
 
-        Public Sub AppendEvent(EventInstance As IEvent(Of TAggregate),
-                               Optional ByVal ExpectedTopSequence As Long = 0) Implements IEventStreamWriter(Of TAggregate, TAggregateKey).AppendEvent
-            Throw New NotImplementedException()
-        End Sub
+        Public Async Function AppendEvent(EventInstance As IEvent(Of TAggregate),
+                               Optional ByVal ExpectedTopSequence As Long = 0) As Task Implements IEventStreamWriter(Of TAggregate, TAggregateKey).AppendEvent
+            Await Task.FromException(New NotImplementedException())
+        End Function
 
-        Public Sub AppendEvents(StartingVersion As Long, Events As IEnumerable(Of IEvent(Of TAggregate))) Implements IEventStreamWriter(Of TAggregate, TAggregateKey).AppendEvents
-            Throw New NotImplementedException()
-        End Sub
+        Public Async Function AppendEvents(StartingVersion As Long,
+                                           Events As IEnumerable(Of IEvent(Of TAggregate))) As Task Implements IEventStreamWriter(Of TAggregate, TAggregateKey).AppendEvents
+            Await Task.FromException(New NotImplementedException())
+        End Function
 
         Private m_context As IWriteContext
         Public Sub SetContext(writerContext As IWriteContext) Implements IEventStreamWriter(Of TAggregate, TAggregateKey).SetContext

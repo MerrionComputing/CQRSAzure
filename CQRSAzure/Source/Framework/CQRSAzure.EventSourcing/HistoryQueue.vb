@@ -1,4 +1,6 @@
 ﻿
+Imports System.Collections.Generic
+Imports System.Linq
 ''' <summary>
 ''' A queue based data structure that can have a fixed size that automatically rolls off any elements that 
 ''' exceed that queue size

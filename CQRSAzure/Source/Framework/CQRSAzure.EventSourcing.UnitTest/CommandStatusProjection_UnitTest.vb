@@ -1,14 +1,14 @@
 ﻿Imports System.Text
-Imports Microsoft.VisualStudio.TestTools.UnitTesting
+Imports NUnit.Framework
 
 Imports CQRSAzure.EventSourcing
 Imports CQRSAzure.EventSourcing.Commands
 Imports CQRSAzure.EventSourcing.InMemory
 
-<TestClass()>
+<TestFixture()>
 Public Class CommandStatusProjection_UnitTest
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Constructor_TestMethod()
 
         Dim testObj As New CommandStatusProjection()
@@ -16,7 +16,7 @@ Public Class CommandStatusProjection_UnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub CommandCreatedEvent_Constructor_TestMethod()
 
         Dim testObj As CommandCreatedEvent = CommandCreatedEvent.Create(Guid.NewGuid, "Test command", DateTime.Now)
@@ -24,7 +24,7 @@ Public Class CommandStatusProjection_UnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub CommandCreatedEvent_CommandName_RoundTrip_TestMethod()
 
         Dim expected As String = "My command"
@@ -37,7 +37,7 @@ Public Class CommandStatusProjection_UnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub CommandStatusProjection_CreatedEvent_TestMethod()
 
         Dim expected As String = "My command"
@@ -61,7 +61,7 @@ Public Class CommandStatusProjection_UnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub CommandStatusProjection_CancelledEvent_TestMethod()
 
         Dim expected As Boolean = True
@@ -87,7 +87,7 @@ Public Class CommandStatusProjection_UnitTest
     End Sub
 
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub CommandStatusProjection_CompleteEvent_TestMethod()
 
         Dim expected As Boolean = True
@@ -115,7 +115,7 @@ Public Class CommandStatusProjection_UnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub CommandStatusProjection_FatalErrorEvent_TestMethod()
 
         Dim expected As Boolean = True
@@ -143,7 +143,7 @@ Public Class CommandStatusProjection_UnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub CommandStatusProjection_TransientErrorEvent_TestMethod()
 
         Dim expected As Boolean = True
@@ -171,7 +171,7 @@ Public Class CommandStatusProjection_UnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub CommandStatusProjection_TransientErrorEvent_Requeued_TestMethod()
 
         Dim expected As Boolean = False
@@ -200,7 +200,7 @@ Public Class CommandStatusProjection_UnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub CommandStatusProjection_StepCompletedrEvent_TestMethod()
 
         Dim expected As Integer = 1
@@ -230,10 +230,10 @@ Public Class CommandStatusProjection_UnitTest
 
 End Class
 
-<TestClass()>
+<TestFixture()>
 Public Class CommandCancelledEvent_UnitTest
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub CommandCancelledEvent_Constructor_TestMethod()
 
         Dim testObj As CommandCancelledEvent = CommandCancelledEvent.Create(DateTime.Now, "Unit test")
@@ -243,7 +243,7 @@ Public Class CommandCancelledEvent_UnitTest
     End Sub
 
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub CommandCancelledEvent_RoundTrip_Reason_Serialisation_TestMethod()
 
         Dim expected As String = "fault reason"
@@ -268,7 +268,7 @@ Public Class CommandCancelledEvent_UnitTest
         Assert.AreEqual(expected, actual)
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub CommandCancelledEvent_RoundTrip_Date_Serialisation_TestMethod()
 
         Dim expected As DateTime = New DateTime(2016, 3, 4)
@@ -296,10 +296,10 @@ Public Class CommandCancelledEvent_UnitTest
 
 End Class
 
-<TestClass()>
+<TestFixture()>
 Public Class CommandCompletedEvent_UnitTest
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub CommandCompletedEvent_Constructor_TestMethod()
 
         Dim testObj As CommandCompletedEvent = CommandCompletedEvent.Create(DateTime.Now, "Unit test")
@@ -309,7 +309,7 @@ Public Class CommandCompletedEvent_UnitTest
     End Sub
 
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub CommandCompletedEvent_RoundTrip_SuccessMessage_Serialisation_TestMethod()
 
         Dim expected As String = "unit test command succeeded"
@@ -334,7 +334,7 @@ Public Class CommandCompletedEvent_UnitTest
         Assert.AreEqual(expected, actual)
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub CommandCompletedEvent_RoundTrip_Date_Serialisation_TestMethod()
 
         Dim expected As DateTime = New DateTime(2016, 3, 4)
@@ -362,11 +362,11 @@ Public Class CommandCompletedEvent_UnitTest
 
 End Class
 
-<TestClass()>
+<TestFixture()>
 Public Class CommandCreatedEvent_UnitTest
 
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub CommandCreatedEvent_Constructor_TestMethod()
 
         Dim testObj As CommandCreatedEvent = CommandCreatedEvent.Create(Guid.NewGuid, "Unit Test Command", Nothing, "")
@@ -375,7 +375,7 @@ Public Class CommandCreatedEvent_UnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub CommandCreatedEvent_RoundTrip_CommandName_Serialisation_TestMethod()
 
         Dim expected As String = "unit test command"
@@ -399,7 +399,7 @@ Public Class CommandCreatedEvent_UnitTest
         Assert.AreEqual(expected, actual)
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub CommandCreatedEvent_RoundTrip_CommandIdentifier_Serialisation_TestMethod()
 
         Dim expected As Guid = Guid.NewGuid()
@@ -423,7 +423,7 @@ Public Class CommandCreatedEvent_UnitTest
         Assert.AreEqual(expected, actual)
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub CommandCreatedEvent_RoundTrip_CreateDate_Serialisation_TestMethod()
 
         Dim expected As DateTime = New DateTime(2017, 3, 12)
@@ -447,7 +447,7 @@ Public Class CommandCreatedEvent_UnitTest
         Assert.AreEqual(expected, actual)
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub CommandCreatedEvent_RoundTrip_Parameters_Serialisation_TestMethod()
 
         Dim expected As String = "Unit test command parameters"
@@ -471,7 +471,7 @@ Public Class CommandCreatedEvent_UnitTest
         Assert.AreEqual(expected, actual)
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub CommandCreatedEvent_RoundTrip_IdentityGroupName_Serialisation_TestMethod()
 
         Dim expected As String = "unit test identity group"
@@ -497,11 +497,11 @@ Public Class CommandCreatedEvent_UnitTest
 
 End Class
 
-<TestClass()>
+<TestFixture()>
 Public Class CommandFatalErrorOccuredEvent_UnitTest
 
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub CommandFatalErrorOccuredEvent_Constructor_TestMethod()
 
         Dim testObj As CommandFatalErrorOccuredEvent = CommandFatalErrorOccuredEvent.Create(DateTime.UtcNow,
@@ -513,7 +513,7 @@ Public Class CommandFatalErrorOccuredEvent_UnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub CommandFatalErrorOccuredEvent_RoundTrip_Error_Serialisation_TestMethod()
 
         Dim expected As DateTime = New DateTime(2017, 3, 12)
@@ -542,11 +542,11 @@ Public Class CommandFatalErrorOccuredEvent_UnitTest
 
 End Class
 
-<TestClass>
+<TestFixture>
 Public Class CommandRequeuedEvent_UnitTest
 
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub CommandRequeuedEvent_Constructor_TestMethod()
 
         Dim testObj As CommandRequeuedEvent = CommandRequeuedEvent.Create(DateTime.Now,
@@ -559,7 +559,7 @@ Public Class CommandRequeuedEvent_UnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub CommandRequeuedEvent_RoundTrip_RequeueDate_Serialisation_TestMethod()
 
         Dim expected As DateTime = New DateTime(2017, 3, 12)
@@ -587,7 +587,7 @@ Public Class CommandRequeuedEvent_UnitTest
     End Sub
 
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub CommandRequeuedEvent_RoundTrip_Token_Serialisation_TestMethod()
 
         Dim expected As String = "Unit test token"
@@ -616,11 +616,11 @@ Public Class CommandRequeuedEvent_UnitTest
 
 End Class
 
-<TestClass>
+<TestFixture>
 Public Class CommandStartedEvent_UnitTest
 
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub CommandStartedEvent_Constructor_TestMethod()
 
         Dim testObj As CommandStartedEvent = CommandStartedEvent.Create(DateTime.Now,
@@ -633,7 +633,7 @@ Public Class CommandStartedEvent_UnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub CommandStartedEvent_RoundTrip_ProcessingStartDate_Serialisation_TestMethod()
 
         Dim expected As DateTime = New DateTime(2017, 3, 14)
@@ -665,10 +665,10 @@ Public Class CommandStartedEvent_UnitTest
 
 End Class
 
-<TestClass>
+<TestFixture>
 Public Class CommandStepCompletedEvent_UniTest
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub CommandStepCompletedEvent_Constructor_TestMethod()
 
         Dim testObj As CommandStepCompletedEvent = CommandStepCompletedEvent.Create(DateTime.Now,
@@ -683,7 +683,7 @@ Public Class CommandStepCompletedEvent_UniTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub CommandStartedEvent_RoundTrip_StepCompletionDate_Serialisation_TestMethod()
 
         Dim expected As DateTime = New DateTime(2017, 3, 14)
@@ -713,7 +713,7 @@ Public Class CommandStepCompletedEvent_UniTest
     End Sub
 
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub CommandStartedEvent_RoundTrip_StepNumber_Serialisation_TestMethod()
 
         Dim expected As Integer = 7
@@ -742,7 +742,7 @@ Public Class CommandStepCompletedEvent_UniTest
         Assert.AreEqual(expected, actual)
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub CommandStartedEvent_RoundTrip_StepMessage_Serialisation_TestMethod()
 
         Dim expected As String = "Unit test step complete"
@@ -771,7 +771,7 @@ Public Class CommandStepCompletedEvent_UniTest
         Assert.AreEqual(expected, actual)
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub CommandStartedEvent_RoundTrip_Source_Serialisation_TestMethod()
 
         Dim expected As String = "Unit test source"
@@ -800,7 +800,7 @@ Public Class CommandStepCompletedEvent_UniTest
         Assert.AreEqual(expected, actual)
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub CommandStartedEvent_RoundTrip_Username_Serialisation_TestMethod()
 
         Dim expected As String = "Duncan Jones"
@@ -832,11 +832,11 @@ Public Class CommandStepCompletedEvent_UniTest
 
 End Class
 
-<TestClass>
+<TestFixture>
 Public Class CommandTransientFaultOccuredEvent_UnitTest
 
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub CommandTransientFaultOccuredEvent_Constructor_TestMethod()
 
         Dim testObj As CommandTransientFaultOccuredEvent = CommandTransientFaultOccuredEvent.Create(DateTime.UtcNow,
@@ -852,7 +852,7 @@ Public Class CommandTransientFaultOccuredEvent_UnitTest
     End Sub
 
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub CommandTransientFaultOccuredEvent_RoundTrip_FaultDate_Serialisation_TestMethod()
 
         Dim expected As DateTime = New DateTime(2017, 3, 14)
@@ -882,7 +882,7 @@ Public Class CommandTransientFaultOccuredEvent_UnitTest
     End Sub
 
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub CommandTransientFaultOccuredEvent_RoundTrip_StepNumber_Serialisation_TestMethod()
 
         Dim expected As Integer = 7
@@ -912,7 +912,7 @@ Public Class CommandTransientFaultOccuredEvent_UnitTest
     End Sub
 
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub CommandTransientFaultOccuredEvent_RoundTrip_FaultMessage_Serialisation_TestMethod()
 
         Dim expected As String = "Unit test step fault"

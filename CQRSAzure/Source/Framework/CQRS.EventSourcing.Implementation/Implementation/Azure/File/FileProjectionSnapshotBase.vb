@@ -4,6 +4,9 @@ Imports Microsoft.WindowsAzure
 Imports Microsoft.Azure
 Imports System.Configuration
 Imports Microsoft.WindowsAzure.Storage
+Imports System.Collections.Generic
+Imports System
+Imports CQRSAzure.EventSourcing.Azure.File
 
 Namespace Azure.File
 
@@ -95,10 +98,12 @@ Namespace Azure.File
         ''' List the snapshot files stored for this aggregate key
         ''' </summary>
         ''' <returns></returns>
-        Protected Function ListSnapshotFiles() As IEnumerable(Of IListFileItem)
+        Protected Async Function ListSnapshotFiles() As Task(Of IEnumerable(Of IListFileItem))
 
             If (m_directory IsNot Nothing) Then
-                Return m_directory.ListFilesAndDirectories()
+                Dim continueToken As New FileContinuationToken()
+                Dim files = Await m_directory.ListFilesAndDirectoriesSegmentedAsync(continueToken)
+                Return files.Results
             Else
                 Throw New EventStreamReadException(DomainName, AggregateClassName, m_key.ToString(), 0, "Missing snapshots directory")
             End If
@@ -128,16 +133,16 @@ Namespace Azure.File
                 'Create the reference to this aggregate type's event stream base folder
                 'e.g. [Aggregate]/[key]/snapshots/[projection]/
                 m_cloudBasePath = MyBase.FileClient.GetShareReference(FileEventStreamBase.MakeValidStorageFolderName(AggregateClassName))
-                If Not (m_cloudBasePath.Exists) Then
-                    m_cloudBasePath.CreateIfNotExists()
+                If Not (m_cloudBasePath.ExistsAsync().Result) Then
+                    m_cloudBasePath.CreateIfNotExistsAsync()
                 End If
                 ' This has to be created one level at a time
                 m_directory = m_cloudBasePath.GetRootDirectoryReference().GetDirectoryReference(FileEventStreamBase.MakeValidStorageFolderName(m_key.ToString()))
-                m_directory.CreateIfNotExists()
+                m_directory.CreateIfNotExistsAsync()
                 m_directory = m_directory.GetDirectoryReference(FileEventStreamBase.SNAPSHOTS_FOLDER)
-                m_directory.CreateIfNotExists()
+                m_directory.CreateIfNotExistsAsync()
                 m_directory = m_directory.GetDirectoryReference(FileEventStreamBase.MakeValidStorageFolderName(ProjectionClassName))
-                m_directory.CreateIfNotExists()
+                m_directory.CreateIfNotExistsAsync()
             End If
 
         End Sub

@@ -1,9 +1,8 @@
-﻿Imports Microsoft.WindowsAzure.Storage.File
-Imports Microsoft.WindowsAzure.Storage.Auth
-Imports Microsoft.WindowsAzure
-Imports Microsoft.Azure
-Imports System.Configuration
+﻿Imports System
+Imports System.Collections.Generic
+Imports CQRSAzure.EventSourcing.Azure.File
 Imports Microsoft.WindowsAzure.Storage
+Imports Microsoft.WindowsAzure.Storage.File
 
 Namespace Azure.File
 
@@ -66,20 +65,20 @@ Namespace Azure.File
             If (BaseFileShare IsNot Nothing) Then
                 'Get the directory for the aggregation type
                 m_directory = BaseFileShare.GetRootDirectoryReference().GetDirectoryReference(FileEventStreamBase.MakeValidStorageFolderName(AggregateClassName))
-                m_directory.CreateIfNotExists()
+                m_directory.CreateIfNotExistsAsync()
                 'and from that, get the instance file
                 m_file = m_directory.GetFileReference(EventStreamFilename)
-                ResetFile()
+                Task.WaitAll(ResetFile())
             End If
 
 
 
         End Sub
 
-        Protected Function GetSequence() As Long
+        Protected Friend Function GetSequence() As Long
 
             If (File IsNot Nothing) Then
-                File.FetchAttributes()
+                File.FetchAttributesAsync()
                 Dim m_sequence As Long = 0
                 If (File.Metadata.ContainsKey(METADATA_SEQUENCE)) Then
                     If (Long.TryParse(File.Metadata(METADATA_SEQUENCE), m_sequence)) Then
@@ -95,19 +94,19 @@ Namespace Azure.File
         Protected Sub SetSequence(startingSequence As UInteger)
 
             If (File IsNot Nothing) Then
-                File.FetchAttributes()
+                File.FetchAttributesAsync()
                 If (File.Metadata.ContainsKey(METADATA_SEQUENCE)) Then
                     m_file.Metadata(METADATA_SEQUENCE) = startingSequence.ToString()
                 End If
-                File.SetMetadata()
+                File.SetMetadataAsync()
             End If
 
         End Sub
 
-        Friend Sub ResetFile()
+        Friend Async Function ResetFile() As Task
 
-            If Not (m_file.Exists) Then
-                m_file.Create(m_configuredFileSize)
+            If Not (m_file.ExistsAsync().Result) Then
+                Await m_file.CreateAsync(m_configuredFileSize)
                 'Set the initial metadata
                 m_file.Metadata(METATDATA_DOMAIN) = DomainName
                 m_file.Metadata(METADATA_AGGREGATE_CLASS) = GetType(TAggregate).Name
@@ -115,20 +114,24 @@ Namespace Azure.File
                 m_file.Metadata(METADATA_SEQUENCE) = "0" 'Sequence starts at zero
                 m_file.Metadata(METADATA_RECORD_COUNT) = "0" 'Record count starts at zero
                 m_file.Metadata(METADATA_DATE_CREATED) = DateTime.UtcNow.ToString("O") 'use universal date/time
-                m_file.SetMetadata()
+                Await m_file.SetMetadataAsync()
             Else
                 'set the current sequence number
                 If (Not File.Metadata.ContainsKey(METADATA_SEQUENCE)) Then
-                    Throw New EventStreamReadException(DomainName, GetType(TAggregate).Name, m_key.ToString(), 0, "Unable to get the sequence number for this event stream file")
+                    Throw New EventStreamReadException(DomainName,
+                                                       GetType(TAggregate).Name,
+                                                       m_key.ToString(),
+                                                       0,
+                                                       "Unable to get the sequence number for this event stream file")
                 End If
             End If
 
-        End Sub
+        End Function
 
         Protected Function GetRecordCount()
 
             If (File IsNot Nothing) Then
-                File.FetchAttributes()
+                File.FetchAttributesAsync()
                 Dim m_records As Long = 0
                 If (File.Metadata.ContainsKey(METADATA_RECORD_COUNT)) Then
                     If (Long.TryParse(File.Metadata(METADATA_RECORD_COUNT), m_records)) Then
@@ -146,12 +149,13 @@ Namespace Azure.File
             Dim ret As New List(Of TAggregateKey)
             If (m_directory IsNot Nothing) Then
                 'List all the files in the folder
-                For Each streamFileEntry In m_directory.ListFilesAndDirectories()
+                Dim continueToken As New FileContinuationToken()
+                For Each streamFileEntry In m_directory.ListFilesAndDirectoriesSegmentedAsync(continueToken).Result.Results
                     Dim streamFile As CloudFile = TryCast(streamFileEntry, CloudFile)
                     'streamFile.Properties.
                     If (streamFile IsNot Nothing) Then
                         Dim ignore As Boolean = False
-                        streamFile.FetchAttributes()
+                        streamFile.FetchAttributesAsync()
                         If (asOfDate.HasValue) Then
                             'compare to file create time
                             'if the creation date is after as-of-date then skip it
@@ -303,8 +307,8 @@ Namespace Azure.File
                     'Create the reference to this aggregate type's event stream base folder
                     'e.g. /[domain]/
                     m_cloudBasePath = m_fileClient.GetShareReference(MakeValidStorageFolderName(DomainName))
-                    If Not (m_cloudBasePath.Exists) Then
-                        m_cloudBasePath.CreateIfNotExists()
+                    If Not (m_cloudBasePath.ExistsAsync().Result) Then
+                        m_cloudBasePath.CreateIfNotExistsAsync()
                     End If
                 End If
             End If

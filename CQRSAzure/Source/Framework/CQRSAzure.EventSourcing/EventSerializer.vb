@@ -3,6 +3,9 @@ Imports System.Reflection
 Imports System.Linq.Expressions
 Imports CQRSAzure.EventSourcing
 Imports System.Runtime.Serialization
+Imports System
+Imports System.Linq
+Imports System.Collections.Generic
 
 Public Class EventSerializer(Of TEvent As {New, IEvent})
     Inherits EventSerializer

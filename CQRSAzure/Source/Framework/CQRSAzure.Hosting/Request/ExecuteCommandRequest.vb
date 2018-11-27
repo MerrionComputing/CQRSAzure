@@ -3,6 +3,7 @@ Option Explicit On
 
 Imports CQRSAzure.Hosting
 Imports CQRSAzure.CommandDefinition
+Imports System
 
 Namespace Request
 

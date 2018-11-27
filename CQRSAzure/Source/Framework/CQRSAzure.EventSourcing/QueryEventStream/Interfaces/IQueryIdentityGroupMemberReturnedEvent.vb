@@ -1,4 +1,6 @@
-﻿Namespace Queries
+﻿Imports System
+
+Namespace Queries
     ''' <summary>
     ''' A single member of an identity group was returned to a query that requested them
     ''' </summary>

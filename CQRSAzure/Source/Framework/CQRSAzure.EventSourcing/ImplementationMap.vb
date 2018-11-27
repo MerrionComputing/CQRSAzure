@@ -1,4 +1,5 @@
 ﻿
+Imports System
 ''' <summary>
 ''' Map between an aggregate and the actual implementation class for the events stream of instances of that aggregate
 ''' </summary>

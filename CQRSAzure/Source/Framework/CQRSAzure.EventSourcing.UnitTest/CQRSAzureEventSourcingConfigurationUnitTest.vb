@@ -1,16 +1,16 @@
 ﻿Imports System.Text
-Imports Microsoft.VisualStudio.TestTools.UnitTesting
+Imports NUnit.Framework
 Imports System.Configuration
 
 
 Imports CQRSAzure.EventSourcing
 
-<TestClass()>
+<TestFixture()>
 Public Class CQRSAzureEventSourcingConfigurationUnitTest
 
     Public Const VALID_SECTION_NAME As String = "CQRSAzureEventSourcingConfiguration"
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Constructor_TestMethod()
 
         Dim testObj As New CQRSAzureEventSourcingConfigurationSection()
@@ -18,7 +18,7 @@ Public Class CQRSAzureEventSourcingConfigurationUnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub LoadConfigurationSection_Testmethod()
 
         Dim testObj As CQRSAzureEventSourcingConfigurationSection

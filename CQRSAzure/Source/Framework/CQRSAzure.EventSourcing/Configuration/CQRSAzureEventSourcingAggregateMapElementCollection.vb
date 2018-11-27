@@ -1,4 +1,5 @@
-﻿Imports System.Configuration
+﻿Imports System
+Imports System.Configuration
 
 ''' <summary>
 ''' The set of mapped aggregate to implementations in the application

@@ -1,9 +1,10 @@
 ﻿Imports System.Text
-Imports Microsoft.VisualStudio.TestTools.UnitTesting
+Imports NUnit.Framework
+Imports CQRSAzure.EventSourcing.Implementation
 
-<TestClass()> Public Class KeyConverterFactoryUnitTest
+<TestFixture()> Public Class KeyConverterFactoryUnitTest
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub StringConverter_TestMethod()
 
         Dim expected As String = "expected"
@@ -16,7 +17,7 @@ Imports Microsoft.VisualStudio.TestTools.UnitTesting
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub IntegerConverter_TestMethod()
 
         Dim expected As Integer = 1912
@@ -29,7 +30,7 @@ Imports Microsoft.VisualStudio.TestTools.UnitTesting
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub DoubleConverter_TestMethod()
 
         Dim expected As Double = 1912.234
@@ -42,7 +43,7 @@ Imports Microsoft.VisualStudio.TestTools.UnitTesting
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub DecimalConverter_TestMethod()
 
         Dim expected As Decimal = 1912.234

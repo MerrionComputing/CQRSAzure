@@ -1,4 +1,5 @@
-﻿''' <summary>
+﻿Imports System
+''' <summary>
 ''' A ping command is a command that doesn't perform any action as such but can be used to check that all of the 
 ''' command handling processes are functional
 ''' </summary>

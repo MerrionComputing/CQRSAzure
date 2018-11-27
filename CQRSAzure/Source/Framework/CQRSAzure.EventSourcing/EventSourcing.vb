@@ -1,4 +1,5 @@
-﻿''' <summary>
+﻿Imports System.Diagnostics
+''' <summary>
 ''' Common functionality that needs to be available throughout the library
 ''' </summary>
 Module EventSourcing

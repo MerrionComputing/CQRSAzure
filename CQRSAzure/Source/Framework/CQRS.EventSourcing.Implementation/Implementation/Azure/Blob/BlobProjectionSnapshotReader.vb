@@ -1,6 +1,6 @@
-﻿Imports System.Runtime.Serialization.Formatters.Binary
-Imports CQRSAzure.EventSourcing
-Imports Microsoft.WindowsAzure.Storage
+﻿Imports System
+Imports System.Runtime.Serialization.Formatters.Binary
+Imports CQRSAzure.EventSourcing.Azure.Blob
 Imports Microsoft.WindowsAzure.Storage.Blob
 
 Namespace Azure.Blob
@@ -21,7 +21,7 @@ Namespace Azure.Blob
         Inherits BlobProjectionSnapshotBase(Of TAggregate, TAggregateKey, TProjection)
         Implements IProjectionSnapshotReader(Of TAggregate, TAggregateKey, TProjection)
 
-        Public Function GetSnapshot(key As TAggregateKey, Optional OnOrBeforeSequence As UInteger = 0) As IProjectionSnapshot(Of TAggregate, TAggregateKey) Implements IProjectionSnapshotReader(Of TAggregate, TAggregateKey, TProjection).GetSnapshot
+        Public Function GetSnapshot(key As TAggregateKey, Optional OnOrBeforeSequence As UInteger = 0) As Task(Of IProjectionSnapshot(Of TAggregate, TAggregateKey)) Implements IProjectionSnapshotReader(Of TAggregate, TAggregateKey, TProjection).GetSnapshot
 
             If (MyBase.AppendBlob IsNot Nothing) Then
                 Dim lastMatch As IProjectionSnapshot(Of TAggregate, TAggregateKey) = Nothing
@@ -53,10 +53,10 @@ Namespace Azure.Blob
 
         End Function
 
-        Public Function GetLatestSnapshotSequence(key As TAggregateKey, Optional OnOrBeforeSequence As UInteger = 0) As UInteger Implements IProjectionSnapshotReader(Of TAggregate, TAggregateKey, TProjection).GetLatestSnapshotSequence
+        Public Async Function GetLatestSnapshotSequence(key As TAggregateKey, Optional OnOrBeforeSequence As UInteger = 0) As Task(Of UInteger) Implements IProjectionSnapshotReader(Of TAggregate, TAggregateKey, TProjection).GetLatestSnapshotSequence
 
             If (MyBase.AppendBlob IsNot Nothing) Then
-                Return MyBase.GetHighestSequence()
+                Return Await MyBase.GetHighestSequence()
             Else
                 Return 0
             End If
@@ -68,9 +68,9 @@ Namespace Azure.Blob
         ''' Get a snapshot of the append blob to use when reading this event stream
         ''' </summary>
         ''' <returns></returns>
-        Private Function GetAppendBlobSnapshot() As CloudAppendBlob
+        Private Async Function GetAppendBlobSnapshot() As Task(Of CloudAppendBlob)
             If (AppendBlob IsNot Nothing) Then
-                Return AppendBlob.CreateSnapshot()
+                Return Await AppendBlob.CreateSnapshotAsync()
             Else
                 Return Nothing
             End If
@@ -81,7 +81,7 @@ Namespace Azure.Blob
             If (AppendBlob IsNot Nothing) Then
                 Dim targetStream As New System.IO.MemoryStream()
                 Try
-                    GetAppendBlobSnapshot().DownloadToStream(targetStream)
+                    GetAppendBlobSnapshot().Result.DownloadToStreamAsync(targetStream)
                 Catch exBlob As Microsoft.WindowsAzure.Storage.StorageException
                     Throw New EventStreamReadException(DomainName, AggregateClassName, m_key.ToString(), 0, "Unable to access underlying event stream", exBlob)
                 End Try

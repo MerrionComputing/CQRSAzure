@@ -1,11 +1,8 @@
-﻿Imports Microsoft.WindowsAzure.Storage.Blob
-Imports Microsoft.WindowsAzure.Storage
-Imports Microsoft.WindowsAzure.Storage.Auth
-Imports Microsoft.WindowsAzure
-Imports Microsoft.Azure
-Imports System.Configuration
-Imports CQRSAzure.EventSourcing
+﻿Imports System
+Imports System.Collections.Generic
 Imports CQRSAzure.EventSourcing.Azure.Blob
+Imports Microsoft.WindowsAzure.Storage
+Imports Microsoft.WindowsAzure.Storage.Blob
 
 Namespace Azure.Blob
     ''' <summary>
@@ -85,16 +82,19 @@ Namespace Azure.Blob
             End Get
         End Property
 
-        Public Function GetSequence() As Long
+        Public Async Function GetSequence() As Task(Of Long)
 
             If (AppendBlob IsNot Nothing) Then
                 Try
-                    AppendBlob.FetchAttributes()
-                    Dim m_sequence As Long
-                    If (Long.TryParse(AppendBlob.Metadata(METADATA_SEQUENCE), m_sequence)) Then
-                        Return m_sequence
+                    If (AppendBlob.ExistsAsync.Result) Then
+                        Await AppendBlob.FetchAttributesAsync()
+                        Dim m_sequence As Long
+                        If (AppendBlob.Metadata.ContainsKey(METADATA_SEQUENCE)) Then
+                            If (Long.TryParse(AppendBlob.Metadata(METADATA_SEQUENCE), m_sequence)) Then
+                                Return m_sequence
+                            End If
+                        End If
                     End If
-
                 Catch exBlob As Microsoft.WindowsAzure.Storage.StorageException
                     Throw New EventStreamReadException(DomainName, AggregateClassName, m_key.ToString(), 0, "Unable to get the sequence number for this event stream", exBlob)
                 End Try
@@ -106,21 +106,30 @@ Namespace Azure.Blob
 
         End Function
 
-        Public Function GetRecordCount() As Long
+        Public Async Function GetRecordCount() As Task(Of Long)
 
             If (AppendBlob IsNot Nothing) Then
                 Try
-                    AppendBlob.FetchAttributes()
+                    Await AppendBlob.FetchAttributesAsync()
                     Dim m_sequence As Long
-                    If (Long.TryParse(AppendBlob.Metadata(METADATA_RECORD_COUNT), m_sequence)) Then
-                        Return m_sequence
+                    If (AppendBlob.Metadata.ContainsKey(METADATA_RECORD_COUNT)) Then
+                        If (Long.TryParse(AppendBlob.Metadata(METADATA_RECORD_COUNT), m_sequence)) Then
+                            Return m_sequence
+                        End If
                     End If
 
                 Catch exBlob As Microsoft.WindowsAzure.Storage.StorageException
-                    Throw New EventStreamReadException(DomainName, AggregateClassName, m_key.ToString(), 0, "Unable to get the record count for this event stream", exBlob)
+                    Throw New EventStreamReadException(DomainName,
+                                                       AggregateClassName,
+                                                       m_key.ToString(), 0,
+                                                       "Unable to get the record count for this event stream", exBlob)
                 End Try
             Else
-                Throw New EventStreamReadException(DomainName, AggregateClassName, m_key.ToString(), 0, "Unable to get the record count for this event stream")
+                Throw New EventStreamReadException(DomainName,
+                                                   AggregateClassName,
+                                                   m_key.ToString(),
+                                                   0,
+                                                   "Unable to get the record count for this event stream")
             End If
 
             Return 0
@@ -147,18 +156,20 @@ Namespace Azure.Blob
             If (BlobContainer IsNot Nothing) Then
                 m_blob = BlobContainer.GetAppendBlobReference(EventStreamBlobFilename)
             End If
-            Call ResetBlob()
+
+            ResetBlob().Wait()
 
             m_converter = KeyConverterFactory.CreateKeyConverter(Of TAggregateKey)
 
         End Sub
 
-        Protected Sub ResetBlob()
+        Protected Async Function ResetBlob() As Task
 
             If (BlobContainer IsNot Nothing) Then
-                If Not m_blob.Exists() Then
+                Dim exists As Boolean = Await m_blob.ExistsAsync()
+                If Not exists Then
                     'Make the file to append to if it doesn't already exist
-                    m_blob.CreateOrReplace()
+                    Await m_blob.CreateOrReplaceAsync()
                     'Set the initial metadata
                     m_blob.Metadata(METATDATA_DOMAIN) = DomainName
                     m_blob.Metadata(METADATA_AGGREGATE_CLASS) = GetType(TAggregate).Name
@@ -166,21 +177,28 @@ Namespace Azure.Blob
                     m_blob.Metadata(METADATA_SEQUENCE) = "0" 'Sequence starts at zero
                     m_blob.Metadata(METADATA_RECORD_COUNT) = "0" 'Record count starts at zero
                     m_blob.Metadata(METADATA_DATE_CREATED) = DateTime.UtcNow.ToString("O") 'use universal date/time
-                    m_blob.SetMetadata()
-                Else
-                    m_blob.FetchAttributes()
+                    Await m_blob.SetMetadataAsync()
                 End If
             End If
 
-        End Sub
+        End Function
 
-        Protected Function GetAllStreamKeysBase(asOfDate As Date?) As IEnumerable(Of TAggregateKey)
+        Protected Async Function GetAllStreamKeysBase(asOfDate As Date?) As Task(Of IEnumerable(Of TAggregateKey))
 
             Dim ret As New List(Of TAggregateKey)
 
             If MyBase.BlobContainer IsNot Nothing Then
                 Dim bd As CloudBlobDirectory = MyBase.BlobContainer.GetDirectoryReference(ContainerBasePath)
-                For Each thisBlob In bd.ListBlobs(blobListingDetails:=BlobListingDetails.Metadata)
+                Dim continueToken As New BlobContinuationToken()
+                Dim reqOpts As New Microsoft.WindowsAzure.Storage.Blob.BlobRequestOptions() With {.RetryPolicy = New RetryPolicies.ExponentialRetry()}
+                Dim opContext As New OperationContext()
+                Dim listResults = Await bd.ListBlobsSegmentedAsync(useFlatBlobListing:=False,
+                                                                blobListingDetails:=BlobListingDetails.Metadata,
+                                                                maxResults:=Nothing,
+                                                                currentToken:=continueToken,
+                                                                options:=reqOpts, operationContext:=opContext)
+
+                For Each thisBlob In listResults.Results
 
                     Dim blobFile As CloudBlob = TryCast(thisBlob, CloudBlob)
                     Dim ignore As Boolean = False
@@ -236,6 +254,7 @@ Namespace Azure.Blob
         Public Const METADATA_RECORD_COUNT As String = "RECORDCOUNT"
         Public Const METADATA_AGGREGATE_KEY As String = "AGGREGATEKEY"
         Public Const METADATA_DATE_CREATED As String = "DATECREATED"
+        Public Const METADATA_CORRELATION_ID As String = "CORRELATIONIDENTIFIER"
 
 
         Public Const ORPHANS_FOLDER As String = "uncategorised"
@@ -324,7 +343,10 @@ Namespace Azure.Blob
                     'e.g. /[domain]/
                     m_blobBasePath = m_blobClient.GetContainerReference(MakeValidStorageFolderName(DomainName))
                     If (m_blobBasePath IsNot Nothing) Then
-                        m_blobBasePath.CreateIfNotExists()
+                        Dim created As Boolean = m_blobBasePath.CreateIfNotExistsAsync().Result
+                        If Not created Then
+                            ' The path already exists
+                        End If
                     End If
 
                 End If

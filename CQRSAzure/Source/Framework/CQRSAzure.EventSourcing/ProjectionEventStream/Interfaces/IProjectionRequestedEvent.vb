@@ -1,4 +1,6 @@
 ﻿
+Imports System
+
 Namespace Projections
     ''' <summary>
     ''' A  specific projection was requested (by a query or identity group classifier for example)

@@ -2,6 +2,7 @@
 Option Strict On
 
 
+Imports System
 Imports CQRSAzure.Hosting
 ''' <summary>
 ''' A single domain model that is hosted by this host

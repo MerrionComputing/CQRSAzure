@@ -1,4 +1,7 @@
-﻿Imports CQRSAzure.EventSourcing
+﻿Imports System
+Imports System.Collections.Generic
+Imports CQRSAzure.EventSourcing
+Imports CQRSAzure.EventSourcing.Local.File
 
 Namespace Local.File
 
@@ -45,54 +48,57 @@ Namespace Local.File
         End Property
 
 
-        Public Sub AppendEvent(EventInstance As IEvent(Of TAggregate),
-                               Optional ByVal ExpectedTopSequence As Long = 0) Implements IEventStreamWriter(Of TAggregate, TAggregateKey).AppendEvent
+        Public Async Function AppendEvent(EventInstance As IEvent(Of TAggregate),
+                               Optional ByVal ExpectedTopSequence As Long = 0) As Task Implements IEventStreamWriter(Of TAggregate, TAggregateKey).AppendEvent
 
             InitialiseFileIfNotExists()
 
-            AppendEventInternal(EventInstance)
+            Await AppendEventInternal(EventInstance)
 
             SaveEventStreamDetailBlock()
 
-        End Sub
+        End Function
 
 
-        Public Sub AppendEvents(StartingSequence As Long, Events As IEnumerable(Of IEvent(Of TAggregate))) Implements IEventStreamWriter(Of TAggregate, TAggregateKey).AppendEvents
+        Public Async Function AppendEvents(StartingSequence As Long, Events As IEnumerable(Of IEvent(Of TAggregate))) As Task Implements IEventStreamWriter(Of TAggregate, TAggregateKey).AppendEvents
 
             InitialiseFileIfNotExists()
 
             For Each evt As IEvent(Of TAggregate) In Events
-                AppendEventInternal(evt)
+                Await AppendEventInternal(evt)
             Next
 
             SaveEventStreamDetailBlock()
 
-        End Sub
+        End Function
 
         ''' <summary>
         ''' Append an event to the file, without saving the record count
         ''' </summary>
         ''' <param name="EventInstance"></param>
-        Private Sub AppendEventInternal(EventInstance As IEvent(Of TAggregate))
+        Private Async Function AppendEventInternal(EventInstance As IEvent(Of TAggregate)) As Task
 
-            If (MyBase.m_file IsNot Nothing) Then
-                Dim evtToWrite As New LocalFileWrappedEvent(m_eventStreamDetailBlock.SequenceNumber,
+            Await Task.Run(Sub()
+                               If (MyBase.m_file IsNot Nothing) Then
+
+                                   Dim evtToWrite As New LocalFileWrappedEvent(m_eventStreamDetailBlock.SequenceNumber,
                                                             EventInstance.Version,
                                                             DateTime.UtcNow,
                                                             EventInstance,
                                                             m_setings.UnderlyingSerialiser)
-                If (evtToWrite IsNot Nothing) Then
-                    Using fs = m_file.OpenWrite()
-                        fs.Seek(0, IO.SeekOrigin.End)
-                        'write the event to the stream here..
-                        MyBase.Serialise(fs, evtToWrite)
-                        m_eventStreamDetailBlock.SequenceNumber = fs.Position
-                    End Using
-                    m_eventStreamDetailBlock.RecordCount += 1
-                End If
-            End If
-
-        End Sub
+                                   If (evtToWrite IsNot Nothing) Then
+                                       Using fs = m_file.OpenWrite()
+                                           fs.Seek(0, IO.SeekOrigin.End)
+                                           'write the event to the stream here..
+                                           MyBase.Serialise(fs, evtToWrite)
+                                           m_eventStreamDetailBlock.SequenceNumber = fs.Position
+                                       End Using
+                                       m_eventStreamDetailBlock.RecordCount += 1
+                                   End If
+                               End If
+                           End Sub
+                           )
+        End Function
 
 
         Private Sub InitialiseFileIfNotExists()

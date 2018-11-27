@@ -1,15 +1,12 @@
-﻿Imports System.Text
-Imports Microsoft.VisualStudio.TestTools.UnitTesting
-
+﻿
+Imports NUnit.Framework
 Imports System.Configuration
+Imports CQRSAzure.EventSourcing.Implementation
 
-Imports CQRSAzure.EventSourcing
-
-
-<TestClass()>
+<TestFixture()>
 Public Class AggregateMapBuilderUnitTest
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Constructor_Empty_TestMethod()
 
         Dim testObj As New AggregateMapBuilder()
@@ -18,7 +15,7 @@ Public Class AggregateMapBuilderUnitTest
     End Sub
 
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Constructor_Empty_IsOnDemand_TestMethod()
 
         Dim actual As AggregateMapBuilder.MapCreationOption = AggregateMapBuilder.MapCreationOption.UpFront
@@ -32,7 +29,7 @@ Public Class AggregateMapBuilderUnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Constructor_EmptyWithSettings_IsOnDemand_TestMethod()
 
         Dim actual As AggregateMapBuilder.MapCreationOption = AggregateMapBuilder.MapCreationOption.UpFront
@@ -51,7 +48,7 @@ Public Class AggregateMapBuilderUnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Constructor_OnDemand_IsOnDemand_TestMethod()
 
         Dim actual As AggregateMapBuilder.MapCreationOption = AggregateMapBuilder.MapCreationOption.UpFront
@@ -66,7 +63,7 @@ Public Class AggregateMapBuilderUnitTest
     End Sub
 
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Constructor_UpFront_IsUpFront_TestMethod()
 
         Dim actual As AggregateMapBuilder.MapCreationOption = AggregateMapBuilder.MapCreationOption.OnDemand
@@ -80,7 +77,7 @@ Public Class AggregateMapBuilderUnitTest
 
     End Sub
 
-    <TestMethod>
+    <TestCase()>
     Public Sub Factory_CreateDefaultAggregateMaps_NotNull_TestMethod()
 
         Dim testObj = AggregateMapBuilderFactory.CreateDefaultAggregateMaps()
@@ -90,7 +87,7 @@ Public Class AggregateMapBuilderUnitTest
 
     End Sub
 
-    <TestMethod>
+    <TestCase()>
     Public Sub GetImplementationMap_NurseAggregate_TestMethod()
 
         Dim testSettings As CQRSAzureEventSourcingConfigurationSection
@@ -106,7 +103,7 @@ Public Class AggregateMapBuilderUnitTest
 
     End Sub
 
-    <TestMethod>
+    <TestCase()>
     Public Sub GetImplementationMap_PatientAggregate_TestMethod()
 
         Dim testSettings As CQRSAzureEventSourcingConfigurationSection
@@ -122,7 +119,7 @@ Public Class AggregateMapBuilderUnitTest
 
     End Sub
 
-    <TestMethod>
+    <TestCase()>
     Public Sub GetImplementationMap_PatientAggregate_Reader_TestMethod()
 
         Dim testSettings As CQRSAzureEventSourcingConfigurationSection
@@ -138,7 +135,7 @@ Public Class AggregateMapBuilderUnitTest
 
     End Sub
 
-    <TestMethod>
+    <TestCase()>
     Public Sub GetImplementationMap_PatientAggregate_Writer_TestMethod()
 
         Dim testSettings As CQRSAzureEventSourcingConfigurationSection
@@ -154,7 +151,7 @@ Public Class AggregateMapBuilderUnitTest
 
     End Sub
 
-    <TestMethod>
+    <TestCase()>
     Public Sub GetImplementationMap_BedAggregate_Writer_TestMethod()
 
         Dim testSettings As CQRSAzureEventSourcingConfigurationSection
@@ -171,7 +168,7 @@ Public Class AggregateMapBuilderUnitTest
     End Sub
 
     ' Test that this also works for aggregate identifiers imported from other projects that were code generated
-    <TestMethod>
+    <TestCase()>
     Public Sub GetImplementationMap_BankAccountAggregate_Reader_TestMethod()
 
         Dim testSettings As CQRSAzureEventSourcingConfigurationSection
@@ -187,7 +184,7 @@ Public Class AggregateMapBuilderUnitTest
 
     End Sub
 
-    <TestMethod>
+    <TestCase()>
     Public Sub GetImplementationMap_BankAccountAggregate_Writer_TestMethod()
 
         Dim testSettings As CQRSAzureEventSourcingConfigurationSection
@@ -203,8 +200,8 @@ Public Class AggregateMapBuilderUnitTest
 
     End Sub
 
-    <TestMethod>
-    Public Sub UseImplementationMap_BankAccountAggregate_TestMethod()
+    <TestCase()>
+    Public Async Function UseImplementationMap_BankAccountAggregate_TestMethod() As Task
 
         'load the serialisers
         EventSerializerFactory.AddOrSetSerialiser(Of Accounts.Account.eventDefinition.Opened) _
@@ -229,33 +226,33 @@ Public Class AggregateMapBuilderUnitTest
 
         Dim writer As IEventStreamWriter(Of Accounts.Account.Account, String) = testMap.CreateWriter(New Accounts.Account.Account(MY_ACCOUNT_NUMBER), MY_ACCOUNT_NUMBER)
         'Account was opened
-        writer.AppendEvent(New Accounts.Account.eventDefinition.Opened(New DateTime(2016, 12, 19, 12, 22, 7),
+        Await writer.AppendEvent(New Accounts.Account.eventDefinition.Opened(New DateTime(2016, 12, 19, 12, 22, 7),
                                                                        "EUR"))
         'Initial deposit
-        writer.AppendEvent(New Accounts.Account.eventDefinition.Money_Deposited(2000.0,
+        Await writer.AppendEvent(New Accounts.Account.eventDefinition.Money_Deposited(2000.0,
                                                                                 New DateTime(2016, 12, 20),
                                                                                 New Date(2016, 12, 27),
                                                                                 "EUR",
                                                                                 1.0))
 
         'Cross currency deposit
-        writer.AppendEvent(New Accounts.Account.eventDefinition.Money_Deposited(1200.0,
+        Await writer.AppendEvent(New Accounts.Account.eventDefinition.Money_Deposited(1200.0,
                                                                              New DateTime(2017, 1, 12),
                                                                              New DateTime(2017, 1, 16),
                                                                              "USD",
                                                                              1.2907))
 
-        writer.AppendEvent(New Accounts.Account.eventDefinition.Money_Withdrawn(100.0,
+        Await writer.AppendEvent(New Accounts.Account.eventDefinition.Money_Withdrawn(100.0,
                                                                                 New DateTime(2017, 1, 19),
                                                                                 "Over The Counter",
                                                                                 "Hagley Road Branch, Birmingham"))
 
-        writer.AppendEvent(New Accounts.Account.eventDefinition.Money_Withdrawn(400.0,
+        Await writer.AppendEvent(New Accounts.Account.eventDefinition.Money_Withdrawn(400.0,
                                                                                 New DateTime(2017, 1, 20),
                                                                                 "Cash Machine",
                                                                                 "Machine 208AC23"))
 
-        writer.AppendEvent(New Accounts.Account.eventDefinition.Closed(New DateTime(2017, 6, 12),
+        Await writer.AppendEvent(New Accounts.Account.eventDefinition.Closed(New DateTime(2017, 6, 12),
                                                                        "Moving to alternative jurisdiction"))
 
 
@@ -263,10 +260,10 @@ Public Class AggregateMapBuilderUnitTest
         projection = testMap.CreateProjectionProcessor(New Accounts.Account.Account(MY_ACCOUNT_NUMBER), MY_ACCOUNT_NUMBER)
 
         Dim getBalance As New Accounts.Account.projection.Running_Balance()
-        projection.Process(getBalance)
+        Await projection.Process(getBalance)
 
         Assert.IsTrue(getBalance.Balance > 0.00)
 
-    End Sub
+    End Function
 
 End Class

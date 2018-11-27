@@ -1,4 +1,6 @@
-﻿Imports CQRSAzure.EventSourcing
+﻿Imports System.Collections.Generic
+Imports System.Linq
+Imports CQRSAzure.EventSourcing
 
 ''' <summary>
 ''' A stock snapshot object that can be used to populate a projection from a snapshot taken at a point in time

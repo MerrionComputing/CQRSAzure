@@ -1,6 +1,10 @@
-﻿Imports System.Reflection
-Imports CQRSAzure.EventSourcing
+﻿Imports System
+Imports System.Linq
+Imports System.Collections.Generic
+Imports System.Reflection
 Imports Microsoft.WindowsAzure.Storage.Table
+Imports Microsoft.Azure.CosmosDB.Table
+Imports CQRSAzure.EventSourcing.Azure.Table
 
 Namespace Azure.Table
     Public MustInherit Class TableEventStreamBase(Of TAggregate As CQRSAzure.EventSourcing.IAggregationIdentifier, TAggregateKey)
@@ -146,7 +150,8 @@ Namespace Azure.Table
                 Dim qryKeys = New TableQuery(Of TableAggregateKeyRecord)().Where(
                     TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, MyBase.AggregateClassName))
 
-                For Each aggKey As TableAggregateKeyRecord In MyBase.AggregateKeyTable.ExecuteQuery(Of TableAggregateKeyRecord)(qryKeys)
+                Dim continueToken As New TableContinuationToken
+                For Each aggKey As TableAggregateKeyRecord In MyBase.AggregateKeyTable.ExecuteQuerySegmentedAsync(Of TableAggregateKeyRecord)(qryKeys, continueToken).Result
                     If Not asOfDate.HasValue OrElse (asOfDate.Value < aggKey.CreatedDateTime) Then
                         ret.Add(m_converter.FromString(aggKey.RowKey))
                     End If
@@ -317,11 +322,12 @@ Namespace Azure.Table
                     TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, aggregateInstanceKey)
                      )
                    )
-                Dim currentRecord As TableAggregateKeyRecord = AggregateKeyTable.ExecuteQuery(Of TableAggregateKeyRecord)(qryKeyRecord).FirstOrDefault()
+                Dim continueToken As New TableContinuationToken()
+                Dim currentRecord As TableAggregateKeyRecord = AggregateKeyTable.ExecuteQuerySegmentedAsync(Of TableAggregateKeyRecord)(qryKeyRecord, continueToken).Result.FirstOrDefault()
                 If (currentRecord Is Nothing) Then
                     currentRecord = New TableAggregateKeyRecord(AggregateClassName, aggregateInstanceKey)
                     currentRecord.LastSequence = 0
-                    AggregateKeyTable.Execute(TableOperation.Insert(currentRecord))
+                    AggregateKeyTable.ExecuteAsync(TableOperation.Insert(currentRecord))
                 End If
                 Return currentRecord.LastSequence
             End If
@@ -340,7 +346,7 @@ Namespace Azure.Table
                 recordToSave.ETag = "*" 'need to set an e-tag to do a merge..maybe this should be loaded by the class itself..?
                 recordToSave.Properties.Add(NameOf(TableAggregateKeyRecord.LastSequence), New EntityProperty(nextSequence))
                 'merge this new record into the fray
-                AggregateKeyTable.Execute(TableOperation.InsertOrMerge(recordToSave), RequestOptions)
+                AggregateKeyTable.ExecuteAsync(TableOperation.InsertOrMerge(recordToSave)) ', RequestOptions,)
             End If
 
         End Sub
@@ -388,11 +394,11 @@ Namespace Azure.Table
             If (m_cloudTableClient IsNot Nothing) Then
                 m_table = m_cloudTableClient.GetTableReference(m_tableName)
                 If (m_table IsNot Nothing) Then
-                    m_table.CreateIfNotExists()
+                    m_table.CreateIfNotExistsAsync()
                 End If
                 m_aggregatekeyTable = m_cloudTableClient.GetTableReference(MakeValidStorageTableName(AggregateDomainName & " " & TABLENAME_SUFFIX_KEYS))
                 If (m_aggregatekeyTable IsNot Nothing) Then
-                    m_aggregatekeyTable.CreateIfNotExists()
+                    m_aggregatekeyTable.CreateIfNotExistsAsync()
                 End If
             End If
         End Sub

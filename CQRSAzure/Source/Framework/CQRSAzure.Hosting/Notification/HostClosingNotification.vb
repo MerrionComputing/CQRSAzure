@@ -1,4 +1,6 @@
-﻿Namespace Notification
+﻿Imports System
+
+Namespace Notification
 
     ''' <summary>
     ''' A host is having to shut down

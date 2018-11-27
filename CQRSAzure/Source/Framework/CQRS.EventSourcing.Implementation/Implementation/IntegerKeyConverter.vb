@@ -1,4 +1,5 @@
-﻿Imports CQRSAzure.EventSourcing
+﻿Imports System
+Imports CQRSAzure.EventSourcing
 
 Public Class IntegerKeyConverter
     Implements IKeyConverter(Of Integer)

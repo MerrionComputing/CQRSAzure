@@ -38,7 +38,7 @@ Public Class MockClassifierOddNumber
     Public Function EvaluateEvent(Of TEvent As IEvent(Of MockAggregate))(eventToHandle As TEvent) As IClassifierDataSourceHandler.EvaluationResult Implements IClassifier(Of MockAggregate, String).EvaluateEvent
 
         If (eventToHandle.GetType() = GetType(MockEventTypeOne)) Then
-            Return EvaluateMockEventTypeOne(CTypeDynamic(Of MockEventTypeOne)(eventToHandle))
+            Return EvaluateMockEventTypeOne(Convert.ChangeType(eventToHandle, GetType(MockEventTypeOne)))
         Else
             Return IClassifierDataSourceHandler.EvaluationResult.Unchanged
         End If
@@ -164,7 +164,7 @@ Public Class MockClassifierProjectionBased
 
     Public Function EvaluateProjection(Of TProjection As IProjectionUntyped)(projection As TProjection) As IClassifierDataSourceHandler.EvaluationResult Implements IClassifierUntyped.EvaluateProjection
 
-        Dim prj As MockClassifierProjectionInstance = CTypeDynamic(Of MockClassifierProjectionInstance)(projection)
+        Dim prj As MockClassifierProjectionInstance = Convert.ChangeType(projection, GetType(MockClassifierProjectionInstance))
         If (prj IsNot Nothing) Then
             If (prj.WasLastValueOdd) Then
                 Return IClassifierDataSourceHandler.EvaluationResult.Exclude
@@ -218,7 +218,7 @@ Public Class MockClassifierProjectionInstance
 
         Select Case eventToHandle.GetType()
             Case GetType(MockEventTypeOne)
-                HandleMockEventTypeOne(CTypeDynamic(Of MockEventTypeOne)(eventToHandle))
+                HandleMockEventTypeOne(Convert.ChangeType(eventToHandle, GetType(MockEventTypeOne)))
         End Select
 
 

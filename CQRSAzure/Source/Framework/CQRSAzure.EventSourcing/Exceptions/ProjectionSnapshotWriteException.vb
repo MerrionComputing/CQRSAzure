@@ -1,6 +1,6 @@
 ﻿Imports System.Security.Permissions
 Imports System.Runtime.Serialization
-
+Imports System
 
 ''' <summary>
 ''' An exception has occured writing to a projection snapshot

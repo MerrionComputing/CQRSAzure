@@ -1,4 +1,6 @@
-﻿Namespace Projections
+﻿Imports System
+
+Namespace Projections
 
     ''' <summary>
     ''' A snapshot of the state of this projection as at a particular event sequence was taken

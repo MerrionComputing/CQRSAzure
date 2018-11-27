@@ -1,4 +1,5 @@
-﻿Imports CQRSAzure.EventSourcing
+﻿Imports System
+Imports CQRSAzure.EventSourcing
 
 
 Public Interface IClassifierSnapshotReader(Of TAggregate As IAggregationIdentifier,

@@ -1,4 +1,4 @@
-﻿Imports CQRSAzure.EventSourcing
+﻿Imports System
 Imports CQRSAzure.EventSourcing.Azure.Blob
 Imports Microsoft.WindowsAzure.Storage.Blob
 
@@ -37,12 +37,12 @@ Namespace Azure.Blob.Untyped
             m_context = writerContext
         End Sub
 
-        Public Sub AppendEvent(EventInstance As IEvent,
+        Public Async Function AppendEvent(EventInstance As IEvent,
                                Optional ExpectedTopSequence As Long = 0,
-                               Optional ByVal Version As UInteger = 1) Implements IEventStreamWriterUntyped.AppendEvent
+                               Optional ByVal Version As UInteger = 1) As Task Implements IEventStreamWriterUntyped.AppendEvent
 
             If (AppendBlob IsNot Nothing) Then
-                Dim nextSequence As Long = GetSequence()
+                Dim nextSequence As Long = Await GetSequence()
 
                 Dim correlationIdentifier As String = ""
                 If (m_context IsNot Nothing) Then
@@ -53,7 +53,7 @@ Namespace Azure.Blob.Untyped
                 'Turn the event into a binary stream and append it to the blob
                 Dim recordWritten As Boolean = False
                 Try
-                    AppendBlob.AppendBlock(New IO.MemoryStream(Text.Encoding.UTF8.GetBytes(evtToWrite.ToJSonText)))
+                    Await AppendBlob.AppendBlockAsync(New IO.MemoryStream(Text.Encoding.UTF8.GetBytes(evtToWrite.ToJSonText)))
 
                     recordWritten = True
                 Catch exBlob As Microsoft.WindowsAzure.Storage.StorageException
@@ -61,20 +61,20 @@ Namespace Azure.Blob.Untyped
                 End Try
 
                 If (recordWritten) Then
-                    IncrementRecordCountAndSequence()
+                    Await IncrementRecordCountAndSequence()
                 End If
             End If
-        End Sub
+        End Function
 
 
         ''' <summary>
         ''' Update the sequence number metadata and return the new sequence number
         ''' </summary>
-        Private Function IncrementRecordCountAndSequence() As Long
+        Private Async Function IncrementRecordCountAndSequence() As Task(Of Long)
 
             If (MyBase.AppendBlob IsNot Nothing) Then
                 Try
-                    AppendBlob.FetchAttributes()
+                    Await AppendBlob.FetchAttributesAsync()
                     If Not AppendBlob.Metadata.ContainsKey(METADATA_RECORD_COUNT) Then
                         AppendBlob.Metadata(METADATA_RECORD_COUNT) = "0"
                     End If
@@ -90,13 +90,15 @@ Namespace Azure.Blob.Untyped
                         currentSequence += 1
                         AppendBlob.Metadata(METADATA_SEQUENCE) = currentSequence.ToString()
                     End If
-                    AppendBlob.SetMetadata()
+                    Await AppendBlob.SetMetadataAsync()
                     Return m_recordCount
                 Catch exBlob As Microsoft.WindowsAzure.Storage.StorageException
-                    Throw New EventStreamWriteException(DomainName, AggregateClassName, InstanceKey, 0, "Unable to increment the record count for this event stream", exBlob)
+                    Throw New EventStreamWriteException(DomainName, AggregateClassName, InstanceKey, 0,
+                                                        "Unable to increment the record count for this event stream", exBlob)
                 End Try
             Else
-                Throw New EventStreamWriteException(DomainName, AggregateClassName, InstanceKey, 0, "Unable to increment the record count for this event stream")
+                Throw New EventStreamWriteException(DomainName, AggregateClassName, InstanceKey, 0,
+                                                    "Unable to increment the record count for this event stream")
             End If
 
         End Function
@@ -108,14 +110,18 @@ Namespace Azure.Blob.Untyped
         ''' This will delete existing events so should not be done in any production environment therefore this is not
         ''' part of the IEventStreamWriter interface
         ''' </remarks>
-        Public Sub Reset()
+        Public Async Function Reset() As Task
 
             If (AppendBlob IsNot Nothing) Then
-                AppendBlob.Delete(DeleteSnapshotsOption.IncludeSnapshots)
+                If AppendBlob.ExistsAsync.Result Then
+                    Await AppendBlob.DeleteAsync(DeleteSnapshotsOption.IncludeSnapshots, Nothing,
+                                             New BlobRequestOptions(),
+                                             New Microsoft.WindowsAzure.Storage.OperationContext())
+                End If
                 'Recreate the blob file that was deleted
-                MyBase.ResetBlob()
+                Await MyBase.ResetBlob()
             End If
-        End Sub
+        End Function
 
         Public Sub New(ByVal identifier As IEventStreamUntypedIdentity,
                Optional ByVal connectionStringName As String = "",

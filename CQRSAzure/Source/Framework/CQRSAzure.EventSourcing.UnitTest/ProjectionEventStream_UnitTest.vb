@@ -1,11 +1,11 @@
 ﻿Imports System.Text
-Imports Microsoft.VisualStudio.TestTools.UnitTesting
+Imports NUnit.Framework
 Imports CQRSAzure.EventSourcing.Projections
 
-<TestClass()>
+<TestFixture()>
 Public Class ProjectionSnapshotWrittenEvent_UnitTest
 
-    <TestMethod>
+    <TestCase()>
     Public Sub Constructor_TestMethod()
 
         Dim testObj As IProjectionSnapshotWrittenEvent = ProjectionSnapshotWrittenEvent.Create(
@@ -17,7 +17,7 @@ Public Class ProjectionSnapshotWrittenEvent_UnitTest
         Assert.IsNotNull(testObj)
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub ProjectionSnapshotWrittenEvent_RoundTrip_AsOfDate_Serialisation_TestMethod()
 
         Dim expected As Nullable(Of DateTime) = New DateTime(1971, 12, 31)
@@ -46,7 +46,7 @@ Public Class ProjectionSnapshotWrittenEvent_UnitTest
         Assert.AreEqual(expected, actual)
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub ProjectionSnapshotWrittenEvent_RoundTrip_AsOfSequence_Serialisation_TestMethod()
 
         Dim expected As Integer = 123
@@ -75,7 +75,7 @@ Public Class ProjectionSnapshotWrittenEvent_UnitTest
         Assert.AreEqual(expected, actual)
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub ProjectionSnapshotWrittenEvent_RoundTrip_SnapshotLocation_Serialisation_TestMethod()
 
         Dim expected As String = "Unit test query name"
@@ -104,7 +104,7 @@ Public Class ProjectionSnapshotWrittenEvent_UnitTest
         Assert.AreEqual(expected, actual)
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub ProjectionSnapshotWrittenEvent_RoundTrip_WriterType_Serialisation_TestMethod()
 
         Dim expected As String = "Unit test writer"
@@ -135,11 +135,11 @@ Public Class ProjectionSnapshotWrittenEvent_UnitTest
 
 End Class
 
-<TestClass>
+<TestFixture>
 Public Class ProjectionRequestedEvent_UnitTest
 
 
-    <TestMethod>
+    <TestCase()>
     Public Sub Constructor_TestMethod()
 
         Dim testObj As IProjectionRequestedEvent = ProjectionRequestedEvent.Create("Unit test source",
@@ -148,7 +148,7 @@ Public Class ProjectionRequestedEvent_UnitTest
         Assert.IsNotNull(testObj)
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub ProjectionRequestedEvent_RoundTrip_Source_Serialisation_TestMethod()
 
         Dim expected As String = "Unit test query name"
@@ -174,7 +174,7 @@ Public Class ProjectionRequestedEvent_UnitTest
         Assert.AreEqual(expected, actual)
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub ProjectionRequestedEvent_RoundTrip_AsOfDate_Serialisation_TestMethod()
 
         Dim expected As Nullable(Of DateTime) = New DateTime(2017, 12, 17)
@@ -202,10 +202,10 @@ Public Class ProjectionRequestedEvent_UnitTest
 
 End Class
 
-<TestClass>
+<TestFixture>
 Public Class ProjectionResultsReturnedEvent_UnitTest
 
-    <TestMethod>
+    <TestCase()>
     Public Sub Constructor_TestMethod()
 
         Dim testObj As IProjectionResultsReturnedEvent = ProjectionResultsReturnedEvent.Create(
@@ -216,7 +216,7 @@ Public Class ProjectionResultsReturnedEvent_UnitTest
         Assert.IsNotNull(testObj)
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub ProjectionResultsReturnedEvent_RoundTrip_AsOfDate_Serialisation_TestMethod()
 
         Dim expected As Nullable(Of DateTime) = New DateTime(2017, 12, 17)
@@ -243,7 +243,7 @@ Public Class ProjectionResultsReturnedEvent_UnitTest
         Assert.AreEqual(expected, actual)
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub ProjectionResultsReturnedEvent_RoundTrip_AsOfSequence_Serialisation_TestMethod()
 
         Dim expected As Int32 = 123
@@ -270,7 +270,7 @@ Public Class ProjectionResultsReturnedEvent_UnitTest
         Assert.AreEqual(expected, actual)
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub ProjectionResultsReturnedEvent_RoundTrip_Location_Serialisation_TestMethod()
 
         Dim expected As String = "Unit test location"

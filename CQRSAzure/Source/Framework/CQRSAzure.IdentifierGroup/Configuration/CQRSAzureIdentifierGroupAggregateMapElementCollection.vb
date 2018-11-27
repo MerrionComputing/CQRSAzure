@@ -1,4 +1,5 @@
-﻿Imports System.Configuration
+﻿Imports System
+Imports System.Configuration
 
 ''' <summary>
 ''' The set of mapped aggregate to identifier group persistence implementations in the application

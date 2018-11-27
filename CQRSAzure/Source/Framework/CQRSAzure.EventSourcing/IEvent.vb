@@ -7,7 +7,6 @@
 ''' should be used where possible
 ''' </remarks>
 Public Interface IEvent
-    Inherits ISerializable
 
 End Interface
 
@@ -27,7 +26,7 @@ End Interface
 ''' The type which identifies the aggregation
 ''' </typeparam>
 Public Interface IEvent(Of TAggregate As CQRSAzure.EventSourcing.IAggregationIdentifier)
-    Inherits IEvent
+    Inherits IEvent, ISerializable
 
     ''' <summary>
     ''' The version of the event 

@@ -1,5 +1,8 @@
-﻿Imports System.Runtime.Serialization.Formatters.Binary
+﻿Imports System
+Imports System.Collections.Generic
+Imports System.Runtime.Serialization.Formatters.Binary
 Imports CQRSAzure.EventSourcing
+Imports CQRSAzure.EventSourcing.Azure.File
 Imports Microsoft.WindowsAzure.Storage.File
 
 Namespace Azure.File
@@ -23,19 +26,20 @@ Namespace Azure.File
             End Get
         End Property
 
-        Public Function GetAllStreamKeys(Optional asOfDate As Date? = Nothing) As IEnumerable(Of TaggregateKey) Implements IEventStreamProvider(Of TAggregate, TaggregateKey).GetAllStreamKeys
+        Public Async Function GetAllStreamKeys(Optional asOfDate As Date? = Nothing) As Task(Of IEnumerable(Of TaggregateKey)) Implements IEventStreamProvider(Of TAggregate, TaggregateKey).GetAllStreamKeys
 
             'list all the files in this folder...
             Dim ret As New List(Of TaggregateKey)
             If (m_directory IsNot Nothing) Then
-                If (m_directory.Exists) Then
+                If (m_directory.ExistsAsync().Result) Then
                     'List all the files in the folder
-                    For Each streamFileEntry In m_directory.ListFilesAndDirectories()
+                    Dim continueToken As New FileContinuationToken()
+                    For Each streamFileEntry In m_directory.ListFilesAndDirectoriesSegmentedAsync(continueToken).Result.Results
                         Dim streamFile As CloudFile = TryCast(streamFileEntry, CloudFile)
                         'streamFile.Properties.
                         If (streamFile IsNot Nothing) Then
                             Dim ignore As Boolean = False
-                            streamFile.FetchAttributes()
+                            Await streamFile.FetchAttributesAsync()
                             If (asOfDate.HasValue) Then
                                 'compare to file create time
                                 'if the creation date is after as-of-date then skip it
@@ -52,11 +56,13 @@ Namespace Azure.File
                             End If
                             If Not ignore Then
                                 'add the key to the returned set
-                                Dim keyString As String = streamFile.Metadata(FileEventStreamBase.METADATA_AGGREGATE_KEY)
-                                If Not String.IsNullOrWhiteSpace(keyString) Then
-                                    'Try and turn it to the TAggregateKey
-                                    'need to convert the key as we had to store it as a string
-                                    ret.Add(m_converter.FromString(keyString))
+                                If (streamFile.Metadata.ContainsKey(FileEventStreamBase.METADATA_AGGREGATE_KEY)) Then
+                                    Dim keyString As String = streamFile.Metadata(FileEventStreamBase.METADATA_AGGREGATE_KEY)
+                                    If Not String.IsNullOrWhiteSpace(keyString) Then
+                                        'Try and turn it to the TAggregateKey
+                                        'need to convert the key as we had to store it as a string
+                                        ret.Add(m_converter.FromString(keyString))
+                                    End If
                                 End If
                             End If
                         End If

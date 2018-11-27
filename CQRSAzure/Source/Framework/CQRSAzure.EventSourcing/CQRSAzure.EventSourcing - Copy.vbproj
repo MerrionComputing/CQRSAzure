@@ -1,0 +1,301 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{551FBD94-8CE5-4E33-818A-9C3FC171F1CE}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>CQRSAzure.EventSourcing</RootNamespace>
+    <AssemblyName>CQRSAzure.EventSourcing</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>Windows</MyType>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>CQRSAzure.EventSourcing.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <GenerateSerializationAssemblies>On</GenerateSerializationAssemblies>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\Packaging\bin\x86\</OutputPath>
+    <DocumentationFile>CQRSAzure.EventSourcing.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Binary</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionStrict>Off</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AggregateIdentifierAttribute.vb" />
+    <Compile Include="AggregateKeyAttribute.vb" />
+    <Compile Include="AggregateNameAttribute.vb" />
+    <Compile Include="CategoryAttribute.vb" />
+    <Compile Include="CommandEventStream\CommandAggregate.vb" />
+    <Compile Include="CommandEventStream\CommandCancelledEvent.vb" />
+    <Compile Include="CommandEventStream\CommandCompletedEvent.vb" />
+    <Compile Include="CommandEventStream\CommandCreatedEvent.vb" />
+    <Compile Include="CommandEventStream\CommandEventBase.vb" />
+    <Compile Include="CommandEventStream\CommandEventContext.vb" />
+    <Compile Include="CommandEventStream\CommandFatalErrorOccuredEvent.vb" />
+    <Compile Include="CommandEventStream\CommandRequeuedEvent.vb" />
+    <Compile Include="CommandEventStream\CommandStartedEvent.vb" />
+    <Compile Include="CommandEventStream\CommandStatusProjection.vb" />
+    <Compile Include="CommandEventStream\CommandStepCompletedEvent.vb" />
+    <Compile Include="CommandEventStream\CommandTransientFaultOccuredEvent.vb" />
+    <Compile Include="CommandEventStream\Interfaces\ICommandAggregateIdentifier.vb" />
+    <Compile Include="CommandEventStream\Interfaces\ICommandCancelledEvent.vb" />
+    <Compile Include="CommandEventStream\Interfaces\ICommandCompletedEvent.vb" />
+    <Compile Include="CommandEventStream\Interfaces\ICommandCreatedEvent.vb" />
+    <Compile Include="CommandEventStream\Interfaces\ICommandEventContext.vb" />
+    <Compile Include="CommandEventStream\Interfaces\ICommandFatalErrorOccuredEvent.vb" />
+    <Compile Include="CommandEventStream\Interfaces\ICommandRequeuedEvent.vb" />
+    <Compile Include="CommandEventStream\Interfaces\ICommandStartedEvent.vb" />
+    <Compile Include="CommandEventStream\Interfaces\ICommandStepCompletedEvent.vb" />
+    <Compile Include="CommandEventStream\Interfaces\ICommandTransientFaultOccuredEvent.vb" />
+    <Compile Include="Configuration\CQRSAzureEventSourcingAggregateMapElement.vb" />
+    <Compile Include="Configuration\CQRSAzureEventSourcingAggregateMapElementCollection.vb" />
+    <Compile Include="Configuration\CQRSAzureEventSourcingAzureStorageSettingsBase.vb" />
+    <Compile Include="Configuration\CQRSAzureEventSourcingBlobSettingsElement.vb" />
+    <Compile Include="Configuration\CQRSAzureEventSourcingConfigurationSection.vb" />
+    <Compile Include="Configuration\CQRSAzureEventSourcingFileSettingsElement.vb" />
+    <Compile Include="Configuration\CQRSAzureEventSourcingImplementationSettingsElement.vb" />
+    <Compile Include="Configuration\CQRSAzureEventSourcingImplementationSettingsElementCollection.vb" />
+    <Compile Include="Configuration\CQRSAzureEventSourcingInMemorySettingsElement.vb" />
+    <Compile Include="Configuration\CQRSAzureEventSourcingLocalFileSettingsElement.vb" />
+    <Compile Include="Configuration\CQRSAzureEventSourcingProjectionSnapshotSettingsElement.vb" />
+    <Compile Include="Configuration\CQRSAzureEventSourcingSQLSettingsElement.vb" />
+    <Compile Include="Configuration\CQRSAzureEventSourcingTableSettingsElement.vb" />
+    <Compile Include="Configuration\CQRSAzureEventSourcingProjectionSnapshotSettingsElementCollection.vb" />
+    <Compile Include="Configuration\Interfaces\IAzureStorageSettings.vb" />
+    <Compile Include="Configuration\Interfaces\IBlobStreamSettings.vb" />
+    <Compile Include="Configuration\Interfaces\IEventStreamSettings.vb" />
+    <Compile Include="Configuration\Interfaces\IFileStreamSettings.vb" />
+    <Compile Include="Configuration\Interfaces\IInMemorySettings.vb" />
+    <Compile Include="Configuration\Interfaces\ILocalFileSettings.vb" />
+    <Compile Include="Configuration\Interfaces\ISQLSettings.vb" />
+    <Compile Include="Configuration\Interfaces\ITableSettings.vb" />
+    <Compile Include="ContextWrappedEvent.vb" />
+    <Compile Include="DomainNameAttribute.vb" />
+    <Compile Include="EventAsOfDateAttribute.vb" />
+    <Compile Include="EventNameAttribute.vb" />
+    <Compile Include="EventSerializer.vb" />
+    <Compile Include="EventSourcing.vb" />
+    <Compile Include="Exceptions\AggregateKeyChangedException.vb" />
+    <Compile Include="Exceptions\EventStreamExceptionBase.vb" />
+    <Compile Include="Exceptions\EventStreamReadException.vb" />
+    <Compile Include="Exceptions\EventStreamUnderlyingStorageUnavailableException.vb" />
+    <Compile Include="Exceptions\EventStreamWriteConcurrencyException.vb" />
+    <Compile Include="Exceptions\EventStreamWriteConflictException.vb" />
+    <Compile Include="Exceptions\EventStreamWriteException.vb" />
+    <Compile Include="Exceptions\OutOfSequenceSnapshotException.vb" />
+    <Compile Include="Exceptions\ProjectionSnapshotExceptionBase.vb" />
+    <Compile Include="Exceptions\ProjectionSnapshotReadException.vb" />
+    <Compile Include="Exceptions\ProjectionSnapshotWriteException.vb" />
+    <Compile Include="Exceptions\UnmappedAggregateException.vb" />
+    <Compile Include="FilterFunctions.vb" />
+    <Compile Include="HistoryQueue.vb" />
+    <Compile Include="IAggregateImplementationMap.vb" />
+    <Compile Include="IAggregationIdentifier.vb" />
+    <Compile Include="IdentityGroupAttribute.vb" />
+    <Compile Include="IdentityGroupEventStream\IdentityGroupEventBase.vb" />
+    <Compile Include="IdentityGroupEventStream\IdentityGroupMemberExcludedEvent.vb" />
+    <Compile Include="IdentityGroupEventStream\IdentityGroupMemberIncludedEvent.vb" />
+    <Compile Include="IdentityGroupEventStream\IdentityGroupMembersRequestedEvent.vb" />
+    <Compile Include="IdentityGroupEventStream\IdentityGroupMembersReturnedEvent.vb" />
+    <Compile Include="IdentityGroupEventStream\IdentityGroupSnapshotWrittenEvent.vb" />
+    <Compile Include="IdentityGroupEventStream\Interfaces\IIdentityGroupIdentifier.vb" />
+    <Compile Include="IdentityGroupEventStream\Interfaces\IIdentityGroupMemberExcludedEvent.vb" />
+    <Compile Include="IdentityGroupEventStream\Interfaces\IIdentityGroupMemberIncludedEvent.vb" />
+    <Compile Include="IdentityGroupEventStream\Interfaces\IIdentityGroupMembersRequestedEvent.vb" />
+    <Compile Include="IdentityGroupEventStream\Interfaces\IIdentityGroupMembersReturnedEvent.vb" />
+    <Compile Include="IdentityGroupEventStream\Interfaces\IIdentityGroupSnapshotWrittenEvent.vb" />
+    <Compile Include="IEvent.vb" />
+    <Compile Include="IEventContext.vb" />
+    <Compile Include="IEventIdentity.vb" />
+    <Compile Include="IEventInstance.vb" />
+    <Compile Include="IEventSerializer.vb" />
+    <Compile Include="IEventStream.vb" />
+    <Compile Include="IEventStreamDebugReader.vb" />
+    <Compile Include="IEventStreamProvider.vb" />
+    <Compile Include="IEventStreamReader.vb" />
+    <Compile Include="IEventStreamReaderUntyped.vb" />
+    <Compile Include="IEventStreamUntyped.vb" />
+    <Compile Include="IEventStreamWriter.vb" />
+    <Compile Include="IEventStreamFilteredReader.vb" />
+    <Compile Include="IEventStreamWriterUntyped.vb" />
+    <Compile Include="IHandleEvent.vb" />
+    <Compile Include="ImplementationMap.vb" />
+    <Compile Include="InstanceWrappedEvent.vb" />
+    <Compile Include="IProjection.vb" />
+    <Compile Include="IProjectionProcessor.vb" />
+    <Compile Include="IProjectionSnapshot.vb" />
+    <Compile Include="IProjectionSnapshotReader.vb" />
+    <Compile Include="IProjectionSnapshotReaderUntyped.vb" />
+    <Compile Include="IProjectionSnapshotWriter.vb" />
+    <Compile Include="IProjectionSnapshotWriterUntyped.vb" />
+    <Compile Include="ISnapshotProcessor.vb" />
+    <Compile Include="IStateChangeTracking.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="ProjectionBase.vb" />
+    <Compile Include="ProjectionEventStream\Interfaces\IProjectionInstanceIdentifier.vb" />
+    <Compile Include="ProjectionEventStream\Interfaces\IProjectionRequestedEvent.vb" />
+    <Compile Include="ProjectionEventStream\Interfaces\IProjectionResultsReturnedEvent.vb" />
+    <Compile Include="ProjectionEventStream\Interfaces\IProjectionSnapshotWrittenEvent.vb" />
+    <Compile Include="ProjectionEventStream\ProjectionEventBase.vb" />
+    <Compile Include="ProjectionEventStream\ProjectionRequestedEvent.vb" />
+    <Compile Include="ProjectionEventStream\ProjectionResultsReturnedEvent.vb" />
+    <Compile Include="ProjectionEventStream\ProjectionSnapshotWrittenEvent.vb" />
+    <Compile Include="ProjectionNameAttribute.vb" />
+    <Compile Include="ProjectionSnapshot.vb" />
+    <Compile Include="ProjectionSnapshotProcessor.vb" />
+    <Compile Include="ProjectionSnapshotProperty.vb" />
+    <Compile Include="QueryEventStream\Interfaces\IQueryAggregateIdentifier.vb" />
+    <Compile Include="QueryEventStream\Interfaces\IQueryCompletedEvent.vb" />
+    <Compile Include="QueryEventStream\Interfaces\IQueryCreatedEvent.vb" />
+    <Compile Include="QueryEventStream\Interfaces\IQueryEventContext.vb" />
+    <Compile Include="QueryEventStream\Interfaces\IQueryFatalErrorOccuredEvent.vb" />
+    <Compile Include="QueryEventStream\Interfaces\IQueryIdentityGroupMemberReturnedEvent.vb" />
+    <Compile Include="QueryEventStream\Interfaces\IQueryIdentityGroupRequestedEvent.vb" />
+    <Compile Include="QueryEventStream\Interfaces\IQueryIdentityGroupReturnedEvent.vb" />
+    <Compile Include="QueryEventStream\Interfaces\IQueryProjectionRequestedEvent.vb" />
+    <Compile Include="QueryEventStream\Interfaces\IQueryProjectionReturnedEvent.vb" />
+    <Compile Include="QueryEventStream\Interfaces\IQueryStartedEvent.vb" />
+    <Compile Include="QueryEventStream\Interfaces\IQueryTransientFaultOccuredEvent.vb" />
+    <Compile Include="QueryEventStream\QueryAggregate.vb" />
+    <Compile Include="QueryEventStream\QueryCompletedEvent.vb" />
+    <Compile Include="QueryEventStream\QueryCreatedEvent.vb" />
+    <Compile Include="QueryEventStream\QueryEventBase.vb" />
+    <Compile Include="QueryEventStream\QueryFatalErrorOccuredEvent.vb" />
+    <Compile Include="QueryEventStream\QueryIdentityGroupMemberReturnedEvent.vb" />
+    <Compile Include="QueryEventStream\QueryIdentityGroupRequestedEvent.vb" />
+    <Compile Include="QueryEventStream\QueryIdentityGroupReturnedEvent.vb" />
+    <Compile Include="QueryEventStream\QueryProjectionRequestedEvent.vb" />
+    <Compile Include="QueryEventStream\QueryProjectionReturnedEvent.vb" />
+    <Compile Include="QueryEventStream\QueryStartedEvent.vb" />
+    <Compile Include="QueryEventStream\QueryStatusProjection.vb" />
+    <Compile Include="QueryEventStream\QueryTransientFaultOccuredEvent.vb" />
+    <Compile Include="StateChange.vb" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="CommandEventStream\CommandEventStream.ReadMe.txt" />
+    <Content Include="Configuration\Configuration.ReadMe.txt" />
+    <Content Include="CQRSAzure.EventSourcing.Overview.txt" />
+    <Content Include="QueryEventStream\QueryEventStream.ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.ApplicationInsights">
+      <Version>2.8.1</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Azure.ConfigurationManager">
+      <Version>4.0.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Azure.KeyVault.Core">
+      <Version>3.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Azure.Services.AppAuthentication">
+      <Version>1.0.3</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Data.Services.Client">
+      <Version>5.8.4</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.IdentityModel.Clients.ActiveDirectory">
+      <Version>4.4.0</Version>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>11.0.2</Version>
+    </PackageReference>
+    <PackageReference Include="System.Collections">
+      <Version>4.3.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Configuration.ConfigurationManager">
+      <Version>4.5.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Diagnostics.DiagnosticSource">
+      <Version>4.5.1</Version>
+    </PackageReference>
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt">
+      <Version>5.3.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Linq">
+      <Version>4.3.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Runtime.Serialization.Primitives">
+      <Version>4.3.0</Version>
+    </PackageReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

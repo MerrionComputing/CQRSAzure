@@ -1,6 +1,5 @@
 ﻿Imports System.Runtime.Serialization.Formatters.Binary
-Imports CQRSAzure.EventSourcing
-Imports Microsoft.WindowsAzure.Storage
+Imports CQRSAzure.EventSourcing.Azure.Blob
 Imports Microsoft.WindowsAzure.Storage.Blob
 
 Namespace Azure.Blob.Untyped
@@ -50,7 +49,7 @@ Namespace Azure.Blob.Untyped
         ''' <returns></returns>
         Private Function GetAppendBlobSnapshot() As CloudAppendBlob
             If (AppendBlob IsNot Nothing) Then
-                Return AppendBlob.CreateSnapshot()
+                Return AppendBlob.CreateSnapshotAsync().Result
             Else
                 Return Nothing
             End If
@@ -61,7 +60,7 @@ Namespace Azure.Blob.Untyped
             If (AppendBlob IsNot Nothing) Then
                 Dim targetStream As New System.IO.MemoryStream()
                 Try
-                    GetAppendBlobSnapshot().DownloadToStream(targetStream)
+                    GetAppendBlobSnapshot().DownloadToStreamAsync(targetStream)
                 Catch exBlob As Microsoft.WindowsAzure.Storage.StorageException
                     Throw New EventStreamReadException(DomainName, AggregateClassName, InstanceKey, 0, "Unable to access underlying event stream", exBlob)
                 End Try

@@ -1,4 +1,5 @@
-﻿''' <summary>
+﻿Imports System
+''' <summary>
 ''' A stream of zero or more events that have occured for a particular unique instance of an aggregate 
 ''' identifier
 ''' </summary>

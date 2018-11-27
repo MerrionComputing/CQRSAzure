@@ -1,5 +1,4 @@
-﻿Imports System.Reflection
-Imports CQRSAzure.EventSourcing
+﻿Imports CQRSAzure.EventSourcing.Azure.Table
 Imports Microsoft.WindowsAzure.Storage.Table
 
 Namespace Azure.Table.Untyped
@@ -33,9 +32,9 @@ Namespace Azure.Table.Untyped
             End Get
         End Property
 
-        Public Overloads Sub AppendEvent(EventToAppend As IEvent,
+        Public Overloads Async Function AppendEvent(EventToAppend As IEvent,
                                Optional ExpectedTopSequence As Long = 0,
-                               Optional Version As UInteger = 1) Implements IEventStreamWriterUntyped.AppendEvent
+                               Optional Version As UInteger = 1) As Task Implements IEventStreamWriterUntyped.AppendEvent
 
             'Set the next highest sequence (in case another writer has appended events)
             nextSequence = 1 + GetCurrentHighestSequence(MyBase.InstanceKey)
@@ -44,12 +43,12 @@ Namespace Azure.Table.Untyped
             UpdateSequenceNumber(nextSequence, MyBase.InstanceKey)
 
             'Append the event
-            AppendEventInternal(EventToAppend)
+            Await AppendEventInternal(EventToAppend)
 
-        End Sub
+        End Function
 
 
-        Private Sub AppendEventInternal(EventToAppend As IEvent, Optional ByVal version As Integer = 1)
+        Private Async Function AppendEventInternal(EventToAppend As IEvent, Optional ByVal version As Integer = 1) As Task
 
             If (MyBase.Table IsNot Nothing) Then
                 'Wrap the event in its context information
@@ -79,14 +78,14 @@ Namespace Azure.Table.Untyped
 
                 If (wrappedEvent IsNot Nothing) Then
                     'And add that to the table
-                    MyBase.Table.Execute(TableOperation.Insert(MakeDynamicTableEntity(wrappedEvent)), MyBase.RequestOptions)
+                    Await MyBase.Table.ExecuteAsync(TableOperation.Insert(MakeDynamicTableEntity(wrappedEvent))) ', MyBase.RequestOptions)
                     'and increment the next sequence number
                     nextSequence += 1
                 End If
 
 
             End If
-        End Sub
+        End Function
 
         ''' <summary>
         ''' Clear down the event stream
@@ -104,14 +103,15 @@ Namespace Azure.Table.Untyped
                 Dim moreBatches As Boolean = True
                 While moreBatches
                     Dim batchDelete = New TableBatchOperation()
-                    For Each e In MyBase.Table.ExecuteQuery(projectionQuery)
+                    Dim continueToken As New TableContinuationToken()
+                    For Each e In MyBase.Table.ExecuteQuerySegmentedAsync(projectionQuery, continueToken).Result
                         batchDelete.Delete(e)
                     Next
 
                     moreBatches = (batchDelete.Count >= 100)
 
                     If (batchDelete.Count > 0) Then
-                        MyBase.Table.ExecuteBatch(batchDelete)
+                        MyBase.Table.ExecuteBatchAsync(batchDelete)
                     End If
                 End While
                 'Reset the next sequence number too
@@ -122,10 +122,10 @@ Namespace Azure.Table.Untyped
 
         Public Function MakeDynamicTableEntity(ByVal eventToSave As IEventContext) As DynamicTableEntity
 
-            Dim ret As New DynamicTableEntity
-
-            ret.PartitionKey = InstanceKey
-            ret.RowKey = SequenceNumberToRowkey(eventToSave.SequenceNumber)
+            Dim ret As New DynamicTableEntity With {
+                .PartitionKey = InstanceKey,
+                .RowKey = SequenceNumberToRowkey(eventToSave.SequenceNumber)
+            }
 
             'Add the event type - currently this is the event class name
             ret.Properties.Add(FIELDNAME_EVENTTYPE,

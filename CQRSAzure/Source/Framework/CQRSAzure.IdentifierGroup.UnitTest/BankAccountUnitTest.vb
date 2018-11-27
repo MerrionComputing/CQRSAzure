@@ -1,7 +1,4 @@
-﻿Imports System.Text
-Imports Microsoft.VisualStudio.TestTools.UnitTesting
-
-Imports Accounts.Account
+﻿Imports NUnit.Framework
 
 ''' <summary>
 ''' Unit tests for the bank-account demo example
@@ -11,10 +8,10 @@ Imports Accounts.Account
 ''' a way for developers to get acquainted with these concepts
 ''' The "business daomain" classes are created by CodeGen from the DSL designer
 ''' </remarks>
-<TestClass()>
+<TestFixture()>
 Public Class BankAccountUnitTest
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub OpenNewAccount_TestMethod()
 
 

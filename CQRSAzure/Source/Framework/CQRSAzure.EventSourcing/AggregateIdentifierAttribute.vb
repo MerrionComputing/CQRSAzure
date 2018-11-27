@@ -1,4 +1,5 @@
-﻿''' <summary>
+﻿Imports System
+''' <summary>
 ''' An attribute to mark a class with the aggregate identifier to which it pertains
 ''' </summary>
 <AttributeUsage(AttributeTargets.Class, AllowMultiple:=False, Inherited:=False)>

@@ -1,4 +1,5 @@
-﻿Imports System.Configuration
+﻿Imports System
+Imports System.Configuration
 Imports CQRSAzure.Hosting
 
 <ConfigurationCollection(GetType(CQRSQueryHandlerSettingsElement), AddItemName:="QueryHandler")>

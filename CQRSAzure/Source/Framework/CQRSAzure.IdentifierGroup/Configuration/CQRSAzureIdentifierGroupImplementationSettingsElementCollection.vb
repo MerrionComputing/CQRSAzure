@@ -1,4 +1,5 @@
-﻿Imports System.Configuration
+﻿Imports System
+Imports System.Configuration
 
 ''' <summary>
 ''' The set of implementation settings properties in the &lt;Implementations&gt; section

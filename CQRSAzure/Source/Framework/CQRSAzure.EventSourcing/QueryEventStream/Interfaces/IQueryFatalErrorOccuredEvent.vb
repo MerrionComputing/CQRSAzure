@@ -1,4 +1,6 @@
-﻿Namespace Queries
+﻿Imports System
+
+Namespace Queries
 
     ''' <summary>
     ''' A query was terminated with an unrecoverable error 

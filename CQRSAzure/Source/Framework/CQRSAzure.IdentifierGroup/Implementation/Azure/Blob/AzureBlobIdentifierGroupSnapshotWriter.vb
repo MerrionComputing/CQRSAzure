@@ -1,4 +1,5 @@
-﻿Imports CQRSAzure.EventSourcing.Azure.Blob
+﻿Imports System
+Imports CQRSAzure.EventSourcing.Azure.Blob
 
 Namespace Azure.Blob
     Public NotInheritable Class AzureBlobIdentifierGroupSnapshotWriter(Of TAggregate As CQRSAzure.EventSourcing.IAggregationIdentifier, TAggregateKey)

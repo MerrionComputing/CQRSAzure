@@ -3,6 +3,9 @@ Imports CQRSAzure.EventSourcing
 Imports System.Runtime.Serialization.Formatters.Binary
 Imports CQRSAzure.EventSourcing.Azure.Blob
 Imports Microsoft.WindowsAzure.Storage
+Imports System.Collections.Generic
+Imports System
+Imports System.Linq
 
 Namespace Azure.Blob
 
@@ -49,21 +52,21 @@ Namespace Azure.Blob
         ''' Get a snapshot of the append blob to use when reading this event stream
         ''' </summary>
         ''' <returns></returns>
-        Private Function GetAppendBlobSnapshot() As CloudAppendBlob
+        Private Async Function GetAppendBlobSnapshot() As Task(Of CloudAppendBlob)
             If (AppendBlob IsNot Nothing) Then
-                Return AppendBlob.CreateSnapshot()
+                Return Await AppendBlob.CreateSnapshotAsync()
             Else
                 Return Nothing
             End If
         End Function
 
-        Private Function GetUnderlyingStream() As System.IO.Stream
+        Private Async Function GetUnderlyingStream() As Task(Of System.IO.Stream)
 
             If (AppendBlob IsNot Nothing) Then
                 Dim targetStream As New System.IO.MemoryStream()
                 Try
-                    GetAppendBlobSnapshot().DownloadToStream(targetStream)
-                Catch exBlob As Microsoft.WindowsAzure.Storage.StorageException
+                    Await GetAppendBlobSnapshot().Result.DownloadToStreamAsync(targetStream)
+                Catch exBlob As StorageException
                     Throw New EventStreamReadException(DomainName, AggregateClassName, m_key.ToString(), 0, "Unable to access underlying event stream", exBlob)
                 End Try
                 targetStream.Seek(0, IO.SeekOrigin.Begin)
@@ -74,12 +77,12 @@ Namespace Azure.Blob
 
         End Function
 
-        Public Function GetEvents() As IEnumerable(Of IEvent(Of TAggregate)) Implements IEventStreamReader(Of TAggregate, TAggregateKey).GetEvents
+        Public Async Function GetEvents() As Task(Of IEnumerable(Of IEvent(Of TAggregate))) Implements IEventStreamReader(Of TAggregate, TAggregateKey).GetEvents
 
             If (AppendBlob IsNot Nothing) Then
                 Dim ret As New List(Of IEvent(Of TAggregate))
                 Dim bf As New BinaryFormatter()
-                Using rawStream As System.IO.Stream = GetUnderlyingStream()
+                Using rawStream As System.IO.Stream = Await GetUnderlyingStream()
                     While Not (rawStream.Position >= rawStream.Length)
                         Dim record As BlobBlockWrappedEvent = CType(bf.Deserialize(rawStream), BlobBlockWrappedEvent)
                         If (record IsNot Nothing) Then
@@ -96,13 +99,13 @@ Namespace Azure.Blob
 
         End Function
 
-        Public Function GetEvents(Optional ByVal StartingVersion As UInteger = 0,
-                                  Optional ByVal effectiveDateTime As Nullable(Of DateTime) = Nothing) As IEnumerable(Of IEvent(Of TAggregate)) Implements IEventStreamReader(Of TAggregate, TAggregateKey).GetEvents
+        Public Async Function GetEvents(Optional ByVal StartingVersion As UInteger = 0,
+                                  Optional ByVal effectiveDateTime As Nullable(Of DateTime) = Nothing) As Task(Of IEnumerable(Of IEvent(Of TAggregate))) Implements IEventStreamReader(Of TAggregate, TAggregateKey).GetEvents
 
             If (AppendBlob IsNot Nothing) Then
                 Dim ret As New List(Of IEvent(Of TAggregate))
                 Dim bf As New BinaryFormatter()
-                Using rawStream As System.IO.Stream = GetUnderlyingStream()
+                Using rawStream As System.IO.Stream = Await GetUnderlyingStream()
                     While Not (rawStream.Position >= rawStream.Length)
                         Dim record As BlobBlockWrappedEvent = CType(bf.Deserialize(rawStream), BlobBlockWrappedEvent)
                         If (record IsNot Nothing) Then
@@ -121,13 +124,13 @@ Namespace Azure.Blob
 
         End Function
 
-        Public Function GetEventsWithContext(Optional ByVal StartingVersion As UInteger = 0,
-                                             Optional ByVal effectiveDateTime As Nullable(Of DateTime) = Nothing) As IEnumerable(Of IEventContext) Implements IEventStreamReader(Of TAggregate, TAggregateKey).GetEventsWithContext
+        Public Async Function GetEventsWithContext(Optional ByVal StartingVersion As UInteger = 0,
+                                             Optional ByVal effectiveDateTime As Nullable(Of DateTime) = Nothing) As Task(Of IEnumerable(Of IEventContext)) Implements IEventStreamReader(Of TAggregate, TAggregateKey).GetEventsWithContext
 
             If (AppendBlob IsNot Nothing) Then
                 Dim ret As New List(Of IEventContext)
                 Dim bf As New BinaryFormatter()
-                Using rawStream As System.IO.Stream = GetUnderlyingStream()
+                Using rawStream As System.IO.Stream = Await GetUnderlyingStream()
                     While Not (rawStream.Position >= rawStream.Length)
                         Dim record As BlobBlockWrappedEvent = CType(bf.Deserialize(rawStream), BlobBlockWrappedEvent)
                         If (record IsNot Nothing) Then

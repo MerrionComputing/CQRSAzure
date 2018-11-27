@@ -1,4 +1,7 @@
-﻿Imports CQRSAzure.EventSourcing
+﻿Imports System
+Imports System.Collections.Generic
+Imports System.Linq
+Imports CQRSAzure.EventSourcing.Azure.Table
 Imports Microsoft.WindowsAzure.Storage.Table
 
 Namespace Azure.Table
@@ -30,8 +33,8 @@ Namespace Azure.Table
 
 
 
-        Public Sub AppendEvent(EventToAppend As IEvent(Of TAggregate),
-                               Optional ByVal ExpectedTopSequence As Long = 0) Implements IEventStreamWriter(Of TAggregate, TAggregateKey).AppendEvent
+        Public Async Function AppendEvent(EventToAppend As IEvent(Of TAggregate),
+                               Optional ByVal ExpectedTopSequence As Long = 0) As Task Implements IEventStreamWriter(Of TAggregate, TAggregateKey).AppendEvent
 
             'Set the next highest sequence (in case another writer has appended events)
             nextSequence = 1 + GetCurrentHighestSequence(m_converter.ToUniqueString(m_key))
@@ -40,14 +43,14 @@ Namespace Azure.Table
             UpdateSequenceNumber(nextSequence)
 
             'Append the event
-            AppendEventInternal(EventToAppend)
+            Await AppendEventInternal(EventToAppend)
 
 
-        End Sub
+        End Function
 
 
 
-        Private Sub AppendEventInternal(EventToAppend As IEvent(Of TAggregate))
+        Private Async Function AppendEventInternal(EventToAppend As IEvent(Of TAggregate)) As Task
 
             If (MyBase.Table IsNot Nothing) Then
                 'Wrap the event in its context information
@@ -75,7 +78,7 @@ Namespace Azure.Table
 
                 If (wrappedEvent IsNot Nothing) Then
                     'And add that to the table
-                    MyBase.Table.Execute(TableOperation.Insert(MakeDynamicTableEntity(wrappedEvent)), MyBase.RequestOptions)
+                    Await MyBase.Table.ExecuteAsync(TableOperation.Insert(MakeDynamicTableEntity(wrappedEvent))) ', MyBase.RequestOptions)
                     'and increment the next sequence number
                     nextSequence += 1
                 End If
@@ -83,9 +86,9 @@ Namespace Azure.Table
 
             End If
 
-        End Sub
+        End Function
 
-        Public Sub AppendEvents(StartingSequence As Long, Events As IEnumerable(Of IEvent(Of TAggregate))) Implements IEventStreamWriter(Of TAggregate, TAggregateKey).AppendEvents
+        Public Async Function AppendEvents(StartingSequence As Long, Events As IEnumerable(Of IEvent(Of TAggregate))) As Task Implements IEventStreamWriter(Of TAggregate, TAggregateKey).AppendEvents
 
             'Set the next highest sequence (in case another writer has appended events)
             nextSequence = 1 + GetCurrentHighestSequence(m_converter.ToUniqueString(m_key))
@@ -99,13 +102,13 @@ Namespace Azure.Table
                         nextSequence = StartingSequence
                         UpdateSequenceNumber(nextSequence)
                         For Each evt In Events
-                            AppendEventInternal(evt)
+                            Await AppendEventInternal(evt)
                         Next
                     End If
                 End If
             End If
 
-        End Sub
+        End Function
 
         Private Overloads Sub UpdateSequenceNumber(nextSequence As Long)
 
@@ -130,14 +133,15 @@ Namespace Azure.Table
                 Dim moreBatches As Boolean = True
                 While moreBatches
                     Dim batchDelete = New TableBatchOperation()
-                    For Each e In MyBase.Table.ExecuteQuery(projectionQuery)
+                    Dim continueToken As New TableContinuationToken()
+                    For Each e In MyBase.Table.ExecuteQuerySegmentedAsync(projectionQuery, continueToken).Result
                         batchDelete.Delete(e)
                     Next
 
                     moreBatches = (batchDelete.Count >= 100)
 
                     If (batchDelete.Count > 0) Then
-                        MyBase.Table.ExecuteBatch(batchDelete)
+                        MyBase.Table.ExecuteBatchAsync(batchDelete)
                     End If
                 End While
                 'Reset the next sequence number too
@@ -148,8 +152,11 @@ Namespace Azure.Table
 
 
 
-        Private Sub New(ByVal AggregateDomainName As String, ByVal AggregateKey As TAggregateKey, Optional ByVal settings As ITableSettings = Nothing)
-            MyBase.New(AggregateDomainName, AggregateKey, writeAccess:=True, connectionStringName:=GetWriteConnectionStringName("", settings), settings:=settings)
+        Private Sub New(ByVal AggregateDomainName As String, ByVal AggregateKey As TAggregateKey,
+                        Optional ByVal settings As ITableSettings = Nothing)
+            MyBase.New(AggregateDomainName, AggregateKey, writeAccess:=True,
+                       connectionStringName:=GetWriteConnectionStringName("", settings),
+                       settings:=settings)
 
             'Get the current highest sequnce number (this is the only querying the writer should be allowed to do)
             nextSequence = 1 + GetCurrentHighestSequence(m_converter.ToUniqueString(m_key))

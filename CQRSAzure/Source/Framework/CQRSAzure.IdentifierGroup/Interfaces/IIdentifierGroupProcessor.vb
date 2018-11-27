@@ -1,4 +1,6 @@
-﻿Imports CQRSAzure.EventSourcing
+﻿Imports System
+Imports System.Collections.Generic
+Imports CQRSAzure.EventSourcing
 
 ''' <summary>
 ''' Interface to be implemented by any class that can process identifier groups to determine what entites are in the group as at a given point 

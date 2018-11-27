@@ -1,4 +1,5 @@
-﻿''' <summary>
+﻿Imports System
+''' <summary>
 ''' Attribute to use to tag an input parameter of a command or query as being the key identifier of the aggregate to which the
 ''' query or command should be applied
 ''' </summary>

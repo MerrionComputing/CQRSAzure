@@ -1,9 +1,10 @@
 ﻿Imports System.Text
-Imports Microsoft.VisualStudio.TestTools.UnitTesting
+Imports NUnit.Framework
 
-<TestClass()> Public Class HostedDomainModelUnitTest
+<TestFixture()>
+Public Class HostedDomainModelUnitTest
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub HostedDomainModel_Constructor_TestMethod()
 
         Dim testOb As HostedDomainModel = HostedDomainModel.Create("Unit test hosted domain",

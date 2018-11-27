@@ -26,8 +26,8 @@ Public Interface IEventStreamWriterUntyped
     ''' The events store must be both immutable and forward-only so to cater for the concept of "delete" a 
     ''' reversal event needs to exist
     ''' </remarks>
-    Sub AppendEvent(ByVal EventInstance As IEvent,
+    Function AppendEvent(ByVal EventInstance As IEvent,
                     Optional ByVal ExpectedTopSequence As Long = 0,
-                    Optional ByVal Version As UInteger = 1)
+                    Optional ByVal Version As UInteger = 1) As Task
 
 End Interface

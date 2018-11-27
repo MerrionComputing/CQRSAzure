@@ -1,4 +1,5 @@
-﻿Imports CQRSAzure.EventSourcing.Azure.SQL
+﻿Imports System
+Imports CQRSAzure.EventSourcing.Azure.SQL
 
 Namespace Azure.SQL
     Public NotInheritable Class AzureSQLIdentifierGroupSnapshotReader(Of TAggregate As CQRSAzure.EventSourcing.IAggregationIdentifier, TAggregateKey)

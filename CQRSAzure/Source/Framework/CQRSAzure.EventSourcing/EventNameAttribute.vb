@@ -1,4 +1,5 @@
-﻿''' <summary>
+﻿Imports System
+''' <summary>
 ''' Attribute to tag an IEvent based class with a specific event name
 ''' </summary>
 ''' <remarks>

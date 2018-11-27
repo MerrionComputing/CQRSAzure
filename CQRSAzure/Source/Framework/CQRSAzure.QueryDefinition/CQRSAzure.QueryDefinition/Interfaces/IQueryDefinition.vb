@@ -1,4 +1,5 @@
 ﻿
+Imports System
 ''' <summary>
 ''' Type safe query definition that specifies the expected return results
 ''' </summary>

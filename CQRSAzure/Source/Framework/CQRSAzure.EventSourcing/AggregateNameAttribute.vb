@@ -1,4 +1,6 @@
-﻿''' <summary>
+﻿Imports System
+
+''' <summary>
 ''' An attribute to tag an aggregate identifier class with a specific name
 ''' </summary>
 ''' <remarks>

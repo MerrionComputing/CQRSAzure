@@ -1,7 +1,6 @@
 ﻿Option Strict Off
-
 Imports System.Reflection
-Imports CQRSAzure.EventSourcing
+Imports CQRSAzure.EventSourcing.Azure.Table
 Imports Microsoft.WindowsAzure.Storage.Table
 
 Namespace Azure.Table
@@ -50,69 +49,88 @@ Namespace Azure.Table
 
         End Function
 
-        Public Function GetEvents() As IEnumerable(Of IEvent(Of TAggregate)) Implements IEventStreamReader(Of TAggregate, TAggregateKey).GetEvents
+        Public Async Function GetEvents() As Task(Of IEnumerable(Of IEvent(Of TAggregate))) Implements IEventStreamReader(Of TAggregate, TAggregateKey).GetEvents
 
-            Return GetEvents(0)
+            Return Await GetEvents(0)
 
         End Function
 
-        Public Function GetEvents(Optional ByVal StartingSequenceNumber As UInteger = 0,
-                                  Optional ByVal effectiveDateTime As Nullable(Of DateTime) = Nothing) As IEnumerable(Of IEvent(Of TAggregate)) Implements IEventStreamReader(Of TAggregate, TAggregateKey).GetEvents
+        Public Async Function GetEvents(Optional ByVal StartingSequenceNumber As UInteger = 0,
+                                  Optional ByVal effectiveDateTime As Nullable(Of DateTime) = Nothing) As Task(Of IEnumerable(Of IEvent(Of TAggregate))) Implements IEventStreamReader(Of TAggregate, TAggregateKey).GetEvents
 
             If (MyBase.Table IsNot Nothing) Then
                 Dim ret As New List(Of IEvent(Of TAggregate))()
-                For Each dte As DynamicTableEntity In MyBase.Table.ExecuteQuery(CreateQuery(m_key.ToString(), StartingSequenceNumber), MyBase.RequestOptions)
-                    Dim eventType As Type = GetDynamicTableEntityEventType(dte)
-                    If IsEventValid(eventType) Then
-                        Dim evt As IEvent(Of TAggregate) = Nothing
-                        Dim deserialiser As IEventSerializer = EventSerializerFactory.GetSerialiserByType(eventType)
-                        If (deserialiser IsNot Nothing) Then
-                            'Use the event serialiser... 
-                            evt = deserialiser.FromNameValuePairs(DynamicTableEntryToNameValuePairs(dte))
-                        Else
-                            evt = CType(Activator.CreateInstance(eventType),
+                Dim continueToken As New TableContinuationToken()
+
+                Dim query = CreateQuery(m_key.ToString(), StartingSequenceNumber)
+                Do
+                    Dim seg = Await MyBase.Table.ExecuteQuerySegmentedAsync(query, continueToken)
+
+                    For Each dte As DynamicTableEntity In seg
+                        Dim eventType As Type = GetDynamicTableEntityEventType(dte)
+                        If IsEventValid(eventType) Then
+                            Dim evt As IEvent(Of TAggregate) = Nothing
+                            Dim deserialiser As IEventSerializer = EventSerializerFactory.GetSerialiserByType(eventType)
+                            If (deserialiser IsNot Nothing) Then
+                                'Use the event serialiser... 
+                                evt = deserialiser.FromNameValuePairs(DynamicTableEntryToNameValuePairs(dte))
+                            Else
+                                evt = CType(Activator.CreateInstance(eventType),
                                 IEvent(Of TAggregate))
-                            PopulateDynamicTableEntityEvent(dte, evt)
+                                PopulateDynamicTableEntityEvent(dte, evt)
+                            End If
+                            'if so, add it to the returned list 
+                            If (evt IsNot Nothing) Then
+                                ret.Add(evt)
+                            End If
                         End If
-                        'if so, add it to the returned list 
-                        If (evt IsNot Nothing) Then
-                            ret.Add(evt)
-                        End If
-                    End If
-                Next
+                    Next
+                    continueToken = seg.ContinuationToken
+                Loop While (continueToken IsNot Nothing)
                 Return ret
             Else
-                Throw New EventStreamReadException(DomainName, AggregateClassName, m_key.ToString(), 0, "Missing or not initialised table reference")
+                Throw New EventStreamReadException(DomainName,
+                                                   AggregateClassName,
+                                                   m_key.ToString(),
+                                                   0,
+                                                   "Missing or not initialised table reference")
             End If
 
         End Function
 
 
 
-        Public Function GetEventsWithContext(Optional ByVal StartingSequenceNumber As UInteger = 0,
-                                             Optional ByVal effectiveDateTime As Nullable(Of DateTime) = Nothing) As IEnumerable(Of IEventContext) Implements IEventStreamReader(Of TAggregate, TAggregateKey).GetEventsWithContext
+        Public Async Function GetEventsWithContext(Optional ByVal StartingSequenceNumber As UInteger = 0,
+                                             Optional ByVal effectiveDateTime As Nullable(Of DateTime) = Nothing) As Task(Of IEnumerable(Of IEventContext)) Implements IEventStreamReader(Of TAggregate, TAggregateKey).GetEventsWithContext
 
             If (MyBase.Table IsNot Nothing) Then
                 Dim ret As New List(Of IEventContext)
-                For Each dte As DynamicTableEntity In MyBase.Table.ExecuteQuery(CreateQuery(m_key.ToString(), StartingSequenceNumber))
-                    Dim eventType As Type = GetDynamicTableEntityEventType(dte)
-                    'see if the event type is valid...
-                    If IsEventValid(eventType) Then
-                        Dim evt As IEvent(Of TAggregate)
-                        Dim deserialiser As IEventSerializer = EventSerializerFactory.GetSerialiserByType(eventType)
-                        If (deserialiser IsNot Nothing) Then
-                            'Use the event serialiser... 
-                            evt = deserialiser.FromNameValuePairs(DynamicTableEntryToNameValuePairs(dte))
-                        Else
-                            'if so, add it to the returned list 
-                            evt = CType(Activator.CreateInstance(eventType),
-                                IEvent(Of TAggregate))
-                            PopulateDynamicTableEntityEvent(dte, evt)
-                            'Wrap it with context from the table row
+                Dim continueToken As New TableContinuationToken()
+                Dim query = CreateQuery(m_key.ToString(), StartingSequenceNumber)
+                Do
+                    Dim seg = Await MyBase.Table.ExecuteQuerySegmentedAsync(query, continueToken)
+
+                    For Each dte As DynamicTableEntity In seg
+                        Dim eventType As Type = GetDynamicTableEntityEventType(dte)
+                        'see if the event type is valid...
+                        If IsEventValid(eventType) Then
+                            Dim evt As IEvent(Of TAggregate)
+                            Dim deserialiser As IEventSerializer = EventSerializerFactory.GetSerialiserByType(eventType)
+                            If (deserialiser IsNot Nothing) Then
+                                'Use the event serialiser... 
+                                evt = deserialiser.FromNameValuePairs(DynamicTableEntryToNameValuePairs(dte))
+                            Else
+                                'if so, add it to the returned list 
+                                evt = CType(Activator.CreateInstance(eventType),
+                                        IEvent(Of TAggregate))
+                                PopulateDynamicTableEntityEvent(dte, evt)
+                                'Wrap it with context from the table row
+                            End If
+                            ret.Add(WrapDynamicTableEntityEvent(dte, evt))
                         End If
-                        ret.Add(WrapDynamicTableEntityEvent(dte, evt))
-                    End If
-                Next
+                    Next
+                    continueToken = seg.ContinuationToken
+                Loop While (continueToken IsNot Nothing)
                 Return ret
             Else
                 Throw New EventStreamReadException(DomainName, AggregateClassName, m_key.ToString(), 0, "Missing or not initialised table reference")

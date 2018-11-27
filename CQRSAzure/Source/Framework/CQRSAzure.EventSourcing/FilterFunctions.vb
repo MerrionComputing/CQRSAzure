@@ -1,4 +1,5 @@
-﻿''' <summary>
+﻿Imports System
+''' <summary>
 ''' Functions to allow for fine grained event filtering control
 ''' </summary>
 ''' <remarks>

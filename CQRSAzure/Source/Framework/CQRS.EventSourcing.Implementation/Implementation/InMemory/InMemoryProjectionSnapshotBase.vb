@@ -1,4 +1,8 @@
-﻿Namespace InMemory
+﻿Imports System.Collections.Generic
+Imports System.Linq
+Imports CQRSAzure.EventSourcing.InMemory
+
+Namespace InMemory
     ''' <summary>
     ''' Base class for saving projection snapshots in memory
     ''' </summary>

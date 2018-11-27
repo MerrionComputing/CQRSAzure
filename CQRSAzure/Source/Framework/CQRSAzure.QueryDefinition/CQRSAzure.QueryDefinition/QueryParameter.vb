@@ -1,6 +1,4 @@
 ﻿Imports System.Runtime.Serialization
-Imports CQRSAzure.QueryDefinition
-
 ''' <summary>
 ''' A single parameter that is used to restrict the results returned for a given query definition
 ''' </summary>

@@ -1,4 +1,4 @@
-﻿Imports CQRSAzure.EventSourcing
+﻿Imports CQRSAzure.EventSourcing.Azure.Table
 Imports Microsoft.WindowsAzure.Storage.Table
 
 Namespace Azure.Table
@@ -19,13 +19,13 @@ Namespace Azure.Table
                 insertRows.Insert(MakeTableEntity(key, valuesRow, snapshotToSave))
                 If (valuesRow > 0) AndAlso (valuesRow Mod 100) = 0 Then
                     'save this batch
-                    MyBase.Table.ExecuteBatch(insertRows)
+                    MyBase.Table.ExecuteBatchAsync(insertRows)
                     insertRows = New TableBatchOperation()
                 End If
             Next
 
             If (insertRows.Count > 0) Then
-                MyBase.Table.ExecuteBatch(insertRows)
+                MyBase.Table.ExecuteBatchAsync(insertRows)
             End If
 
         End Sub
@@ -83,14 +83,15 @@ Namespace Azure.Table
                 Dim moreBatches As Boolean = True
                 While moreBatches
                     Dim batchDelete = New TableBatchOperation()
-                    For Each e In MyBase.m_table.ExecuteQuery(projectionQuery)
+                    Dim continueToken As New TableContinuationToken()
+                    For Each e In MyBase.m_table.ExecuteQuerySegmentedAsync(projectionQuery, continueToken).Result
                         batchDelete.Delete(e)
                     Next
 
                     moreBatches = (batchDelete.Count >= 99)
 
                     If (batchDelete.Count > 0) Then
-                        MyBase.m_table.ExecuteBatch(batchDelete)
+                        MyBase.m_table.ExecuteBatchAsync(batchDelete)
                     End If
                 End While
             End If

@@ -1,4 +1,5 @@
-﻿Imports CQRSAzure.EventSourcing
+﻿Imports System
+Imports CQRSAzure.EventSourcing
 ''' <summary>
 ''' An event wrapped in the information to connect it with an aggregation identifier
 ''' </summary>

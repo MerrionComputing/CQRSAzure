@@ -1,14 +1,14 @@
 ﻿Imports System.Text
 Imports CQRSAzure.EventSourcing
-Imports Microsoft.VisualStudio.TestTools.UnitTesting
+Imports NUnit.Framework
 
 Imports CQRSAzure.EventSourcing.InMemory
 Imports CQRSAzure.EventSourcing.UnitTest.Mocking
 
-<TestClass()>
+<TestFixture()>
 Public Class InMemoryEventStreamUnitTest
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Reader_Constructor_TestMethod()
 
         Dim testObj As InMemoryEventStreamReader(Of MockAggregate, String) = InMemoryEventStreamReader(Of MockAggregate, String).Create(New MockAggregate("123"))
@@ -16,7 +16,7 @@ Public Class InMemoryEventStreamUnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Reader_FactoryConstructor_TestMethod()
 
         Dim testObj As InMemoryEventStreamReader(Of MockAggregate, String) = InMemoryEventStreamReaderFactory.Create(New MockAggregate("123"),
@@ -26,7 +26,7 @@ Public Class InMemoryEventStreamUnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Writer_Constructor_TestMethod()
 
         Dim testObj As InMemoryEventStreamWriter(Of MockAggregate, String) = InMemoryEventStreamWriter(Of MockAggregate, String).Create(New MockAggregate("113"))
@@ -34,7 +34,7 @@ Public Class InMemoryEventStreamUnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Writer_FactoryConstructor_TestMethod()
 
         Dim testObj As InMemoryEventStreamWriter(Of MockAggregate, String) = InMemoryEventStreamWriterFactory.Create(New MockAggregate("123"),
@@ -44,7 +44,7 @@ Public Class InMemoryEventStreamUnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Writer_Add_RecordCount_TestMethod()
 
         Dim expected As Integer = 1
@@ -59,8 +59,8 @@ Public Class InMemoryEventStreamUnitTest
 
     End Sub
 
-    <TestMethod()>
-    Public Sub Writer_Add_Reader_Read_TestMethod()
+    <TestCase()>
+    Public Async Function Writer_Add_Reader_Read_TestMethod() As Task
 
         Dim expected As Integer = 1
         Dim actual As Integer = 0
@@ -70,20 +70,21 @@ Public Class InMemoryEventStreamUnitTest
 
         Dim testWriteObj As InMemoryEventStreamWriter(Of MockAggregate, String) = InMemoryEventStreamWriter(Of MockAggregate, String).Create(New MockAggregate("912"))
         'add an event
-        testWriteObj.AppendEvent(testEvt)
+        Await testWriteObj.AppendEvent(testEvt)
 
         Dim testReadObj As InMemoryEventStreamReader(Of MockAggregate, String) = InMemoryEventStreamReader(Of MockAggregate, String).Create(New MockAggregate("912"))
-        Dim readObj As MockEventTypeOne = testReadObj.GetEvents().LastOrDefault()
+        Dim events = Await testReadObj.GetEvents()
+        Dim readObj As MockEventTypeOne = events.LastOrDefault()
 
         actual = readObj.EventOneIntegerProperty
 
         Assert.AreEqual(expected, actual)
 
-    End Sub
+    End Function
 
 
-    <TestMethod()>
-    Public Sub Writer_AddMultiple_Reader_Read_TestMethod()
+    <TestCase()>
+    Public Async Function Writer_AddMultiple_Reader_Read_TestMethod() As Task
 
         Dim expected As Integer = 1
         Dim actual As Integer = 0
@@ -93,26 +94,29 @@ Public Class InMemoryEventStreamUnitTest
 
         Dim testWriteObj As InMemoryEventStreamWriter(Of MockAggregate, String) = InMemoryEventStreamWriter(Of MockAggregate, String).Create(New MockAggregate("9992"))
 
-        testWriteObj.AppendEvent(New MockEventTypeOne())
-        testWriteObj.AppendEvent(New MockEventTypeTwo())
-        testWriteObj.AppendEvent(New MockEventTypeOne())
-        testWriteObj.AppendEvent(New MockEventTypeTwo())
+        Task.WaitAll(
+            testWriteObj.AppendEvent(New MockEventTypeOne()),
+            testWriteObj.AppendEvent(New MockEventTypeTwo()),
+            testWriteObj.AppendEvent(New MockEventTypeOne()),
+            testWriteObj.AppendEvent(New MockEventTypeTwo())
+        )
 
         'add our test event
-        testWriteObj.AppendEvent(testEvt)
+        Await testWriteObj.AppendEvent(testEvt)
 
         Dim testReadObj As InMemoryEventStreamReader(Of MockAggregate, String) = InMemoryEventStreamReader(Of MockAggregate, String).Create(New MockAggregate("9992"))
-        Dim readObj As MockEventTypeOne = testReadObj.GetEvents().LastOrDefault()
+        Dim events = Await testReadObj.GetEvents()
+        Dim readObj As MockEventTypeOne = events.LastOrDefault()
 
         actual = readObj.EventOneIntegerProperty
 
         Assert.AreEqual(expected, actual)
 
-    End Sub
+    End Function
 
 
-    <TestMethod()>
-    Public Sub Writer_AddMultiple_FilteredReader_Read_TestMethod()
+    <TestCase()>
+    Public Async Function Writer_AddMultiple_FilteredReader_Read_TestMethod() As Task
 
         Dim expected As Integer = 1
         Dim actual As Integer = 0
@@ -122,27 +126,30 @@ Public Class InMemoryEventStreamUnitTest
 
         Dim testWriteObj As InMemoryEventStreamWriter(Of MockAggregate, String) = InMemoryEventStreamWriter(Of MockAggregate, String).Create(New MockAggregate("9992"))
 
-        testWriteObj.AppendEvent(New MockEventTypeOne())
-        testWriteObj.AppendEvent(New MockEventTypeTwo())
-        testWriteObj.AppendEvent(New MockEventTypeOne())
-        testWriteObj.AppendEvent(New MockEventTypeTwo())
+        Task.WaitAll(
+                testWriteObj.AppendEvent(New MockEventTypeOne()),
+                testWriteObj.AppendEvent(New MockEventTypeTwo()),
+                testWriteObj.AppendEvent(New MockEventTypeOne()),
+                testWriteObj.AppendEvent(New MockEventTypeTwo())
+        )
 
         'add our test event
-        testWriteObj.AppendEvent(testEvt)
+        Await testWriteObj.AppendEvent(testEvt)
 
         Dim filterEvents As IEnumerable(Of Type) = {GetType(MockEventTypeOne)}
 
         Dim testReadObj As InMemoryEventStreamReader(Of MockAggregate, String) = InMemoryEventStreamReader(Of MockAggregate, String).Create(New MockAggregate("9992"), filterEvents)
-        Dim readObj As MockEventTypeOne = testReadObj.GetEvents().LastOrDefault()
+        Dim events = Await testReadObj.GetEvents()
+        Dim readObj As MockEventTypeOne = events.LastOrDefault()
 
         actual = readObj.EventOneIntegerProperty
 
         Assert.AreEqual(expected, actual)
 
-    End Sub
+    End Function
 
-    <TestMethod()>
-    Public Sub Writer_AddMultiple_FilteredFunctionReader_Read_TestMethod()
+    <TestCase()>
+    Public Async Function Writer_AddMultiple_FilteredFunctionReader_Read_TestMethod() As Task
 
         Dim expected As Integer = 1
         Dim actual As Integer = 0
@@ -152,13 +159,13 @@ Public Class InMemoryEventStreamUnitTest
 
         Dim testWriteObj As InMemoryEventStreamWriter(Of MockAggregate, String) = InMemoryEventStreamWriter(Of MockAggregate, String).Create(New MockAggregate("9992"))
         testWriteObj.Reset()
-        testWriteObj.AppendEvent(New MockEventTypeOne())
-        testWriteObj.AppendEvent(New MockEventTypeTwo())
-        testWriteObj.AppendEvent(New MockEventTypeOne())
-        testWriteObj.AppendEvent(New MockEventTypeTwo())
+        Await testWriteObj.AppendEvent(New MockEventTypeOne())
+        Await testWriteObj.AppendEvent(New MockEventTypeTwo())
+        Await testWriteObj.AppendEvent(New MockEventTypeOne())
+        Await testWriteObj.AppendEvent(New MockEventTypeTwo())
 
         'add our test event
-        testWriteObj.AppendEvent(testEvt)
+        Await testWriteObj.AppendEvent(testEvt)
 
 
 
@@ -167,16 +174,17 @@ Public Class InMemoryEventStreamUnitTest
                                                                          End Function
 
         Dim testReadObj As InMemoryEventStreamReader(Of MockAggregate, String) = InMemoryEventStreamReader(Of MockAggregate, String).Create(New MockAggregate("9992"), eventFilterFunction:=filterEventFunction)
-        Dim readObj As MockEventTypeOne = testReadObj.GetEvents().LastOrDefault()
+        Dim events = Await testReadObj.GetEvents()
+        Dim readObj As MockEventTypeOne = events.LastOrDefault()
 
         actual = readObj.EventOneIntegerProperty
 
         Assert.AreEqual(expected, actual)
 
-    End Sub
+    End Function
 
-    <TestMethod()>
-    Public Sub Writer_AddMultiple_Reader_ReadWrapped_TestMethod()
+    <TestCase()>
+    Public Async Function Writer_AddMultiple_Reader_ReadWrapped_TestMethod() As Task
 
         Dim expected As Integer = 1
         Dim actual As Integer = 0
@@ -186,25 +194,26 @@ Public Class InMemoryEventStreamUnitTest
 
         Dim testWriteObj As InMemoryEventStreamWriter(Of MockAggregate, String) = InMemoryEventStreamWriter(Of MockAggregate, String).Create(New MockAggregate("9992"))
         testWriteObj.Reset()
-        testWriteObj.AppendEvent(New MockEventTypeOne())
-        testWriteObj.AppendEvent(New MockEventTypeTwo())
-        testWriteObj.AppendEvent(New MockEventTypeOne())
-        testWriteObj.AppendEvent(New MockEventTypeTwo())
+        Await testWriteObj.AppendEvent(New MockEventTypeOne())
+        Await testWriteObj.AppendEvent(New MockEventTypeTwo())
+        Await testWriteObj.AppendEvent(New MockEventTypeOne())
+        Await testWriteObj.AppendEvent(New MockEventTypeTwo())
 
         'add our test event
-        testWriteObj.AppendEvent(testEvt)
+        Await testWriteObj.AppendEvent(testEvt)
 
         Dim testReadObj As InMemoryEventStreamReader(Of MockAggregate, String) = InMemoryEventStreamReader(Of MockAggregate, String).Create(New MockAggregate("9992"))
-        Dim readObj = testReadObj.GetEventsWithContext().LastOrDefault()
+        Dim events = Await testReadObj.GetEventsWithContext()
+        Dim readObj = events.LastOrDefault()
 
         actual = CType(readObj.EventInstance, MockEventTypeOne).EventOneIntegerProperty
 
         Assert.AreEqual(expected, actual)
 
-    End Sub
+    End Function
 
 
-    <TestMethod>
+    <TestCase()>
     Public Sub Projection_MultipleEvents_UnitTest()
 
         Dim expected As Integer = 30
@@ -232,8 +241,8 @@ Public Class InMemoryEventStreamUnitTest
 
     End Sub
 
-    <TestMethod>
-    Public Sub GetAllStreamKeys_NoDate_TestMethod()
+    <TestCase()>
+    Public Async Sub GetAllStreamKeys_NoDate_TestMethod()
 
         Dim expected As Boolean = True
         Dim actual As Boolean = False
@@ -241,30 +250,33 @@ Public Class InMemoryEventStreamUnitTest
         InMemoryEventStreamWriter(Of MockAggregate, String).ResetStream("9995")
         Dim testWriteObj As InMemoryEventStreamWriter(Of MockAggregate, String) = InMemoryEventStreamWriter(Of MockAggregate, String).Create(New MockAggregate("9995"))
 
-        actual = testWriteObj.GetAllStreamKeys().Contains("9995")
+        Dim values = Await testWriteObj.GetAllStreamKeys()
+        actual = values.Contains("9995")
         Assert.AreEqual(expected, actual)
 
 
     End Sub
 
-    <TestMethod>
-    Public Sub GetAllStreamKeys_PastDate_TestMethod()
+    <TestCase()>
+    Public Async Sub GetAllStreamKeys_PastDate_TestMethod()
 
         Dim expected As Boolean = True
         Dim actual As Boolean = False
 
         InMemoryEventStreamWriter(Of MockAggregate, String).ResetStream("9995")
         Dim testWriteObj As InMemoryEventStreamWriter(Of MockAggregate, String) = InMemoryEventStreamWriter(Of MockAggregate, String).Create(New MockAggregate("9995"))
-        testWriteObj.AppendEvent(New MockEventTypeOne() With {.EventOneIntegerProperty = 77})
-        actual = testWriteObj.GetAllStreamKeys(New DateTime(2012, 12, 19)).Contains("9995")
+        Await testWriteObj.AppendEvent(New MockEventTypeOne() With {.EventOneIntegerProperty = 77})
+
+        Dim values = Await testWriteObj.GetAllStreamKeys(New DateTime(2012, 12, 19))
+        actual = values.Contains("9995")
 
         Assert.AreEqual(expected, actual)
 
 
     End Sub
 
-    <TestMethod>
-    Public Sub GetAllStreamKeys_FutureDate_TestMethod()
+    <TestCase()>
+    Public Async Sub GetAllStreamKeys_FutureDate_TestMethod()
 
         Dim expected As Boolean = False
         Dim actual As Boolean = True
@@ -272,13 +284,14 @@ Public Class InMemoryEventStreamUnitTest
         InMemoryEventStreamWriter(Of MockAggregate, String).ResetStream("9995")
         Dim testWriteObj As InMemoryEventStreamWriter(Of MockAggregate, String) = InMemoryEventStreamWriter(Of MockAggregate, String).Create(New MockAggregate("9995"))
 
-        actual = testWriteObj.GetAllStreamKeys(New DateTime(2092, 12, 19)).Contains("9995")
+        Dim values = Await testWriteObj.GetAllStreamKeys(New DateTime(2092, 12, 19))
+        actual = values.Contains("9995")
         Assert.AreEqual(expected, actual)
 
 
     End Sub
 
-    <TestMethod>
+    <TestCase()>
     Public Sub Factory_GenerateCreationFunctionDelegate_TestMethod()
 
         Dim testDelegate = InMemoryEventStreamReaderFactory.GenerateCreationFunctionDelegate(Of MockAggregate, String)
@@ -287,7 +300,7 @@ Public Class InMemoryEventStreamUnitTest
 
     End Sub
 
-    <TestMethod>
+    <TestCase()>
     Public Sub Factory_Reader_GenerateCreationFunctionDelegate_Invoke_TestMethod()
 
         Dim testDelegate = InMemoryEventStreamReaderFactory.GenerateCreationFunctionDelegate(Of MockAggregate, String)
@@ -298,7 +311,7 @@ Public Class InMemoryEventStreamUnitTest
 
     End Sub
 
-    <TestMethod>
+    <TestCase()>
     Public Sub Factory_Writer_GenerateCreationFunctionDelegate_Invoke_TestMethod()
 
         Dim testDelegate = InMemoryEventStreamWriterFactory.GenerateCreationFunctionDelegate(Of MockAggregate, String)
@@ -309,7 +322,7 @@ Public Class InMemoryEventStreamUnitTest
 
     End Sub
 
-    <TestMethod>
+    <TestCase()>
     Public Sub Factory_Reader_GenerateCreationFunctionDelegate_Invoke_WithSettings_TestMethod()
 
         Dim testDelegate = InMemoryEventStreamWriterFactory.GenerateCreationFunctionDelegate(Of MockAggregate, String)
@@ -323,7 +336,7 @@ Public Class InMemoryEventStreamUnitTest
     End Sub
 
 
-    <TestMethod>
+    <TestCase()>
     Public Sub Factory_Writer_Projection_MultipleEvents_UnitTest()
 
         Dim expected As Integer = 30
@@ -359,10 +372,10 @@ Public Class InMemoryEventStreamUnitTest
     End Sub
 End Class
 
-<TestClass()>
+<TestFixture()>
 Public Class InMemoryEventStreamProjectionSnapshotUnitTest
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub SnapshotReader_Constructor_TestMethod()
 
         Dim testObj As InMemoryProjectionSnapshotReader(Of MockAggregate, String, MockProjection_Simple) = InMemoryProjectionSnapshotReader(Of MockAggregate, String, MockProjection_Simple).Create(New MockAggregate("123"))
@@ -370,7 +383,7 @@ Public Class InMemoryEventStreamProjectionSnapshotUnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub SnapshotWriter_Constructor_TestMethod()
 
         Dim testObj As InMemoryProjectionSnapshotWriter(Of MockAggregate, String, MockProjection_Simple) = InMemoryProjectionSnapshotWriter(Of MockAggregate, String, MockProjection_Simple).Create(New MockAggregate("123"))

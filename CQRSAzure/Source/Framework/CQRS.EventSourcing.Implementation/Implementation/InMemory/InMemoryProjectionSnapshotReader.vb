@@ -1,4 +1,6 @@
-﻿Namespace InMemory
+﻿Imports CQRSAzure.EventSourcing.InMemory
+
+Namespace InMemory
 
     ''' <summary>
     ''' Class to read projection snapshots (cached values) from an in-memory store
@@ -17,16 +19,20 @@
 
 
 
-        Public Overloads Function GetSnapshot(key As TAggregateKey, Optional OnOrBeforeSequence As UInteger = 0) As IProjectionSnapshot(Of TAggregate, TAggregateKey) Implements IProjectionSnapshotReader(Of TAggregate, TAggregateKey, TProjection).GetSnapshot
+        Public Overloads Function GetSnapshot(key As TAggregateKey, Optional OnOrBeforeSequence As UInteger = 0) As Task(Of IProjectionSnapshot(Of TAggregate, TAggregateKey)) Implements IProjectionSnapshotReader(Of TAggregate, TAggregateKey, TProjection).GetSnapshot
 
             Return MyBase.GetSnapshot(OnOrBeforeSequence)
 
         End Function
 
-        Public Function GetLatestSnapshotSequence(key As TAggregateKey, Optional OnOrBeforeSequence As UInteger = 0) As UInteger Implements IProjectionSnapshotReader(Of TAggregate, TAggregateKey, TProjection).GetLatestSnapshotSequence
+        Public Function GetLatestSnapshotSequence(key As TAggregateKey, Optional OnOrBeforeSequence As UInteger = 0) As Task(Of UInteger) Implements IProjectionSnapshotReader(Of TAggregate, TAggregateKey, TProjection).GetLatestSnapshotSequence
 
             'if we didn't return anything then there is no latest snapshot
-            Return 0
+            Return Task.Factory.StartNew(Of UInteger)(
+                Function()
+                    Return 0
+                End Function
+                )
 
         End Function
 

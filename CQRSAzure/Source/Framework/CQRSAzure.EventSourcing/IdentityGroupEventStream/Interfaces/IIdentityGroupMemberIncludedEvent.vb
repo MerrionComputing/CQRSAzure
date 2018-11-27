@@ -1,4 +1,6 @@
-﻿Namespace IdentityGroups
+﻿Imports System
+
+Namespace IdentityGroups
     Public Interface IIdentityGroupMemberIncludedEvent(Of TAggregateIdentifier As IAggregationIdentifier)
 
         ''' <summary>

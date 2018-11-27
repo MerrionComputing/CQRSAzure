@@ -1,14 +1,14 @@
 ﻿Imports System.Text
-Imports Microsoft.VisualStudio.TestTools.UnitTesting
+Imports NUnit.Framework
 Imports System.Configuration
 
 
-<TestClass()>
+<TestFixture()>
 Public Class CQRSAzureIdentifierGroupConfigurationSectionUnitTest
 
     Public Const VALID_SECTION_NAME As String = "CQRSAzureIdentifierGroupConfiguration"
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Constructor_TestMethod()
 
         Dim testObj As New CQRSAzureIdentifierGroupConfigurationSection()
@@ -16,7 +16,7 @@ Public Class CQRSAzureIdentifierGroupConfigurationSectionUnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub LoadConfigurationSection_Testmethod()
 
         Dim testObj As CQRSAzureIdentifierGroupConfigurationSection

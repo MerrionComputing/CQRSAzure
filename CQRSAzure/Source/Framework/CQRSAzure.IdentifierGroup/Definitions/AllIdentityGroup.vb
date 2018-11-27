@@ -1,7 +1,8 @@
 ﻿Option Explicit On
 
+Imports System
+Imports System.Collections.Generic
 Imports CQRSAzure.EventSourcing
-Imports CQRSAzure.IdentifierGroup
 
 ''' <summary>
 ''' An identity group that represents all of the instances of a given aggregate identifier known to the system

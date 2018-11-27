@@ -1,15 +1,16 @@
-﻿Imports System.Text
-Imports Microsoft.VisualStudio.TestTools.UnitTesting
-
+﻿
+Imports CQRSAzure.EventSourcing.Commands
 Imports CQRSAzure.IdentifierGroup.Commands
 Imports CQRSAzure.EventSourcing.InMemory
-Imports CQRSAzure.EventSourcing.Commands
 Imports CQRSAzure.EventSourcing
+Imports CQRSAzure.EventSourcing.Azure.Blob
+Imports CQRSAzure.EventSourcing.Local.File
+Imports NUnit.Framework
 
-<TestClass()>
+<TestFixture()>
 Public Class FatalErroredCommandsIdentityGroupUnitTest
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Constructor_Empty_TestMethod()
 
         Dim testObj As New FatalErroredCommandsIdentityGroup()
@@ -17,7 +18,7 @@ Public Class FatalErroredCommandsIdentityGroupUnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub IdentityGroupName_TestMethod()
 
         Dim expected As String = "Fatal Error Commands"
@@ -30,8 +31,8 @@ Public Class FatalErroredCommandsIdentityGroupUnitTest
 
     End Sub
 
-    <TestMethod()>
-    Public Sub Classifier_In_WithEvents_TestMethod()
+    <TestCase()>
+    Public Async Function Classifier_In_WithEvents_TestMethod() As Task
 
         Dim expected As IClassifierDataSourceHandler.EvaluationResult = IClassifierDataSourceHandler.EvaluationResult.Include
         Dim actual As IClassifierDataSourceHandler.EvaluationResult = IClassifierDataSourceHandler.EvaluationResult.Unchanged
@@ -40,24 +41,24 @@ Public Class FatalErroredCommandsIdentityGroupUnitTest
         Dim cmdAgg As CommandAggregateIdentifier = CommandAggregateIdentifier.Create(cmdId)
 
         Dim testEventStream As InMemoryEventStreamWriter(Of CommandAggregateIdentifier, Guid) = InMemoryEventStreamWriter(Of CommandAggregateIdentifier, Guid).Create(cmdAgg)
-        testEventStream.AppendEvent(CommandCreatedEvent.Create(Guid.NewGuid, "Test command", DateTime.Now))
-        testEventStream.AppendEvent(CommandStartedEvent.Create(DateTime.Now))
-        testEventStream.AppendEvent(CommandStepCompletedEvent.Create(DateTime.Now, 0, "Step 0 complete"))
-        testEventStream.AppendEvent(CommandStepCompletedEvent.Create(DateTime.Now, 1, "Step 1 complete"))
-        testEventStream.AppendEvent(CommandFatalErrorOccuredEvent.Create(DateTime.Now, "Fatal error", 1))
+        Await testEventStream.AppendEvent(CommandCreatedEvent.Create(Guid.NewGuid, "Test command", DateTime.Now))
+        Await testEventStream.AppendEvent(CommandStartedEvent.Create(DateTime.Now))
+        Await testEventStream.AppendEvent(CommandStepCompletedEvent.Create(DateTime.Now, 0, "Step 0 complete"))
+        Await testEventStream.AppendEvent(CommandStepCompletedEvent.Create(DateTime.Now, 1, "Step 1 complete"))
+        Await testEventStream.AppendEvent(CommandFatalErrorOccuredEvent.Create(DateTime.Now, "Fatal error", 1))
 
         'Run the projection
         Dim testReadObj As InMemoryEventStreamReader(Of CommandAggregateIdentifier, Guid) = InMemoryEventStreamReader(Of CommandAggregateIdentifier, Guid).Create(cmdAgg)
 
         Dim testClassifier = InMemory.InMemoryClassifier(Of CommandAggregateIdentifier, Guid, FatalErroredCommandsIdentityGroupClassifier).CreateClassifierProcessor(cmdId)
-        actual = testClassifier.Classify()
+        actual = Await testClassifier.Classify()
 
         Assert.AreEqual(expected, actual)
 
-    End Sub
+    End Function
 
-    <TestMethod()>
-    Public Sub Classifier_Out_WithEvents_TestMethod()
+    <TestCase()>
+    Public Async Function Classifier_Out_WithEvents_TestMethod() As Task
 
         Dim expected As IClassifierDataSourceHandler.EvaluationResult = IClassifierDataSourceHandler.EvaluationResult.Exclude
         Dim actual As IClassifierDataSourceHandler.EvaluationResult = IClassifierDataSourceHandler.EvaluationResult.Unchanged
@@ -66,26 +67,28 @@ Public Class FatalErroredCommandsIdentityGroupUnitTest
         Dim cmdAgg As CommandAggregateIdentifier = CommandAggregateIdentifier.Create(cmdId)
 
         Dim testEventStream As InMemoryEventStreamWriter(Of CommandAggregateIdentifier, Guid) = InMemoryEventStreamWriter(Of CommandAggregateIdentifier, Guid).Create(cmdAgg)
-        testEventStream.AppendEvent(CommandCreatedEvent.Create(Guid.NewGuid, "Test command", DateTime.Now))
-        testEventStream.AppendEvent(CommandStartedEvent.Create(DateTime.Now))
-        testEventStream.AppendEvent(CommandStepCompletedEvent.Create(DateTime.Now, 0, "Step 0 complete"))
-        testEventStream.AppendEvent(CommandStepCompletedEvent.Create(DateTime.Now, 1, "Step 1 complete"))
-        testEventStream.AppendEvent(CommandCompletedEvent.Create(DateTime.Now, "Command has completed"))
+        Task.WaitAll(
+            testEventStream.AppendEvent(CommandCreatedEvent.Create(Guid.NewGuid, "Test command", DateTime.Now)),
+            testEventStream.AppendEvent(CommandStartedEvent.Create(DateTime.Now)),
+            testEventStream.AppendEvent(CommandStepCompletedEvent.Create(DateTime.Now, 0, "Step 0 complete")),
+            testEventStream.AppendEvent(CommandStepCompletedEvent.Create(DateTime.Now, 1, "Step 1 complete"))
+        )
+        Await testEventStream.AppendEvent(CommandCompletedEvent.Create(DateTime.Now, "Command has completed"))
 
         'Run the projection
         Dim testReadObj As InMemoryEventStreamReader(Of CommandAggregateIdentifier, Guid) = InMemoryEventStreamReader(Of CommandAggregateIdentifier, Guid).Create(cmdAgg)
 
         Dim testClassifier = InMemory.InMemoryClassifier(Of CommandAggregateIdentifier, Guid, FatalErroredCommandsIdentityGroupClassifier).CreateClassifierProcessor(cmdId)
-        actual = testClassifier.Classify(forceExclude:=True)
+        actual = Await testClassifier.Classify(forceExclude:=True)
 
         Assert.AreEqual(expected, actual)
 
-    End Sub
+    End Function
 
 #Region "Local file implementation"
 
-    <TestMethod()>
-    Public Sub Classifier_LocalFile_In_WithEvents_TestMethod()
+    <TestCase()>
+    Public Async Function Classifier_LocalFile_In_WithEvents_TestMethod() As Task
 
         Dim expected As IClassifierDataSourceHandler.EvaluationResult = IClassifierDataSourceHandler.EvaluationResult.Include
         Dim actual As IClassifierDataSourceHandler.EvaluationResult = IClassifierDataSourceHandler.EvaluationResult.Unchanged
@@ -93,25 +96,25 @@ Public Class FatalErroredCommandsIdentityGroupUnitTest
         Dim cmdId As Guid = Guid.NewGuid
         Dim cmdAgg As CommandAggregateIdentifier = CommandAggregateIdentifier.Create(cmdId)
 
-        Dim testEventStream As CQRSAzure.EventSourcing.Local.File.LocalFileEventStreamWriter(Of CommandAggregateIdentifier, Guid) = CQRSAzure.EventSourcing.Local.File.LocalFileEventStreamWriter(Of CommandAggregateIdentifier, Guid).Create(cmdAgg)
-        testEventStream.AppendEvent(CommandCreatedEvent.Create(Guid.NewGuid, "Test command", DateTime.Now))
-        testEventStream.AppendEvent(CommandStartedEvent.Create(DateTime.Now))
-        testEventStream.AppendEvent(CommandStepCompletedEvent.Create(DateTime.Now, 0, "Step 0 complete"))
-        testEventStream.AppendEvent(CommandStepCompletedEvent.Create(DateTime.Now, 1, "Step 1 complete"))
-        testEventStream.AppendEvent(CommandFatalErrorOccuredEvent.Create(DateTime.Now, "Fatal error", 1))
+        Dim testEventStream As LocalFileEventStreamWriter(Of CommandAggregateIdentifier, Guid) = LocalFileEventStreamWriter(Of CommandAggregateIdentifier, Guid).Create(cmdAgg)
+        Await testEventStream.AppendEvent(CommandCreatedEvent.Create(Guid.NewGuid, "Test command", DateTime.Now))
+        Await testEventStream.AppendEvent(CommandStartedEvent.Create(DateTime.Now))
+        Await testEventStream.AppendEvent(CommandStepCompletedEvent.Create(DateTime.Now, 0, "Step 0 complete"))
+        Await testEventStream.AppendEvent(CommandStepCompletedEvent.Create(DateTime.Now, 1, "Step 1 complete"))
+        Await testEventStream.AppendEvent(CommandFatalErrorOccuredEvent.Create(DateTime.Now, "Fatal error", 1))
 
         'Run the classifier
-        Dim testReadObj As CQRSAzure.EventSourcing.Local.File.LocalFileEventStreamReader(Of CommandAggregateIdentifier, Guid) = CQRSAzure.EventSourcing.Local.File.LocalFileEventStreamReader(Of CommandAggregateIdentifier, Guid).Create(cmdAgg)
+        Dim testReadObj As LocalFileEventStreamReader(Of CommandAggregateIdentifier, Guid) = LocalFileEventStreamReader(Of CommandAggregateIdentifier, Guid).Create(cmdAgg)
 
         Dim testClassifier = Local.File.LocalFileClassifier(Of CommandAggregateIdentifier, Guid, FatalErroredCommandsIdentityGroupClassifier).CreateClassifierProcessor(cmdAgg, streamReader:=testReadObj)
-        actual = testClassifier.Classify()
+        actual = Await testClassifier.Classify()
 
         Assert.AreEqual(expected, actual)
 
-    End Sub
+    End Function
 
-    <TestMethod()>
-    Public Sub Classifier_LocalFile_Out_WithEvents_TestMethod()
+    <TestCase()>
+    Public Async Function Classifier_LocalFile_Out_WithEvents_TestMethod() As Task
 
         Dim expected As IClassifierDataSourceHandler.EvaluationResult = IClassifierDataSourceHandler.EvaluationResult.Exclude
         Dim actual As IClassifierDataSourceHandler.EvaluationResult = IClassifierDataSourceHandler.EvaluationResult.Unchanged
@@ -119,28 +122,30 @@ Public Class FatalErroredCommandsIdentityGroupUnitTest
         Dim cmdId As Guid = Guid.NewGuid
         Dim cmdAgg As CommandAggregateIdentifier = CommandAggregateIdentifier.Create(cmdId)
 
-        Dim testEventStream As CQRSAzure.EventSourcing.Local.File.LocalFileEventStreamWriter(Of CommandAggregateIdentifier, Guid) = CQRSAzure.EventSourcing.Local.File.LocalFileEventStreamWriter(Of CommandAggregateIdentifier, Guid).Create(cmdAgg)
-        testEventStream.AppendEvent(CommandCreatedEvent.Create(Guid.NewGuid, "Test command", DateTime.Now))
-        testEventStream.AppendEvent(CommandStartedEvent.Create(DateTime.Now))
-        testEventStream.AppendEvent(CommandStepCompletedEvent.Create(DateTime.Now, 0, "Step 0 complete"))
-        testEventStream.AppendEvent(CommandStepCompletedEvent.Create(DateTime.Now, 1, "Step 1 complete"))
-        testEventStream.AppendEvent(CommandCompletedEvent.Create(DateTime.Now, "Command has completed"))
+        Dim testEventStream As LocalFileEventStreamWriter(Of CommandAggregateIdentifier, Guid) = LocalFileEventStreamWriter(Of CommandAggregateIdentifier, Guid).Create(cmdAgg)
+        Await testEventStream.AppendEvent(CommandCreatedEvent.Create(Guid.NewGuid, "Test command", DateTime.Now))
+        Await testEventStream.AppendEvent(CommandStartedEvent.Create(DateTime.Now))
+        Task.WaitAll(
+            testEventStream.AppendEvent(CommandStepCompletedEvent.Create(DateTime.Now, 0, "Step 0 complete")),
+            testEventStream.AppendEvent(CommandStepCompletedEvent.Create(DateTime.Now, 1, "Step 1 complete")),
+            testEventStream.AppendEvent(CommandCompletedEvent.Create(DateTime.Now, "Command has completed"))
+        )
 
         'Run the projection
-        Dim testReadObj As CQRSAzure.EventSourcing.Local.File.LocalFileEventStreamReader(Of CommandAggregateIdentifier, Guid) = CQRSAzure.EventSourcing.Local.File.LocalFileEventStreamReader(Of CommandAggregateIdentifier, Guid).Create(cmdAgg)
+        Dim testReadObj As LocalFileEventStreamReader(Of CommandAggregateIdentifier, Guid) = LocalFileEventStreamReader(Of CommandAggregateIdentifier, Guid).Create(cmdAgg)
 
         Dim testClassifier = Local.File.LocalFileClassifier(Of CommandAggregateIdentifier, Guid, FatalErroredCommandsIdentityGroupClassifier).CreateClassifierProcessor(cmdAgg, streamReader:=testReadObj)
-        actual = testClassifier.Classify(forceExclude:=True)
+        actual = Await testClassifier.Classify(forceExclude:=True)
 
         Assert.AreEqual(expected, actual)
 
-    End Sub
+    End Function
 #End Region
 
 #Region "Azure blob implementation"
 
-    <TestMethod()>
-    Public Sub Classifier_AzureBlob_In_WithEvents_TestMethod()
+    <TestCase()>
+    Public Async Function Classifier_AzureBlob_In_WithEvents_TestMethod() As Task
 
         Dim expected As IClassifierDataSourceHandler.EvaluationResult = IClassifierDataSourceHandler.EvaluationResult.Include
         Dim actual As IClassifierDataSourceHandler.EvaluationResult = IClassifierDataSourceHandler.EvaluationResult.Unchanged
@@ -148,23 +153,23 @@ Public Class FatalErroredCommandsIdentityGroupUnitTest
         Dim cmdId As Guid = Guid.NewGuid
         Dim cmdAgg As CommandAggregateIdentifier = CommandAggregateIdentifier.Create(cmdId)
 
-        Dim testEventStream As CQRSAzure.EventSourcing.Azure.Blob.BlobEventStreamWriter(Of CommandAggregateIdentifier, Guid) = CQRSAzure.EventSourcing.Azure.Blob.BlobEventStreamWriter(Of CommandAggregateIdentifier, Guid).Create(cmdAgg)
-        testEventStream.AppendEvent(CommandCreatedEvent.Create(Guid.NewGuid, "Test command", DateTime.Now))
-        testEventStream.AppendEvent(CommandStartedEvent.Create(DateTime.Now))
-        testEventStream.AppendEvent(CommandStepCompletedEvent.Create(DateTime.Now, 0, "Step 0 complete"))
-        testEventStream.AppendEvent(CommandStepCompletedEvent.Create(DateTime.Now, 1, "Step 1 complete"))
-        testEventStream.AppendEvent(CommandFatalErrorOccuredEvent.Create(DateTime.Now, "Fatal error", 1))
+        Dim testEventStream As BlobEventStreamWriter(Of CommandAggregateIdentifier, Guid) = BlobEventStreamWriter(Of CommandAggregateIdentifier, Guid).Create(cmdAgg)
+        Await testEventStream.AppendEvent(CommandCreatedEvent.Create(Guid.NewGuid, "Test command", DateTime.Now))
+        Await testEventStream.AppendEvent(CommandStartedEvent.Create(DateTime.Now))
+        Await testEventStream.AppendEvent(CommandStepCompletedEvent.Create(DateTime.Now, 0, "Step 0 complete"))
+        Await testEventStream.AppendEvent(CommandStepCompletedEvent.Create(DateTime.Now, 1, "Step 1 complete"))
+        Await testEventStream.AppendEvent(CommandFatalErrorOccuredEvent.Create(DateTime.Now, "Fatal error", 1))
 
         'Run the classifier
-        Dim testReadObj As CQRSAzure.EventSourcing.Azure.Blob.BlobEventStreamReader(Of CommandAggregateIdentifier, Guid) = CQRSAzure.EventSourcing.Azure.Blob.BlobEventStreamReader(Of CommandAggregateIdentifier, Guid).Create(cmdAgg)
+        Dim testReadObj As BlobEventStreamReader(Of CommandAggregateIdentifier, Guid) = BlobEventStreamReader(Of CommandAggregateIdentifier, Guid).Create(cmdAgg)
 
         Dim testClassifier = Azure.Blob.AzureBlobClassifier(Of CommandAggregateIdentifier, Guid, FatalErroredCommandsIdentityGroupClassifier).CreateClassifierProcessor(cmdAgg, streamReader:=testReadObj)
-        actual = testClassifier.Classify()
+        actual = Await testClassifier.Classify()
 
 
         Assert.AreEqual(expected, actual)
 
-    End Sub
+    End Function
 
 #End Region
 

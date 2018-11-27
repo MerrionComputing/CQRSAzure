@@ -13,7 +13,7 @@
     ''' <param name="projectionToProcess">
     ''' The class that defines the projection operation we are going to process
     ''' </param>
-    Public Sub Process(ByVal projectionToProcess As IProjection(Of TAggregate, TAggregateKey)) Implements IProjectionProcessor(Of TAggregate, TAggregateKey).Process
+    Public Async Function Process(ByVal projectionToProcess As IProjection(Of TAggregate, TAggregateKey)) As Task Implements IProjectionProcessor(Of TAggregate, TAggregateKey).Process
 
         If (m_streamReader IsNot Nothing) Then
             If (projectionToProcess IsNot Nothing) Then
@@ -34,7 +34,7 @@
                         'Unable to load snapshots so start from the last record read of the event stream
                     End If
                 End If
-                For Each evt In m_streamReader.GetEventsWithContext(startingSequence)
+                For Each evt In Await m_streamReader.GetEventsWithContext(startingSequence)
                     projectionToProcess.OnEventRead(evt.SequenceNumber, EventAsOfDateAttribute.GetAsOfDate(evt.EventInstance))
                     If (projectionToProcess.HandlesEventType(evt.EventInstance.GetType())) Then
                         projectionToProcess.HandleEvent(evt.EventInstance)
@@ -59,7 +59,7 @@
             Throw New UnmappedAggregateException(GetType(TAggregate), Nothing)
         End If
 
-    End Sub
+    End Function
 
     ''' <summary>
     ''' Create a new projection processor that will use the given event stream reader to do its processing

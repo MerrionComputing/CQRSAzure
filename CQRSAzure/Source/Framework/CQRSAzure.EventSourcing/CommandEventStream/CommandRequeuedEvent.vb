@@ -1,4 +1,5 @@
-﻿Imports System.Runtime.Serialization
+﻿Imports System
+Imports System.Runtime.Serialization
 Imports CQRSAzure.EventSourcing
 
 Namespace Commands

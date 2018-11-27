@@ -1,4 +1,5 @@
-﻿Imports CQRSAzure.EventSourcing.InMemory
+﻿Imports CQRSAzure.EventSourcing.Implementation.InMemory
+Imports CQRSAzure.EventSourcing.InMemory
 
 Namespace InMemory
     Public NotInheritable Class InMemoryClassifier(Of TAggregate As CQRSAzure.EventSourcing.IAggregationIdentifier,

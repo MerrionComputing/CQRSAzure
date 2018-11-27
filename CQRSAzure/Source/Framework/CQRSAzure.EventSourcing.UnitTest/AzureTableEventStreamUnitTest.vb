@@ -1,17 +1,17 @@
 ﻿Imports System.Text
-Imports Microsoft.VisualStudio.TestTools.UnitTesting
+Imports NUnit.Framework
 
 Imports CQRSAzure.EventSourcing
 Imports CQRSAzure.EventSourcing.Azure.Table
 Imports CQRSAzure.EventSourcing.UnitTest.Mocking
 
-<TestClass()>
+<TestFixture()>
 Public Class AzureTableEventStreamUnitTest
 
 
     Public Const TEST_AGGREGATE_IDENTIFIER As String = "TABLE.OK.331.987"
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Reader_Constructor_TestMethod()
 
         Dim testAgg As New MockAggregate(TEST_AGGREGATE_IDENTIFIER)
@@ -20,7 +20,7 @@ Public Class AzureTableEventStreamUnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Reader_TableName_TestMethod()
 
         Dim expected As String = "MockAggregate"
@@ -38,7 +38,7 @@ Public Class AzureTableEventStreamUnitTest
     ''' <summary>
     ''' Too short a name, append DATA to it
     ''' </summary>
-    <TestMethod>
+    <TestCase()>
     Public Sub MakeValidStorageFolderName_TooShort_TestMethod()
 
         Dim expected As String = "aDATA"
@@ -53,7 +53,7 @@ Public Class AzureTableEventStreamUnitTest
     ''' <summary>
     ''' Too short a name, append DATA to it
     ''' </summary>
-    <TestMethod>
+    <TestCase()>
     Public Sub MakeValidStorageTableName_TooShortAfterInvalid_TestMethod()
 
         Dim expected As String = "aDATA"
@@ -65,7 +65,7 @@ Public Class AzureTableEventStreamUnitTest
 
     End Sub
 
-    <TestMethod>
+    <TestCase()>
     Public Sub MakeValidStorageTableName_FixChars_TestMethod()
 
         Dim expected As String = "DuncansModel"
@@ -78,7 +78,7 @@ Public Class AzureTableEventStreamUnitTest
     End Sub
 
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Writer_WriteEvent_TestMethod()
 
         Dim testAgg As New MockAggregate(TEST_AGGREGATE_IDENTIFIER)
@@ -89,7 +89,7 @@ Public Class AzureTableEventStreamUnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Writer_WriteMultipleEvent_TestMethod()
 
         Dim testAgg As New MockAggregate(TEST_AGGREGATE_IDENTIFIER)
@@ -105,7 +105,7 @@ Public Class AzureTableEventStreamUnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Reader_ReadEvents_TestMethod()
 
         Dim testAgg As New MockAggregate(TEST_AGGREGATE_IDENTIFIER)
@@ -117,7 +117,7 @@ Public Class AzureTableEventStreamUnitTest
     End Sub
 
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub Reader_ReadEventsWithContext_TestMethod()
 
         Dim testAgg As New MockAggregate(TEST_AGGREGATE_IDENTIFIER)
@@ -129,8 +129,8 @@ Public Class AzureTableEventStreamUnitTest
     End Sub
 
 
-    <TestMethod()>
-    Public Sub GetAllStreamKeys_NoDate_TestMethod()
+    <TestCase()>
+    Public Async Function GetAllStreamKeys_NoDate_TestMethod() As Task
 
         Dim expected As Boolean = True
         Dim actual As Boolean = False
@@ -138,14 +138,15 @@ Public Class AzureTableEventStreamUnitTest
         Dim testObj = TableEventStreamReader(Of MockAggregate, String).Create(New MockAggregate(TEST_AGGREGATE_IDENTIFIER))
         Dim testProvider As IEventStreamProvider(Of MockAggregate, String) = TableEventStreamProviderFactory.Create(Of MockAggregate, String)()
 
-        actual = testProvider.GetAllStreamKeys().Contains(TEST_AGGREGATE_IDENTIFIER)
+        Dim values = Await testProvider.GetAllStreamKeys()
+        actual = values.Contains(TEST_AGGREGATE_IDENTIFIER)
 
         Assert.AreEqual(expected, actual)
 
-    End Sub
+    End Function
 
-    <TestMethod()>
-    Public Sub GetAllStreamKeys_GUIDKey_NoDate_TestMethod()
+    <TestCase()>
+    Public Async Function GetAllStreamKeys_GUIDKey_NoDate_TestMethod() As Task
 
         Dim expected As Boolean = True
         Dim actual As Boolean = False
@@ -154,18 +155,19 @@ Public Class AzureTableEventStreamUnitTest
 
         Dim testwriter As TableEventStreamWriter(Of MockGuidAggregate, Guid) = TableEventStreamWriter(Of MockGuidAggregate, Guid).Create(New MockGuidAggregate(key))
         testwriter.Reset()
-        testwriter.AppendEvent(New MockGuidEventTypeTwo() With {.EventTwoNullableDateProperty = DateTime.UtcNow})
+        Await testwriter.AppendEvent(New MockGuidEventTypeTwo() With {.EventTwoNullableDateProperty = DateTime.UtcNow})
 
         Dim testProvider = TableEventStreamProviderFactory.Create(Of MockGuidAggregate, Guid)()
 
-        actual = testProvider.GetAllStreamKeys().Contains(key)
+        Dim values = Await testProvider.GetAllStreamKeys()
+        actual = values.Contains(key)
 
         Assert.AreEqual(expected, actual)
 
-    End Sub
+    End Function
 
-    <TestMethod()>
-    Public Sub GetAllStreamKeys_GUIDKey_FutureDate_TestMethod()
+    <TestCase()>
+    Public Async Function GetAllStreamKeys_GUIDKey_FutureDate_TestMethod() As Task
 
         Dim expected As Boolean = False
         Dim actual As Boolean = True
@@ -177,17 +179,18 @@ Public Class AzureTableEventStreamUnitTest
         Dim testObj = TableEventStreamWriter(Of MockGuidAggregate, Guid).Create(New MockGuidAggregate(key))
         Dim testProvider As IEventStreamProvider(Of MockGuidAggregate, Guid) = TableEventStreamProviderFactory.Create(Of MockGuidAggregate, Guid)()
 
-        actual = testProvider.GetAllStreamKeys(asOfdate).Contains(key)
+        Dim values = Await testProvider.GetAllStreamKeys(asOfdate)
+        actual = values.Contains(key)
 
         Assert.AreEqual(expected, actual)
 
-    End Sub
+    End Function
 End Class
 
-<TestClass>
+<TestFixture>
 Public Class CQRSAzureEventSourcingTableSettingsElementUnitTest
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub IsValidCustomNumberFormat_Valid_TestMethod()
 
         Dim expected As String = "00000"
@@ -201,7 +204,7 @@ Public Class CQRSAzureEventSourcingTableSettingsElementUnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub IsValidCustomNumberFormat_InValid_TestMethod()
 
         Dim expected As String = CQRSAzureEventSourcingTableSettingsElement.DEFAULT_SEQUENCENUMBERFORMAT
@@ -215,7 +218,7 @@ Public Class CQRSAzureEventSourcingTableSettingsElementUnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub IsValidCustomNumberFormat_Blank_TestMethod()
 
         Dim expected As String = CQRSAzureEventSourcingTableSettingsElement.DEFAULT_SEQUENCENUMBERFORMAT
@@ -229,7 +232,7 @@ Public Class CQRSAzureEventSourcingTableSettingsElementUnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub IsValidCustomNumberFormat_Hex_TestMethod()
 
         Dim expected As String = "X"
@@ -243,7 +246,7 @@ Public Class CQRSAzureEventSourcingTableSettingsElementUnitTest
 
     End Sub
 
-    <TestMethod()>
+    <TestCase()>
     Public Sub IsValidCustomNumberFormat_General_TestMethod()
 
         Dim expected As String = CQRSAzureEventSourcingTableSettingsElement.DEFAULT_SEQUENCENUMBERFORMAT
