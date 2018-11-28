@@ -37,13 +37,14 @@ Namespace Azure.Table.Untyped
                                Optional Version As UInteger = 1) As Task Implements IEventStreamWriterUntyped.AppendEvent
 
             'Set the next highest sequence (in case another writer has appended events)
-            nextSequence = 1 + GetCurrentHighestSequence(MyBase.InstanceKey)
+            nextSequence = 1 + Await GetCurrentHighestSequence(MyBase.InstanceKey)
 
             'Update the current highest event number
-            UpdateSequenceNumber(nextSequence, MyBase.InstanceKey)
+            Await UpdateSequenceNumber(nextSequence, MyBase.InstanceKey)
 
             'Append the event
             Await AppendEventInternal(EventToAppend)
+
 
         End Function
 
@@ -93,7 +94,7 @@ Namespace Azure.Table.Untyped
         ''' <remarks>
         ''' This is only used for unit testing so is not part of the Event Stream Writer interface
         ''' </remarks>
-        Public Sub Reset()
+        Public Async Function Reset() As Task
 
             If MyBase.Table IsNot Nothing Then
                 'A Batch Operation allows a maximum 100 entities in the batch which must share the same PartitionKey 
@@ -104,21 +105,25 @@ Namespace Azure.Table.Untyped
                 While moreBatches
                     Dim batchDelete = New TableBatchOperation()
                     Dim continueToken As New TableContinuationToken()
-                    For Each e In MyBase.Table.ExecuteQuerySegmentedAsync(projectionQuery, continueToken).Result
-                        batchDelete.Delete(e)
-                    Next
+                    Do
+                        Dim seg = Await MyBase.Table.ExecuteQuerySegmentedAsync(projectionQuery, continueToken)
+                        For Each e In seg.Results
+                            batchDelete.Delete(e)
+                        Next
+                        continueToken = seg.ContinuationToken
+                    Loop While (continueToken IsNot Nothing)
 
                     moreBatches = (batchDelete.Count >= 100)
 
                     If (batchDelete.Count > 0) Then
-                        MyBase.Table.ExecuteBatchAsync(batchDelete)
+                        Await MyBase.Table.ExecuteBatchAsync(batchDelete)
                     End If
                 End While
                 'Reset the next sequence number too
                 nextSequence = 0
                 UpdateSequenceNumber(nextSequence, aggregateInstanceKey:=InstanceKey)
             End If
-        End Sub
+        End Function
 
         Public Function MakeDynamicTableEntity(ByVal eventToSave As IEventContext) As DynamicTableEntity
 

@@ -311,7 +311,7 @@ Namespace Azure.Table
         End Property
 
 
-        Protected Friend Function GetCurrentHighestSequence(ByVal aggregateInstanceKey As String) As Long
+        Protected Friend Async Function GetCurrentHighestSequence(ByVal aggregateInstanceKey As String) As Task(Of Long)
 
             If (AggregateKeyTable IsNot Nothing) Then
                 'get the TableAggregateKeyRecord
@@ -327,7 +327,7 @@ Namespace Azure.Table
                 If (currentRecord Is Nothing) Then
                     currentRecord = New TableAggregateKeyRecord(AggregateClassName, aggregateInstanceKey)
                     currentRecord.LastSequence = 0
-                    AggregateKeyTable.ExecuteAsync(TableOperation.Insert(currentRecord))
+                    Await AggregateKeyTable.ExecuteAsync(TableOperation.Insert(currentRecord))
                 End If
                 Return currentRecord.LastSequence
             End If
@@ -336,7 +336,7 @@ Namespace Azure.Table
 
         End Function
 
-        Protected Friend Sub UpdateSequenceNumber(nextSequence As Long, ByVal aggregateInstanceKey As String)
+        Protected Friend Async Function UpdateSequenceNumber(nextSequence As Long, ByVal aggregateInstanceKey As String) As Task
 
             If AggregateKeyTable IsNot Nothing Then
                 'update the sequence number
@@ -346,10 +346,10 @@ Namespace Azure.Table
                 recordToSave.ETag = "*" 'need to set an e-tag to do a merge..maybe this should be loaded by the class itself..?
                 recordToSave.Properties.Add(NameOf(TableAggregateKeyRecord.LastSequence), New EntityProperty(nextSequence))
                 'merge this new record into the fray
-                AggregateKeyTable.ExecuteAsync(TableOperation.InsertOrMerge(recordToSave)) ', RequestOptions,)
+                Await AggregateKeyTable.ExecuteAsync(TableOperation.InsertOrMerge(recordToSave))
             End If
 
-        End Sub
+        End Function
 
         Protected ReadOnly Property RequestOptions As TableRequestOptions
             Get

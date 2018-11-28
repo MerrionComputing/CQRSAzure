@@ -36,24 +36,30 @@ Namespace Azure.Table.Untyped
             If (MyBase.Table IsNot Nothing) Then
                 Dim ret As New List(Of IEvent)()
                 Dim continueToken As New TableContinuationToken()
-                For Each dte As DynamicTableEntity In Await MyBase.Table.ExecuteQuerySegmentedAsync(CreateQuery(StartingSequenceNumber), continueToken) ', MyBase.RequestOptions)
-                    Dim eventType As Type = GetDynamicTableEntityEventType(dte)
-                    If IsEventValid(eventType) Then
-                        Dim evt As IEvent = Nothing
-                        Dim deserialiser As IEventSerializer = EventSerializerFactory.GetSerialiserByType(eventType)
-                        If (deserialiser IsNot Nothing) Then
-                            'Use the event serialiser... 
-                            evt = deserialiser.FromNameValuePairs(DynamicTableEntryToNameValuePairs(dte))
-                        Else
-                            evt = CType(Activator.CreateInstance(eventType), IEvent)
-                            PopulateDynamicTableEntityEvent(dte, evt)
+                Dim query = CreateQuery(StartingSequenceNumber)
+                Do
+                    Dim seg = Await MyBase.Table.ExecuteQuerySegmentedAsync(query, continueToken)
+
+                    For Each dte As DynamicTableEntity In seg
+                        Dim eventType As Type = GetDynamicTableEntityEventType(dte)
+                        If IsEventValid(eventType) Then
+                            Dim evt As IEvent = Nothing
+                            Dim deserialiser As IEventSerializer = EventSerializerFactory.GetSerialiserByType(eventType)
+                            If (deserialiser IsNot Nothing) Then
+                                'Use the event serialiser... 
+                                evt = deserialiser.FromNameValuePairs(DynamicTableEntryToNameValuePairs(dte))
+                            Else
+                                evt = CType(Activator.CreateInstance(eventType), IEvent)
+                                PopulateDynamicTableEntityEvent(dte, evt)
+                            End If
+                            'if so, add it to the returned list 
+                            If (evt IsNot Nothing) Then
+                                ret.Add(evt)
+                            End If
                         End If
-                        'if so, add it to the returned list 
-                        If (evt IsNot Nothing) Then
-                            ret.Add(evt)
-                        End If
-                    End If
-                Next
+                    Next
+                    continueToken = seg.ContinuationToken
+                Loop While (continueToken IsNot Nothing)
                 Return ret
             Else
                 Throw New EventStreamReadException(DomainName, AggregateClassName, InstanceKey, 0, "Missing or not initialised table reference")
@@ -126,25 +132,31 @@ Namespace Azure.Table.Untyped
             If (MyBase.Table IsNot Nothing) Then
                 Dim ret As New List(Of IEventContext)
                 Dim continueToken As New TableContinuationToken()
-                For Each dte As DynamicTableEntity In Await MyBase.Table.ExecuteQuerySegmentedAsync(CreateQuery(StartingSequenceNumber), continueToken)
-                    Dim eventType As Type = GetDynamicTableEntityEventType(dte)
-                    'see if the event type is valid...
-                    If IsEventValid(eventType) Then
-                        Dim evt As IJsonSerialisedEvent
-                        Dim deserialiser As IEventSerializer = EventSerializerFactory.GetSerialiserByType(eventType)
-                        If (deserialiser IsNot Nothing) Then
-                            'Use the event serialiser... 
-                            evt = deserialiser.FromNameValuePairs(DynamicTableEntryToNameValuePairs(dte))
-                        Else
-                            'if so, add it to the returned list 
-                            evt = CType(Activator.CreateInstance(eventType),
+                Dim query = CreateQuery(StartingSequenceNumber)
+                Do
+                    Dim seg = Await MyBase.Table.ExecuteQuerySegmentedAsync(query, continueToken)
+
+                    For Each dte As DynamicTableEntity In seg
+                        Dim eventType As Type = GetDynamicTableEntityEventType(dte)
+                        'see if the event type is valid...
+                        If IsEventValid(eventType) Then
+                            Dim evt As IEvent = Nothing
+                            Dim deserialiser As IEventSerializer = EventSerializerFactory.GetSerialiserByType(eventType)
+                            If (deserialiser IsNot Nothing) Then
+                                'Use the event serialiser... 
+                                evt = deserialiser.FromNameValuePairs(DynamicTableEntryToNameValuePairs(dte))
+                            Else
+                                'if so, add it to the returned list 
+                                evt = CType(Activator.CreateInstance(eventType),
                                 IEvent)
-                            PopulateDynamicTableEntityEvent(dte, evt)
-                            'Wrap it with context from the table row
+                                PopulateDynamicTableEntityEvent(dte, evt)
+                                'Wrap it with context from the table row
+                            End If
+                            ret.Add(WrapDynamicTableEntityEvent(dte, evt))
                         End If
-                        ret.Add(WrapDynamicTableEntityEvent(dte, evt))
-                    End If
-                Next
+                    Next
+                    continueToken = seg.ContinuationToken
+                Loop While (continueToken IsNot Nothing)
                 Return ret
             Else
                 Throw New EventStreamReadException(DomainName,
@@ -156,7 +168,7 @@ Namespace Azure.Table.Untyped
 
         End Function
 
-        Private Function WrapDynamicTableEntityEvent(dte As DynamicTableEntity, evt As IJsonSerialisedEvent) As IEventContext
+        Private Function WrapDynamicTableEntityEvent(dte As DynamicTableEntity, evt As IEvent) As IEventContext
 
             Dim eventVersion As Integer = 0
 

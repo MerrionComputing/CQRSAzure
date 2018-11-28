@@ -35,9 +35,9 @@ Public NotInheritable Class ProjectionProcessorUntyped
                     projectionToProcess.OnEventRead(evt.SequenceNumber, EventAsOfDateAttribute.GetAsOfDate(evt.EventInstance))
 
                     'is it a JSON wrapped event
-                    Dim jsonEvent As IJsonSerialisedEvent = evt.EventInstance
+                    Dim jsonEvent As IJsonSerialisedEvent = TryCast(evt.EventInstance, IJsonSerialisedEvent)
                     If (jsonEvent Is Nothing) Then
-                        If (projectionToProcess.HandlesEventType(evt.GetType)) Then
+                        If (projectionToProcess.HandlesEventType(evt.EventInstance.GetType)) Then
                             projectionToProcess.HandleEvent(evt.EventInstance)
                         End If
                     Else

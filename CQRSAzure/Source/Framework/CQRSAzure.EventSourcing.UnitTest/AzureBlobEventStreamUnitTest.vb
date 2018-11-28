@@ -165,7 +165,7 @@ Public Class AzureBlobEventStreamUnitTest
 
 
     <TestCase()>
-    Public Async Sub GetAllStreamKeys_NoDate_TestMethod()
+    Public Async Function GetAllStreamKeys_NoDate_TestMethod() As Task
 
         Dim expected As Boolean = True
         Dim actual As Boolean = False
@@ -181,7 +181,7 @@ Public Class AzureBlobEventStreamUnitTest
 
         Assert.AreEqual(expected, actual)
 
-    End Sub
+    End Function
 
     <TestCase()>
     Public Async Function GetAllStreamKeys_GUIDKey_NoDate_TestMethod() As Task
@@ -297,7 +297,7 @@ Public Class AzureBlobEventStreamUnitTest
 
     '<TestCategory("Performance")>
     <TestCase()>
-    Public Sub Read_Million_Random_Events()
+    Public Async Function Read_Million_Random_Events() As Task
 
         Dim actual As Decimal = 0D
         Dim expected As Decimal = 0.00D
@@ -323,12 +323,19 @@ Public Class AzureBlobEventStreamUnitTest
         Dim testMap As IAggregateImplementationMap(Of Accounts.Account.Account, String) = CType(testMapBuilder.CreateImplementationMap(GetType(Accounts.Account.Account)),
             IAggregateImplementationMap(Of Accounts.Account.Account, String))
 
+
+
         Dim testAgg As New Accounts.Account.Account(LARGE_STREAM_TEST_ACCOUNT)
+
+        'add a couple of events
+        Dim writer = testMap.CreateWriter(testAgg, testAgg.GetKey())
+        Await writer.AppendEvent(New Accounts.Account.eventDefinition.Money_Deposited(1234.56, DateTime.Today.AddDays(-3), DateTime.Today, "USD", 1D))
+
         Dim testProcessor = testMap.CreateProjectionProcessor(testAgg, LARGE_STREAM_TEST_ACCOUNT)
 
         Dim projection As New Accounts.Account.projection.Running_Balance()
         If (testProcessor IsNot Nothing) Then
-            testProcessor.Process(projection)
+            Await testProcessor.Process(projection)
 
             System.Diagnostics.Debug.WriteLine(projection.Last_Transaction_Date.ToLongDateString() & " value was " & projection.Balance.ToString())
         End If
@@ -340,11 +347,11 @@ Public Class AzureBlobEventStreamUnitTest
         Assert.AreNotEqual(expected, actual)
 
 
-    End Sub
+    End Function
 
     '<TestCategory("Performance")>
     <TestCase()>
-    Public Sub Categorise_Million_Random_Events()
+    Public Async Function Categorise_Million_Random_Events() As Task
 
         Dim expected As IClassifierDataSourceHandler.EvaluationResult = IClassifierDataSourceHandler.EvaluationResult.Include
         Dim actual As IClassifierDataSourceHandler.EvaluationResult = IClassifierDataSourceHandler.EvaluationResult.Unchanged
@@ -372,6 +379,10 @@ Public Class AzureBlobEventStreamUnitTest
 
         Dim testAgg As New Accounts.Account.Account(LARGE_STREAM_TEST_ACCOUNT)
 
+        'add a couple of events
+        Dim writer = testMap.CreateWriter(testAgg, testAgg.GetKey())
+        Await writer.AppendEvent(New Accounts.Account.eventDefinition.Money_Deposited(321.09, DateTime.Today.AddDays(-3), DateTime.Today, "USD", 1D))
+
         'Create a classifier
         Dim classifier As New Accounts.Account.classifier.Accounts_In_Credit_Classifier()
         'run the projection
@@ -379,7 +390,7 @@ Public Class AzureBlobEventStreamUnitTest
         Dim testProcessor = testMap.CreateProjectionProcessor(testAgg, LARGE_STREAM_TEST_ACCOUNT)
         Dim projection As New Accounts.Account.projection.Running_Balance()
         If (testProcessor IsNot Nothing) Then
-            testProcessor.Process(projection)
+            Await testProcessor.Process(projection)
 
             System.Diagnostics.Debug.WriteLine(projection.Last_Transaction_Date.ToLongDateString() & " value was " & projection.Balance.ToString())
         End If
@@ -389,7 +400,7 @@ Public Class AzureBlobEventStreamUnitTest
 
         Assert.AreEqual(expected, actual)
 
-    End Sub
+    End Function
 
 
 

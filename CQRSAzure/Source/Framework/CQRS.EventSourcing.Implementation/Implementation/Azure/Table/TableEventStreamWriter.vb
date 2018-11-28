@@ -37,7 +37,7 @@ Namespace Azure.Table
                                Optional ByVal ExpectedTopSequence As Long = 0) As Task Implements IEventStreamWriter(Of TAggregate, TAggregateKey).AppendEvent
 
             'Set the next highest sequence (in case another writer has appended events)
-            nextSequence = 1 + GetCurrentHighestSequence(m_converter.ToUniqueString(m_key))
+            nextSequence = 1 + Await GetCurrentHighestSequence(m_converter.ToUniqueString(m_key))
 
             'Update the current highest event number
             UpdateSequenceNumber(nextSequence)
@@ -91,7 +91,7 @@ Namespace Azure.Table
         Public Async Function AppendEvents(StartingSequence As Long, Events As IEnumerable(Of IEvent(Of TAggregate))) As Task Implements IEventStreamWriter(Of TAggregate, TAggregateKey).AppendEvents
 
             'Set the next highest sequence (in case another writer has appended events)
-            nextSequence = 1 + GetCurrentHighestSequence(m_converter.ToUniqueString(m_key))
+            nextSequence = 1 + Await GetCurrentHighestSequence(m_converter.ToUniqueString(m_key))
 
             If (Events IsNot Nothing) Then
                 If (Events.Count > 0) Then
@@ -158,8 +158,6 @@ Namespace Azure.Table
                        connectionStringName:=GetWriteConnectionStringName("", settings),
                        settings:=settings)
 
-            'Get the current highest sequnce number (this is the only querying the writer should be allowed to do)
-            nextSequence = 1 + GetCurrentHighestSequence(m_converter.ToUniqueString(m_key))
 
         End Sub
 
