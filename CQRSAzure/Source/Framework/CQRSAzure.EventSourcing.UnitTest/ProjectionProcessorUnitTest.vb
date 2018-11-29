@@ -39,7 +39,7 @@ Public Class ProjectionProcessorUnitTest
     End Sub
 
     <TestCase()>
-    Public Sub InMemoryProjection_MultipleEvents_UnitTest()
+    Public Async Function InMemoryProjection_MultipleEvents_UnitTest() As Task
 
         Dim expected As Integer = 100
         Dim actual As Integer = -1
@@ -47,23 +47,23 @@ Public Class ProjectionProcessorUnitTest
         Dim testObj As InMemoryEventStreamWriter(Of MockAggregate, String) = InMemoryEventStreamWriter(Of MockAggregate, String).Create(New MockAggregate("123"))
         testObj.Reset()
         'add an event
-        testObj.AppendEvent(New MockEventTypeOne() With {.EventOneIntegerProperty = 50})
-        testObj.AppendEvent(New MockEventTypeOne() With {.EventOneIntegerProperty = 20})
-        testObj.AppendEvent(New MockEventTypeTwo() With {.EventTwoDecimalProperty = 20.12, .EventTwoStringProperty = "Event Two"})
-        testObj.AppendEvent(New MockEventTypeOne() With {.EventOneIntegerProperty = 10})
-        testObj.AppendEvent(New MockEventTypeOne() With {.EventOneIntegerProperty = 20})
+        Await testObj.AppendEvent(New MockEventTypeOne() With {.EventOneIntegerProperty = 50})
+        Await testObj.AppendEvent(New MockEventTypeOne() With {.EventOneIntegerProperty = 20})
+        Await testObj.AppendEvent(New MockEventTypeTwo() With {.EventTwoDecimalProperty = 20.12, .EventTwoStringProperty = "Event Two"})
+        Await testObj.AppendEvent(New MockEventTypeOne() With {.EventOneIntegerProperty = 10})
+        Await testObj.AppendEvent(New MockEventTypeOne() With {.EventOneIntegerProperty = 20})
 
         Dim testProjectionProcessor = InMemoryEventStreamReader(Of MockAggregate, String).CreateProjectionProcessor(New MockAggregate("123"))
         Dim myProjection As New MockProjectionNoSnapshots
 
-        testProjectionProcessor.Process(myProjection)
+        Await testProjectionProcessor.Process(myProjection)
 
         actual = myProjection.Total
 
         Assert.AreEqual(expected, actual)
 
 
-    End Sub
+    End Function
 
 
     <TestCase()>
@@ -194,30 +194,30 @@ Public Class ProjectionProcessorUnitTest
 
 
     <TestCase()>
-    Public Sub InMemoryProjection_MultipleMixedEvents_UnitTest()
+    Public Async Function InMemoryProjection_MultipleMixedEvents_UnitTest() As Task
 
         Dim expected As String = "My test"
         Dim actual As String = "Not set"
 
         Dim testObj As InMemoryEventStreamWriter(Of MockAggregate, String) = InMemoryEventStreamWriter(Of MockAggregate, String).Create(New MockAggregate("123"))
         'add an event
-        testObj.AppendEvent(New MockEventTypeOne() With {.EventOneIntegerProperty = 50})
-        testObj.AppendEvent(New MockEventTypeOne() With {.EventOneIntegerProperty = 20, .EventOneStringProperty = "A test"})
-        testObj.AppendEvent(New MockEventTypeTwo() With {.EventTwoDecimalProperty = 20.12, .EventTwoStringProperty = "Event Two"})
-        testObj.AppendEvent(New MockEventTypeOne() With {.EventOneIntegerProperty = 10})
-        testObj.AppendEvent(New MockEventTypeOne() With {.EventOneIntegerProperty = 20, .EventOneStringProperty = expected})
+        Await testObj.AppendEvent(New MockEventTypeOne() With {.EventOneIntegerProperty = 50})
+        Await testObj.AppendEvent(New MockEventTypeOne() With {.EventOneIntegerProperty = 20, .EventOneStringProperty = "A test"})
+        Await testObj.AppendEvent(New MockEventTypeTwo() With {.EventTwoDecimalProperty = 20.12, .EventTwoStringProperty = "Event Two"})
+        Await testObj.AppendEvent(New MockEventTypeOne() With {.EventOneIntegerProperty = 10})
+        Await testObj.AppendEvent(New MockEventTypeOne() With {.EventOneIntegerProperty = 20, .EventOneStringProperty = expected})
 
         Dim testProjectionProcessor = InMemoryEventStreamReader(Of MockAggregate, String).CreateProjectionProcessor(New MockAggregate("123"))
         Dim myProjection As New MockProjectionMultipleEventsNoSnapshots
 
-        testProjectionProcessor.Process(myProjection)
+        Await testProjectionProcessor.Process(myProjection)
 
         actual = myProjection.LastString
 
         Assert.AreEqual(expected, actual)
 
 
-    End Sub
+    End Function
 
     <TestCase()>
     Public Sub AzureBlobProjection_Constructor_UnitTest()
@@ -247,7 +247,7 @@ Public Class ProjectionProcessorUnitTest
     End Sub
 
     <TestCase()>
-    Public Sub AzureBlobProjection_SomeEvents_UnitTest()
+    Public Async Function AzureBlobProjection_SomeEvents_UnitTest() As Task
 
         Dim expected As Integer = 0
         Dim actual As Integer = 0
@@ -256,25 +256,25 @@ Public Class ProjectionProcessorUnitTest
         Dim testAgg = New MockAggregate(AzureBlobEventStreamUnitTest.TEST_AGGREGATE_IDENTIFIER)
 
         Dim testWriter As BlobEventStreamWriter(Of MockAggregate, String) = BlobEventStreamWriter(Of MockAggregate, String).Create(testAgg)
-        testWriter.Reset()
+        Await testWriter.Reset()
         'add a dummy event
-        testWriter.AppendEvent(New MockEventTypeTwo() With {.EventTwoNullableDateProperty = DateTime.UtcNow, .EventTwoStringProperty = "My test two", .EventTwoDecimalProperty = 123.45})
-        testWriter.AppendEvent(New MockEventTypeTwo() With {.EventTwoNullableDateProperty = DateTime.UtcNow, .EventTwoStringProperty = "My test three", .EventTwoDecimalProperty = 223.45})
+        Await testWriter.AppendEvent(New MockEventTypeTwo() With {.EventTwoNullableDateProperty = DateTime.UtcNow, .EventTwoStringProperty = "My test two", .EventTwoDecimalProperty = 123.45})
+        Await testWriter.AppendEvent(New MockEventTypeTwo() With {.EventTwoNullableDateProperty = DateTime.UtcNow, .EventTwoStringProperty = "My test three", .EventTwoDecimalProperty = 223.45})
         'MockEventTypeOne
-        testWriter.AppendEvent(New MockEventTypeOne() With {.EventOneIntegerProperty = 73, .EventOneStringProperty = "Event 1 test"})
+        Await testWriter.AppendEvent(New MockEventTypeOne() With {.EventOneIntegerProperty = 73, .EventOneStringProperty = "Event 1 test"})
 
         Dim testObj = BlobEventStreamReader(Of MockAggregate, String).CreateProjectionProcessor(testAgg)
         Assert.IsNotNull(testObj)
 
         Dim myProjection As New MockProjectionMultipleEventsNoSnapshots
 
-        testObj.Process(myProjection)
+        Await testObj.Process(myProjection)
 
         actual = myProjection.Total
 
         Assert.AreNotEqual(expected, actual)
 
-    End Sub
+    End Function
 
     <TestCase()>
     Public Sub AzureBlobProjection_MultipleEvents_Stepback_LoadSnapshot_UnitTest()
@@ -342,7 +342,7 @@ Public Class ProjectionProcessorUnitTest
     ''' Check that running a projection that causes a state change is reflected as such
     ''' </summary>
     <TestCase()>
-    Public Sub AzureBlobProjection_SomeEvents_StateChanged_UnitTest()
+    Public Async Function AzureBlobProjection_SomeEvents_StateChanged_UnitTest() As Task
 
         Dim expected As Integer = 0
         Dim actual As Integer = 0
@@ -351,25 +351,25 @@ Public Class ProjectionProcessorUnitTest
         Dim testAgg = New MockAggregate(AzureBlobEventStreamUnitTest.TEST_AGGREGATE_IDENTIFIER)
 
         Dim testWriter As BlobEventStreamWriter(Of MockAggregate, String) = BlobEventStreamWriter(Of MockAggregate, String).Create(testAgg)
-        testWriter.Reset()
+        Await testWriter.Reset()
         'add a dummy event
-        testWriter.AppendEvent(New MockEventTypeTwo() With {.EventTwoNullableDateProperty = DateTime.UtcNow, .EventTwoStringProperty = "My test two", .EventTwoDecimalProperty = 123.45})
-        testWriter.AppendEvent(New MockEventTypeTwo() With {.EventTwoNullableDateProperty = DateTime.UtcNow, .EventTwoStringProperty = "My test three", .EventTwoDecimalProperty = 223.45})
+        Await testWriter.AppendEvent(New MockEventTypeTwo() With {.EventTwoNullableDateProperty = DateTime.UtcNow, .EventTwoStringProperty = "My test two", .EventTwoDecimalProperty = 123.45})
+        Await testWriter.AppendEvent(New MockEventTypeTwo() With {.EventTwoNullableDateProperty = DateTime.UtcNow, .EventTwoStringProperty = "My test three", .EventTwoDecimalProperty = 223.45})
         'MockEventTypeOne
-        testWriter.AppendEvent(New MockEventTypeOne() With {.EventOneIntegerProperty = 73, .EventOneStringProperty = "Event 1 test"})
+        Await testWriter.AppendEvent(New MockEventTypeOne() With {.EventOneIntegerProperty = 73, .EventOneStringProperty = "Event 1 test"})
 
         Dim testObj = BlobEventStreamReader(Of MockAggregate, String).CreateProjectionProcessor(testAgg)
         Assert.IsNotNull(testObj)
 
         Dim myProjection As New MockProjectionMultipleEventsNoSnapshots
 
-        testObj.Process(myProjection)
+        Await testObj.Process(myProjection)
 
         actual = myProjection.StateChanges.Count()
 
         Assert.AreNotEqual(expected, actual)
 
-    End Sub
+    End Function
 
     <TestCase()>
     Public Sub AzureFileProjection_Constructor_Unittest()
@@ -400,23 +400,33 @@ Public Class ProjectionProcessorUnitTest
     End Sub
 
     <TestCase()>
-    Public Sub AzureFileProjection_SomeEvents_UnitTest()
+    Public Async Function AzureFileProjection_SomeEvents_UnitTest() As Task
 
         Dim expected As Integer = 0
         Dim actual As Integer = 0
+
+        Dim testStreamWriter As FileEventStreamWriter(Of MockAggregate, String) = FileEventStreamWriterFactory.Create(New MockAggregate(AzureFileEventStreamUnitTest.TEST_AGGREGATE_IDENTIFIER),
+                                                                                                                      AzureFileEventStreamUnitTest.TEST_AGGREGATE_IDENTIFIER)
+
+        'clear out any old events in order to have a clean test
+        Await testStreamWriter.Reset()
+        'add an event
+        Await testStreamWriter.AppendEvent(New MockEventTypeOne() With {.EventOneIntegerProperty = 10})
+        Await testStreamWriter.AppendEvent(New MockEventTypeTwo() With {.EventTwoDecimalProperty = 20.12, .EventTwoStringProperty = "Event Two"})
+
 
         Dim testObj = FileEventStreamReader(Of MockAggregate, String).CreateProjectionProcessor(New MockAggregate(AzureFileEventStreamUnitTest.TEST_AGGREGATE_IDENTIFIER))
         Assert.IsNotNull(testObj)
 
         Dim myProjection As New MockProjectionMultipleEventsNoSnapshots
 
-        testObj.Process(myProjection)
+        Await testObj.Process(myProjection)
 
         actual = myProjection.Total
 
         Assert.AreNotEqual(expected, actual)
 
-    End Sub
+    End Function
 
 
     <TestCase()>
@@ -438,7 +448,7 @@ Public Class ProjectionProcessorUnitTest
 
         Dim testStreamWriter As FileEventStreamWriter(Of MockAggregate, String) = FileEventStreamWriterFactory.Create(New MockAggregate(TEST_UNIQUE_KEY), TEST_UNIQUE_KEY)
         'clear out any old events in order to have a clean test
-        testStreamWriter.Reset()
+        Await testStreamWriter.Reset()
         'add an event
         Await testStreamWriter.AppendEvent(New MockEventTypeOne() With {.EventOneIntegerProperty = 10})
         Await testStreamWriter.AppendEvent(New MockEventTypeOne() With {.EventOneIntegerProperty = 10})
@@ -447,8 +457,7 @@ Public Class ProjectionProcessorUnitTest
 
         Dim testProjectionProcessor = FileEventStreamReaderFactory.CreateProjectionProcessor(New MockAggregate(TEST_UNIQUE_KEY), TEST_UNIQUE_KEY)
 
-
-        testProjectionProcessor.Process(myProjection)
+        Await testProjectionProcessor.Process(myProjection)
         If (testSnapshotWriter IsNot Nothing) Then
             testSnapshotWriter.SaveSnapshot(TEST_UNIQUE_KEY, myProjection.ToSnapshot())
         End If
@@ -456,7 +465,7 @@ Public Class ProjectionProcessorUnitTest
         Await testStreamWriter.AppendEvent(New MockEventTypeOne() With {.EventOneIntegerProperty = 10})
         Await testStreamWriter.AppendEvent(New MockEventTypeOne() With {.EventOneIntegerProperty = 10})
 
-        testProjectionProcessor.Process(myProjection)
+        Await testProjectionProcessor.Process(myProjection)
         If (testSnapshotWriter IsNot Nothing) Then
             testSnapshotWriter.SaveSnapshot(TEST_UNIQUE_KEY, myProjection.ToSnapshot())
         End If
@@ -466,7 +475,7 @@ Public Class ProjectionProcessorUnitTest
         Await testStreamWriter.AppendEvent(New MockEventTypeOne() With {.EventOneIntegerProperty = 10})
         Await testStreamWriter.AppendEvent(New MockEventTypeTwo() With {.EventTwoDecimalProperty = 30.12, .EventTwoStringProperty = "Event Two the second"})
 
-        testProjectionProcessor.Process(myProjection)
+        Await testProjectionProcessor.Process(myProjection)
         If (testSnapshotWriter IsNot Nothing) Then
             testSnapshotWriter.SaveSnapshot(TEST_UNIQUE_KEY, myProjection.ToSnapshot())
         End If
@@ -486,7 +495,7 @@ Public Class ProjectionProcessorUnitTest
 
 
     <TestCase()>
-    Public Sub AzureTableProjection_MultipleEvents_Stepback_LoadSnapshot_UnitTest()
+    Public Async Function AzureTableProjection_MultipleEvents_Stepback_LoadSnapshot_UnitTest() As Task
 
         Const TEST_UNIQUE_KEY As String = "145.AzTable"
 
@@ -505,32 +514,32 @@ Public Class ProjectionProcessorUnitTest
         testSnapshotWriter.Reset()
 
         'add an event
-        testStreamWriter.AppendEvent(New MockEventTypeOne() With {.EventOneIntegerProperty = 10})
-        testStreamWriter.AppendEvent(New MockEventTypeOne() With {.EventOneIntegerProperty = 10})
-        testStreamWriter.AppendEvent(New MockEventTypeTwo() With {.EventTwoDecimalProperty = 20.12, .EventTwoStringProperty = "Event Two"})
+        Await testStreamWriter.AppendEvent(New MockEventTypeOne() With {.EventOneIntegerProperty = 10})
+        Await testStreamWriter.AppendEvent(New MockEventTypeOne() With {.EventOneIntegerProperty = 10})
+        Await testStreamWriter.AppendEvent(New MockEventTypeTwo() With {.EventTwoDecimalProperty = 20.12, .EventTwoStringProperty = "Event Two"})
 
 
         Dim testProjectionProcessor = TableEventStreamReader(Of MockAggregate, String).CreateProjectionProcessor(New MockAggregate(TEST_UNIQUE_KEY))
 
 
-        testProjectionProcessor.Process(myProjection)
+        Await testProjectionProcessor.Process(myProjection)
         If (testSnapshotWriter IsNot Nothing) Then
             testSnapshotWriter.SaveSnapshot(TEST_UNIQUE_KEY, myProjection.ToSnapshot())
         End If
 
-        testStreamWriter.AppendEvent(New MockEventTypeOne() With {.EventOneIntegerProperty = 10})
-        testStreamWriter.AppendEvent(New MockEventTypeOne() With {.EventOneIntegerProperty = 10})
+        Await testStreamWriter.AppendEvent(New MockEventTypeOne() With {.EventOneIntegerProperty = 10})
+        Await testStreamWriter.AppendEvent(New MockEventTypeOne() With {.EventOneIntegerProperty = 10})
 
-        testProjectionProcessor.Process(myProjection)
+        Await testProjectionProcessor.Process(myProjection)
         If (testSnapshotWriter IsNot Nothing) Then
             testSnapshotWriter.SaveSnapshot(TEST_UNIQUE_KEY, myProjection.ToSnapshot())
         End If
 
-        testStreamWriter.AppendEvent(New MockEventTypeOne() With {.EventOneIntegerProperty = 10})
-        testStreamWriter.AppendEvent(New MockEventTypeOne() With {.EventOneIntegerProperty = 10})
-        testStreamWriter.AppendEvent(New MockEventTypeTwo() With {.EventTwoDecimalProperty = 30.12, .EventTwoStringProperty = "Event Two the second"})
+        Await testStreamWriter.AppendEvent(New MockEventTypeOne() With {.EventOneIntegerProperty = 10})
+        Await testStreamWriter.AppendEvent(New MockEventTypeOne() With {.EventOneIntegerProperty = 10})
+        Await testStreamWriter.AppendEvent(New MockEventTypeTwo() With {.EventTwoDecimalProperty = 30.12, .EventTwoStringProperty = "Event Two the second"})
 
-        testProjectionProcessor.Process(myProjection)
+        Await testProjectionProcessor.Process(myProjection)
         If (testSnapshotWriter IsNot Nothing) Then
             testSnapshotWriter.SaveSnapshot(TEST_UNIQUE_KEY, myProjection.ToSnapshot())
         End If
@@ -552,11 +561,11 @@ Public Class ProjectionProcessorUnitTest
 
         Assert.AreEqual(expected, actual)
 
-    End Sub
+    End Function
 
 
     <TestCase()>
-    Public Sub LocalFileProjection_MultipleEvents_UnitTest()
+    Public Async Function LocalFileProjection_MultipleEvents_UnitTest() As Task
 
         Dim expected As Integer = 100
         Dim actual As Integer = -1
@@ -564,23 +573,23 @@ Public Class ProjectionProcessorUnitTest
         Dim testObj As LocalFileEventStreamWriter(Of MockAggregate, String) = LocalFileEventStreamWriter(Of MockAggregate, String).Create(New MockAggregate("123"))
         testObj.Reset()
         'add an event
-        testObj.AppendEvent(New MockEventTypeOne() With {.EventOneIntegerProperty = 50})
-        testObj.AppendEvent(New MockEventTypeOne() With {.EventOneIntegerProperty = 20})
-        testObj.AppendEvent(New MockEventTypeTwo() With {.EventTwoDecimalProperty = 20.12, .EventTwoStringProperty = "Event Two"})
-        testObj.AppendEvent(New MockEventTypeOne() With {.EventOneIntegerProperty = 10})
-        testObj.AppendEvent(New MockEventTypeOne() With {.EventOneIntegerProperty = 20})
+        Await testObj.AppendEvent(New MockEventTypeOne() With {.EventOneIntegerProperty = 50})
+        Await testObj.AppendEvent(New MockEventTypeOne() With {.EventOneIntegerProperty = 20})
+        Await testObj.AppendEvent(New MockEventTypeTwo() With {.EventTwoDecimalProperty = 20.12, .EventTwoStringProperty = "Event Two"})
+        Await testObj.AppendEvent(New MockEventTypeOne() With {.EventOneIntegerProperty = 10})
+        Await testObj.AppendEvent(New MockEventTypeOne() With {.EventOneIntegerProperty = 20})
 
         Dim testProjectionProcessor = LocalFileEventStreamReader(Of MockAggregate, String).CreateProjectionProcessor(New MockAggregate("123"))
         Dim myProjection As New MockProjectionNoSnapshots
 
-        testProjectionProcessor.Process(myProjection)
+        Await testProjectionProcessor.Process(myProjection)
 
         actual = myProjection.Total
 
         Assert.AreEqual(expected, actual)
 
 
-    End Sub
+    End Function
 
 #If LOCAL_MACHINE Then
     ' Note: set this path to a real location

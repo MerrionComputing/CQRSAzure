@@ -303,9 +303,16 @@ Public MustInherit Class ProjectionBase
             Return Nothing
         End If
 
-        Return CType(m_currentValues.FirstOrDefault(Function(ByVal t As IProjectionSnapshotProperty) As Boolean
-                                                        Return t.Name = propertyName AndAlso t.RowNumber = rowNumber
-                                                    End Function).Value, TValue)
+        Dim retProperty = m_currentValues.FirstOrDefault(Function(ByVal t As IProjectionSnapshotProperty) As Boolean
+                                                             Return t.Name = propertyName AndAlso t.RowNumber = rowNumber
+                                                         End Function)
+
+        If (retProperty Is Nothing) Then
+            'could not find the property
+            Return Nothing
+        End If
+
+        Return CType(retProperty.Value, TValue)
 
     End Function
 
