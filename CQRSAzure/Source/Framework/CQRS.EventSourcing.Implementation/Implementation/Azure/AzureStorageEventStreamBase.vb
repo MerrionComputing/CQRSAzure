@@ -61,12 +61,20 @@ Public MustInherit Class AzureStorageEventStreamBase
         builder.AddJsonFile("config.local.json", True)
         builder.AddJsonFile("config.json", True)
         builder.AddJsonFile("connectionstrings.json", True)
+        builder.AddEnvironmentVariables()
+
+        Dim config As IConfigurationRoot = builder.Build()
+
+        Dim connectionString As String = ""
 
 
-        Dim connectionString As String = builder.Build().GetConnectionString(connectionStringName)
-        If String.IsNullOrWhiteSpace(connectionString) Then
-            connectionString = builder.Build().Item(connectionStringName)
+        If (config IsNot Nothing) Then
+            connectionString = config.GetConnectionString(connectionStringName)
+            If String.IsNullOrWhiteSpace(connectionString) Then
+                connectionString = config.Item(connectionStringName)
+            End If
         End If
+
         If (String.IsNullOrWhiteSpace(connectionString)) Then
             If Not String.IsNullOrWhiteSpace(connectionStringName) Then
                 If (ConfigurationManager.ConnectionStrings IsNot Nothing) Then
