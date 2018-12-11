@@ -354,6 +354,27 @@ Namespace Azure.Blob
         End Sub
 
 
+        ''' <summary>
+        ''' Get the folder the event streams for the given domain aggregate should be stored in
+        ''' </summary>
+        ''' <param name="domainName">
+        ''' The name of the domain the aggregate belongs to 
+        ''' </param>
+        ''' <param name="aggregateTypeName">
+        ''' The base type of the aggregate that the event streams are written for 
+        ''' </param>
+        ''' <returns></returns>
+        Public Shared Function GetEventStreamStorageFolderPath(ByVal domainName As String, ByVal aggregateTypeName As String) As String
+
+            Return MakeValidStorageFolderName(domainName) & "/" & EVENTSTREAM_FOLDER & "/" & MakeValidStorageFolderName(aggregateTypeName) & "/"
+
+        End Function
+
+        Public Shared Function GetEventStreamStorageFolderPath(ByVal aggregateTypeName As String) As String
+
+            Return EVENTSTREAM_FOLDER & "/" & MakeValidStorageFolderName(aggregateTypeName) & "/"
+
+        End Function
 
     End Class
 

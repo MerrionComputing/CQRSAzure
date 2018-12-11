@@ -120,7 +120,7 @@ Public MustInherit Class AzureStorageEventStreamBase
     ''' <param name="settings">
     ''' Any specif settings that could override that connection string
     ''' </param>
-    Protected Shared Function GetWriteConnectionStringName(ByVal connectionStringName As String,
+    Public Shared Function GetWriteConnectionStringName(ByVal connectionStringName As String,
                                                            ByVal settings As IAzureStorageSettings) As String
 
         If (settings Is Nothing) Then

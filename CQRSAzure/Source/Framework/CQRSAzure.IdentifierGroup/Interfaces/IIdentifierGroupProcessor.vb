@@ -46,3 +46,42 @@ Public Interface IIdentifierGroupProcessor(Of TAggregate As IAggregationIdentifi
     Function GetAll(Optional ByVal effectiveDateTime As Nullable(Of DateTime) = Nothing) As IEnumerable(Of TAggregateKey)
 
 End Interface
+
+''' <summary>
+''' An identifier group processor for JSON backed (untyped) entities
+''' </summary>
+Public Interface IIdentifierGroupProcessorUntyped
+
+
+    ''' <summary>
+    ''' Get the set of unique identifiers of the aggregates that are in this group as at a given point in time, or as at now if no
+    ''' given point in time is specified
+    ''' </summary>
+    ''' <param name="IdentifierGroup">
+    ''' The specific identifier group for which we are getting the membership set
+    ''' </param>
+    ''' <param name="effectiveDateTime">
+    ''' If specified the date/time for which we want to get the members of the group
+    ''' </param>
+    ''' <param name="parentGroupProcessor">
+    ''' If this is a "nested" identifier group, this is the processor to get the the members 
+    ''' </param>
+    ''' <remarks>
+    ''' If the rules of a classifier are invariant (which they should be) it is possible to cache group members as at a given point in 
+    ''' time so as to speed up the resolving of group membership
+    ''' </remarks>
+    Function GetMembers(ByVal IdentifierGroup As IIdentifierGroupUntyped,
+                        Optional ByVal effectiveDateTime As Nullable(Of DateTime) = Nothing,
+                        Optional ByVal parentGroupProcessor As IIdentifierGroupProcessorUntyped = Nothing) As Task(Of IEnumerable(Of String))
+
+
+    ''' <summary>
+    ''' Get the set of unique identifiers of the all of the aggregates that are in the system as at a given point in time, or as at now if no
+    ''' given point in time is specified
+    ''' </summary>
+    ''' <param name="effectiveDateTime">
+    ''' If specified the date/time for which we want to get the members of the group
+    ''' </param>
+    Function GetAll(Optional ByVal effectiveDateTime As Nullable(Of DateTime) = Nothing) As Task(Of IEnumerable(Of String))
+
+End Interface

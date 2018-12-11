@@ -39,6 +39,7 @@
     <Compile Include="Exceptions\SnapshotWriteOutOfSequenceException.vb" />
     <Compile Include="IdentifierGroup.vb" />
     <Compile Include="Implementation\AggregateEventStreamImplementationMap.vb" />
+    <Compile Include="Implementation\Azure\Blob\Untyped\AzureBlobIdentifierGroupProcessorUntyped.vb" />
     <Compile Include="Implementation\IdentityGroupAggregateMapBuilder.vb" />
     <Compile Include="Implementation\Azure\Blob\AzureBlobIdentifierGroupProcessor.vb" />
     <Compile Include="Implementation\Azure\Blob\AzureBlobIdentifierGroupSnapshotReader.vb" />

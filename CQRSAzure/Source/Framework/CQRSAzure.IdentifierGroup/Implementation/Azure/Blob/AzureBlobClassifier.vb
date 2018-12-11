@@ -1,5 +1,6 @@
 ﻿Imports CQRSAzure.EventSourcing
 Imports CQRSAzure.EventSourcing.Azure.Blob
+Imports CQRSAzure.EventSourcing.Azure.Blob.Untyped
 
 Namespace Azure.Blob
 
@@ -94,7 +95,7 @@ Namespace Azure.Blob
 
 
             If (streamReader Is Nothing) Then
-                streamReader = Untyped.BlobEventStreamReaderUntyped.Create(identifier, settings)
+                streamReader = BlobEventStreamReaderUntyped.Create(identifier, settings)
             End If
 
             Return New ClassifierProcessorUntyped(streamReader, classifier, snapshotReader, snapshotWriter)

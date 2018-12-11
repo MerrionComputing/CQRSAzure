@@ -21,6 +21,7 @@ Namespace Azure.Blob
         ''' Get all of the identifiers of this aggregate type in existance as at the given time
         ''' </summary>
         ''' <param name="effectiveDateTime">
+        ''' The date up until which we want the group membership 
         ''' </param>
         ''' <remarks>
         ''' If the effective date/time is not specified get all the members as of now

@@ -21,6 +21,7 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AzureBlobIdentifierGroupProcessorUntyped_UnitTest.vb" />
     <Compile Include="AzureTableClassifierUnitTest.vb" />
     <Compile Include="BlobClassifierUnitTest.vb" />
     <Compile Include="InMemoryClassifierUnitTest.vb" />
@@ -76,5 +77,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="My Project\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="connectionstrings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>

@@ -117,7 +117,7 @@ Namespace Azure.Blob.Untyped
 
             MyBase.New(identifier,
                        writeAccess:=False,
-                       connectionStringName:=GetWriteConnectionStringName("", settings),
+                       connectionStringName:=GetWriteConnectionStringName(connectionStringName, settings),
                        settings:=settings)
 
         End Sub
