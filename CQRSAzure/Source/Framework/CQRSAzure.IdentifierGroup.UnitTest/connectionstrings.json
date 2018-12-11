@@ -1,6 +1,0 @@
-﻿{
-  "UnitTestStorageConnectionString": "DefaultEndpointsProtocol=https;AccountName=cqrsdemo;AccountKey=zPyxcKxX2IlVSFL9mRC9w5qudl8IoKnlLzhqDqyHshWVl2MFcDT5by0nKVzAZmaDwZfUBj7mU8p7mct9NE8ZpQ==;EndpointSuffix=core.windows.net",
-  "StorageConnectionString": "DefaultEndpointsProtocol=https;AccountName=cqrsdemo;AccountKey=zPyxcKxX2IlVSFL9mRC9w5qudl8IoKnlLzhqDqyHshWVl2MFcDT5by0nKVzAZmaDwZfUBj7mU8p7mct9NE8ZpQ==;EndpointSuffix=core.windows.net",
-  "AccountsConnectionString": "DefaultEndpointsProtocol=https;AccountName=cqrsdemo;AccountKey=zPyxcKxX2IlVSFL9mRC9w5qudl8IoKnlLzhqDqyHshWVl2MFcDT5by0nKVzAZmaDwZfUBj7mU8p7mct9NE8ZpQ==;EndpointSuffix=core.windows.net",
-  "UnclassifiedStorageConnectionString": "DefaultEndpointsProtocol=https;AccountName=cqrsdemo;AccountKey=zPyxcKxX2IlVSFL9mRC9w5qudl8IoKnlLzhqDqyHshWVl2MFcDT5by0nKVzAZmaDwZfUBj7mU8p7mct9NE8ZpQ==;EndpointSuffix=core.windows.net"
-}
