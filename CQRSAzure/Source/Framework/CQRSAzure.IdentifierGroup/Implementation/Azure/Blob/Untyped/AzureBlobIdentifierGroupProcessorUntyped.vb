@@ -38,7 +38,6 @@ Namespace Azure.Blob.Untyped
             Dim ret As New List(Of String)
 
 
-
             If m_blobBasePath IsNot Nothing Then
                 Dim bd As CloudBlobDirectory = m_blobBasePath.GetDirectoryReference(m_folder)
                 Dim continueToken As New BlobContinuationToken()
