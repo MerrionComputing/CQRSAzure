@@ -29,9 +29,6 @@ Namespace Azure.Blob.Untyped
         ''' </param>
         Public Async Function GetAll(Optional effectiveDateTime As Date? = Nothing) As Task(Of IEnumerable(Of String)) Implements IIdentifierGroupProcessorUntyped.GetAll
 
-            If (String.IsNullOrWhiteSpace(m_connectionStringName)) Then
-                Return Enumerable.Empty(Of String)
-            End If
 
             If (String.IsNullOrWhiteSpace(m_folder)) Then
                 Return Enumerable.Empty(Of String)
