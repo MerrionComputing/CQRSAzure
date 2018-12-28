@@ -69,11 +69,13 @@ Namespace Azure.Blob.Untyped
                             End If
                         End If
                         If Not ignore Then
-                            'add the key to the returned set
-                            Dim keyString As String = blobFile.Metadata(BlobEventStreamBase.METADATA_AGGREGATE_KEY)
-                            If Not String.IsNullOrWhiteSpace(keyString) Then
-                                'Add tghis unqiue identifier
-                                ret.Add(keyString)
+                            If (blobFile.Metadata.ContainsKey(BlobEventStreamBase.METADATA_AGGREGATE_KEY)) Then
+                                'add the key to the returned set
+                                Dim keyString As String = blobFile.Metadata(BlobEventStreamBase.METADATA_AGGREGATE_KEY)
+                                If Not String.IsNullOrWhiteSpace(keyString) Then
+                                    'Add tghis unqiue identifier
+                                    ret.Add(keyString)
+                                End If
                             End If
                         End If
                     End If

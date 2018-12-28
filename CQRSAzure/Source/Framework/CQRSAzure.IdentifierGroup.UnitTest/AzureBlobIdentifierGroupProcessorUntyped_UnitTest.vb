@@ -17,7 +17,7 @@ Public Class AzureBlobIdentifierGroupProcessorUntyped_UnitTest
     <TestCase()>
     Public Async Function GetAll_TestMethod() As Task
 
-        Dim testObj As New AzureBlobIdentifierGroupProcessorUntyped("Leagues", "Command", "UnitTestStorageConnectionString")
+        Dim testObj As New AzureBlobIdentifierGroupProcessorUntyped("Query", "Get League Summary", "QueryConnectionString")
         Dim values = Await testObj.GetAll()
 
         Assert.IsNotNull(values)
