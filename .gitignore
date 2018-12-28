@@ -13,6 +13,8 @@
 # Private configurations
 connection[sS]trings.config
 [sS]ecret.config
+connection[sS]trings.json
+[sS]ecret.json
 
 # Build results
 [Dd]ebug/
