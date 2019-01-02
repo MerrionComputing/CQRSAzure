@@ -57,6 +57,23 @@ Namespace Azure.Table.Untyped
 
         End Function
 
+        ''' <summary>
+        ''' Does an event stream already exist for this Domain/Type/Instance
+        ''' </summary>
+        ''' <remarks>
+        ''' This can be used for e.g. checking it exists as part of a validation
+        ''' </remarks>
+        Public Function Exists() As Task(Of Boolean) Implements IEventStreamUntyped.Exists
+
+            If (MyBase.Table IsNot Nothing) Then
+                Return MyBase.Table.ExistsAsync()
+            Else
+                Return Task(Of Boolean).FromResult(Of Boolean)(False)
+            End If
+
+
+        End Function
+
         Private m_context As IWriteContext
         Public Sub SetContext(writerContext As IWriteContext) Implements IEventStreamWriterUntyped.SetContext
             m_context = writerContext

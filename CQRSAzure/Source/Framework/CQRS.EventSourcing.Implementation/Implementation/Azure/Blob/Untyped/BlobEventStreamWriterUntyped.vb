@@ -66,6 +66,19 @@ Namespace Azure.Blob.Untyped
             End If
         End Function
 
+        ''' <summary>
+        ''' Does an event stream already exist for this Domain/Type/Instance
+        ''' </summary>
+        ''' <remarks>
+        ''' This can be used for e.g. checking it exists as part of a validation
+        ''' </remarks>
+        Public Function Exists() As Task(Of Boolean) Implements IEventStreamUntyped.Exists
+            If AppendBlob IsNot Nothing Then
+                Return AppendBlob.ExistsAsync()
+            Else
+                Return Task(Of Boolean).FromResult(Of Boolean)(False)
+            End If
+        End Function
 
         ''' <summary>
         ''' Update the sequence number metadata and return the new sequence number

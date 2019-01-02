@@ -85,6 +85,23 @@ Namespace Azure.File
             End If
         End Function
 
+        ''' <summary>
+        ''' Does an event stream already exist for this Domain/Type/Instance
+        ''' </summary>
+        ''' <remarks>
+        ''' This can be used for e.g. checking it exists as part of a validation
+        ''' </remarks>
+        Public Function Exists() As Task(Of Boolean) Implements IEventStreamUntyped.Exists
+
+            If (MyBase.File IsNot Nothing) Then
+                Return MyBase.File.ExistsAsync()
+            Else
+                Return Task(Of Boolean).FromResult(Of Boolean)(False)
+            End If
+
+
+        End Function
+
         Private Async Function IncrementRecordCount() As Task
 
             If (MyBase.File IsNot Nothing) Then

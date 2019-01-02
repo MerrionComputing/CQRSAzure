@@ -122,6 +122,8 @@ Namespace Azure.Blob.Untyped
 
         End Function
 
+
+
         Protected Async Sub ResetBlob()
 
             If (BlobContainer IsNot Nothing) Then
@@ -164,6 +166,7 @@ Namespace Azure.Blob.Untyped
             Call ResetBlob()
 
         End Sub
+
 
     End Class
 

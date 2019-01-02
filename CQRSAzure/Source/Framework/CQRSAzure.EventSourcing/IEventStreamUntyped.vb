@@ -6,6 +6,7 @@
 Public Interface IEventStreamUntyped
     Inherits IEventStreamUntypedIdentity
 
+
     ''' <summary>
     ''' The number of record in this event stream
     ''' </summary>
@@ -15,6 +16,14 @@ Public Interface IEventStreamUntyped
     ''' When was the last record written to this event stream
     ''' </summary>
     ReadOnly Property LastAddition As Nullable(Of DateTime)
+
+    ''' <summary>
+    ''' Does an event stream already exist for this Domain/Type/Instance
+    ''' </summary>
+    ''' <remarks>
+    ''' This can be used for e.g. checking it exists as part of a validation
+    ''' </remarks>
+    Function Exists() As Task(Of Boolean)
 
 End Interface
 
@@ -40,5 +49,8 @@ Public Interface IEventStreamUntypedIdentity
     ''' The unique identifier of the aggregate instance to which the event stream pertains
     ''' </summary>
     ReadOnly Property InstanceKey As String
+
+
+
 
 End Interface

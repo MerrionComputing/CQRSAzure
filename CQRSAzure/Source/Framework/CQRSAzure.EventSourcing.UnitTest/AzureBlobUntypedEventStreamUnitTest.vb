@@ -50,6 +50,37 @@ Public Class AzureBlobUntypedEventStreamUnitTest
 
     End Function
 
+    <TestCase()>
+    Public Async Function Writer_Exists_True_TestMethod() As Task
+
+        Dim expected As Boolean = True
+        Dim actual As Boolean = False
+
+        Dim testAgg As New Mocking.MockAggregate(TEST_AGGREGATE_IDENTIFIER)
+        Dim testObj As BlobEventStreamWriterUntyped = New BlobEventStreamWriterUntyped(testAgg)
+        Await testObj.Reset()
+        Await testObj.AppendEvent(New Mocking.MockEventTypeTwo() With {.EventTwoNullableDateProperty = DateTime.UtcNow, .EventTwoStringProperty = "My test two", .EventTwoDecimalProperty = 123.45D})
+
+        actual = Await testObj.Exists()
+
+        Assert.AreEqual(expected, actual)
+
+    End Function
+
+    <TestCase()>
+    Public Async Function Writer_Exists_False_TestMethod() As Task
+
+        Dim expected As Boolean = False
+        Dim actual As Boolean = True
+
+        Dim testAgg As New Mocking.MockAggregate("12345678.0987654")
+        Dim testObj As BlobEventStreamWriterUntyped = New BlobEventStreamWriterUntyped(testAgg)
+
+        actual = Await testObj.Exists()
+
+        Assert.AreEqual(expected, actual)
+
+    End Function
 
     <TestCase()>
     Public Sub Reader_ReadEvents_TestMethod()

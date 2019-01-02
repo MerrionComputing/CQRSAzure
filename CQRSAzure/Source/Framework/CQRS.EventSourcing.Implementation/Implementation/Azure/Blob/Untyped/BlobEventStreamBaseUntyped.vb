@@ -79,6 +79,7 @@ Namespace Azure.Blob.Untyped
         End Property
 
 
+
         Public Async Function GetSequence() As Task(Of Long)
 
             If (AppendBlob IsNot Nothing) Then
@@ -167,6 +168,7 @@ Namespace Azure.Blob.Untyped
                 End If
             End If
         End Function
+
 
     End Class
 End Namespace

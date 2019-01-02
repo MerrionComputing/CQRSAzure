@@ -95,6 +95,8 @@ Namespace Azure.File
             Return 0
         End Function
 
+
+
         Friend Async Sub ResetFile()
 
             Dim exists As Boolean = Await m_file.ExistsAsync()
