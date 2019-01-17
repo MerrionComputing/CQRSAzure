@@ -136,6 +136,19 @@ Namespace Azure.Blob.Untyped
             End If
         End Function
 
+
+        ''' <summary>
+        ''' Create the underlying stream storage if it does not already exist
+        ''' </summary>
+        Public Async Function CreateIfNotExists() As Task Implements IEventStreamUntyped.CreateIfNotExists
+
+            Dim alreadyExists As Boolean = Await Me.Exists()
+            If (Not alreadyExists) Then
+                Await MyBase.ResetBlob()
+            End If
+
+        End Function
+
         Public Sub New(ByVal identifier As IEventStreamUntypedIdentity,
                Optional ByVal connectionStringName As String = "",
                Optional ByVal settings As IBlobStreamSettings = Nothing)
@@ -169,5 +182,7 @@ Namespace Azure.Blob.Untyped
                                                     settings:=settings)
 
         End Function
+
+
     End Class
 End Namespace

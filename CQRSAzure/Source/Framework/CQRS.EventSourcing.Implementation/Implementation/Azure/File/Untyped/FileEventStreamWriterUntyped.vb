@@ -102,6 +102,18 @@ Namespace Azure.File
 
         End Function
 
+        ''' <summary>
+        ''' Create the underlying stream storage if it does not already exist
+        ''' </summary>
+        Public Async Function CreateIfNotExists() As Task Implements IEventStreamUntyped.CreateIfNotExists
+
+            Dim alreadyExists As Boolean = Await Me.Exists()
+            If (Not alreadyExists) Then
+                MyBase.ResetFile()
+            End If
+
+        End Function
+
         Private Async Function IncrementRecordCount() As Task
 
             If (MyBase.File IsNot Nothing) Then

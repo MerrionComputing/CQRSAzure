@@ -40,7 +40,8 @@ Namespace Azure.Blob.Untyped
             If (AppendBlob IsNot Nothing) Then
                 Dim targetStream As New System.IO.MemoryStream()
                 Try
-                    Await GetAppendBlobSnapshot().Result.DownloadToStreamAsync(targetStream)
+                    ' Note - we are not using snapshots in this implementation 
+                    Await AppendBlob.DownloadToStreamAsync(targetStream)
                 Catch exBlob As Microsoft.WindowsAzure.Storage.StorageException
                     Throw New EventStreamReadException(DomainName, AggregateClassName, Me.Key, 0, "Unable to access underlying event stream", exBlob)
                 End Try

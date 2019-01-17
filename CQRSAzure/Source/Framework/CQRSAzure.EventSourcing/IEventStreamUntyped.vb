@@ -25,6 +25,16 @@ Public Interface IEventStreamUntyped
     ''' </remarks>
     Function Exists() As Task(Of Boolean)
 
+    ''' <summary>
+    ''' Explicitly create the event stream container if it does not already exists
+    ''' </summary>
+    ''' <remarks>
+    ''' This allows for throwing an exception if we try to write an event to a stream that doesn't exist 
+    ''' which cannot be a "starter" event
+    ''' </remarks>
+    Function CreateIfNotExists() As Task
+
+
 End Interface
 
 ''' <summary>

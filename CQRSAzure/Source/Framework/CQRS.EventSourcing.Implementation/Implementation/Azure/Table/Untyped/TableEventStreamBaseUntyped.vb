@@ -74,6 +74,19 @@ Namespace Azure.Table.Untyped
 
         End Function
 
+        ''' <summary>
+        ''' Create the underlying stream storage if it does not already exist
+        ''' </summary>
+        Public Async Function CreateIfNotExists() As Task Implements IEventStreamUntyped.CreateIfNotExists
+
+            Dim alreadyExists As Boolean = Await Me.Exists()
+            If (Not alreadyExists) Then
+                ' Nothing to do currently - the table is always created
+                ' This may, however, change in future
+            End If
+
+        End Function
+
         Private m_context As IWriteContext
         Public Sub SetContext(writerContext As IWriteContext) Implements IEventStreamWriterUntyped.SetContext
             m_context = writerContext
